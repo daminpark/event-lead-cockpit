@@ -28,7 +28,9 @@
         "edition": "2026",
         "url": "https://ems-scms.com/live/en/page/commercial-partners"
       }
-    ]
+    ],
+    "added_at": "2026-10-26",
+    "found_by": "Research agents (first run)"
   },
   {
     "id": "bme-symposium-2026",
@@ -64,7 +66,9 @@
         "edition": "2026",
         "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/BME-symposium-einkauf-und-logistik-folder/partner-or-aussteller/"
       }
-    ]
+    ],
+    "added_at": "2026-10-26",
+    "found_by": "Research agents (first run)"
   },
   {
     "id": "hamburger-logistiktage-2027",
@@ -95,7 +99,9 @@
         "edition": "2027",
         "url": "https://hamburger-logistiktage.de/partner/"
       }
-    ]
+    ],
+    "added_at": "2026-10-26",
+    "found_by": "Research agents (replacement for transport logistic)"
   },
   {
     "id": "hannover-messe-2027",
@@ -120,7 +126,9 @@
         "edition": "2026 (previous)",
         "url": "https://www.hannovermesse.de/en/expo/exhibitors-products/"
       }
-    ]
+    ],
+    "added_at": "2026-10-26",
+    "found_by": "Research agents (first run)"
   },
   {
     "id": "handelsblatt-cpo-2027",
@@ -144,7 +152,9 @@
         "edition": "2026 (previous)",
         "url": "https://live.handelsblatt.com/event/handelsblatt-cpo-summit/"
       }
-    ]
+    ],
+    "added_at": "2026-10-26",
+    "found_by": "Research agents (first run)"
   },
   {
     "id": "ep-sce-2027",
@@ -169,7 +179,9 @@
         "edition": "2026 (previous)",
         "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/european-procurement-supply-chain-excellence-summit/summit-speakers/"
       }
-    ]
+    ],
+    "added_at": "2026-10-26",
+    "found_by": "Research agents (first run)"
   },
   {
     "id": "ssow-europe-2027",
@@ -194,7 +206,9 @@
         "edition": "2026 (previous)",
         "url": "https://www.ssonetwork.com/events-ssoweek"
       }
-    ]
+    ],
+    "added_at": "2026-10-26",
+    "found_by": "Research agents (first run)"
   },
   {
     "id": "bme-eloesungstage-2027",
@@ -219,7 +233,9 @@
         "edition": "2026 (previous)",
         "url": "https://a.storyblok.com/f/104752/x/56701cd5a7/kongressguide_eloesungstage_2026.pdf"
       }
-    ]
+    ],
+    "added_at": "2026-10-26",
+    "found_by": "Research agents (first run)"
   },
   {
     "id": "handelslogistik-2027",
@@ -244,7 +260,9 @@
         "edition": "2026 (previous)",
         "url": "https://www.handelslogistik.de/programm"
       }
-    ]
+    ],
+    "added_at": "2026-10-26",
+    "found_by": "Research agents (first run)"
   },
   {
     "id": "procurement-summit-2027",
@@ -273,6 +291,8 @@
         "edition": "2027",
         "url": "https://procurementsummit.de/teilnehmende"
       }
-    ]
+    ],
+    "added_at": "2026-10-26",
+    "found_by": "Research agents (first run)"
   }
 ]

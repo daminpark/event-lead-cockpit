@@ -263,6 +263,32 @@ CREATE TABLE IF NOT EXISTS hubspot_sync (
   PRIMARY KEY (object_type, object_id)
 );
 CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+-- The event scout: each run, what it found, and events tracked from it
+CREATE TABLE IF NOT EXISTS scout_runs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  trigger TEXT NOT NULL,              -- button | daily
+  started_at TEXT NOT NULL,
+  finished_at TEXT,
+  status TEXT NOT NULL,               -- running | done | failed
+  found INTEGER,
+  model TEXT,
+  cost REAL,
+  error TEXT
+);
+CREATE TABLE IF NOT EXISTS event_candidates (
+  id TEXT PRIMARY KEY,
+  run_id INTEGER,
+  found_at TEXT NOT NULL,
+  status TEXT NOT NULL,               -- new | tracked | dismissed
+  decided_at TEXT,
+  data TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS event_summaries (
+  event_id TEXT PRIMARY KEY,
+  text TEXT NOT NULL,
+  model TEXT,
+  created_at TEXT NOT NULL
+);
 -- Errors from the browser and the server, with what the person was doing at the time.
 CREATE TABLE IF NOT EXISTS errors (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -372,10 +398,30 @@ def active_scoring(con):
     return json.loads(row["body"]), row["version"]
 
 
+def tracked_events():
+    """Events the scout found and a person chose to track. Their people aren't sourced yet."""
+    if not os.path.exists(DB):
+        return []
+    with sqlite3.connect(DB) as con:
+        con.row_factory = sqlite3.Row
+        if not con.execute("SELECT name FROM sqlite_master WHERE name = 'event_candidates'").fetchone():
+            return []
+        rows = con.execute("SELECT data, found_at, decided_at FROM event_candidates WHERE status = 'tracked'").fetchall()
+    out = []
+    for r in rows:
+        e = json.loads(r["data"])
+        e.update(added_at=(r["decided_at"] or r["found_at"])[:10], found_at=r["found_at"][:10], found_by="Event scout",
+                 sources=e.get("sources") or [], generalmind_present=False, not_sourced=True)
+        out.append(e)
+    return out
+
+
 def compute(cfg, today):
     """Score every contact and account with the given settings. Pure: writes nothing except the
     source-check file when the saved pages are present."""
     events = {e["id"]: e for e in load_json(os.path.join(DATA, "events.json"), [])}
+    for e in tracked_events():
+        events.setdefault(e["id"], e)
     for e in events.values():
         e["short"] = re.sub(r"\s*\(.*?\)|\s+20\d\d.*$", "", e["name"]).strip()
     by_alias, by_key = load_profiles()

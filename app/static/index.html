@@ -77,7 +77,7 @@ main { padding: 20px 24px 60px; max-width: 1440px; margin: 0 auto; }
 
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 16px; align-items: start; }
 .list { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-.row { display: grid; grid-template-columns: 70px minmax(170px, 1.2fr) minmax(150px, 1fr) minmax(180px, 1.5fr) 92px; gap: 14px; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--line-2); cursor: pointer; }
+.row { display: grid; grid-template-columns: 70px minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.5fr) 92px; gap: 14px; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--line-2); cursor: pointer; }
 .row:last-child { border-bottom: 0; }
 .row:hover { background: var(--panel-2); }
 .row.sel { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
@@ -221,6 +221,20 @@ dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid 
 .grouphead { display: flex; justify-content: space-between; gap: 12px; padding: 9px 14px; background: var(--panel-2); border-bottom: 1px solid var(--line); font-weight: 600; font-size: 13px; cursor: default; }
 .grouphead span { color: var(--muted); font-weight: 500; }
 .mobile-only { display: none; }
+.evtable { display: grid; grid-template-columns: 52px minmax(0, 2.6fr) 130px minmax(0, 1.3fr) 130px 24px; gap: 14px; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--line-2); cursor: pointer; }
+.evtable:last-child { border-bottom: 0; }
+.evtable:hover { background: var(--panel-2); }
+.evtable.head { cursor: default; background: var(--panel-2); color: var(--faint); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; padding-top: 8px; padding-bottom: 8px; }
+.evtable.notgoing, .evtable.past { opacity: .6; }
+.evtable .t1 { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.evtable .t2 small { color: var(--faint); }
+.breakdown { display: flex; flex-direction: column; gap: 6px; }
+.bk { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(60px, 1fr) 40px; gap: 10px; align-items: center; font-size: 13px; }
+.bkbar { height: 8px; background: var(--line-2); border-radius: 99px; overflow: hidden; }
+.bkbar span { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+.bk b { text-align: right; }
+.sechead { font-size: 16px; margin: 22px 0 10px; }
+.sechead span { color: var(--muted); font-weight: 500; font-size: 13px; margin-left: 8px; }
 .fitcell .sug { font-size: 10.5px; color: var(--lc, var(--muted)); font-weight: 600; white-space: nowrap; }
 .cp-open { background: var(--accent) !important; color: #fff !important; border-color: var(--accent) !important; font-weight: 600; }
 .cp { position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100vw); background: var(--panel); border-left: 1px solid var(--line); box-shadow: var(--shadow); z-index: 45; display: flex; flex-direction: column; transform: translateX(105%); transition: transform .2s ease; }
@@ -318,6 +332,9 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
   .evmain { grid-template-columns: 48px minmax(0, 1fr); }
   .evnums, .evacts { grid-column: 1 / -1; justify-content: flex-start; }
   .evmore { padding-left: 16px; }
+  .evtable { grid-template-columns: 48px minmax(0, 1fr) auto; }
+  .evtable > :nth-child(4), .evtable > :nth-child(5), .evtable > :nth-child(6) { display: none; }
+  .bk { grid-template-columns: minmax(0, 1fr) 70px 36px; }
   .stabs { overflow-x: auto; }
   .row .c-company, .row .c-reasons { grid-column: 2 / 4; }
   .evhead { flex-direction: column; align-items: flex-start; }
@@ -336,7 +353,8 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
 <header>
   <div class="brand"><b>Event Lead Cockpit</b><span>Case study for GeneralMind · Pierre Park</span></div>
   <nav id="tabs">
-    <button data-view="events" class="on">Events &amp; people</button>
+    <button data-view="events" class="on">Events</button>
+    <button data-view="people">People</button>
     <button data-view="criteria">Criteria</button>
     <button data-view="playbooks">Playbooks</button>
     <button data-view="insights">Insights</button>
@@ -360,15 +378,13 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
 
 <main>
   <section class="view on" id="v-events">
-    <div class="pwrap">
-      <aside class="rail" id="rail"></aside>
-      <div class="pmain">
-        <div id="overview"></div>
-        <div id="peopleMain">
-          <div class="panel evhead" id="evHead"></div>
+    <div id="eventsList"></div>
+    <div id="eventPage" style="display:none">
+      <div id="eventTop"></div>
+      <div id="eventPeopleSlot">
+        <div id="peopleBlock">
           <div class="stabs" id="statusTabs"></div>
           <div class="toolbar">
-            <select id="fEvent" class="mobile-only" title="Which events"></select>
             <input type="search" id="q" placeholder="Search name, title, company…">
             <select id="fSuggest">
               <option value="">All suggestions</option>
@@ -392,6 +408,11 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
         </div>
       </div>
     </div>
+  </section>
+
+  <section class="view" id="v-people">
+    <div class="panel evhead" id="peopleHead"></div>
+    <div id="peopleSlot"></div>
   </section>
 
   <section class="view" id="v-feedback"><div id="feedbackView"></div></section>
@@ -437,7 +458,7 @@ const FUNCTION_LABELS = {
 
 const S = {
   data: null, events: {}, accounts: {}, contacts: [], decisions: new Map(), history: [],
-  status: 'review', pushSel: new Set(), evScope: undefined, evOpen: null,
+  status: 'review', pushSel: new Set(), eventId: null, peopleScope: undefined, evOpen: null, evFilter: 'all',
   sel: null, reviewer: '', view: 'events', undo: [],
 };
 
@@ -456,7 +477,7 @@ function describeEl(el) {
 }
 function appState() {
   const v = id => document.getElementById(id)?.value || '';
-  return { view: S.view, url: location.pathname, filters: { q: v('q'), event: v('fEvent'), fn: v('fFunction'), sort: v('fSort'), suggestion: v('fSuggest'), other: !!document.getElementById('fOther')?.checked },
+  return { view: S.view, url: location.pathname, filters: { q: v('q'), event: S.eventId || S.peopleScope, fn: v('fFunction'), sort: v('fSort'), suggestion: v('fSuggest'), other: !!document.getElementById('fOther')?.checked },
     status: S.status, contact: S.sel, going: S.data ? goingIds() : [], scoring_version: S.data?.meta?.scoring_version, app_version: S.data?.meta?.app_version,
     role: S.data?.meta?.role, reviewer: S.reviewer, viewport: `${innerWidth}x${innerHeight}`, ua: navigator.userAgent.slice(0, 120) };
 }
@@ -533,7 +554,7 @@ function fillFilters() {
   $('fFunction').value = keep;
 }
 
-function renderAll() { renderPeople(); renderCriteria(); renderPlaybooks(); renderInsights(); renderExport(); if (S.view === 'settings') renderSettings(); renderAbout(); }
+function renderAll() { if (S.view === 'people') renderPeople(); else renderEvents(); renderCriteria(); renderPlaybooks(); renderInsights(); renderExport(); if (S.view === 'settings') renderSettings(); renderAbout(); }
 const isSuppressed = c => S.suppressed.has(c.person_key) || S.suppressed.has(c.id) || (c.account_id && S.suppressed.has(S.accounts[c.account_id]?.profile?.domain));
 const hsKey = c => key('contact', c.person_key);
 
@@ -558,69 +579,165 @@ function topReasons(reasons, n = 3) {
     .map(r => `<span class="chip pts"><b>+${r.points}</b> ${esc(r.label)}</span>`).join('');
 }
 
-// ---------- step 1: events ----------
-function renderEvents() {
-  const going = goingIds(), people = S.contacts.filter(c => going.includes(c.event_id) && statusOf(c) === 'review' && !OTHER_LANES.has(c.lane));
-  const events = [...S.data.events].sort((a, b) => (a.past - b.past) || b.score - a.score || a.start.localeCompare(b.start));
-  $('overview').innerHTML = `
+// ---------- events: the list ----------
+const EVENT_STATUS = [['all', 'All'], ['todo', 'To decide'], ['going', 'Going'], ['notgoing', 'Not going'], ['past', 'Already happened']];
+function eventStatus(e) {
+  if (e.past) return 'past';
+  const d = decisionOf('event', e.id)?.decision;
+  return d === 'approve' ? 'going' : d === 'reject' ? 'notgoing' : 'todo';
+}
+const EVENT_STATUS_LABEL = { todo: 'To decide', going: '✓ Going', notgoing: 'Not going', past: 'Already happened' };
+const fmtDay = d => d ? new Date(d.slice(0, 10) + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '';
+
+function renderEventsList() {
+  const counts = {}, filter = S.evFilter || 'all';
+  S.data.events.forEach(e => { const st = eventStatus(e); counts[st] = (counts[st] || 0) + 1; });
+  counts.all = S.data.events.length;
+  const events = S.data.events.filter(e => filter === 'all' || eventStatus(e) === filter)
+    .sort((a, b) => (a.past - b.past) || b.score - a.score || a.start.localeCompare(b.start));
+  const cands = S.data.candidates.filter(c => c.status === 'new');
+  const run = S.scoutRun || S.data.scout_runs[0];
+  const runText = !run ? 'Not run yet' : run.status === 'running' ? 'Searching the web…'
+    : run.status === 'failed' ? `Last run failed: ${esc(run.error || '')}` : `Last run ${esc((run.finished_at || '').slice(0, 16).replace('T', ' '))} UTC · found ${run.found} new${run.cost ? ` · $${(+run.cost).toFixed(2)}` : ''}`;
+  $('eventsList').innerHTML = `
     <div class="panel step">
-      <div><div class="stepno">Overview · step 1</div><h3>Choose the events worth going to</h3>
-        <p class="lead" style="margin:0">Each event is scored on how many strong-fit people its lists name, how much of the list is worth a look, whether GeneralMind already has a stand, timing, travel, and whether this year's list is out. Mark the ones you'll attend; their people are reviewed in step 2.</p></div>
-      <div class="stepside"><div class="big num">${going.length}<span style="font-size:15px;color:var(--muted);font-weight:500"> going</span></div>
-        <div style="color:var(--muted);font-size:13px">${people.length} people there to review</div>
-        <button class="btn primary" id="toPeople" ${going.length ? '' : 'disabled'}>Step 2: review their people →</button></div>
+      <div><div class="stepno">Step 1</div><h3>Choose the events worth going to</h3>
+        <p class="lead" style="margin:0">Each event is scored on how many strong-fit people its lists name, how much of the list is worth a look, whether GeneralMind already has a stand, timing, travel, and whether this year's list is out. Open an event to see why, then mark it Going or Not going and choose who to meet there.</p></div>
+      <div class="stepside"><button class="btn primary" id="scoutBtn" ${S.scouting ? 'disabled' : ''}>${S.scouting ? 'Searching…' : 'Find new events'}</button>
+        <div style="color:var(--muted);font-size:12px;max-width:260px">${runText}</div></div>
     </div>
-    <div class="evlist">${events.map(e => {
-      const d = decisionOf('event', e.id), [label, lane] = EVENT_LANES[e.lane] || ['', 'filtered'], open = S.evOpen === e.id;
-      const extra = S.data.accounts.filter(a => a.events.includes(e.id) && !a.contact_ids.some(id => S.contacts.find(c => c.id === id)?.event_id === e.id)).sort((x, y) => y.score - x.score);
-      return `<div class="evrow lane-${lane} ${d?.decision === 'approve' ? 'going' : d?.decision === 'reject' ? 'notgoing' : ''}" data-ev="${esc(e.id)}">
-        <div class="evmain">
-          <div class="score num">${e.score}</div>
-          <div class="evinfo">
-            <div class="t1">${esc(e.name)}${e.generalmind_present ? ' <span class="badge">GeneralMind exhibiting</span>' : ''}</div>
-            <div class="t2">${fmtDate(e.start, e.end)} · ${esc(e.city)} · ${esc(e.format)} · <b>${until(e.start)}</b> · <span class="chip lane lane-${lane}">${label}</span></div>
-            <div class="chips" style="margin-top:6px">${e.reasons.map(r => `<span class="chip pts">${r.points ? `<b>+${r.points}</b> ` : ''}${esc(r.label)}</span>`).join('')}</div>
-          </div>
-          <div class="evnums">${e.counts.people
-            ? `<div><b>${e.counts.strong}</b>strong fit</div><div><b>${e.counts.worth}</b>worth a look</div><div><b>${e.counts.people}</b>people</div>`
-            : `<div><b>${e.counts.strong_companies}</b>strong-fit exhibitors</div><div><b>${e.counts.companies_without_contact}</b>exhibitors</div><div><b>0</b>named people yet</div>`}</div>
-          <div class="evacts">
-            <button class="btn ok ${d?.decision === 'approve' ? 'on' : ''}" data-going="approve" ${e.past ? 'disabled title="This event has already happened"' : ''}>${d?.decision === 'approve' ? '✓ Going' : 'Going'}</button>
-            <button class="btn no ${d?.decision === 'reject' ? 'on' : ''}" data-going="reject">${d?.decision === 'reject' ? '✕ Not going' : 'Not going'}</button>
-            <button class="btn" data-people>People →</button>
-            <button class="btn" data-copy="#/events/${encodeURIComponent(e.id)}/review" title="Copy a link to this event's people">Link</button>
-            <button class="btn icon" data-more title="Details">${open ? '▴' : '▾'}</button>
-          </div>
-        </div>
-        ${open ? `<div class="evmore">
-          <p>${esc(e.why)}</p>
-          ${e.date_note ? `<div class="note">${esc(e.date_note)}</div>` : ''}
-          <dl class="kv" style="margin-top:8px"><dt>Sources</dt><dd>${e.sources.map(s => { const u = safeUrl(s.url); return `${u ? `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(s.type)}</a>` : esc(s.type)} (${esc(s.edition)})`; }).join(' · ')}</dd></dl>
-          ${extra.length ? `<h4 style="margin:12px 0 6px;font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em">Companies here with no named person yet (${extra.length})</h4>
-            <div class="chips">${extra.slice(0, 24).map(a => `<span class="chip">${esc(a.name)}${a.lane === 'fast_track' ? ' ★' : ''}</span>`).join('')}${extra.length > 24 ? `<span class="chip">and ${extra.length - 24} more</span>` : ''}</div>
-            <div class="note">At a trade fair these exhibitors are the prospects. The next step for them is finding the right person (order management or accounts payable) through an enrichment provider. ★ marks a strong-fit company.</div>` : ''}
-        </div>` : ''}
+    ${cands.length ? `<div class="panel"><h3>New from the event scout <span class="chip lane lane-review">${cands.length}</span></h3>
+      <p class="lead">Found on the web by the scout, following the Events playbook. Track the ones worth keeping; their people get sourced next. Dates marked unconfirmed should be checked on the organiser's site.</p>
+      <div class="evlist">${cands.map(c => `<div class="evrow" data-cand="${esc(c.id)}"><div class="evmain" style="grid-template-columns:minmax(0,1fr) auto">
+        <div class="evinfo"><div class="t1">${esc(c.name)} <span class="chip">${c.date_confirmed ? 'date confirmed' : 'date unconfirmed'}</span></div>
+          <div class="t2">${fmtDate(c.start, c.end)} · ${esc(c.city || '')}${c.country ? ` (${esc(c.country)})` : ''} · ${esc(c.format || '')} · found ${fmtDay(c.found_at)}</div>
+          <div style="font-size:13px;margin-top:6px">${esc(c.why || '')}</div>
+          <div class="chips" style="margin-top:6px">${safeUrl(c.url) ? `<a class="chip" href="${esc(c.url)}" target="_blank" rel="noopener">Official site ↗</a>` : ''}${(c.sources || []).map(s => safeUrl(s.url) ? `<a class="chip" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.type)} (${esc(s.edition || '')}) ↗</a>` : '').join('')}</div>
+          ${c.notes ? `<div class="note">${esc(c.notes)}</div>` : ''}</div>
+        <div class="evacts"><button class="btn ok" data-track>Track</button><button class="btn no" data-dismiss>Dismiss</button></div></div></div>`).join('')}</div></div>` : ''}
+    <div class="stabs">${EVENT_STATUS.map(([k, l]) => `<button class="stab ${filter === k ? 'on' : ''}" data-evf="${k}">${l} <span class="num">${counts[k] || 0}</span></button>`).join('')}</div>
+    <div class="list">${events.length ? `<div class="evtable head"><div>Score</div><div>Event</div><div>Status</div><div>People</div><div>Found</div><div></div></div>` + events.map(e => {
+      const st = eventStatus(e), lane = (EVENT_LANES[e.lane] || ['', 'filtered'])[1], n = statusCounts([e.id]);
+      return `<div class="evtable lane-${lane} ${st}" data-ev="${esc(e.id)}">
+        <div class="score num">${e.score}</div>
+        <div style="min-width:0"><div class="t1">${esc(e.name)}${e.generalmind_present ? ' <span class="badge">GeneralMind exhibiting</span>' : ''}</div>
+          <div class="t2">${fmtDate(e.start, e.end)} · ${esc(e.city)} · ${esc(e.format || '')} · <b>${until(e.start)}</b></div></div>
+        <div><span class="chip lane lane-${st === 'going' ? 'fast_track' : st === 'todo' ? 'review' : 'filtered'}">${EVENT_STATUS_LABEL[st]}</span></div>
+        <div class="t2">${e.not_sourced ? 'Not sourced yet' : e.counts.people ? `<b style="color:var(--ink)">${e.counts.strong}</b> strong fit of ${e.counts.people}${n.approved + n.hubspot ? ` · <b style="color:var(--fast)">${n.approved + n.hubspot}</b> to meet` : ''}` : `${e.counts.companies_without_contact} exhibitors, no named people`}</div>
+        <div class="t2">${fmtDay(e.added_at)}<br><small>${esc(e.found_by || '')}</small></div>
+        <div class="acts"><span style="color:var(--faint)">›</span></div>
       </div>`;
-    }).join('')}</div>`;
-  $('toPeople')?.addEventListener('click', () => { S.evScope = 'going'; S.status = 'review'; S.sel = null; renderPeople(); window.scrollTo(0, 0); });
-  wireCopy($('overview'));
-  $('overview').querySelectorAll('.evrow').forEach(row => {
-    const id = row.dataset.ev;
-    row.querySelectorAll('[data-going]').forEach(b => b.onclick = () => {
-      const want = b.dataset.going, cur = decisionOf('event', id)?.decision;
-      decide('event', id, cur === want ? 'clear' : want);
-    });
-    row.querySelector('[data-people]').onclick = () => { S.evScope = id; S.status = 'review'; S.sel = null; renderPeople(); window.scrollTo(0, 0); };
-    row.querySelector('[data-more]').onclick = () => { S.evOpen = S.evOpen === id ? null : id; renderEvents(); };
+    }).join('') : '<div class="empty">No events here.</div>'}</div>`;
+  $('scoutBtn').onclick = startScout;
+  $('eventsList').querySelectorAll('[data-evf]').forEach(b => b.onclick = () => { S.evFilter = b.dataset.evf; renderEventsList(); });
+  $('eventsList').querySelectorAll('[data-ev]').forEach(r => r.onclick = () => openEvent(r.dataset.ev));
+  $('eventsList').querySelectorAll('[data-cand]').forEach(card => {
+    const id = card.dataset.cand;
+    card.querySelector('[data-track]').onclick = () => candidate(id, 'track');
+    card.querySelector('[data-dismiss]').onclick = () => candidate(id, 'dismiss');
   });
 }
 
-// ---------- step 2: people ----------
+async function startScout() {
+  const r = await fetch('api/events/scout', { method: 'POST' });
+  const out = await r.json().catch(() => ({}));
+  if (!r.ok) return toast(out.detail || 'Could not start the scout');
+  S.scouting = true; S.scoutRun = { status: 'running' }; renderEventsList();
+  toast('The scout is searching the web. This takes a minute or two.');
+  const poll = async () => {
+    const st = await (await fetch('api/events/scout')).json().catch(() => null);
+    if (st?.running) return setTimeout(poll, 3000);
+    S.scouting = false; S.scoutRun = st?.last;
+    await load();
+    toast(st?.last?.status === 'done' ? `The scout found ${st.last.found} new event${st.last.found === 1 ? '' : 's'}` : 'The scout ran into a problem');
+  };
+  setTimeout(poll, 3000);
+}
+
+async function candidate(id, action) {
+  const r = await fetch(`api/events/candidates/${encodeURIComponent(id)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action }) });
+  toast(r.ok ? (action === 'track' ? 'Tracked: it is now in the events list' : 'Dismissed') : 'Could not save');
+  await load();
+}
+
+// ---------- events: one event ----------
+function openEvent(id) { S.eventId = id; S.status = 'review'; S.sel = null; S.pushSel.clear(); showView('events'); window.scrollTo(0, 0); }
+
+function renderEventPage() {
+  const e = S.events[S.eventId];
+  if (!e) { S.eventId = null; return renderEvents(); }
+  const st = eventStatus(e), n = statusCounts([e.id]), open = S.evOpen === e.id;
+  const extra = S.data.accounts.filter(a => a.events.includes(e.id) && !a.contact_ids.some(id => S.contacts.find(c => c.id === id)?.event_id === e.id)).sort((x, y) => y.score - x.score);
+  const maxPts = Math.max(20, ...e.reasons.map(r => r.points));
+  $('eventTop').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><a href="#/events" data-back>← All events</a><button class="btn" data-copy="${esc(`#/event/${encodeURIComponent(e.id)}`)}">Copy link</button></div>
+    <div class="panel evhead">
+      <div style="min-width:0"><div class="stepno">${EVENT_STATUS_LABEL[st]}${e.found_by ? ` · added ${fmtDay(e.added_at)} by ${esc(e.found_by)}` : ''}</div>
+        <h3>${esc(e.name)}${e.generalmind_present ? ' <span class="badge">GeneralMind exhibiting</span>' : ''}</h3>
+        <div class="meta">${fmtDate(e.start, e.end)} · ${esc(e.city)} · ${esc(e.format || '')} · ${esc(e.language || '')} · <b>${until(e.start)}</b>${safeUrl(e.url) ? ` · <a href="${esc(e.url)}" target="_blank" rel="noopener">official site ↗</a>` : ''}</div></div>
+      <div class="acts2">
+        <button class="btn ok ${st === 'going' ? 'on' : ''}" data-going="approve" ${e.past ? 'disabled' : ''}>${st === 'going' ? '✓ Going' : 'Going'}</button>
+        <button class="btn no ${st === 'notgoing' ? 'on' : ''}" data-going="reject">${st === 'notgoing' ? '✕ Not going' : 'Not going'}</button>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="panel"><h3>Summary</h3>
+        ${e.summary ? `<div class="pb"><div class="md">${md(e.summary)}</div></div><div style="color:var(--faint);font-size:11.5px;margin-top:8px">Written by ${esc(e.summary_model || 'AI')} from the cockpit's data, ${esc((e.summary_at || '').slice(0, 10))}. <button class="kwbtn" data-summ>Rewrite</button></div>`
+          : `<p class="lead">A short AI briefing: why go, who to meet, and the main caveat, written from this event's data.</p><button class="btn primary" data-summ>Write the summary</button>`}
+      </div>
+      <div class="panel"><h3>Why it scored ${e.score} <span class="chip lane lane-${(EVENT_LANES[e.lane] || ['', 'filtered'])[1]}">${(EVENT_LANES[e.lane] || ['Unscored'])[0]}</span></h3>
+        <div class="breakdown">${e.reasons.map(r => `<div class="bk"><span>${esc(r.label)}</span><div class="bkbar"><span style="width:${Math.round(100 * r.points / maxPts)}%"></span></div><b class="num">${r.points ? '+' + r.points : '0'}</b></div>`).join('')}</div>
+        <div style="color:var(--faint);font-size:11.5px;margin-top:8px">${e.score} of 100. The weights are in <a href="#/criteria">Criteria</a> (Events section).</div>
+      </div>
+    </div>
+    <div class="panel"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">About this event</h3><button class="kwbtn" data-more>${open ? 'Less' : 'More'}</button></div>
+      <p style="margin:8px 0 0;font-size:13.5px">${esc(e.why || '')}</p>
+      ${open ? `<div style="margin-top:8px;font-size:13px">${e.date_note ? `<div class="note">${esc(e.date_note)}</div>` : ''}
+        <div style="margin-top:6px"><b>Where the names come from:</b> ${e.sources.map(x => { const u = safeUrl(x.url); return `${u ? `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(x.type)}</a>` : esc(x.type)} (${esc(x.edition)})`; }).join(' · ') || '—'}</div>
+        ${extra.length ? `<div style="margin-top:8px"><b>Exhibiting with no named person yet (${extra.length}):</b></div><div class="chips" style="margin-top:4px">${extra.slice(0, 30).map(a => `<span class="chip">${esc(a.name)}${a.lane === 'fast_track' ? ' ★' : ''}</span>`).join('')}${extra.length > 30 ? `<span class="chip">and ${extra.length - 30} more</span>` : ''}</div><div class="note">At a trade fair these exhibitors are the prospects; the next step is finding the right person at each through an enrichment provider. ★ marks a strong-fit company.</div>` : ''}</div>` : ''}
+    </div>
+    <h3 class="sechead">People at this event <span>${e.not_sourced ? '' : `${n.strong} strong fit still to review · ${n.approved + n.hubspot} approved to meet`}</span></h3>
+    ${e.not_sourced ? `<div class="panel"><div class="note" style="margin:0">People not sourced yet. The scout found this event on ${fmtDay(e.found_at)}; reading its speaker and exhibitor lists runs as a batch for now (next build: automatically after tracking).</div></div>` : ''}`;
+  const top = $('eventTop');
+  top.querySelectorAll('[data-going]').forEach(b => b.onclick = () => decide('event', e.id, decisionOf('event', e.id)?.decision === b.dataset.going ? 'clear' : b.dataset.going));
+  top.querySelector('[data-more]').onclick = () => { S.evOpen = open ? null : e.id; renderEventPage(); };
+  top.querySelector('[data-back]').onclick = ev => { ev.preventDefault(); S.eventId = null; showView('events'); };
+  top.querySelectorAll('[data-summ]').forEach(b => b.onclick = async () => {
+    b.disabled = true; b.textContent = 'Writing…';
+    const r = await fetch(`api/events/${encodeURIComponent(e.id)}/summary`, { method: 'POST' });
+    const out = await r.json().catch(() => ({}));
+    if (!r.ok) { toast(out.detail || 'Could not write the summary'); b.disabled = false; b.textContent = 'Try again'; return; }
+    Object.assign(e, { summary: out.text, summary_model: out.model, summary_at: new Date().toISOString() }); renderEventPage();
+  });
+  wireCopy(top);
+  $('peopleBlock').style.display = e.not_sourced ? 'none' : '';
+}
+
+function renderEvents() {
+  const onEvent = !!S.eventId;
+  $('eventsList').style.display = onEvent ? 'none' : '';
+  $('eventPage').style.display = onEvent ? '' : 'none';
+  if (onEvent) { renderEventPage(); renderPeople(); } else { renderEventsList(); if (S.view === 'events') syncHash(); }
+}
+
+// ---------- people across events ----------
+function renderPeopleHead() {
+  const going = goingIds(), scope = currentScope();
+  $('peopleHead').innerHTML = `<div><div class="stepno">Step 2 · across events</div><h3>${scope === 'going' ? `People at the ${going.length} event${going.length > 1 ? 's' : ''} we're going to` : 'Everyone, all events'}</h3>
+    <div class="meta">Grouped by event, soonest first. Usually it's easier to open one event in <a href="#/events">Events</a>; this view is for working across events at once.</div></div>
+    <div class="acts2"><select id="pScope"><option value="going" ${going.length ? '' : 'disabled'}>Events we're going to (${going.length})</option><option value="">Everyone, all events</option></select>
+      <button class="btn" data-copy="${esc(hashFor())}">Copy link</button></div>`;
+  $('pScope').value = scope;
+  $('pScope').onchange = e => { S.peopleScope = e.target.value; S.sel = null; S.pushSel.clear(); renderPeople(); };
+  wireCopy($('peopleHead'));
+}
+
+// ---------- people: shared by an event's page and the People page ----------
 function currentScope() {
+  if (S.view === 'events' && S.eventId) return S.eventId;
   const going = goingIds();
-  if (S.evScope === undefined || (S.evScope === 'going' && !going.length)) S.evScope = going.length ? 'going' : 'overview';
-  if (S.evScope && !['going', 'overview'].includes(S.evScope) && !S.events[S.evScope]) S.evScope = going.length ? 'going' : 'overview';
-  return S.evScope;
+  if (S.peopleScope === undefined || (S.peopleScope === 'going' && !going.length)) S.peopleScope = going.length ? 'going' : '';
+  return S.peopleScope;
 }
 function scopeContacts(ignoreFilters = false) {
   const scope = currentScope(), going = goingIds();
@@ -654,61 +771,6 @@ function statusCounts(eventIds) {
   return counts;
 }
 
-function renderRail() {
-  const going = goingIds(), scope = currentScope();
-  const counts = ids => { const n = statusCounts(ids); return `<div class="rc"><span><b>${n.review}</b> to review</span><span><b>${n.approved}</b> approved</span><span><b>${n.hubspot}</b> in HubSpot</span></div>`; };
-  const evItem = e => {
-    const d = decisionOf('event', e.id)?.decision, lane = (EVENT_LANES[e.lane] || ['', 'filtered'])[1];
-    return `<button class="railitem lane-${lane} ${scope === e.id ? 'on' : ''} ${d === 'reject' || e.past ? 'dim' : ''}" data-scope="${esc(e.id)}">
-      <div style="display:flex;gap:8px;align-items:flex-start"><span class="rscore num">${e.score}</span><span style="min-width:0"><b>${esc(e.short)}${d === 'approve' ? ' <span style="color:var(--fast)">✓</span>' : ''}</b>
-      <small>${fmtDate(e.start, e.end)} · ${esc(e.city)}${d === 'reject' ? ' · not going' : e.past ? ' · already happened' : ''}</small></span></div>
-      ${e.counts.people ? counts([e.id]) : `<div class="rc"><span>${e.counts.companies_without_contact} exhibitors, no named people yet</span></div>`}</button>`;
-  };
-  const byScore = [...S.data.events].sort((a, b) => (a.past - b.past) || b.score - a.score);
-  const undecided = byScore.filter(e => !decisionOf('event', e.id)).length;
-  $('rail').innerHTML = `<button class="railitem ${scope === 'overview' ? 'on' : ''}" data-scope="overview"><b>Overview: choose events</b><small>${going.length} going · ${undecided} still to decide</small></button>`
-    + (going.length ? `<button class="railitem ${scope === 'going' ? 'on' : ''}" data-scope="going"><b>All events we're going to</b><small>${going.length} event${going.length > 1 ? 's' : ''}</small>${counts(going)}</button>` : '')
-    + (going.length ? `<h5>Going</h5>${byScore.filter(e => going.includes(e.id)).map(evItem).join('')}` : '')
-    + `<h5>${going.length ? 'Other events' : 'Events, best first'}</h5>${byScore.filter(e => !going.includes(e.id)).map(evItem).join('')}`
-    + `<button class="railitem ${scope === '' ? 'on' : ''}" data-scope=""><b>Everyone, all events</b><small>for searching across events</small></button>`;
-  $('rail').querySelectorAll('[data-scope]').forEach(b => b.onclick = () => { S.evScope = b.dataset.scope; S.sel = null; S.pushSel.clear(); if (S.evScope !== 'overview' && !STATUS.some(([k]) => k === S.status)) S.status = 'review'; renderPeople(); window.scrollTo(0, 0); });
-}
-
-function renderEvHead() {
-  const scope = currentScope(), e = S.events[scope];
-  if (!e) {
-    const going = goingIds();
-    $('evHead').innerHTML = `<div><div class="stepno">Step 2</div><h3>${scope === 'going' ? `People at the ${going.length} event${going.length > 1 ? 's' : ''} we're going to` : 'Everyone, all events'}</h3>
-      <div class="meta">Everyone starts in <b>To review</b>, best fit first, grouped by event. Approve the people worth meeting, then send them to HubSpot from <b>Approved</b>. Nothing is approved automatically.</div></div>
-      <div class="acts2"><button class="btn" data-copy="${esc(hashFor())}">Copy link</button></div>`;
-  } else {
-    const d = decisionOf('event', e.id)?.decision, n = statusCounts([e.id]), open = S.evOpen === e.id;
-    const extra = S.data.accounts.filter(a => a.events.includes(e.id) && !a.contact_ids.some(id => S.contacts.find(c => c.id === id)?.event_id === e.id)).sort((x, y) => y.score - x.score);
-    $('evHead').innerHTML = `<div style="min-width:0;flex:1"><div class="stepno">${e.past ? 'Already happened' : d === 'approve' ? 'Going' : d === 'reject' ? 'Not going' : 'Not decided yet'} · event score ${e.score}</div>
-      <h3>${esc(e.name)}${e.generalmind_present ? ' <span class="badge">GeneralMind exhibiting</span>' : ''}</h3>
-      <div class="meta">${fmtDate(e.start, e.end)} · ${esc(e.city)} · ${esc(e.format)} · ${until(e.start)} · <b>${n.strong}</b> strong fit still to review · <b>${n.approved + n.hubspot}</b> approved to meet</div>
-      <div class="chips" style="margin-top:8px">${e.reasons.map(r => `<span class="chip pts">${r.points ? `<b>+${r.points}</b> ` : ''}${esc(r.label)}</span>`).join('')}<button class="kwbtn" data-more>${open ? 'Less' : 'Details'}</button></div>
-      ${open ? `<div style="margin-top:10px;font-size:13px"><p style="margin:0 0 6px">${esc(e.why)}</p>${e.date_note ? `<div class="note">${esc(e.date_note)}</div>` : ''}
-        <div style="margin-top:6px"><b>Sources:</b> ${e.sources.map(x => { const u = safeUrl(x.url); return `${u ? `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(x.type)}</a>` : esc(x.type)} (${esc(x.edition)})`; }).join(' · ')}</div>
-        ${extra.length ? `<div style="margin-top:8px"><b>Exhibiting with no named person yet (${extra.length}):</b></div><div class="chips" style="margin-top:4px">${extra.slice(0, 30).map(a => `<span class="chip">${esc(a.name)}${a.lane === 'fast_track' ? ' ★' : ''}</span>`).join('')}${extra.length > 30 ? `<span class="chip">and ${extra.length - 30} more</span>` : ''}</div><div class="note">At a trade fair these exhibitors are the prospects; the next step is finding the right person there through an enrichment provider. ★ marks a strong-fit company.</div>` : ''}</div>` : ''}</div>
-      <div class="acts2">
-        <button class="btn ok ${d === 'approve' ? 'on' : ''}" data-going="approve" ${e.past ? 'disabled' : ''}>${d === 'approve' ? '✓ Going' : 'Going'}</button>
-        <button class="btn no ${d === 'reject' ? 'on' : ''}" data-going="reject">${d === 'reject' ? '✕ Not going' : 'Not going'}</button>
-        <button class="btn" data-copy="${esc(hashFor())}">Copy link</button>
-      </div>`;
-    $('evHead').querySelector('[data-more]').onclick = () => { S.evOpen = open ? null : e.id; renderEvHead(); };
-    $('evHead').querySelectorAll('[data-going]').forEach(b => b.onclick = () => decide('event', e.id, decisionOf('event', e.id)?.decision === b.dataset.going ? 'clear' : b.dataset.going));
-  }
-  wireCopy($('evHead'));
-}
-
-function fillScope() {
-  const going = goingIds(), scope = currentScope();
-  $('fEvent').innerHTML = `<option value="overview">Overview: choose events</option><option value="going" ${going.length ? '' : 'disabled'}>Events we're going to (${going.length})</option><option value="">Everyone, all events</option>`
-    + [...S.data.events].sort((a, b) => a.start.localeCompare(b.start)).map(e => `<option value="${esc(e.id)}">${esc(e.short)}${going.includes(e.id) ? ' ✓' : ''}</option>`).join('');
-  $('fEvent').value = scope;
-}
-
 function actionsCell(c) {
   const st = statusOf(c), d = decisionOf('contact', c.id);
   if (st === 'review') return `<div class="acts"><button class="btn ok icon" data-act="approve" title="Approve (A)">✓</button><button class="btn no icon" data-act="reject" title="Reject (R)">✕</button></div>`;
@@ -719,13 +781,12 @@ function actionsCell(c) {
 
 function renderPeople() {
   if (!S.data) return;
+  const onEvent = S.view === 'events' && !!S.eventId;
+  if (S.view === 'events' && !onEvent) return;
+  const slot = onEvent ? $('eventPeopleSlot') : $('peopleSlot');
+  if ($('peopleBlock').parentElement !== slot) slot.appendChild($('peopleBlock'));
+  if (!onEvent) { $('peopleBlock').style.display = ''; renderPeopleHead(); }
   const scope = currentScope();
-  fillScope(); renderRail();
-  const overview = scope === 'overview';
-  $('overview').style.display = overview ? '' : 'none';
-  $('peopleMain').style.display = overview ? 'none' : '';
-  if (overview) { renderEvents(); if (S.view === 'events') syncHash(); return; }
-  renderEvHead();
   const scoped = scopeContacts(), counts = {};
   scoped.forEach(c => { const st = statusOf(c); counts[st] = (counts[st] || 0) + 1; });
   $('statusTabs').innerHTML = STATUS.map(([k, label]) => `<button class="stab ${S.status === k ? 'on' : ''}" data-st="${k}">${label} <span class="num">${counts[k] || 0}</span></button>`).join('');
@@ -743,7 +804,7 @@ function renderPeople() {
     <span style="color:var(--muted);font-size:12.5px"><i class="dot ${st.ok ? 'ok' : st.configured ? 'bad' : ''}"></i> ${st.ok ? 'HubSpot connected' : st.configured ? 'HubSpot not reachable' : 'Connect HubSpot in Settings'}</span>
     <span id="pushMsg" style="font-size:12.5px">${S.pushResult || ''}</span>`;
   const noPeople = ev && !S.contacts.some(c => c.event_id === ev.id);
-  const empty = noPeople ? `No named people at ${esc(ev.short)} yet: its lists only name exhibiting companies (${ev.counts.companies_without_contact}). They're under ▾ details on the Events page; the next step for them is finding the right person through an enrichment provider.` : { review: 'Nothing left to review here.', approved: 'Nobody approved yet. Approve people in To review.', hubspot: 'Nobody sent to HubSpot yet. Send approved people from the Approved tab.', rejected: 'Nobody rejected.' }[S.status];
+  const empty = noPeople ? `No named people at ${esc(ev.short)} yet: its lists only name exhibiting companies (${ev.counts.companies_without_contact}). Click More under "About this event" to see them; the next step is finding the right person at each through an enrichment provider.` : { review: 'Nothing left to review here.', approved: 'Nobody approved yet. Approve people in To review.', hubspot: 'Nobody sent to HubSpot yet. Send approved people from the Approved tab.', rejected: 'Nobody rejected.' }[S.status];
   const head = `<div class="row head"><div>Fit</div><div>Person</div><div class="c-company">Company</div><div class="c-reasons">In five seconds</div><div style="text-align:right">${S.status === 'review' ? 'Decide' : ''}</div></div>`;
   let html = '', lastEvent = null;
   const perEvent = {};
@@ -777,34 +838,34 @@ function renderPeople() {
   if ($('selAll')) $('selAll').onchange = e => { S.pushSel = new Set(e.target.checked ? rows.filter(r => !isSuppressed(r)).map(r => r.id) : []); renderPeople(); };
   if ($('pushSel')) $('pushSel').onclick = pushSelected;
   renderDrawer();
-  if (S.view === 'events') syncHash();
+  syncHash();
 }
 
 // ---------- shareable links ----------
-const VIEWS = ['events', 'criteria', 'playbooks', 'insights', 'feedback', 'settings', 'about'];
-// #/events                      overview (choose events)
-// #/events/<scope>/<status>/<person>   scope: an event id, "going" or "all"
+const VIEWS = ['events', 'people', 'criteria', 'playbooks', 'insights', 'feedback', 'settings', 'about'];
+// #/events                                 the list of events
+// #/event/<id>[/<status>[/<person>]]       one event and its people
+// #/people/<going|all>/<status>[/<person>] people across events
 function hashFor(view = S.view) {
-  if (view === 'events') {
-    const scope = S.data ? currentScope() : (S.evScope ?? 'overview');
-    if (scope === 'overview') return '#/events';
-    return `#/events/${encodeURIComponent(scope === '' ? 'all' : scope)}/${S.status}` + (S.sel ? `/${encodeURIComponent(S.sel)}` : '');
-  }
+  const tail = () => `/${S.status}` + (S.sel ? `/${encodeURIComponent(S.sel)}` : '');
+  if (view === 'events') return S.eventId ? `#/event/${encodeURIComponent(S.eventId)}` + tail() : '#/events';
+  if (view === 'people') { const scope = S.data ? currentScope() : (S.peopleScope ?? 'going'); return `#/people/${scope === '' ? 'all' : encodeURIComponent(scope)}` + tail(); }
   return `#/${view}`;
 }
-function personHash(c) { return `#/events/${encodeURIComponent(c.event_id)}/${statusOf(c)}/${encodeURIComponent(c.id)}`; }
+function personHash(c) { return `#/event/${encodeURIComponent(c.event_id)}/${statusOf(c)}/${encodeURIComponent(c.id)}`; }
 function syncHash(push = false) {
   const h = hashFor();
   if (location.hash !== h) history[push ? 'pushState' : 'replaceState'](null, '', h);
 }
 function applyHash() {
   let [view, a, b, c] = location.hash.replace(/^#\/?/, '').split('/').map(x => { try { return decodeURIComponent(x || ''); } catch { return ''; } });
-  if (view === 'people') view = 'events';  // links from before events and people were one page
-  if (view === 'events') {
-    S.evScope = !a ? 'overview' : a === 'all' ? '' : a;
-    S.status = STATUS.some(([k]) => k === b) ? b : 'review';
-    S.sel = c || null;
-  }
+  const status = x => STATUS.some(([k]) => k === x) ? x : 'review';
+  // older link shapes: #/events/<scope>/... and #/people/<event id>/...
+  if (view === 'events' && a) { if (a === 'going' || a === 'all') view = 'people'; else view = 'event'; }
+  if (view === 'people' && a && a !== 'going' && a !== 'all') view = 'event';
+  if (view === 'event') { S.eventId = a || null; S.status = status(b); S.sel = c || null; return 'events'; }
+  if (view === 'events') { S.eventId = null; return 'events'; }
+  if (view === 'people') { S.peopleScope = a === 'all' ? '' : 'going'; S.status = status(b); S.sel = c || null; return 'people'; }
   return VIEWS.includes(view) ? view : null;
 }
 function copyLink(hash) {
@@ -935,10 +996,11 @@ async function decide(type, id, decision, reason = null, fromUndo = false) {
   if (!fromUndo) S.undo.push({ type, id, prev });
   if (type === 'event') {
     toast(decision === 'approve' ? `Going: ${S.events[id].short}` : decision === 'reject' ? `Not going: ${S.events[id].short}` : 'Undecided');
-    renderPeople();
+    if (S.view === 'events') renderEvents(); else renderPeople();
   } else {
     toast(decision === 'approve' ? 'Approved' : decision === 'reject' ? `Rejected${reason ? ': ' + reason : ''}` : prev?.decision === 'approve' ? 'Back to review' : 'Restored to review');
     if (!fromUndo && next) S.sel = next;
+    if (S.view === 'events') renderEventPage();
     renderPeople();
   }
   renderInsights(); renderExport();
@@ -977,7 +1039,7 @@ function askReviewer() {
 
 document.addEventListener('keydown', e => {
   if (e.target?.matches?.('input, select, textarea') || e.metaKey || e.ctrlKey || e.altKey || $('whoDlg').open || $('fbDlg').open) return;
-  if (S.view !== 'events' || currentScope() === 'overview') return;
+  if (!(S.view === 'people' || (S.view === 'events' && S.eventId))) return;
   const id = S.sel, k = e.key.toLowerCase(), c = S.contacts.find(x => x.id === id);
   if ('jkaruo123456'.includes(k) || e.key.startsWith('Arrow')) track('key', `${e.key} on ${id}`);
   if (k === 'j' || e.key === 'ArrowDown') { moveSel(1); renderPeople(); scrollSel(); e.preventDefault(); }
@@ -1430,7 +1492,15 @@ async function renderFeedbackTab() {
   };
   root.querySelectorAll('[data-note]').forEach(card => {
     const id = +card.dataset.note;
-    card.querySelector('[data-status]').onchange = async e => { if (await update(id, { status: e.target.value })) { toast(`Marked ${NOTE_STATUS[e.target.value].toLowerCase()}`); renderFeedbackTab(); } };
+    card.querySelector('[data-status]').onchange = async e => {
+      const body = { status: e.target.value };
+      if (S.fbEdit === id) {  // keep what was being typed
+        const text = card.querySelector('[data-text]').value.trim();
+        if (text) body.comment = text;
+        body.handled_note = card.querySelector('[data-done]').value.trim();
+      }
+      if (await update(id, body)) { S.fbEdit = null; toast(`Marked ${NOTE_STATUS[e.target.value].toLowerCase()}`); renderFeedbackTab(); }
+    };
     card.querySelector('[data-edit]')?.addEventListener('click', () => { S.fbEdit = id; renderFeedbackTab(); });
     card.querySelector('[data-cancel]')?.addEventListener('click', () => { S.fbEdit = null; renderFeedbackTab(); });
     card.querySelector('[data-save]')?.addEventListener('click', async () => {
@@ -1647,7 +1717,7 @@ $('cpClose').onclick = () => $('cp').classList.remove('open');
 $('cpClear').onclick = () => { S.cp = []; store.set('cp', '[]'); renderCp(); };
 
 // ---------- wiring ----------
-const OLD_VIEWS = { queue: 'events', accounts: 'events', people: 'events', hubspot: 'settings' };
+const OLD_VIEWS = { queue: 'events', accounts: 'events', hubspot: 'settings' };
 function showView(name, push = true) {
   S.view = OLD_VIEWS[name] || name;
   if (!$(`v-${S.view}`)) S.view = 'events';
@@ -1655,14 +1725,14 @@ function showView(name, push = true) {
   $('tabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.view === S.view));
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === `v-${S.view}`));
   if (S.view === 'settings') renderSettings();
-  if (S.view === 'events') renderPeople();
+  if (S.view === 'events') renderEvents();
+  if (S.view === 'people') renderPeople();
   if (S.view === 'feedback') renderFeedbackTab();
   store.set('view', S.view);
 }
 window.addEventListener('popstate', () => { const v = applyHash(); if (v && S.data) showView(v, false); });
-$('tabs').querySelectorAll('button').forEach(b => b.onclick = () => showView(b.dataset.view));
+$('tabs').querySelectorAll('button').forEach(b => b.onclick = () => { if (b.dataset.view === 'events') S.eventId = null; showView(b.dataset.view); });
 ['q', 'fFunction', 'fSort', 'fSuggest', 'fOther'].forEach(id => $(id).addEventListener('input', renderPeople));
-$('fEvent').addEventListener('change', e => { S.evScope = e.target.value; S.sel = null; renderPeople(); });
 $('whoBtn').onclick = () => { store.set('reviewerAsked', ''); askReviewer(); };
 const initialView = applyHash();
 load().then(() => showView(initialView || store.get('view') || 'events', false))

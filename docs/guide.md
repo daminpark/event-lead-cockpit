@@ -4,15 +4,14 @@
 It finds the people and companies worth meeting at upcoming events, explains why each one matters, and lets you approve the good ones and send them to HubSpot. The next step with a lead is usually meeting them face to face at the event.
 
 ## The everyday flow
-Everything happens on one page, **Events & people**. The list on the left shows every event with its score, a ✓ if you're going, and its counts (to review, approved, in HubSpot).
-1. **Overview (choose events).** The top of the list. Each event is scored on how many strong-fit people its lists name, how much of the list is worth a look, whether GeneralMind already has a stand, timing, travel, and whether this year's list is out. Mark the events you'll attend as **Going** (or **Not going**).
-2. **Pick an event.** Its header shows why it scored as it did (Details adds the sources and the companies exhibiting with no named person yet). Below are its people, best fit first, each with a five-second brief. **Approve** (A) or **Reject** (R, then a reason 1–6); **U** undoes. Nothing is ever approved automatically.
-3. **Approved.** Tick the people to send (or Select all) and click **Send to HubSpot**; **Download CSV** gives the same list as a file. You can unapprove anyone here.
-4. **In HubSpot.** Sent people move here, with a link to their record. From then on, the work happens in HubSpot. The owner can **Remove from HubSpot** if someone was sent by mistake (it goes to HubSpot's recycle bin, restorable for 90 days).
+1. **Events: choose where to go.** The list shows every event with its score, status (to decide, going, not going, already happened), how many strong-fit people it has, and when and how it was found. **Find new events** asks the event scout to search the web for more; its finds appear at the top as **New**, to **Track** or **Dismiss**.
+2. **Open an event.** See a short **AI summary** (why go, who to meet, the main caveat), **why it scored as it did** (each part of the score with its points), and where its names come from. Mark it **Going** or **Not going**.
+3. **Choose who to meet.** Below the event are its people, best fit first, each with a five-second brief. **Approve** (A) or **Reject** (R, then a reason 1–6); **U** undoes. Nothing is ever approved automatically.
+4. **Send to HubSpot.** In **Approved**, tick the people (or Select all) and click **Send to HubSpot**; **Download CSV** gives the same list as a file. Sent people move to **In HubSpot**, with a link to their record. The owner can **Remove from HubSpot** if someone was sent by mistake (HubSpot keeps it in its recycle bin for 90 days).
 
-"All events we're going to" shows everyone at your events at once, grouped by event. "Everyone, all events" at the bottom of the list searches across every event, including ones you're not going to.
+**People** shows everyone at the events you're going to (or every event), grouped by event, for working across events at once.
 
-Every screen has its own link (the address bar, or **Copy link** on events and people), so you can send a colleague straight to an event's approved list or one person's card. They'll need the access code.
+Every screen has its own link (the address bar, or **Copy link**), so you can send a colleague straight to an event or one person's card. They'll need the access code.
 
 ## Suggestions
 The score suggests, it never decides:
