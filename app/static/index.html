@@ -372,7 +372,7 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
 <aside id="cp" class="cp" aria-label="Copilot">
   <div class="cp-head"><b>Copilot</b><select id="cpModel" title="Model (via OpenRouter)"></select><button id="cpClear" class="btn" title="Start a new conversation">New</button><button id="cpClose" class="close" style="display:block" aria-label="Close">×</button></div>
   <div class="cp-msgs" id="cpMsgs"></div>
-  <form id="cpForm" class="cp-form"><textarea id="cpIn" rows="2" placeholder="Ask about leads, scoring or playbooks… (Enter to send)"></textarea><button class="btn primary">Send</button></form>
+  <form id="cpForm" class="cp-form"><textarea id="cpIn" rows="2" placeholder="Ask about events, people or how the cockpit works… (Enter to send)"></textarea><button class="btn primary">Send</button></form>
 </aside>
 <button id="fbBtn" class="fb-btn" title="Point at something and leave a note">Feedback</button>
 
@@ -1326,7 +1326,8 @@ const PLAYBOOKS = [
 ];
 function md(src) {
   const lines = esc(src).split('\n'), out = []; let list = null;
-  const inline = s => s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*(.+?)\*/g, '<i>$1</i>');
+  const inline = s => s.replace(/\[([^\]]+)\]\((#\/[^)\s]+|https?:\/\/[^)\s]+)\)/g, (m, t, u) => `<a href="${u}"${u.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${t}</a>`)
+    .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*(.+?)\*/g, '<i>$1</i>');
   for (const l of lines) {
     const li = l.match(/^\s*(?:[-*]|\d+\.)\s+(.*)/);
     if (li) { if (!list) { list = l.trim().match(/^\d/) ? 'ol' : 'ul'; out.push(`<${list}>`); } out.push(`<li>${inline(li[1])}</li>`); continue; }
@@ -1624,17 +1625,21 @@ async function renderErrors() {
 }
 
 // ---------- copilot ----------
-const CP_SUGGEST = ['Who are the 10 people GeneralMind should book meetings with at BME?', 'Why is the selected lead scored the way it is?',
-  'Which events give us the most fast-track contacts in logistics?', 'Propose a scoring change so logistics providers rank higher',
-  'What would you change in the events playbook to find more order-management people?'];
+const CP_SUGGEST = ['Who should we meet first at the BME-Symposium?', 'Show me the people approved at BME', 'Why is the selected person scored the way they are?',
+  'Which events are we going to, and how many people are approved there?', 'Make speakers count a bit more in the score', 'How do I send people to HubSpot?'];
 S.cp = (() => { try { return JSON.parse(store.get('cp') || '[]') } catch { return [] } })();
 function renderCp(pending = false) {
   const box = $('cpMsgs');
-  box.innerHTML = (S.cp.length ? '' : `<div class="note" style="margin:0">Ask about the leads, events, scoring or playbooks. The copilot can look things up and <b>propose</b> changes as new versions; it never changes what's live. A person reviews and activates them.</div><div class="cp-sugg">${CP_SUGGEST.map(q => `<button data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`)
+  box.innerHTML = (S.cp.length ? '' : `<div class="note" style="margin:0">Ask about events, people, scores and statuses, or how the cockpit works. It answers from the cockpit's data, links you to the right page, can <b>propose</b> small scoring changes (you activate them) and write down feedback. Approving people, choosing events and sending to HubSpot stay with you.</div><div class="cp-sugg">${CP_SUGGEST.map(q => `<button data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`)
     + S.cp.map(m => `<div class="cp-msg ${m.role}">${m.role === 'user' ? esc(m.content) : md(m.content)}${m.actions?.length ? `<div class="acts-note">${m.actions.map(a => typeof a === 'string' ? '✓ ' + esc(a) : `✓ ${esc(a.text)}${a.version_id ? ` <button class="btn" data-activate-v="${a.version_id}" style="padding:2px 8px;font-size:12px;margin-left:4px">Activate v${a.version}</button> <button class="btn" data-review-v="${esc(a.kind)}" style="padding:2px 8px;font-size:12px">Review</button>` : ''}`).join('<br>')}</div>` : ''}</div>`).join('')
     + (pending ? '<div class="cp-msg assistant" style="color:var(--muted)">Thinking…</div>' : '');
   box.querySelectorAll('[data-q]').forEach(b => b.onclick = () => { $('cpIn').value = b.dataset.q; $('cpForm').requestSubmit(); });
   box.querySelectorAll('[data-activate-v]').forEach(b => b.onclick = () => activateVersion(+b.dataset.activateV));
+  box.querySelectorAll('a[href^="#/"]').forEach(a => a.onclick = e => {  // the assistant's links open the page here
+    e.preventDefault(); history.pushState(null, '', a.getAttribute('href'));
+    const v = applyHash(); if (v) showView(v, false);
+    if (innerWidth < 1100) $('cp').classList.remove('open');
+  });
   box.querySelectorAll('[data-review-v]').forEach(b => b.onclick = () => {
     const kind = b.dataset.reviewV;
     if (kind === 'scoring') { const v = S.config.scoring.find(x => x.id === +b.previousElementSibling.dataset.activateV); if (v) { S.draft = JSON.parse(v.body); S.draftBase = v.version; } document.querySelector('#tabs [data-view="criteria"]').click(); renderCriteria(); schedulePreview(); }
@@ -1659,14 +1664,14 @@ $('cpForm').onsubmit = async e => {
   const q = $('cpIn').value.trim(); if (!q) return;
   $('cpIn').value = '';
   S.cp.push({ role: 'user', content: q }); renderCp(true);
-  const sel = { contact: S.contacts.find(c => c.id === S.sel)?.name, contact_id: S.sel, status_tab: S.status, going_to: S.data ? goingIds() : [] };
+  const sel = { page: S.view, event_id: S.view === 'events' ? S.eventId : null, selected_person_id: S.sel, selected_person: S.contacts.find(c => c.id === S.sel)?.name, status_tab: S.status };
   const res = await fetch('api/copilot', { method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ messages: S.cp.map(({ role, content }) => ({ role, content })).slice(-20), context: { view: S.view, ...sel }, author: S.reviewer || null }) });
   const out = await res.json().catch(() => ({}));
   S.cp.push(res.ok ? { role: 'assistant', content: out.reply, actions: out.actions } : { role: 'assistant', content: `Sorry, that didn't work: ${out.detail || 'server error'}` });
   store.set('cp', JSON.stringify(S.cp.slice(-30)));
   renderCp();
-  if (out.actions?.length) { const r = await fetch('api/config'); S.config = await r.json(); renderCriteria(); renderPlaybooks(); }
+  if (out.actions?.length) { const r = await fetch('api/config'); S.config = await r.json(); renderCriteria(); }
 };
 $('cpIn').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('cpForm').requestSubmit(); } });
 $('cpBtn').onclick = () => { $('cp').classList.add('open'); renderCp(); loadModels(); $('cpIn').focus(); };

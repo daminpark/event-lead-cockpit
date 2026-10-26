@@ -34,7 +34,7 @@ Every weight and keyword is a slider or a list. As you change something, the pre
 The plain-language instructions the AI steps follow when finding events, sourcing leads from event pages and profiling companies. Edit, save with a note, and switch versions the same way. Changes apply the next time sourcing runs.
 
 ## The copilot
-Ask it anything about the leads, events, scores or playbooks ("who should we meet first at BME?", "why is this lead in review?"). It can propose changes to the criteria or playbooks; they're saved as inactive versions with an **Activate** button, so a person always decides. The owner chooses the model and its thinking effort in Settings.
+A help assistant. Ask it about what's in the cockpit ("who should we meet first at BME?", "why is this person scored 95?", "how many people are approved at the events we're going to?") or how the cockpit works. It answers from the cockpit's data and links you straight to the right page. It can also propose a small scoring change (saved as a version you check and activate) and write down feedback. Choosing events, approving people and sending to HubSpot stay with you. The owner chooses the model and its thinking effort in Settings.
 
 ## Insights
 The funnel from sourced to HubSpot, decisions over time, the change log, which events and industries give the best leads, and how each scoring version compares on past decisions.
