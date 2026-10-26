@@ -31,7 +31,7 @@ PY
 git clone --quiet --no-local . "$tmp/repo"
 cd "$tmp/repo"
 NOTES="$NOTES" uvx --quiet git-filter-repo --quiet --force --invert-paths \
-  --path data/extracted --path data/briefs --path data/source_checks.json \
+  --path data/extracted --path data/briefs --path data/source_checks.json --path data/timetables \
   --commit-callback '
 import json, os
 why = json.load(open(os.environ["NOTES"], encoding="utf-8")).get(commit.original_id.decode())
@@ -47,7 +47,7 @@ names = [n for n in open(sys.argv[1], encoding="utf-8").read().splitlines() if n
 history = subprocess.run(["git", "log", "-p", "--all", "--format=%B"], capture_output=True, text=True).stdout
 left = [n for n in names if n in history]
 files = subprocess.run(["git", "log", "--all", "--name-only", "--format="], capture_output=True, text=True).stdout
-if left or "data/extracted/" in files or "data/briefs/" in files or "source_checks" in files:
+if left or "data/extracted/" in files or "data/briefs/" in files or "source_checks" in files or "data/timetables/" in files:
     sys.exit(f"Not publishing: people data still in the history ({len(left)} names)")
 print(f"checked: no names left in {subprocess.run(['git', 'rev-list', '--count', 'HEAD'], capture_output=True, text=True).stdout.strip()} commits")
 PY

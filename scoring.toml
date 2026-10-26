@@ -105,9 +105,9 @@ berlin_points = 10             # no travel
 dach_trip_points = 6
 abroad_points = 2
 current_list_points = 10       # this year's speaker or exhibitor list is out (not last year's)
-# meeting plan: how many meetings an event can realistically give us
-meetings_per_person_per_day = 8
-acceptance_rate_percent = 25   # share of invited people who accept a meeting
+# meeting plan: no invitations (cold email isn't allowed), so we meet speakers in the break after their talk
+meetings_per_person_per_day = 8   # the most conversations one colleague can have in a day
+minutes_per_conversation = 15     # how many we can fit into a break: its length divided by this, per colleague
 team_size = 1                  # people we'd send
 team_size_with_stand = 2       # when GeneralMind is a partner there
 recommend = 70                 # at or above: recommended

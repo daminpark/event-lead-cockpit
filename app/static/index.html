@@ -624,12 +624,11 @@ function eventStatusLabel(e) {
 }
 // The meeting plan: time is the limit, not the number of good names.
 function planFor(e) {
-  const p = e.plan || { days: 1, team_default: 1, meetings_per_person_per_day: 8, acceptance_rate: 0.25, ranked: [] };
-  const team = e.team || p.team_default, perPerson = p.days * p.meetings_per_person_per_day, meetings = team * perPerson;
-  const avg = xs => xs.length ? Math.round(xs.reduce((a, b) => a + b, 0) / xs.length) : 0;
-  const ranked = p.ranked || [], best = ranked.slice(0, meetings), next = ranked.slice(meetings, meetings + perPerson);
-  return { ...p, team, perPerson, meetings, invites: Math.ceil(meetings / Math.max(p.acceptance_rate, 0.01)),
-           bestAvg: avg(best), bestCount: best.length, nextAvg: avg(next), nextCount: next.length };
+  const p = e.plan || { days: 1, team_default: 1, per_day: 8, by_team: {} };
+  const team = e.team || p.team_default, cur = p.by_team?.[team] || { meetings: 0, slots: 0, avg: 0, total: 0 }, nxt = p.by_team?.[team + 1];
+  const extra = nxt ? nxt.meetings - cur.meetings : 0;
+  return { ...p, team, meetings: cur.meetings, slots: cur.slots, bestAvg: cur.avg, schedule: cur.schedule || [], clashes: cur.clashes || 0,
+           nextCount: extra, nextAvg: extra > 0 ? Math.round((nxt.total - cur.total) / extra) : 0 };
 }
 const travelText = t => !t ? '—' : t.mode === 'local' ? 'In Berlin' : `${t.hours} h ${t.mode}`;
 const EVENT_COLS = [
@@ -668,14 +667,14 @@ function renderEventsList() {
         <div class="t2"><b style="color:var(--ink)">${fmtDay(e.start)}</b>${e.end && e.end !== e.start ? `–${fmtDay(e.end)}` : ''}<br>${until(e.start)}</div>
         <div class="t2" title="Approximate door to door from Berlin"><b style="color:var(--ink)">${esc(e.city)}</b><br>${travelText(e.travel)}</div>
         <div class="t2" title="Average fit of the best ${pl.meetings} ${pl.unit === 'exhibitors' ? 'exhibitors' : 'people'} we could meet"><b style="color:var(--ink)">${pl.bestAvg}</b> avg<br>best ${pl.meetings}${pl.unit === 'exhibitors' ? ' exh.' : ''}</div>
-        <div class="t2" title="${pl.team} ${pl.team === 1 ? 'person' : 'people'} × ${pl.days} days × ${pl.meetings_per_person_per_day} a day; invite about ${pl.invites}"><b style="color:var(--ink)">${pl.meetings}</b><br>invite ~${pl.invites}</div>
-        <div class="t2">${appr ? `<b style="color:var(--fast)">${appr}</b>` : '0'}<br>of ~${pl.invites}</div>
+        <div class="t2" title="${pl.timetable ? 'From the timetable: the people we can catch in the break after their talk' : `${pl.team} ${pl.team === 1 ? 'person' : 'people'} × ${pl.days} days × up to ${pl.per_day} a day (an estimate until the timetable is out)`}"><b style="color:var(--ink)">${pl.meetings}</b><br>${pl.timetable ? 'timetable' : 'estimate'}</div>
+        <div class="t2">${appr ? `<b style="color:var(--fast)">${appr}</b>` : '0'}<br>of ${pl.meetings}</div>
         <div class="evgo">${e.past ? `<span class="chip lane lane-filtered">${eventStatusLabel(e)}</span>`
           : `<button class="btn ok ${st === 'going' ? 'on' : ''}" data-go="approve" title="Going">${st === 'going' ? '✓ Going' : '✓'}</button><button class="btn no ${st === 'notgoing' ? 'on' : ''}" data-go="reject" title="Not going">${st === 'notgoing' ? '✕ Not going' : '✕'}</button>`}</div>
         <div class="t2">${fmtDay(e.added_at)}<br><small>${esc((e.found_by || '').replace(/ \(.*\)$/, ''))}</small></div>
       </div>`;
     }).join('') : `<div class="empty">${when === 'past' && !inWhen.length ? "No past events yet. Events move here once they've happened, showing whether we went. Once HubSpot syncs outcomes back, this is where to see what each event produced." : 'No events here.'}</div>`}</div>
-    <div style="color:var(--faint);font-size:11.5px;margin-top:8px">Travel is approximate door to door from Berlin. Meetings: people we'd send × days × meetings a day each; "invite" assumes about ${Math.round(100 * (S.data.events[0]?.plan?.acceptance_rate || 0.25))}% accept. These assumptions are in <a href="#/playbooks/scoring">Scoring</a> (Meeting plan).</div>`;
+    <div style="color:var(--faint);font-size:11.5px;margin-top:8px">Travel is approximate door to door from Berlin. Meetings: no invitations (cold email isn't allowed), so speakers are met in the break after their talk. Where the timetable is out, the cockpit plans exactly who can be caught; otherwise it's people we'd send × days × up to a set number of conversations a day. Set in <a href="#/playbooks/scoring">Scoring</a> (Meeting plan).</div>`;
   $('eventsList').querySelectorAll('[data-evf]').forEach(b => b.onclick = () => { S.evFilter = b.dataset.evf; renderEventsList(); });
   $('eventsList').querySelectorAll('[data-when]').forEach(b => b.onclick = () => { S.evWhen = b.dataset.when; S.evFilter = 'all'; renderEventsList(); });
   $('eventsList').querySelectorAll('[data-sort]').forEach(b => b.onclick = e => {
@@ -755,18 +754,22 @@ function renderEventPage() {
 
 function planBlock(e, n) {
   const pl = planFor(e), appr = n.approved + n.hubspot, strongFrom = S.data.meta.lanes.fast_track, unit = pl.unit === 'exhibitors' ? 'exhibitors' : 'people';
-  const pct = Math.min(100, Math.round(100 * appr / pl.invites));
-  const fill = pl.bestCount < pl.meetings ? ` Only ${pl.bestCount} ${unit} for ${pl.meetings} meetings, so some slots stay empty.` : '';
+  const pct = pl.meetings ? Math.min(100, Math.round(100 * appr / pl.meetings)) : 0, days = `<b>${pl.days}</b> day${pl.days > 1 ? 's' : ''}`;
+  const team = `<select data-team>${[1, 2, 3, 4].map(k => `<option value="${k}" ${k === pl.team ? 'selected' : ''}>${k} ${k === 1 ? 'person' : 'people'}</option>`).join('')}</select>`;
+  const what = pl.timetable
+    ? `We'd send ${team} for ${days}. From the timetable, <b>${pl.meetings}</b> of the best ${unit} can be caught in the break after their talk (up to ${pl.per_day} conversations a day each). They average a fit of <b>${pl.bestAvg}</b>.${pl.clashes ? ` ${pl.clashes} strong fit${pl.clashes > 1 ? 's' : ''} clash with someone better in the same break.` : ''}`
+    : `We'd send ${team} × ${days} × up to <b>${pl.per_day}</b> conversations a day = <b>${pl.slots} meetings</b>. The best ${pl.meetings} ${unit} here average a fit of <b>${pl.bestAvg}</b>.${pl.meetings < pl.slots ? ` Only ${pl.meetings} ${unit} for ${pl.slots} meetings, so some time stays free.` : ''}${unit === 'people' ? ` <span style="color:var(--muted)">An estimate until the timetable is out.</span>` : ''}`;
   const more = !pl.nextCount ? `Nobody left for another person: ${pl.team === 1 ? 'one person is enough' : `${pl.team} is already more than the list fills`}.`
     : pl.nextAvg >= strongFrom ? `Another person would add ${pl.nextCount} meetings with ${unit} averaging ${pl.nextAvg}: <b>worth it</b>.`
     : `Another person would add meetings with ${unit} averaging only ${pl.nextAvg}: <b>probably not worth it</b>.`;
+  const who = id => { const c = S.contacts.find(x => x.id === id); return c ? `<a href="${personHash(c)}">${esc(c.name)}</a>${c.company ? ` <span style="color:var(--muted)">${esc(c.company)}</span>` : ''}` : ''; };
+  const schedule = pl.schedule.length ? `<details style="margin-top:10px"><summary style="cursor:pointer;font-weight:600">Who to catch, break by break</summary>
+      ${pl.schedule.map(b => `<div style="margin-top:8px"><div class="t2"><b style="color:var(--ink)">${fmtDay(b.date)} · ${esc(b.start)}${b.end ? `–${esc(b.end)}` : ''}</b> ${esc(b.kind)}</div><div style="font-size:13px">${b.ids.map(who).filter(Boolean).join(' · ')}</div></div>`).join('')}</details>` : '';
   return `<div class="panel"><h3>Meeting plan</h3>
-    <div class="plan">We'd send <select data-team>${[1, 2, 3, 4].map(k => `<option value="${k}" ${k === pl.team ? 'selected' : ''}>${k} ${k === 1 ? 'person' : 'people'}</option>`).join('')}</select>
-      × <b>${pl.days}</b> day${pl.days > 1 ? 's' : ''} × <b>${pl.meetings_per_person_per_day}</b> meetings a day = <b>${pl.meetings} meetings</b>.
-      The best ${pl.meetings} ${unit} here average a fit of <b>${pl.bestAvg}</b>.${fill}</div>
-    <div class="note">${more}${e.generalmind_present ? ' GeneralMind is a partner here, so the default is two people.' : ''}</div>
-    ${e.counts.people ? `<div style="font-size:13.5px;margin-top:10px">About ${Math.round(100 * pl.acceptance_rate)}% accept (set in <a href="#/playbooks/scoring">Scoring</a>), so invite the best <b>~${pl.invites}</b>, best first, and let the replies do the narrowing.</div>
-    <div style="display:flex;align-items:center;gap:10px;margin-top:8px"><div class="meter" style="flex:1;height:10px"><span style="width:${pct}%"></span></div><span class="num" style="font-size:13px"><b>${appr}</b> approved of ~${pl.invites}</span></div>` : ''}</div>`;
+    <div class="plan">${what}</div>
+    <div class="note">${unit === 'exhibitors' ? 'Exhibitors are met at their stands; no booking needed.' : "No invitations: cold email isn't allowed, so speakers are met in the break after their talk."} ${more}${e.generalmind_present ? ' GeneralMind is a partner here, so the default is two people.' : ''}</div>
+    ${schedule}
+    ${pl.meetings ? `<div style="display:flex;align-items:center;gap:10px;margin-top:10px"><div class="meter" style="flex:1;height:10px"><span style="width:${pct}%"></span></div><span class="num" style="font-size:13px"><b>${appr}</b> approved of ${pl.meetings}</span></div>` : ''}</div>`;
 }
 
 function renderEvents() {
@@ -1151,8 +1154,8 @@ const LEVERS = [
     ['event_choice.current_list_points', "This year's list is out", "Otherwise the names are last year's.", 0, 20],
   ]],
   ['Meeting plan', [
-    ['event_choice.meetings_per_person_per_day', 'Meetings per person per day', '', 1, 20],
-    ['event_choice.acceptance_rate_percent', 'Invites accepted (%)', 'Decides how many people to invite and approve.', 5, 80],
+    ['event_choice.meetings_per_person_per_day', 'Conversations a day per person, at most', '', 1, 20],
+    ['event_choice.minutes_per_conversation', 'Minutes per conversation in a break', 'A break fits its length divided by this, per colleague.', 5, 45],
   ]],
   ['People: who is a strong fit', [
     ['lanes.fast_track', 'Strong fit from', 'Fit score at which someone is suggested.', 40, 95],

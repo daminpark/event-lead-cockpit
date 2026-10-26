@@ -511,12 +511,75 @@ def compute(cfg, today):
     return events, contacts, account_rows, appearances
 
 
+def load_timetables():
+    """When each listed speaker is on stage and each day's breaks (data/timetables/<event>.json), where the agenda is out."""
+    out = {}
+    for path in glob.glob(os.path.join(ROOT, "data", "timetables", "*.json")):
+        with open(path, encoding="utf-8") as f:
+            tt = json.load(f)
+        out[tt["event_id"]] = tt
+    return out
+
+
+def minutes(hhmm):
+    h, m = hhmm.split(":")
+    return int(h) * 60 + int(m)
+
+
+def catch_plan(leads, team, length, ec, tt):
+    """Who we could actually meet. No invitations (cold email isn't allowed), so a speaker can only be caught in the
+    break after their session: a few conversations per colleague per break, and no more than the daily limit each.
+    Without a timetable it's an estimate: the best of team x days x the daily limit."""
+    per_day = ec.get("meetings_per_person_per_day", 8)
+    slots = team * length * per_day
+    ranked = sorted(leads, key=lambda c: -c["score"])
+    if not tt:
+        best = ranked[:slots]
+        return {"slots": slots, "ids": [c["id"] for c in best], "scores": [c["score"] for c in best]}
+    per_talk = ec.get("minutes_per_conversation", 15)
+    breaks, day_left = [], {}
+    for d in tt["days"]:
+        day_left[d["date"]] = team * per_day
+        for b in d["breaks"]:
+            start = minutes(b["start"])
+            end = minutes(b["end"]) if b.get("end") else start + 90  # an evening event with no end time
+            breaks.append({"date": d["date"], "start": b["start"], "end": b.get("end") or "", "kind": b["kind"],
+                           "s": start, "e": end, "left": team * max(1, (end - start) // per_talk), "ids": []})
+    on_stage = {cid: s for s in tt["sessions"] for cid in s["contact_ids"]}
+    picked, scores, clashes, no_break = [], [], 0, 0
+    for c in ranked:
+        s = on_stage.get(c["id"])
+        if s:  # the first break that starts as their session ends
+            end = minutes(s["end"])
+            fits = [b for b in breaks if b["date"] == s["date"] and b["e"] > end and b["s"] >= end - 15]
+            if not fits:
+                no_break += 1
+                continue
+            b = min(fits, key=lambda b: b["s"])
+            if not (b["left"] and day_left[b["date"]]):
+                clashes += c["lane"] == "fast_track"
+                continue
+        else:  # time on stage unknown: any break with room
+            free = [b for b in breaks if b["left"] and day_left[b["date"]]]
+            if not free:
+                continue
+            b = max(free, key=lambda b: b["left"])
+        b["left"] -= 1
+        day_left[b["date"]] -= 1
+        b["ids"].append(c["id"])
+        picked.append(c["id"])
+        scores.append(c["score"])
+    schedule = [{k: b[k] for k in ("date", "start", "end", "kind", "ids")} for b in breaks if b["ids"]]
+    return {"slots": slots, "ids": picked, "scores": scores, "schedule": schedule, "clashes": clashes, "no_break": no_break}
+
+
 def score_events(events, contacts, account_rows, today, cfg):
     """Step 1 is choosing which events to attend: score each one from what its lists contain."""
     ec = cfg.get("event_choice")
     if not ec:  # a scoring version saved before event scoring existed: use the repository's event settings
         with open(os.path.join(ROOT, "scoring.toml"), "rb") as f:
             ec = tomllib.load(f)["event_choice"]
+    timetables = load_timetables()
     for e in events.values():
         people = [c for c in contacts if c["event_id"] == e["id"]]
         named = {c["account_id"] for c in people}
@@ -529,17 +592,23 @@ def score_events(events, contacts, account_rows, today, cfg):
         # Time, not names, is the limit: judge the event on the best people we could actually meet.
         length = (dt.date.fromisoformat(e.get("end") or e["start"]) - dt.date.fromisoformat(e["start"])).days + 1
         team = ec.get("team_size_with_stand", 2) if e.get("generalmind_present") else ec.get("team_size", 1)
-        slots = team * length * ec.get("meetings_per_person_per_day", 8)
-        buyers = sorted((c["score"] for c in people if c["lane"] in ("fast_track", "review", "filtered")), reverse=True)
-        pool, unit = buyers, "people"
-        if not buyers:  # trade fairs whose lists only name exhibitors: the companies are the prospects
-            pool, unit = sorted((a["score"] for a in companies if a["lane"] in ("fast_track", "review", "filtered")), reverse=True), "exhibitors"
-        best = pool[:slots]
+        leads, unit = [c for c in people if c["lane"] in ("fast_track", "review", "filtered")], "people"
+        if not leads:  # trade fairs whose lists only name exhibitors: the companies are the prospects
+            leads, unit = [a for a in companies if a["lane"] in ("fast_track", "review", "filtered")], "exhibitors"
+        tt = timetables.get(e["id"]) if unit == "people" else None
+        plans = {k: catch_plan(leads, k, length, ec, tt) for k in (1, 2, 3, 4)}
+        plan = plans[team]
+        best, slots = plan["scores"], plan["slots"]
         quality = sum(best) / slots if slots else 0  # empty slots count as zero
         share = 1 if unit == "people" else ec.get("exhibitor_only_share", 70) / 100
-        reasons = [{"label": f"Best {slots} {unit} average fit {round(sum(best) / len(best)) if best else 0}"
-                             + (f" (only {len(best)} for {slots} meetings)" if len(best) < slots else ""),
-                    "points": round(ec.get("best_people_points", 60) * quality / 100 * share)}]
+        avg = round(sum(best) / len(best)) if best else 0
+        if tt:
+            label = f"Best {len(best)} people we can catch after their talks average fit {avg}" + (
+                f" ({plan['clashes']} strong fits clash in the same break)" if plan["clashes"] else "")
+        else:
+            label = f"Best {slots} {unit} average fit {avg}" + (f" (only {len(best)} for {slots} meetings)" if len(best) < slots else "") + (
+                " (estimate: the timetable isn't out yet)" if unit == "people" else "")
+        reasons = [{"label": label, "points": round(ec.get("best_people_points", 60) * quality / 100 * share)}]
         if e.get("generalmind_present"):
             reasons.append({"label": "GeneralMind is a partner there", "points": ec["generalmind_present_points"]})
         days = (dt.date.fromisoformat(e["start"]) - today).days
@@ -567,9 +636,12 @@ def score_events(events, contacts, account_rows, today, cfg):
         e["lane"] = ("past" if e["past"] else "recommended" if e["score"] >= ec["recommend"]
                      else "consider" if e["score"] >= ec["consider"] else "skip")
         # meeting plan (people sent can be changed per event in the cockpit)
-        e["plan"] = {"days": length, "team_default": team, "meetings_per_person_per_day": ec.get("meetings_per_person_per_day", 8),
-                     "acceptance_rate": ec.get("acceptance_rate_percent", 25) / 100, "unit": unit,
-                     "ranked": pool[:200]}  # best fit scores first: lets the page work out best-N for any team size
+        e["plan"] = {"days": length, "team_default": team, "per_day": ec.get("meetings_per_person_per_day", 8), "unit": unit,
+                     "timetable": bool(tt),
+                     "by_team": {k: {"meetings": len(v["scores"]), "slots": v["slots"], "total": sum(v["scores"]),
+                                     "avg": round(sum(v["scores"]) / len(v["scores"])) if v["scores"] else 0,
+                                     "schedule": v.get("schedule"), "clashes": v.get("clashes", 0)}
+                                 for k, v in plans.items()}}
         e["counts"] = {"people": len(people), "strong": strong_people, "worth": worth if people else 0,
                        "companies_without_contact": len(companies), "strong_companies": strong_companies,
                        "worth_companies": 0 if people else worth}
