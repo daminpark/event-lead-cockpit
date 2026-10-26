@@ -36,7 +36,7 @@
       "hours": 5.0,
       "km": 505
     },
-    "theme": "Supply chain & logistics"
+    "access": "open"
   },
   {
     "id": "bme-symposium-2026",
@@ -80,7 +80,7 @@
       "hours": 0.5,
       "km": 0
     },
-    "theme": "Procurement"
+    "access": "open"
   },
   {
     "id": "hamburger-logistiktage-2027",
@@ -90,7 +90,7 @@
     "city": "Hamburg",
     "country": "DE",
     "venue": "Volksparkstadion (VIP area)",
-    "format": "Invitation-only congress + exhibition",
+    "format": "Congress + exhibition",
     "language": "German",
     "url": "https://hamburger-logistiktage.de/",
     "why": "About 300 invited logistics decision-makers from retail, consumer goods and logistics services. 2027 speakers include REWE, ALDI Nord, Rossmann, Bauhaus and Lufthansa; partners include Nagel-Group, pfenning and DACH manufacturers with their own order desks.",
@@ -119,7 +119,7 @@
       "hours": 2.5,
       "km": 255
     },
-    "theme": "Supply chain & logistics"
+    "access": "invitation"
   },
   {
     "id": "hannover-messe-2027",
@@ -152,7 +152,7 @@
       "hours": 2.5,
       "km": 250
     },
-    "theme": "Manufacturing"
+    "access": "open"
   },
   {
     "id": "handelsblatt-cpo-2027",
@@ -184,7 +184,7 @@
       "hours": 5.0,
       "km": 475
     },
-    "theme": "Procurement"
+    "access": "open"
   },
   {
     "id": "ep-sce-2027",
@@ -194,7 +194,7 @@
     "city": "Berlin",
     "country": "DE",
     "venue": "Berlin Marriott Hotel",
-    "format": "Invitation-only summit",
+    "format": "Summit",
     "language": "English",
     "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/european-procurement-supply-chain-excellence-summit/facts",
     "why": "Small, senior and vetted: CPOs and chief supply chain officers of European industrial groups.",
@@ -217,7 +217,7 @@
       "hours": 0.5,
       "km": 0
     },
-    "theme": "Procurement"
+    "access": "invitation"
   },
   {
     "id": "ssow-europe-2027",
@@ -250,7 +250,7 @@
       "hours": 6.5,
       "km": 2320
     },
-    "theme": "Finance & shared services"
+    "access": "open"
   },
   {
     "id": "bme-eloesungstage-2027",
@@ -283,7 +283,7 @@
       "hours": 5.0,
       "km": 475
     },
-    "theme": "Procurement"
+    "access": "open"
   },
   {
     "id": "handelslogistik-2027",
@@ -316,7 +316,7 @@
       "hours": 5.0,
       "km": 475
     },
-    "theme": "Supply chain & logistics"
+    "access": "open"
   },
   {
     "id": "procurement-summit-2027",
@@ -353,6 +353,6 @@
       "hours": 2.5,
       "km": 255
     },
-    "theme": "Procurement"
+    "access": "open"
   }
 ]
