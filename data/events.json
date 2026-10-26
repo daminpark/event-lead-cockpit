@@ -1,0 +1,187 @@
+[
+  {
+    "id": "bme-symposium-2026",
+    "name": "BME-Symposium Einkauf und Logistik 2026",
+    "start": "2026-11-18",
+    "end": "2026-11-19",
+    "city": "Berlin",
+    "country": "DE",
+    "venue": "STATION Berlin",
+    "format": "Congress + exhibition",
+    "language": "German",
+    "url": "https://www.bme.de/symposium",
+    "why": "The largest procurement congress in DACH. CPOs and heads of supply chain and logistics from corporates and large Mittelstand. GeneralMind is a Start-up Partner this year, so meetings can be booked for the stand.",
+    "personas": ["procurement", "supply_chain", "logistics"],
+    "generalmind_present": true,
+    "sources": [
+      {"type": "speakers", "edition": "2026", "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/BME-symposium-einkauf-und-logistik-folder/referierende/"},
+      {"type": "programme", "edition": "2026", "url": "https://a.storyblok.com/f/104752/x/addaf3da0f/bme-symposium-2026-hm_v23-10-2026.pdf"},
+      {"type": "partners", "edition": "2026", "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/BME-symposium-einkauf-und-logistik-folder/partner-or-aussteller/"}
+    ]
+  },
+  {
+    "id": "ems-scms-2026",
+    "name": "European Manufacturing & Supply Chain Strategies Summit 2026",
+    "start": "2026-11-03",
+    "end": "2026-11-04",
+    "city": "Munich",
+    "country": "DE",
+    "venue": "Holiday Inn Munich City Centre",
+    "format": "Summit",
+    "language": "English",
+    "url": "https://ems-scms.com/live/en/page/home",
+    "why": "Heads of supply chain, planning and operations at European manufacturers. Speaker list is mostly practitioners.",
+    "personas": ["supply_chain", "operations"],
+    "generalmind_present": false,
+    "date_note": "Start date confirmed on the organiser's site; end date from a participating consultancy's page.",
+    "sources": [
+      {"type": "speakers", "edition": "2026", "url": "https://ems-scms.com/live/en/page/speakers"},
+      {"type": "partners", "edition": "2026", "url": "https://ems-scms.com/live/en/page/commercial-partners"}
+    ]
+  },
+  {
+    "id": "ep-sce-2027",
+    "name": "European Procurement & Supply Chain Excellence Summit 2027 (BME)",
+    "start": "2027-04-19",
+    "end": "2027-04-20",
+    "city": "Berlin",
+    "country": "DE",
+    "venue": "Berlin Marriott Hotel",
+    "format": "Invitation-only summit",
+    "language": "English",
+    "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/european-procurement-supply-chain-excellence-summit/facts",
+    "why": "Small, senior and vetted: CPOs and chief supply chain officers of European industrial groups.",
+    "personas": ["procurement", "supply_chain"],
+    "generalmind_present": false,
+    "sources": [
+      {"type": "speakers", "edition": "2026 (previous)", "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/european-procurement-supply-chain-excellence-summit/summit-speakers/"}
+    ]
+  },
+  {
+    "id": "handelsblatt-cpo-2027",
+    "name": "Handelsblatt CPO-Summit 2027",
+    "start": "2027-04-06",
+    "end": "2027-04-07",
+    "city": "Düsseldorf",
+    "country": "DE",
+    "venue": "Handelsblatt Media Group",
+    "format": "Conference",
+    "language": "German",
+    "url": "https://live.handelsblatt.com/event/handelsblatt-cpo-summit/",
+    "why": "CPOs of large DACH corporates. A short list, but very senior.",
+    "personas": ["procurement"],
+    "generalmind_present": false,
+    "sources": [
+      {"type": "speakers", "edition": "2026 (previous)", "url": "https://live.handelsblatt.com/event/handelsblatt-cpo-summit/"}
+    ]
+  },
+  {
+    "id": "hannover-messe-2027",
+    "name": "Hannover Messe 2027",
+    "start": "2027-04-05",
+    "end": "2027-04-08",
+    "city": "Hannover",
+    "country": "DE",
+    "venue": "Messegelände Hannover",
+    "format": "Trade fair",
+    "language": "German / English",
+    "url": "https://www.hannovermesse.de/en/",
+    "why": "Here the exhibitors are the prospects: industrial manufacturers whose order desks receive purchase orders by email and PDF (the order-to-cash use case).",
+    "personas": ["order_management", "operations"],
+    "generalmind_present": false,
+    "sources": [
+      {"type": "exhibitors", "edition": "2026 (previous)", "url": "https://www.hannovermesse.de/en/expo/exhibitors-products/"}
+    ]
+  },
+  {
+    "id": "transport-logistic-2027",
+    "name": "transport logistic 2027",
+    "start": "2027-04-26",
+    "end": "2027-04-29",
+    "city": "Munich",
+    "country": "DE",
+    "venue": "Messe München",
+    "format": "Trade fair",
+    "language": "German / English",
+    "url": "https://transportlogistic.de/en/",
+    "why": "The exhibitors are logistics service providers, forwarders and carriers, the Müller lila Logistik type, which receive transport orders and freight invoices by email and PDF.",
+    "personas": ["logistics", "order_management"],
+    "generalmind_present": false,
+    "sources": [
+      {"type": "exhibitors", "edition": "2025 (previous)", "url": "https://exhibitors.transportlogistic.de/en/"}
+    ]
+  },
+  {
+    "id": "ssow-europe-2027",
+    "name": "SSOW Europe 2027 (Shared Services & Outsourcing Week)",
+    "start": "2027-05-10",
+    "end": "2027-05-13",
+    "city": "Estoril",
+    "country": "PT",
+    "venue": "Estoril Congress Center",
+    "format": "Summit",
+    "language": "English",
+    "url": "https://www.ssonetwork.com/events-ssoweek",
+    "why": "Heads of shared services, procure-to-pay and order-to-cash at large corporates, many of them headquartered in DACH. The finance and accounts-payable buyer.",
+    "personas": ["finance_ap", "order_management"],
+    "generalmind_present": false,
+    "sources": [
+      {"type": "speakers", "edition": "2026 (previous)", "url": "https://www.ssonetwork.com/events-ssoweek"}
+    ]
+  },
+  {
+    "id": "bme-eloesungstage-2027",
+    "name": "BME-eLÖSUNGSTAGE 2027",
+    "start": "2027-05-11",
+    "end": "2027-05-12",
+    "city": "Düsseldorf",
+    "country": "DE",
+    "venue": "Areal Böhler",
+    "format": "Congress + exhibition",
+    "language": "German",
+    "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/eloesungstage/",
+    "why": "The closest topical fit: digital procurement, procure-to-pay and S/4HANA. The 2026 programme had Swarovski on supplier invoice automation with AI.",
+    "personas": ["procurement", "finance_ap"],
+    "generalmind_present": false,
+    "sources": [
+      {"type": "programme", "edition": "2026 (previous)", "url": "https://a.storyblok.com/f/104752/x/56701cd5a7/kongressguide_eloesungstage_2026.pdf"}
+    ]
+  },
+  {
+    "id": "handelslogistik-2027",
+    "name": "LOG 2027 – Handelslogistik Kongress (EHI / BVL)",
+    "start": "2027-06-08",
+    "end": "2027-06-09",
+    "city": "Cologne",
+    "country": "DE",
+    "venue": "RheinEnergieSTADION",
+    "format": "Congress",
+    "language": "German",
+    "url": "https://www.handelslogistik.de/",
+    "why": "Heads of logistics and supply chain at retailers and consumer brands, plus logistics providers. The bofrost*, Oatly and Müller lila Logistik types.",
+    "personas": ["logistics", "supply_chain"],
+    "generalmind_present": false,
+    "sources": [
+      {"type": "programme", "edition": "2026 (previous)", "url": "https://www.handelslogistik.de/programm"}
+    ]
+  },
+  {
+    "id": "procurement-summit-2027",
+    "name": "Procurement Summit 2027",
+    "start": "2027-06-23",
+    "end": "2027-06-24",
+    "city": "Hamburg",
+    "country": "DE",
+    "venue": "Hamburg",
+    "format": "Summit + exhibition",
+    "language": "German",
+    "url": "https://procurementsummit.de/",
+    "why": "In-house procurement teams from DACH companies, including order-heavy wholesalers and distributors (Würth, Berner, Heinemann).",
+    "personas": ["procurement"],
+    "generalmind_present": false,
+    "sources": [
+      {"type": "speakers", "edition": "2027", "url": "https://procurementsummit.de/speaker"},
+      {"type": "participants", "edition": "2027", "url": "https://procurementsummit.de/teilnehmende"}
+    ]
+  }
+]

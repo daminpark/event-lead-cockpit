@@ -1,0 +1,92 @@
+# How leads are scored. Every point awarded shows up as a reason in the cockpit,
+# so a reviewer can always see why a lead landed where it did.
+#
+# Contact fit (0-100) = role (max 45) + company (max 40) + event (max 15)
+# Account fit (0-100) = company fit x 1.5 (max 60) + presence at events (max 40)
+
+[lanes]
+fast_track = 70   # at or above: suggested approve (needs data confidence above "low")
+review = 45       # between the two: needs a look; below: filtered as low fit
+
+# --- Role: what the person does (title matched in English and German) ---
+# Highest-scoring function wins. Keywords are matched as lowercase substrings, or as whole words when wrapped in \b.
+
+[role.functions.order_to_cash]
+label = "Order management / customer service"
+points = 25
+keywords = ["order management", "order-to-cash", "order to cash", "\\bo2c\\b", "customer service", "kundenservice", "auftragsabwicklung", "auftragsmanagement", "innendienst", "sales operations", "customer care", "order desk"]
+
+[role.functions.finance_ap]
+label = "Finance / accounts payable / shared services"
+points = 25
+keywords = ["accounts payable", "kreditoren", "\\bp2p\\b", "procure-to-pay", "procure to pay", "purchase-to-pay", "purchase to pay", "shared service", "\\bgbs\\b", "global business services", "finance operations", "finance transformation", "accounting", "rechnungswesen", "buchhaltung", "\\bcfo\\b", "chief financial", "finanz"]
+
+[role.functions.procurement]
+label = "Procurement"
+points = 22
+keywords = ["procurement", "purchasing", "einkauf", "beschaffung", "sourcing", "\\bcpo\\b", "chief procurement", "buyer", "category manag", "supplier", "lieferant", "materialwirtschaft", "spend"]
+
+[role.functions.supply_chain]
+label = "Supply chain / logistics"
+points = 20
+keywords = ["supply chain", "\\bscm\\b", "logistik", "logistics", "planning", "planung", "s&op", "fulfil", "warehouse", "lager", "transport", "distribution", "chief supply", "\\bcsco\\b", "demand"]
+
+[role.functions.operations]
+label = "Operations / digital transformation"
+points = 12
+keywords = ["operations", "\\bcoo\\b", "chief operating", "digital", "transformation", "process", "prozess", "automation", "automatisierung", "excellence", "\\bcio\\b", "\\bcdo\\b", "innovation"]
+
+[role.functions.general_management]
+label = "General management"
+points = 10
+keywords = ["\\bceo\\b", "geschäftsführ", "managing director", "founder", "gründer", "owner", "inhaber", "vorstand", "president", "general manager"]
+
+[role.seniority]
+c_level = { label = "C-level / board", points = 15, keywords = ["chief", "\\bc[pfoeisd]o\\b", "\\bcsco\\b", "vorstand", "geschäftsführ", "managing director", "executive vice president", "senior vice president", "\\bevp\\b", "\\bsvp\\b", "president", "founder", "gründer", "owner", "inhaber"] }
+head = { label = "Head / director / VP", points = 12, keywords = ["vice president", "\\bvp\\b", "head", "director", "direktor", "leiter", "leiterin", "bereichsleit", "abteilungsleit", "global"] }
+manager = { label = "Manager / lead", points = 7, keywords = ["manager", "\\blead\\b", "teamleit", "gruppenleit", "projektleit"] }
+other_points = 2   # a title, but not a decision-maker title
+
+# Talk or title about the problem GeneralMind solves.
+[role.interest]
+label = "Talks about digitalisation / AI / automation"
+points = 5
+keywords = ["digital", "\\bai\\b", "\\bki\\b", "künstliche intelligenz", "automation", "automatis", "s/4", "\\bsap\\b", "\\bp2p\\b", "e-invoic", "e-rechnung", "rechnung", "invoice", "autonom", "agent", "genai", "gen ai"]
+
+# --- Company: who they work for (profile is estimated until enriched) ---
+[company]
+buyer_points = 15
+core_industry_points = 8
+other_industry_points = 3
+core_industries = ["manufactur", "wholesale", "distribut", "logistic", "transport", "food", "beverage", "consumer", "retail", "automotive", "chemical", "pharma", "metal", "steel", "industrial", "engineering", "machinery", "electr"]
+dach_points = 5
+erp_points = 2
+
+[company.size_points]   # mid-to-large is the sweet spot: enough volume, shorter cycles than the giants
+"1001-5000" = 10
+"5001-20000" = 10
+"20000+" = 7
+"201-1000" = 6
+"unknown" = 3
+"51-200" = 1
+"1-50" = 0
+
+# --- Event: how they appear and how soon ---
+[event]
+speaker_points = 7      # keynote, speaker or panelist: a talk to reference in outreach
+moderator_points = 5    # moderator or chair
+soon_days = 45
+soon_points = 5
+later_days = 120
+later_points = 3
+far_points = 1
+generalmind_present_points = 3   # GeneralMind has a stand there: book a meeting
+
+# --- Accounts ---
+[account]
+company_multiplier = 1.5
+per_event_points = 10     # each target event the company shows up at
+max_event_points = 20
+named_contact_points = 10 # at least one named person at an event
+target_contact_points = 10 # at least one contact whose role fit is strong
+target_contact_role_min = 30

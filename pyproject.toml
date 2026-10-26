@@ -1,0 +1,6 @@
+[project]
+name = "generalmind-cockpit"
+version = "0.1.0"
+description = "Event lead cockpit: source, score and review leads, export for HubSpot"
+requires-python = ">=3.11"
+dependencies = ["fastapi>=0.115", "uvicorn>=0.30"]

@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event Lead Cockpit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f6f6f4; --panel: #ffffff; --panel-2: #fafaf8; --ink: #1b1c1f; --muted: #6a6e76; --faint: #9a9ea6;
+  --line: #e5e5e1; --line-2: #efefec; --accent: #2f4fd8; --accent-soft: #e9edfd;
+  --fast: #1d7f48; --fast-soft: #e3f3e9; --review: #a86a0c; --review-soft: #fbf0dc;
+  --filtered: #7b8089; --filtered-soft: #eeeff1; --partner: #6a43b8; --partner-soft: #efe9fa;
+  --competitor: #bf2f2f; --competitor-soft: #fbe7e7; --customer: #1f6aa8; --customer-soft: #e3eff9;
+  --shadow: 0 1px 2px rgba(20,20,30,.05), 0 4px 16px rgba(20,20,30,.05);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131416; --panel: #1b1c1f; --panel-2: #202125; --ink: #ececee; --muted: #a0a4ab; --faint: #73777e;
+    --line: #2c2e33; --line-2: #25272b; --accent: #7d95ff; --accent-soft: #232a45;
+    --fast: #4cc483; --fast-soft: #173325; --review: #e0a542; --review-soft: #352a15;
+    --filtered: #9a9fa8; --filtered-soft: #26282c; --partner: #a98af0; --partner-soft: #2b2340;
+    --competitor: #f07575; --competitor-soft: #3a1f1f; --customer: #6db3ef; --customer-soft: #19293a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131416; --panel: #1b1c1f; --panel-2: #202125; --ink: #ececee; --muted: #a0a4ab; --faint: #73777e;
+  --line: #2c2e33; --line-2: #25272b; --accent: #7d95ff; --accent-soft: #232a45;
+  --fast: #4cc483; --fast-soft: #173325; --review: #e0a542; --review-soft: #352a15;
+  --filtered: #9a9fa8; --filtered-soft: #26282c; --partner: #a98af0; --partner-soft: #2b2340;
+  --competitor: #f07575; --competitor-soft: #3a1f1f; --customer: #6db3ef; --customer-soft: #19293a;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 14px/1.45 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button { font: inherit; color: inherit; cursor: pointer; }
+.num { font-variant-numeric: tabular-nums; }
+
+header { display: flex; align-items: center; gap: 16px; padding: 14px 24px; background: var(--panel); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 20; }
+.brand { display: flex; flex-direction: column; }
+.brand b { font-size: 15px; letter-spacing: -.01em; }
+.brand span { color: var(--muted); font-size: 12px; }
+nav { display: flex; gap: 2px; margin-left: 12px; overflow-x: auto; scrollbar-width: none; }
+nav button { border: 0; background: none; padding: 7px 11px; border-radius: 7px; color: var(--muted); font-weight: 500; white-space: nowrap; }
+nav button:hover { background: var(--line-2); color: var(--ink); }
+nav button.on { background: var(--accent-soft); color: var(--accent); }
+.who { margin-left: auto; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; white-space: nowrap; }
+.who button { border: 1px solid var(--line); background: var(--panel-2); border-radius: 999px; padding: 4px 10px; font-size: 12px; }
+
+main { padding: 20px 24px 60px; max-width: 1440px; margin: 0 auto; }
+.view { display: none; }
+.view.on { display: block; }
+
+.stats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; text-align: left; transition: border-color .15s, box-shadow .15s; }
+.stat:hover { border-color: var(--faint); }
+.stat.on { border-color: var(--k, var(--accent)); box-shadow: inset 0 0 0 1px var(--k, var(--accent)); }
+.stat .k { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; font-weight: 500; }
+.stat .k i { width: 8px; height: 8px; border-radius: 50%; background: var(--k); }
+.stat .v { font-size: 22px; font-weight: 600; letter-spacing: -.02em; margin-top: 2px; }
+.stat .s { color: var(--faint); font-size: 11.5px; }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+.toolbar select, .toolbar input[type=search] { font: inherit; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; min-width: 0; }
+.toolbar input[type=search] { flex: 1 1 220px; }
+.toolbar label { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; }
+.toolbar .count { color: var(--muted); font-size: 12.5px; margin-left: auto; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 16px; align-items: start; }
+.list { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.row { display: grid; grid-template-columns: 52px minmax(180px, 1.3fr) minmax(160px, 1.1fr) minmax(130px, .8fr) minmax(170px, 1.2fr) 92px; gap: 14px; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--line-2); cursor: pointer; }
+.row:last-child { border-bottom: 0; }
+.row:hover { background: var(--panel-2); }
+.row.sel { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+.row.done { opacity: .62; }
+.row .t1 { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .t2 { color: var(--muted); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.head { cursor: default; background: var(--panel-2); color: var(--faint); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; padding-top: 8px; padding-bottom: 8px; }
+.head:hover { background: var(--panel-2); }
+.score { width: 44px; height: 30px; border-radius: 8px; display: grid; place-items: center; font-weight: 700; font-size: 14px; background: var(--ls, var(--filtered-soft)); color: var(--lc, var(--filtered)); }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 6px; padding: 1px 7px; font-size: 11.5px; background: var(--line-2); color: var(--muted); white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.chip.pts b { color: var(--ink); font-weight: 600; }
+.chip.lane { background: var(--ls); color: var(--lc); font-weight: 600; }
+.chip.warn { background: var(--review-soft); color: var(--review); }
+.acts { display: flex; gap: 6px; justify-content: flex-end; }
+.btn { border: 1px solid var(--line); background: var(--panel); border-radius: 8px; padding: 5px 10px; font-weight: 500; font-size: 13px; }
+.btn:hover { border-color: var(--faint); }
+.btn.ok { color: var(--fast); }
+.btn.ok:hover, .btn.ok.on { background: var(--fast-soft); border-color: var(--fast); }
+.btn.no { color: var(--competitor); }
+.btn.no:hover, .btn.no.on { background: var(--competitor-soft); border-color: var(--competitor); }
+.btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn.icon { width: 34px; padding: 5px 0; text-align: center; }
+.status { font-size: 12px; font-weight: 600; }
+.status.approve { color: var(--fast); }
+.status.reject { color: var(--competitor); }
+.empty { padding: 40px; text-align: center; color: var(--muted); }
+
+.lane-fast_track { --lc: var(--fast); --ls: var(--fast-soft); --k: var(--fast); }
+.lane-review { --lc: var(--review); --ls: var(--review-soft); --k: var(--review); }
+.lane-filtered { --lc: var(--filtered); --ls: var(--filtered-soft); --k: var(--filtered); }
+.lane-partner { --lc: var(--partner); --ls: var(--partner-soft); --k: var(--partner); }
+.lane-competitor { --lc: var(--competitor); --ls: var(--competitor-soft); --k: var(--competitor); }
+.lane-customer { --lc: var(--customer); --ls: var(--customer-soft); --k: var(--customer); }
+.lane-decided { --k: var(--accent); }
+
+.drawer { position: sticky; top: 76px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; max-height: calc(100vh - 96px); overflow: auto; box-shadow: var(--shadow); }
+.drawer .close { display: none; float: right; border: 0; background: var(--line-2); border-radius: 8px; width: 32px; height: 32px; font-size: 18px; line-height: 1; }
+.drawer h2 { font-size: 18px; margin: 0 0 2px; letter-spacing: -.01em; }
+.drawer .sub { color: var(--muted); margin-bottom: 12px; }
+.drawer h3 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--faint); margin: 18px 0 8px; }
+.bar { display: flex; height: 8px; border-radius: 99px; overflow: hidden; background: var(--line-2); margin: 8px 0 4px; }
+.bar span { display: block; height: 100%; }
+.legend { display: flex; gap: 12px; color: var(--muted); font-size: 12px; }
+.legend i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 4px; }
+.reasons { list-style: none; padding: 0; margin: 0; }
+.reasons li { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px dashed var(--line-2); font-size: 13px; }
+.reasons li span:last-child { font-weight: 600; font-variant-numeric: tabular-nums; }
+.reasons li.zero { color: var(--faint); }
+.reasons li.zero span:last-child { font-weight: 400; }
+.kv { display: grid; grid-template-columns: 110px 1fr; gap: 4px 12px; font-size: 13px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; overflow-wrap: anywhere; }
+.note { background: var(--panel-2); border: 1px solid var(--line-2); border-radius: 8px; padding: 9px 11px; color: var(--muted); font-size: 12.5px; margin-top: 8px; }
+.decide { display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+.decide .btn { padding: 8px 14px; }
+.reject-reasons { display: none; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.reject-reasons.on { display: flex; }
+.reject-reasons button { border: 1px solid var(--line); background: var(--panel-2); border-radius: 999px; padding: 4px 10px; font-size: 12.5px; }
+.reject-reasons button:hover { border-color: var(--competitor); color: var(--competitor); }
+.kbd { font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; color: var(--muted); }
+.hint { color: var(--faint); font-size: 12px; margin-top: 14px; line-height: 1.8; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.card h4 { margin: 0 0 2px; font-size: 15px; letter-spacing: -.01em; }
+.card .when { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+.card p { margin: 0 0 10px; color: var(--ink); font-size: 13px; }
+.card .nums { display: flex; gap: 16px; margin: 10px 0; }
+.card .nums div { font-size: 12px; color: var(--muted); }
+.card .nums b { display: block; font-size: 18px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.card ul { margin: 0; padding-left: 16px; font-size: 12.5px; color: var(--muted); }
+.badge { display: inline-block; background: var(--accent); color: #fff; font-size: 11px; font-weight: 600; border-radius: 5px; padding: 1px 7px; margin-left: 6px; vertical-align: 2px; }
+
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; }
+.panel h3 { margin: 0 0 4px; font-size: 15px; }
+.panel .lead { color: var(--muted); margin: 0 0 14px; font-size: 13px; max-width: 760px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+table.t { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.t th { text-align: left; color: var(--faint); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+table.t td { padding: 7px 8px; border-bottom: 1px solid var(--line-2); font-variant-numeric: tabular-nums; }
+.meter { height: 6px; background: var(--line-2); border-radius: 99px; overflow: hidden; min-width: 60px; }
+.meter span { display: block; height: 100%; background: var(--fast); }
+.big { font-size: 34px; font-weight: 650; letter-spacing: -.03em; }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+.prose { max-width: 780px; }
+.prose h2 { font-size: 20px; letter-spacing: -.01em; margin: 26px 0 8px; }
+.prose h2:first-child { margin-top: 0; }
+.prose p, .prose li { font-size: 14px; line-height: 1.6; }
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 4px; }
+.flow div { background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; font-size: 13px; }
+.flow div small { display: block; color: var(--muted); font-size: 11.5px; }
+.flow span { color: var(--faint); }
+.toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 14px; border-radius: 8px; font-size: 13px; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 50; }
+.toast.on { opacity: 1; }
+dialog { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); color: var(--ink); padding: 20px; width: min(380px, calc(100vw - 32px)); box-shadow: var(--shadow); }
+dialog::backdrop { background: rgba(0,0,0,.35); }
+dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-2); color: var(--ink); margin: 10px 0 14px; }
+
+@media (max-width: 1100px) {
+  header { flex-wrap: wrap; row-gap: 8px; }
+  nav { order: 3; width: 100%; margin-left: 0; }
+  .layout { grid-template-columns: 1fr; }
+  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100vw); max-height: none; border-radius: 0; z-index: 40; transform: translateX(105%); transition: transform .2s ease; }
+  .drawer.open { transform: none; }
+  .drawer .close { display: block; }
+  .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  header { flex-wrap: wrap; padding: 12px 16px; gap: 8px; }
+  nav { order: 3; width: 100%; margin-left: 0; }
+  main { padding: 14px 16px 60px; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .row { grid-template-columns: 48px minmax(0, 1fr) auto; gap: 10px; }
+  .row .c-company, .row .c-event, .row .c-reasons { grid-column: 2 / 4; }
+  .row .acts { grid-column: 3; grid-row: 1; }
+  .head { display: none; }
+  .grid2 { grid-template-columns: 1fr; }
+  .cards { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><b>Event Lead Cockpit</b><span>Case study for GeneralMind · Pierre Park</span></div>
+  <nav id="tabs">
+    <button data-view="queue" class="on">Contacts</button>
+    <button data-view="accounts">Accounts</button>
+    <button data-view="events">Events</button>
+    <button data-view="learning">Learning</button>
+    <button data-view="export">Export</button>
+    <button data-view="about">How it works</button>
+  </nav>
+  <div class="who"><span id="built"></span><button id="whoBtn" title="Your name is saved with your decisions">Reviewer: <b id="whoName">—</b></button></div>
+</header>
+
+<main>
+  <section class="view on" id="v-queue">
+    <div class="stats" id="laneStats"></div>
+    <div class="toolbar">
+      <input type="search" id="q" placeholder="Search name, title, company…">
+      <select id="fEvent"></select>
+      <select id="fFunction"></select>
+      <select id="fSort">
+        <option value="score">Sort: fit score</option>
+        <option value="date">Sort: event date</option>
+        <option value="company">Sort: company</option>
+      </select>
+      <label><input type="checkbox" id="fDecided"> Show decided</label>
+      <span class="count" id="qCount"></span>
+    </div>
+    <div class="layout">
+      <div class="list" id="qList"></div>
+      <aside class="drawer" id="drawer"></aside>
+    </div>
+  </section>
+
+  <section class="view" id="v-accounts">
+    <div class="stats" id="acctStats"></div>
+    <div class="toolbar">
+      <input type="search" id="aq" placeholder="Search company, industry…">
+      <select id="aEvent"></select>
+      <select id="aIndustry"></select>
+      <label><input type="checkbox" id="aDecided"> Show decided</label>
+      <span class="count" id="aCount"></span>
+    </div>
+    <div class="layout">
+      <div class="list" id="aList"></div>
+      <aside class="drawer" id="aDrawer"></aside>
+    </div>
+  </section>
+
+  <section class="view" id="v-events"><div class="cards" id="eventCards"></div></section>
+  <section class="view" id="v-learning"><div id="learning"></div></section>
+  <section class="view" id="v-export"><div id="exportView"></div></section>
+  <section class="view" id="v-about"><div class="panel prose" id="about"></div></section>
+</main>
+
+<dialog id="whoDlg">
+  <form method="dialog">
+    <b>Who's reviewing?</b>
+    <div style="color:var(--muted);font-size:13px;margin-top:4px">Your first name is saved with each decision, so the team can see who decided what.</div>
+    <input id="whoInput" maxlength="40" placeholder="e.g. Tom" autocomplete="given-name">
+    <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" value="cancel">Skip</button><button class="btn primary" value="ok">Save</button></div>
+  </form>
+</dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+const LANES = {
+  fast_track: { label: 'Fast track', hint: 'Suggested approve' },
+  review: { label: 'Review', hint: 'Needs a look' },
+  filtered: { label: 'Filtered', hint: 'Low fit, vendors, other' },
+  partner: { label: 'Partners', hint: 'SIs, consultancies, ERP' },
+  competitor: { label: 'Competitors', hint: 'Kept as market intel' },
+  customer: { label: 'Customers', hint: 'Route to account owner' },
+};
+const REJECT_REASONS = ['Wrong role', 'Company too small', 'Wrong industry', 'Vendor / competitor', 'Already a customer or in CRM', 'Bad data'];
+const FUNCTION_LABELS = {
+  order_to_cash: 'Order management / customer service', finance_ap: 'Finance / AP / shared services', procurement: 'Procurement',
+  supply_chain: 'Supply chain / logistics', operations: 'Operations / digital', general_management: 'General management', none: 'Other functions',
+};
+
+const S = {
+  data: null, events: {}, accounts: {}, contacts: [], decisions: new Map(), history: [],
+  lanes: new Set(['fast_track', 'review']), aLanes: new Set(['fast_track', 'review']),
+  sel: null, aSel: null, reviewer: '', view: 'queue', undo: [],
+};
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const safeUrl = u => /^https?:\/\//i.test(u || '') ? u : null;
+const store = { get(k) { try { return localStorage.getItem(k) } catch { return null } }, set(k, v) { try { localStorage.setItem(k, v) } catch {} } };
+const today = () => new Date(new Date().toDateString());
+const daysTo = d => Math.round((new Date(d + 'T00:00:00') - today()) / 864e5);
+const fmtDate = (a, b) => {
+  const o = { day: 'numeric', month: 'short' }, A = new Date(a + 'T00:00:00'), B = new Date(b + 'T00:00:00');
+  return `${A.toLocaleDateString('en-GB', o)}–${B.toLocaleDateString('en-GB', { ...o, year: 'numeric' })}`;
+};
+const until = d => { const n = daysTo(d); return n < 0 ? 'past' : n === 0 ? 'today' : n < 60 ? `in ${n} days` : `in ${Math.round(n / 30.4)} months`; };
+const key = (t, id) => `${t}:${id}`;
+const decisionOf = (t, id) => S.decisions.get(key(t, id));
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 1800); }
+
+async function load() {
+  const res = await fetch('api/data');
+  const d = await res.json();
+  S.data = d;
+  d.events.sort((a, b) => a.start.localeCompare(b.start));
+  d.events.forEach(e => S.events[e.id] = e);
+  d.accounts.forEach(a => S.accounts[a.id] = a);
+  S.contacts = d.contacts;
+  S.history = d.decisions;
+  d.decisions.forEach(applyDecision);
+  $('built').textContent = d.meta.built_at ? `Data built ${d.meta.built_at.replace('T', ' ')}` : '';
+  S.reviewer = store.get('reviewer') || '';
+  $('whoName').textContent = S.reviewer || '—';
+  fillFilters();
+  renderAll();
+}
+
+function applyDecision(d) {
+  const k = key(d.object_type, d.object_id);
+  if (d.decision === 'clear') S.decisions.delete(k); else S.decisions.set(k, d);
+}
+
+function fillFilters() {
+  const evOpts = '<option value="">All events</option>' + S.data.events.map(e => `<option value="${esc(e.id)}">${esc(e.short || e.name)}</option>`).join('');
+  $('fEvent').innerHTML = evOpts; $('aEvent').innerHTML = evOpts;
+  $('fFunction').innerHTML = '<option value="">All functions</option>' + Object.entries(FUNCTION_LABELS).map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join('');
+  const inds = [...new Set(S.data.accounts.map(a => a.profile?.industry).filter(Boolean))].sort();
+  $('aIndustry').innerHTML = '<option value="">All industries</option>' + inds.map(i => `<option>${esc(i)}</option>`).join('');
+}
+
+function renderAll() { renderQueue(); renderAccounts(); renderEvents(); renderLearning(); renderExport(); renderAbout(); }
+
+// ---------- lane stat tiles ----------
+function laneTiles(el, items, type, active, onToggle) {
+  const counts = {}, decided = items.filter(i => decisionOf(type, i.id)).length;
+  items.forEach(i => { if (!decisionOf(type, i.id)) counts[i.lane] = (counts[i.lane] || 0) + 1; });
+  el.innerHTML = Object.entries(LANES).map(([k, l]) => `
+    <button class="stat lane-${k} ${active.has(k) ? 'on' : ''}" data-lane="${k}">
+      <div class="k"><i></i>${l.label}</div><div class="v num">${counts[k] || 0}</div><div class="s">${l.hint}</div>
+    </button>`).join('');
+  el.querySelectorAll('.stat').forEach(b => b.onclick = e => {
+    const k = b.dataset.lane;
+    if (e.metaKey || e.ctrlKey || e.shiftKey) { active.has(k) ? active.delete(k) : active.add(k); }
+    else if (active.size === 1 && active.has(k)) { active.clear(); ['fast_track', 'review'].forEach(x => active.add(x)); }
+    else { active.clear(); active.add(k); }
+    onToggle();
+  });
+  return decided;
+}
+
+// ---------- contacts ----------
+function contactRows() {
+  const q = $('q').value.trim().toLowerCase(), ev = $('fEvent').value, fn = $('fFunction').value, showDecided = $('fDecided').checked;
+  let rows = S.contacts.filter(c => {
+    const d = decisionOf('contact', c.id);
+    if (d && !showDecided) return false;
+    if (!d && !S.lanes.has(c.lane)) return false;
+    if (ev && c.event_id !== ev) return false;
+    if (fn && !c.tags.includes(`function:${fn}`)) return false;
+    if (q && !`${c.name} ${c.title} ${c.company} ${c.session}`.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  const sort = $('fSort').value;
+  rows.sort(sort === 'date' ? (a, b) => S.events[a.event_id].start.localeCompare(S.events[b.event_id].start) || b.score - a.score
+    : sort === 'company' ? (a, b) => (a.company || '').localeCompare(b.company || '') || b.score - a.score
+    : (a, b) => b.score - a.score || a.name.localeCompare(b.name));
+  return rows;
+}
+
+function topReasons(reasons, n = 3) {
+  return reasons.filter(r => r.points > 0).sort((a, b) => b.points - a.points).slice(0, n)
+    .map(r => `<span class="chip pts"><b>+${r.points}</b> ${esc(r.label)}</span>`).join('');
+}
+
+function statusCell(type, id) {
+  const d = decisionOf(type, id);
+  if (!d) return `<div class="acts"><button class="btn ok icon" data-act="approve" title="Approve (A)">✓</button><button class="btn no icon" data-act="reject" title="Reject (R)">✕</button></div>`;
+  return `<div class="acts"><span class="status ${d.decision}">${d.decision === 'approve' ? 'Approved' : 'Rejected'}${d.reviewer ? ` · ${esc(d.reviewer)}` : ''}</span></div>`;
+}
+
+function renderQueue() {
+  laneTiles($('laneStats'), S.contacts, 'contact', S.lanes, renderQueue);
+  const rows = contactRows();
+  $('qCount').textContent = `${rows.length} of ${S.contacts.length} contacts`;
+  if (!rows.find(r => r.id === S.sel)) S.sel = rows[0]?.id || null;
+  const head = `<div class="row head"><div>Fit</div><div>Person</div><div class="c-company">Company</div><div class="c-event">Event</div><div class="c-reasons">Why</div><div style="text-align:right">Decide</div></div>`;
+  $('qList').innerHTML = rows.length ? head + rows.map(c => {
+    const a = S.accounts[c.account_id], p = a?.profile || {}, ev = S.events[c.event_id];
+    return `<div class="row lane-${c.lane} ${c.id === S.sel ? 'sel' : ''} ${decisionOf('contact', c.id) ? 'done' : ''}" data-id="${esc(c.id)}">
+      <div class="score num">${c.score}</div>
+      <div><div class="t1">${esc(c.name)}</div><div class="t2">${esc(c.title || 'No title listed')}</div></div>
+      <div class="c-company"><div class="t1">${esc(a?.name || c.company || '—')}</div><div class="chips">${p.industry ? `<span class="chip">${esc(p.industry)}</span>` : ''}${p.hq_country ? `<span class="chip">${esc(p.hq_country)}</span>` : ''}${c.confidence === 'low' ? '<span class="chip warn">check data</span>' : ''}</div></div>
+      <div class="c-event"><div class="t1" style="font-weight:500">${esc(ev.short)}</div><div class="t2">${esc(c.role_at_event || '')} · ${until(ev.start)}</div></div>
+      <div class="c-reasons chips">${topReasons(c.reasons)}</div>
+      ${statusCell('contact', c.id)}
+    </div>`;
+  }).join('') : `<div class="empty">Nothing here. Try another lane or filter.</div>`;
+  $('qList').querySelectorAll('.row[data-id]').forEach(r => r.onclick = e => {
+    const act = e.target.closest('[data-act]')?.dataset.act;
+    S.sel = r.dataset.id;
+    if (act === 'approve') decide('contact', S.sel, 'approve');
+    else if (act === 'reject') { $('drawer').classList.add('open'); renderQueue(); openReject(); }
+    else { $('drawer').classList.add('open'); renderQueue(); }
+  });
+  renderDrawer();
+}
+const closeBtn = '<button class="close" data-close aria-label="Close">×</button>';
+function wireClose(el) { el.querySelector('[data-close]').onclick = () => el.classList.remove('open'); }
+
+function breakdown(item) {
+  if (item.role_fit === undefined) return '';
+  const parts = [['role_fit', 'Role', 45, 'var(--accent)'], ['company_fit', 'Company', 40, 'var(--partner)'], ['event_fit', 'Event', 15, 'var(--review)']];
+  return `<div class="bar">${parts.map(([k, , , c]) => `<span style="width:${item[k]}%;background:${c}"></span>`).join('')}</div>
+    <div class="legend">${parts.map(([k, l, m, c]) => `<span><i style="background:${c}"></i>${l} ${item[k]}/${m}</span>`).join('')}</div>`;
+}
+
+function reasonList(reasons) {
+  return `<ul class="reasons">${reasons.map(r => `<li class="${r.points ? '' : 'zero'}"><span>${esc(r.label)}</span><span>${r.points ? '+' + r.points : '0'}</span></li>`).join('')}</ul>`;
+}
+
+function profileBlock(a) {
+  if (!a) return '<div class="note">No company on the source page.</div>';
+  const p = a.profile || {};
+  return `<dl class="kv">
+    <dt>Segment</dt><dd><span class="chip lane lane-${laneForSegment(p)}">${esc(p.segment || 'unknown')}</span> ${esc(p.segment_reason || '')}</dd>
+    <dt>Industry</dt><dd>${esc(p.industry || '—')}</dd>
+    <dt>HQ</dt><dd>${esc(p.hq_country || '—')}</dd>
+    <dt>Employees</dt><dd>${esc(p.employees_band || 'unknown')}</dd>
+    <dt>ERP</dt><dd>${esc(p.erp || 'unknown')}${p.erp_evidence ? ` <span style="color:var(--muted)">(${esc(p.erp_evidence)})</span>` : ''}</dd>
+    <dt>Domain</dt><dd>${p.domain ? esc(p.domain) : '—'}</dd>
+  </dl><div class="note">Company details are AI estimates (confidence: ${esc(p.confidence || 'low')}). In production they'd come from an enrichment provider such as Apollo or Clay.</div>`;
+}
+const laneForSegment = p => p.existing_customer ? 'customer' : ({ buyer: 'fast_track', partner: 'partner', competitor: 'competitor' }[p.segment] || 'filtered');
+
+function decideBlock(type, id) {
+  const d = decisionOf(type, id);
+  const status = d ? `<div class="note"><span class="status ${d.decision}">${d.decision === 'approve' ? 'Approved' : 'Rejected'}</span>${d.reason ? ` · ${esc(d.reason)}` : ''}${d.reviewer ? ` · by ${esc(d.reviewer)}` : ''} · scoring had suggested <b>${esc(LANES[d.suggested_lane]?.label || d.suggested_lane)}</b> <button class="btn" data-act="clear" style="margin-left:6px;padding:2px 8px">Undo</button></div>` : '';
+  return `${status}
+    <div class="decide"><button class="btn ok ${d?.decision === 'approve' ? 'on' : ''}" data-act="approve">✓ Approve <span class="kbd">A</span></button><button class="btn no ${d?.decision === 'reject' ? 'on' : ''}" data-act="reject">✕ Reject <span class="kbd">R</span></button></div>
+    <div class="reject-reasons" id="rr-${type}">${REJECT_REASONS.map((r, i) => `<button data-reason="${esc(r)}"><span class="kbd">${i + 1}</span> ${esc(r)}</button>`).join('')}</div>`;
+}
+
+function wireDecide(el, type, id) {
+  el.querySelectorAll('[data-act]').forEach(b => b.onclick = () => {
+    const act = b.dataset.act;
+    if (act === 'reject') openReject(type); else decide(type, id, act);
+  });
+  el.querySelectorAll('[data-reason]').forEach(b => b.onclick = () => decide(type, id, 'reject', b.dataset.reason));
+}
+
+function renderDrawer() {
+  const c = S.contacts.find(x => x.id === S.sel), el = $('drawer');
+  if (!c) { el.innerHTML = '<div class="empty">Select a contact</div>'; return; }
+  const a = S.accounts[c.account_id], ev = S.events[c.event_id], src = safeUrl(c.source_url);
+  const colleagues = (a?.contact_ids || []).filter(id => id !== c.id).map(id => S.contacts.find(x => x.id === id)).filter(Boolean);
+  el.innerHTML = `${closeBtn}
+    <span class="chip lane lane-${c.lane}">${LANES[c.lane].label} · ${c.score}</span>
+    <h2 style="margin-top:8px">${esc(c.name)}</h2>
+    <div class="sub">${esc(c.title || 'No title listed')}<br><b style="color:var(--ink)">${esc(a?.name || c.company || '')}</b></div>
+    ${decideBlock('contact', c.id)}
+    <h3>Why this score</h3>${breakdown(c)}<div style="height:8px"></div>${reasonList(c.reasons)}
+    <h3>At the event</h3>
+    <dl class="kv"><dt>Event</dt><dd>${esc(ev.name)}</dd><dt>When</dt><dd>${fmtDate(ev.start, ev.end)} · ${until(ev.start)}</dd><dt>Role</dt><dd>${esc(c.role_at_event || '—')}</dd>${c.session ? `<dt>Session</dt><dd>${esc(c.session)}</dd>` : ''}<dt>Source</dt><dd>${src ? `<a href="${esc(src)}" target="_blank" rel="noopener">Open source page ↗</a>` : '—'} <span style="color:var(--muted)">(${c.source_check === 'exact' ? 'name found on saved copy' : c.source_check === 'partial' ? 'name partly matched' : 'not found on saved copy'})</span></dd><dt>Edition</dt><dd>${esc(c.edition || '—')}</dd></dl>
+    <h3>Data confidence: ${esc(c.confidence)}</h3>
+    ${c.confidence_notes.length ? `<div class="note">${c.confidence_notes.map(esc).join('<br>')}</div>` : '<div class="note">Current edition, name found on the saved source page.</div>'}
+    <h3>Company (estimated)</h3>${profileBlock(a)}
+    ${colleagues.length ? `<h3>Also from ${esc(a.name)}</h3><div class="chips">${colleagues.map(x => `<span class="chip">${esc(x.name)} · ${esc(S.events[x.event_id].short)}</span>`).join('')}</div>` : ''}
+    <div class="hint"><span class="kbd">J</span>/<span class="kbd">K</span> move · <span class="kbd">A</span> approve · <span class="kbd">R</span> then <span class="kbd">1</span>–<span class="kbd">6</span> reject · <span class="kbd">U</span> undo · <span class="kbd">O</span> open source</div>`;
+  wireDecide(el, 'contact', c.id); wireClose(el);
+}
+
+// ---------- accounts ----------
+function accountRows() {
+  const q = $('aq').value.trim().toLowerCase(), ev = $('aEvent').value, ind = $('aIndustry').value, showDecided = $('aDecided').checked;
+  return S.data.accounts.filter(a => {
+    const d = decisionOf('account', a.id);
+    if (d && !showDecided) return false;
+    if (!d && !S.aLanes.has(a.lane)) return false;
+    if (ev && !a.events.includes(ev)) return false;
+    if (ind && a.profile?.industry !== ind) return false;
+    if (q && !`${a.name} ${a.profile?.industry} ${a.profile?.domain}`.toLowerCase().includes(q)) return false;
+    return true;
+  }).sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
+}
+
+function renderAccounts() {
+  laneTiles($('acctStats'), S.data.accounts, 'account', S.aLanes, renderAccounts);
+  const rows = accountRows();
+  $('aCount').textContent = `${rows.length} of ${S.data.accounts.length} accounts`;
+  if (!rows.find(r => r.id === S.aSel)) S.aSel = rows[0]?.id || null;
+  const head = `<div class="row head"><div>Fit</div><div>Company</div><div class="c-company">Profile</div><div class="c-event">Events</div><div class="c-reasons">Why</div><div style="text-align:right">Decide</div></div>`;
+  $('aList').innerHTML = rows.length ? head + rows.map(a => {
+    const p = a.profile || {};
+    return `<div class="row lane-${a.lane} ${a.id === S.aSel ? 'sel' : ''} ${decisionOf('account', a.id) ? 'done' : ''}" data-id="${esc(a.id)}">
+      <div class="score num">${a.score}</div>
+      <div><div class="t1">${esc(a.name)}</div><div class="t2">${esc(p.domain || '')}${a.contact_ids.length ? ` · ${a.contact_ids.length} contact${a.contact_ids.length > 1 ? 's' : ''}` : ' · no contact yet'}</div></div>
+      <div class="c-company chips">${p.industry ? `<span class="chip">${esc(p.industry)}</span>` : ''}${p.hq_country ? `<span class="chip">${esc(p.hq_country)}</span>` : ''}${p.employees_band && p.employees_band !== 'unknown' ? `<span class="chip">${esc(p.employees_band)}</span>` : ''}</div>
+      <div class="c-event t2">${a.events.map(e => esc(S.events[e]?.short)).join(', ')}</div>
+      <div class="c-reasons chips">${topReasons(a.reasons)}</div>
+      ${statusCell('account', a.id)}
+    </div>`;
+  }).join('') : `<div class="empty">Nothing here. Try another lane or filter.</div>`;
+  $('aList').querySelectorAll('.row[data-id]').forEach(r => r.onclick = e => {
+    const act = e.target.closest('[data-act]')?.dataset.act;
+    S.aSel = r.dataset.id;
+    if (act === 'approve') decide('account', S.aSel, 'approve');
+    else if (act === 'reject') { $('aDrawer').classList.add('open'); renderAccounts(); openReject('account'); }
+    else { $('aDrawer').classList.add('open'); renderAccounts(); }
+  });
+  renderAccountDrawer();
+}
+
+function renderAccountDrawer() {
+  const a = S.accounts[S.aSel], el = $('aDrawer');
+  if (!a) { el.innerHTML = '<div class="empty">Select an account</div>'; return; }
+  const apps = S.data.appearances.filter(x => x.account_id === a.id);
+  const people = a.contact_ids.map(id => S.contacts.find(x => x.id === id)).filter(Boolean).sort((x, y) => y.score - x.score);
+  el.innerHTML = `${closeBtn}
+    <span class="chip lane lane-${a.lane}">${LANES[a.lane].label} · ${a.score}</span>
+    <h2 style="margin-top:8px">${esc(a.name)}</h2>
+    <div class="sub">${esc(a.profile?.industry || '')}${a.profile?.hq_country ? ' · ' + esc(a.profile.hq_country) : ''}</div>
+    ${decideBlock('account', a.id)}
+    <h3>Why this score</h3>${reasonList(a.reasons)}
+    <h3>At target events</h3>
+    <ul class="reasons">${a.events.map(e => { const ev = S.events[e]; const roles = [...new Set([...apps.filter(x => x.event_id === e).map(x => x.tier || x.role), ...people.filter(p => p.event_id === e).map(p => p.role_at_event)])]; return `<li><span>${esc(ev.short)} · ${until(ev.start)}</span><span style="font-weight:400;color:var(--muted)">${esc(roles.join(', '))}</span></li>`; }).join('')}</ul>
+    <h3>Named contacts</h3>
+    ${people.length ? `<ul class="reasons">${people.map(p => `<li><span>${esc(p.name)}<br><small style="color:var(--muted)">${esc(p.title || '')}</small></span><span>${p.score}</span></li>`).join('')}</ul>` : '<div class="note">No named person yet. Next step would be finding the head of order management or AP through an enrichment provider.</div>'}
+    <h3>Company (estimated)</h3>${profileBlock(a)}`;
+  wireDecide(el, 'account', a.id); wireClose(el);
+}
+
+// ---------- decisions ----------
+let rejectOpenFor = null;
+function openReject(type = 'contact') {
+  const el = $(`rr-${type}`);
+  if (!el) return;
+  el.classList.add('on'); rejectOpenFor = type;
+  el.scrollIntoView({ block: 'nearest' });
+}
+
+async function decide(type, id, decision, reason = null) {
+  if (!S.reviewer && !store.get('reviewerAsked')) await askReviewer();
+  const prev = decisionOf(type, id);
+  rejectOpenFor = null;
+  const res = await fetch('api/decisions', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ object_type: type, object_id: id, decision, reason, reviewer: S.reviewer || null }) });
+  if (!res.ok) { toast('Could not save. Try again.'); return; }
+  const saved = await res.json();
+  S.history.push(saved); applyDecision(saved);
+  if (decision !== 'clear') S.undo.push({ type, id, prev });
+  toast(decision === 'approve' ? 'Approved' : decision === 'reject' ? `Rejected${reason ? ': ' + reason : ''}` : 'Decision cleared');
+  if (type === 'contact') { if (decision !== 'clear') moveSel(1, true); renderQueue(); } else { if (decision !== 'clear') moveSelA(1, true); renderAccounts(); }
+  renderLearning(); renderExport();
+}
+
+async function undo() {
+  const last = S.undo.pop();
+  if (!last) return toast('Nothing to undo');
+  if (last.type === 'contact') S.sel = last.id; else S.aSel = last.id;
+  await decide(last.type, last.id, last.prev ? last.prev.decision : 'clear', last.prev?.reason);
+  S.undo.pop();
+}
+
+function moveSel(step, afterDecision = false) {
+  const rows = contactRows(), i = rows.findIndex(r => r.id === S.sel);
+  const next = rows[afterDecision ? i + 1 : Math.max(0, Math.min(rows.length - 1, i + step))];
+  if (next) S.sel = next.id;
+}
+function moveSelA(step, afterDecision = false) {
+  const rows = accountRows(), i = rows.findIndex(r => r.id === S.aSel);
+  const next = rows[afterDecision ? i + 1 : Math.max(0, Math.min(rows.length - 1, i + step))];
+  if (next) S.aSel = next.id;
+}
+
+function askReviewer() {
+  return new Promise(resolve => {
+    const dlg = $('whoDlg'); $('whoInput').value = S.reviewer;
+    dlg.onclose = () => {
+      store.set('reviewerAsked', '1');
+      if (dlg.returnValue === 'ok' && $('whoInput').value.trim()) { S.reviewer = $('whoInput').value.trim(); store.set('reviewer', S.reviewer); }
+      $('whoName').textContent = S.reviewer || '—';
+      resolve();
+    };
+    dlg.showModal();
+  });
+}
+
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, select, textarea') || e.metaKey || e.ctrlKey || e.altKey || $('whoDlg').open) return;
+  const type = S.view === 'queue' ? 'contact' : S.view === 'accounts' ? 'account' : null;
+  if (!type) return;
+  const id = type === 'contact' ? S.sel : S.aSel, k = e.key.toLowerCase();
+  const rerender = type === 'contact' ? renderQueue : renderAccounts, move = type === 'contact' ? moveSel : moveSelA;
+  if (k === 'j' || e.key === 'ArrowDown') { move(1); rerender(); scrollSel(); e.preventDefault(); }
+  else if (k === 'k' || e.key === 'ArrowUp') { move(-1); rerender(); scrollSel(); e.preventDefault(); }
+  else if (k === 'a' && id) decide(type, id, 'approve');
+  else if (k === 'r' && id) openReject(type);
+  else if (rejectOpenFor && /^[1-6]$/.test(e.key) && id) decide(type, id, 'reject', REJECT_REASONS[+e.key - 1]);
+  else if (k === 'u') undo();
+  else if (k === 'o' && type === 'contact') { const u = safeUrl(S.contacts.find(c => c.id === id)?.source_url); if (u) window.open(u, '_blank', 'noopener'); }
+  else if (e.key === 'Escape') { rejectOpenFor = null; rerender(); }
+});
+function scrollSel() { document.querySelector('.view.on .row.sel')?.scrollIntoView({ block: 'nearest' }); }
+
+// ---------- events ----------
+function renderEvents() {
+  $('eventCards').innerHTML = S.data.events.map(e => {
+    const cs = S.contacts.filter(c => c.event_id === e.id), accts = S.data.accounts.filter(a => a.events.includes(e.id));
+    const fast = cs.filter(c => c.lane === 'fast_track').length;
+    return `<div class="card">
+      <h4>${esc(e.name)}${e.generalmind_present ? '<span class="badge">GeneralMind exhibiting</span>' : ''}</h4>
+      <div class="when">${fmtDate(e.start, e.end)} · ${esc(e.city)} · ${esc(e.format)} · <b>${until(e.start)}</b></div>
+      <p>${esc(e.why)}</p>
+      <div class="nums"><div><b>${cs.length}</b>contacts</div><div><b>${fast}</b>fast track</div><div><b>${accts.length}</b>accounts</div></div>
+      <ul>${e.sources.map(s => { const u = safeUrl(s.url); return `<li>${u ? `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(s.type)}</a>` : esc(s.type)} · ${esc(s.edition)} edition</li>`; }).join('')}</ul>
+      ${e.date_note ? `<div class="note">${esc(e.date_note)}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ---------- learning ----------
+function renderLearning() {
+  const dec = S.contacts.map(c => ({ c, d: decisionOf('contact', c.id) })).filter(x => x.d);
+  const fastSeen = dec.filter(x => x.d.suggested_lane === 'fast_track'), filtSeen = dec.filter(x => x.d.suggested_lane === 'filtered');
+  const agreeN = fastSeen.filter(x => x.d.decision === 'approve').length + filtSeen.filter(x => x.d.decision === 'reject').length;
+  const agreeD = fastSeen.length + filtSeen.length;
+  const bands = [[85, 101], [70, 85], [60, 70], [45, 60], [0, 45]];
+  const bandRows = bands.map(([lo, hi]) => {
+    const inBand = dec.filter(x => x.d.score >= lo && x.d.score < hi), ok = inBand.filter(x => x.d.decision === 'approve').length;
+    const pct = inBand.length ? Math.round(100 * ok / inBand.length) : null;
+    return `<tr><td>${lo}–${Math.min(hi - 1, 100)}</td><td>${inBand.length}</td><td>${pct === null ? '—' : pct + '%'}</td><td><div class="meter"><span style="width:${pct || 0}%"></span></div></td></tr>`;
+  }).join('');
+  const reasons = {};
+  dec.filter(x => x.d.decision === 'reject').forEach(x => reasons[x.d.reason || 'No reason'] = (reasons[x.d.reason || 'No reason'] || 0) + 1);
+  const factors = {};
+  dec.forEach(({ c, d }) => c.tags.filter(t => /^(function|seniority|industry|size|segment):/.test(t)).forEach(t => {
+    factors[t] = factors[t] || { n: 0, ok: 0 }; factors[t].n++; if (d.decision === 'approve') factors[t].ok++;
+  }));
+  const factorRows = Object.entries(factors).filter(([, v]) => v.n >= 3).sort((a, b) => b[1].n - a[1].n).slice(0, 14).map(([t, v]) => {
+    const pct = Math.round(100 * v.ok / v.n), [kind, val] = t.split(':');
+    const hint = pct <= 25 ? 'Reviewers mostly reject: lower its weight' : pct >= 85 ? 'Reviewers mostly approve: candidate for more weight' : '';
+    return `<tr><td>${esc(kind)}</td><td>${esc(FUNCTION_LABELS[val] && kind === 'function' ? FUNCTION_LABELS[val] : val)}</td><td>${v.n}</td><td>${pct}%</td><td style="color:var(--muted)">${hint}</td></tr>`;
+  }).join('');
+  $('learning').innerHTML = `
+    <div class="panel">
+      <h3>Is the scoring ready to run on its own?</h3>
+      <p class="lead">Same idea as Autopilot: start with a person reviewing everything, measure how often the score's suggestion matches the reviewer, and only let a score band skip review once agreement is consistently high. Each decision is stored with the lane the scoring suggested at the time.</p>
+      <div class="grid2">
+        <div><div class="big num">${agreeD ? Math.round(100 * agreeN / agreeD) + '%' : '—'}</div><div style="color:var(--muted)">agreement on clear-cut leads (fast track approved, filtered rejected), from ${agreeD} decisions · ${dec.length} contacts reviewed in total</div></div>
+        <div id="sim"></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="panel"><h3>Approval rate by score band</h3><p class="lead">If the score is well calibrated, approval rises with the score.</p>
+        <table class="t"><thead><tr><th>Score</th><th>Reviewed</th><th>Approved</th><th></th></tr></thead><tbody>${bandRows}</tbody></table></div>
+      <div class="panel"><h3>Why leads were rejected</h3><p class="lead">The reasons point at which rule to change.</p>
+        ${Object.keys(reasons).length ? `<table class="t"><tbody>${Object.entries(reasons).sort((a, b) => b[1] - a[1]).map(([r, n]) => `<tr><td>${esc(r)}</td><td>${n}</td></tr>`).join('')}</tbody></table>` : '<div class="note">No rejections yet.</div>'}</div>
+    </div>
+    <div class="panel"><h3>What reviewers are teaching the scoring</h3><p class="lead">Approval rate per scoring factor (factors with at least 3 decisions). This is the input for re-weighting scoring.toml; in a fuller version the weights would be refitted from these decisions on a schedule and checked against past reviews before going live.</p>
+      ${factorRows ? `<table class="t"><thead><tr><th>Factor</th><th>Value</th><th>Reviewed</th><th>Approved</th><th></th></tr></thead><tbody>${factorRows}</tbody></table>` : '<div class="note">Review a few more contacts to see this.</div>'}</div>`;
+  renderSim();
+}
+
+function renderSim(th = +(store.get('simTh') || S.data.meta.lanes.fast_track)) {
+  const buyers = S.contacts.filter(c => ['fast_track', 'review', 'filtered'].includes(c.lane));
+  const over = buyers.filter(c => c.score >= th && c.confidence !== 'low');
+  const reviewed = over.map(c => decisionOf('contact', c.id)).filter(Boolean), ok = reviewed.filter(d => d.decision === 'approve').length;
+  $('sim').innerHTML = `<div style="display:flex;justify-content:space-between"><b>Skip-review threshold</b><b class="num">${th}</b></div>
+    <input type="range" min="40" max="95" step="1" value="${th}" id="simRange">
+    <div style="color:var(--muted);font-size:13px">At ${th}, <b style="color:var(--ink)">${over.length}</b> of ${buyers.length} buyer contacts would go straight to HubSpot. ${reviewed.length ? `Of those you've reviewed, you approved <b style="color:var(--ink)">${Math.round(100 * ok / reviewed.length)}%</b> (${ok}/${reviewed.length}).` : 'Review some of them to see how often you would have agreed.'}</div>`;
+  $('simRange').oninput = e => { store.set('simTh', e.target.value); renderSim(+e.target.value); };
+}
+
+// ---------- export ----------
+function renderExport() {
+  const okC = S.contacts.filter(c => decisionOf('contact', c.id)?.decision === 'approve');
+  const okA = new Set([...S.data.accounts.filter(a => decisionOf('account', a.id)?.decision === 'approve').map(a => a.id), ...okC.map(c => c.account_id).filter(Boolean)]);
+  const noDomain = [...okA].filter(id => !S.accounts[id]?.profile?.domain).length;
+  $('exportView').innerHTML = `
+    <div class="panel">
+      <h3>Export approved leads for HubSpot</h3>
+      <p class="lead">Two CSVs in HubSpot's import format, linked by <b>Company domain name</b>, so contacts attach to their companies on import. HubSpot de-duplicates companies by domain; contacts are matched by email once enrichment adds one.</p>
+      <div class="nums" style="display:flex;gap:28px;margin:6px 0 16px"><div><div class="big num">${okC.length}</div><div style="color:var(--muted)">approved contacts</div></div><div><div class="big num">${okA.size}</div><div style="color:var(--muted)">companies</div></div></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn primary" href="api/export/companies.csv">Download companies.csv</a><a class="btn primary" href="api/export/contacts.csv">Download contacts.csv</a></div>
+      ${noDomain ? `<div class="note">${noDomain} approved compan${noDomain === 1 ? 'y has' : 'ies have'} no domain yet; HubSpot will create ${noDomain === 1 ? 'it' : 'them'} by name. Enrichment would fill this in.</div>` : ''}
+    </div>
+    <div class="panel">
+      <h3>What the import carries</h3>
+      <p class="lead">Standard HubSpot fields (name, job title, company, domain, country, industry) plus a few custom properties so sales can see why a lead is there: fit score, fit reasons, source event, role at the event, session and the source URL. The Email column is empty on purpose: public event pages don't list emails, and contact details should come from a provider with a proper legal basis.</p>
+      <p class="lead" style="margin:0">Next step: push straight to HubSpot through its API (upsert companies by domain and contacts by email, set the owner, and enrol in an event sequence), instead of downloading files.</p>
+    </div>`;
+}
+
+// ---------- about ----------
+function renderAbout() {
+  const n = S.contacts.length, a = S.data.accounts.length;
+  $('about').innerHTML = `
+    <h2>What this is</h2>
+    <p>A working first version of an event-led lead engine for GeneralMind. It takes 10 upcoming events where your buyers go, pulls the people and companies listed on their public pages, scores each one with visible reasons, and puts them in front of a person to approve or reject. Approved leads export in HubSpot's import format.</p>
+    <p>It works the same way as Autopilot: a score with a threshold, a cockpit for the uncertain cases, and a record of every human decision so the scoring can learn and, step by step, earn the right to skip review.</p>
+    <div class="flow">
+      <div>Event pages<small>speakers, agendas, exhibitors</small></div><span>→</span>
+      <div>Saved copies<small>every lead traceable</small></div><span>→</span>
+      <div>Extraction<small>name, title, company, talk</small></div><span>→</span>
+      <div>Check<small>each lead found on its page</small></div><span>→</span>
+      <div>Company profile<small>segment, industry, size</small></div><span>→</span>
+      <div>Score + lane<small>scoring.toml</small></div><span>→</span>
+      <div>Cockpit<small>approve / reject + reason</small></div><span>→</span>
+      <div>HubSpot<small>CSV now, API next</small></div>
+    </div>
+    <h2>In numbers</h2>
+    <p>${S.data.events.length} events · ${n} named contacts · ${a} companies. Every contact links to the page it came from, and the saved copy of that page was checked for the name.</p>
+    <h2>Lanes</h2>
+    <ul>
+      <li><b>Fast track</b>: strong role and company fit, and the data looks solid. Suggested approve.</li>
+      <li><b>Review</b>: plausible but uncertain. A person decides.</li>
+      <li><b>Filtered</b>: low fit, vendors, associations, universities. Still visible, so a reviewer can rescue one.</li>
+      <li><b>Partners</b>: SAP partners, integrators and consultancies. A different motion (referrals and co-selling), so kept apart.</li>
+      <li><b>Competitors</b>: other order, invoice and procurement automation vendors. Not leads, but useful market intel.</li>
+      <li><b>Customers</b>: existing GeneralMind customers. Routed to the account owner rather than prospected.</li>
+    </ul>
+    <h2>What v1 leaves out on purpose</h2>
+    <p>No emails or phone numbers (public pages don't carry them, and they should come from an enrichment provider with a proper legal basis). No LinkedIn scraping. Company details are AI estimates and labelled as such. No login: anyone with the link can review.</p>`;
+}
+
+// ---------- wiring ----------
+$('tabs').querySelectorAll('button').forEach(b => b.onclick = () => {
+  S.view = b.dataset.view;
+  $('tabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === `v-${S.view}`));
+  store.set('view', S.view);
+});
+['q', 'fEvent', 'fFunction', 'fSort', 'fDecided'].forEach(id => $(id).addEventListener('input', renderQueue));
+['aq', 'aEvent', 'aIndustry', 'aDecided'].forEach(id => $(id).addEventListener('input', renderAccounts));
+$('whoBtn').onclick = () => { store.set('reviewerAsked', ''); askReviewer(); };
+load().then(() => { const v = store.get('view'); if (v) document.querySelector(`#tabs [data-view="${v}"]`)?.click(); })
+  .catch(err => { document.querySelector('main').innerHTML = `<div class="empty">Could not load data: ${esc(err.message)}</div>`; });
+</script>
+</body>
+</html>
