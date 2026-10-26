@@ -56,10 +56,14 @@ def code_ok(value):
 @app.middleware("http")
 async def require_code(request: Request, call_next):
     if request.url.path in OPEN_PATHS or code_ok(request.cookies.get("gm_code")):
-        return await call_next(request)
-    if request.url.path.startswith("/api/"):
-        return JSONResponse({"detail": "Access code needed"}, status_code=401)
-    return HTMLResponse(LOGIN_PAGE.replace("ERROR", ""), status_code=401)
+        resp = await call_next(request)
+    elif request.url.path.startswith("/api/"):
+        resp = JSONResponse({"detail": "Access code needed"}, status_code=401)
+    else:
+        resp = HTMLResponse(LOGIN_PAGE.replace("ERROR", ""), status_code=401)
+    # Never let Cloudflare (or any shared cache) keep a copy of a page that sits behind the code.
+    resp.headers["Cache-Control"] = "private, no-store"
+    return resp
 
 
 @app.post("/login")
@@ -97,15 +101,15 @@ def ensure_built():
 
 @app.get("/")
 def index():
-    return FileResponse(os.path.join(STATIC, "index.html"), headers={"Cache-Control": "no-cache"})
+    return FileResponse(os.path.join(STATIC, "index.html"))
 
 
 @app.get("/writeup")
 def writeup():
-    return FileResponse(os.path.join(STATIC, "writeup.html"), headers={"Cache-Control": "no-cache"})
+    return FileResponse(os.path.join(STATIC, "writeup.html"))
 
 
-@app.get("/writeup.pdf")
+@app.get("/writeup-pdf")  # no file extension, so Cloudflare doesn't cache it by default
 def writeup_pdf():
     return FileResponse(os.path.join(STATIC, "writeup.pdf"), media_type="application/pdf",
                         filename="Pierre_Park_GeneralMind_case_study.pdf", content_disposition_type="inline")
