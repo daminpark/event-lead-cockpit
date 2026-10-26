@@ -177,7 +177,64 @@ dialog { border: 1px solid var(--line); border-radius: 12px; background: var(--p
 dialog::backdrop { background: rgba(0,0,0,.35); }
 dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-2); color: var(--ink); margin: 10px 0 14px; }
 
+.pill { display: inline-flex; align-items: center; gap: 6px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--faint); display: inline-block; }
+.dot.ok { background: var(--fast); box-shadow: 0 0 0 3px var(--fast-soft); }
+.dot.bad { background: var(--competitor); box-shadow: 0 0 0 3px var(--competitor-soft); }
+.fb-btn { position: fixed; right: 18px; bottom: 18px; z-index: 30; border: 0; border-radius: 999px; padding: 9px 16px; background: var(--ink); color: var(--bg); font-weight: 600; box-shadow: var(--shadow); }
+body.picking * { cursor: crosshair !important; }
+.fb-hover { outline: 2px solid var(--accent) !important; outline-offset: 2px; }
+dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter, sans-serif; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-2); color: var(--ink); margin: 10px 0 12px; resize: vertical; }
+.brief { background: var(--accent-soft); border-radius: 10px; padding: 11px 13px; margin: 6px 0 12px; font-size: 13.5px; }
+.brief .op { margin-top: 6px; color: var(--muted); font-size: 13px; }
+.brief .op b { color: var(--ink); }
+.row .brief-line { color: var(--ink); font-size: 12.5px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.chip.dnc { background: var(--competitor-soft); color: var(--competitor); font-weight: 600; }
+.chip.hs { background: var(--customer-soft); color: var(--customer); font-weight: 600; }
+
+.crit { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; align-items: start; }
+.crit .side { position: sticky; top: 76px; }
+.ed h4 { margin: 14px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--faint); }
+.ed .lever { display: grid; grid-template-columns: minmax(150px, 220px) 1fr 44px; gap: 12px; align-items: center; padding: 6px 0; border-bottom: 1px dashed var(--line-2); }
+.ed .lever label { font-size: 13px; }
+.ed .lever output { font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.ed .lever.changed label::after { content: " •"; color: var(--accent); font-weight: 700; }
+.ed .kw { grid-column: 1 / -1; display: none; }
+.ed .kw.on { display: block; }
+.ed .kw textarea { margin: 4px 0 8px; font-size: 12.5px; }
+.ed .kwbtn { border: 0; background: none; color: var(--accent); font-size: 12px; padding: 0; margin-left: 6px; }
+.cap { display: flex; height: 26px; border-radius: 8px; overflow: hidden; margin: 8px 0; font-size: 11.5px; font-weight: 600; color: #fff; }
+.cap span { display: flex; align-items: center; padding: 0 8px; white-space: nowrap; overflow: hidden; }
+.delta.up { color: var(--fast); }
+.delta.down { color: var(--competitor); }
+.versions td button { padding: 2px 8px; font-size: 12px; }
+.tag-active { background: var(--fast-soft); color: var(--fast); border-radius: 5px; padding: 1px 6px; font-size: 11px; font-weight: 600; }
+.diff { font: 12px ui-monospace, Menlo, monospace; background: var(--panel-2); border: 1px solid var(--line-2); border-radius: 8px; padding: 8px 10px; max-height: 160px; overflow: auto; margin: 8px 0; }
+.err { color: var(--competitor); font-size: 13px; margin: 6px 0; }
+.pb .md h1 { font-size: 17px; margin: 0 0 8px; }
+.pb .md h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--faint); margin: 14px 0 6px; }
+.pb .md p, .pb .md li { font-size: 13.5px; line-height: 1.55; }
+.pb .md ul, .pb .md ol { padding-left: 18px; margin: 4px 0; }
+.pb textarea { font: 12.5px/1.55 ui-monospace, Menlo, monospace; min-height: 360px; }
+.tiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+.tile { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.tile .v { font-size: 26px; font-weight: 650; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.tile .k { color: var(--muted); font-size: 12px; }
+.funnel { display: flex; flex-direction: column; gap: 6px; }
+.funnel .f { display: grid; grid-template-columns: 170px 1fr 60px; gap: 10px; align-items: center; font-size: 13px; }
+.funnel .f .b { height: 18px; border-radius: 5px; background: var(--accent); min-width: 2px; }
+.funnel .f.later { color: var(--faint); }
+.funnel .f.later .b { background: var(--line); }
+.spark { display: flex; align-items: flex-end; gap: 3px; height: 60px; }
+.spark span { flex: 1; background: var(--accent); border-radius: 3px 3px 0 0; min-height: 2px; }
+.logl { list-style: none; padding: 0; margin: 0; font-size: 13px; }
+.logl li { display: flex; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--line-2); }
+.logl li time { color: var(--faint); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
 @media (max-width: 1100px) {
+  .crit { grid-template-columns: 1fr; }
+  .crit .side { position: static; }
+  .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   header { flex-wrap: wrap; row-gap: 8px; }
   nav { order: 3; width: 100%; margin-left: 0; }
   .layout { grid-template-columns: 1fr; }
@@ -197,6 +254,10 @@ dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid 
   .head { display: none; }
   .grid2 { grid-template-columns: 1fr; }
   .cards { grid-template-columns: 1fr; }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ed .lever { grid-template-columns: 1fr 44px; }
+  .ed .lever input[type=range] { grid-column: 1 / -1; grid-row: 2; }
+  .funnel .f { grid-template-columns: 120px 1fr 40px; }
 }
 </style>
 </head>
@@ -207,12 +268,19 @@ dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid 
     <button data-view="queue" class="on">Contacts</button>
     <button data-view="accounts">Accounts</button>
     <button data-view="events">Events</button>
-    <button data-view="learning">Learning</button>
-    <button data-view="export">Export</button>
+    <button data-view="criteria">Criteria</button>
+    <button data-view="playbooks">Playbooks</button>
+    <button data-view="insights">Insights</button>
+    <button data-view="hubspot">HubSpot</button>
     <button data-view="about">How it works</button>
   </nav>
-  <div class="who"><span id="built"></span><button id="whoBtn" title="Your name is saved with your decisions">Reviewer: <b id="whoName">—</b></button></div>
+  <div class="who">
+    <button id="hsPill" class="pill" title="HubSpot connection"><i class="dot"></i>HubSpot</button>
+    <span id="built"></span>
+    <button id="whoBtn" title="Your name is saved with your decisions">Reviewer: <b id="whoName">—</b></button>
+  </div>
 </header>
+<button id="fbBtn" class="fb-btn" title="Point at something and leave a note">Feedback</button>
 
 <main>
   <section class="view on" id="v-queue">
@@ -251,8 +319,10 @@ dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid 
   </section>
 
   <section class="view" id="v-events"><div class="cards" id="eventCards"></div></section>
-  <section class="view" id="v-learning"><div id="learning"></div></section>
-  <section class="view" id="v-export"><div id="exportView"></div></section>
+  <section class="view" id="v-criteria"><div id="criteria"></div></section>
+  <section class="view" id="v-playbooks"><div id="playbooks"></div></section>
+  <section class="view" id="v-insights"><div id="insights"></div><div id="learning"></div></section>
+  <section class="view" id="v-hubspot"><div id="exportView"></div></section>
   <section class="view" id="v-about"><div class="panel prose" id="about"></div></section>
 </main>
 
@@ -262,6 +332,14 @@ dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid 
     <div style="color:var(--muted);font-size:13px;margin-top:4px">Your first name is saved with each decision, so the team can see who decided what.</div>
     <input id="whoInput" maxlength="40" placeholder="e.g. Tom" autocomplete="given-name">
     <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" value="cancel">Skip</button><button class="btn primary" value="ok">Save</button></div>
+  </form>
+</dialog>
+<dialog id="fbDlg">
+  <form method="dialog">
+    <b>Feedback</b>
+    <div id="fbTarget" class="note" style="margin:8px 0 0"></div>
+    <textarea id="fbText" rows="4" placeholder="What should change?"></textarea>
+    <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" value="cancel">Cancel</button><button class="btn primary" value="ok">Send</button></div>
   </form>
 </dialog>
 <div class="toast" id="toast"></div>
@@ -303,16 +381,20 @@ const decisionOf = (t, id) => S.decisions.get(key(t, id));
 function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 1800); }
 
 async function load() {
-  const res = await fetch('api/data');
+  const [res, cfg] = await Promise.all([fetch('api/data'), fetch('api/config')]);
   const d = await res.json();
-  S.data = d;
+  S.data = d; S.config = await cfg.json();
+  S.events = {}; S.accounts = {}; S.decisions = new Map();
   d.events.sort((a, b) => a.start.localeCompare(b.start));
   d.events.forEach(e => S.events[e.id] = e);
   d.accounts.forEach(a => S.accounts[a.id] = a);
   S.contacts = d.contacts;
   S.history = d.decisions;
   d.decisions.forEach(applyDecision);
-  $('built').textContent = d.meta.built_at ? `Data built ${d.meta.built_at.replace('T', ' ')}` : '';
+  S.suppressed = new Map(d.suppression.map(s => [s.key, s]));
+  S.hs = new Map(d.hubspot.map(h => [key(h.object_type, h.object_id), h.hubspot_id]));
+  $('built').textContent = `Scoring v${d.meta.scoring_version} · build ${d.meta.app_version}`;
+  refreshHubspot();
   S.reviewer = store.get('reviewer') || '';
   $('whoName').textContent = S.reviewer || '—';
   fillFilters();
@@ -332,7 +414,8 @@ function fillFilters() {
   $('aIndustry').innerHTML = '<option value="">All industries</option>' + inds.map(i => `<option>${esc(i)}</option>`).join('');
 }
 
-function renderAll() { renderQueue(); renderAccounts(); renderEvents(); renderLearning(); renderExport(); renderAbout(); }
+function renderAll() { renderQueue(); renderAccounts(); renderEvents(); renderCriteria(); renderPlaybooks(); renderInsights(); renderExport(); renderAbout(); }
+const isSuppressed = c => S.suppressed.has(c.id) || (c.account_id && S.suppressed.has(S.accounts[c.account_id]?.profile?.domain));
 
 // ---------- lane stat tiles ----------
 function laneTiles(el, items, type, active, onToggle) {
@@ -395,7 +478,7 @@ function renderQueue() {
       <div><div class="t1">${esc(c.name)}</div><div class="t2">${esc(c.title || 'No title listed')}</div></div>
       <div class="c-company"><div class="t1">${esc(a?.name || c.company || '—')}</div><div class="chips">${p.industry ? `<span class="chip">${esc(p.industry)}</span>` : ''}${p.hq_country ? `<span class="chip">${esc(p.hq_country)}</span>` : ''}${c.confidence === 'low' ? '<span class="chip warn">check data</span>' : ''}</div></div>
       <div class="c-event"><div class="t1" style="font-weight:500">${esc(ev.short)}</div><div class="t2">${esc(c.role_at_event || '')} · ${until(ev.start)}</div></div>
-      <div class="c-reasons chips">${topReasons(c.reasons)}</div>
+      <div class="c-reasons">${isSuppressed(c) ? '<span class="chip dnc">Do not contact</span> ' : ''}${S.hs.has(key('contact', c.id)) ? '<span class="chip hs">In HubSpot</span> ' : ''}${c.brief ? `<div class="brief-line">${esc(c.brief)}</div>` : `<div class="chips">${topReasons(c.reasons)}</div>`}</div>
       ${statusCell('contact', c.id)}
     </div>`;
   }).join('') : `<div class="empty">Nothing here. Try another lane or filter.</div>`;
@@ -444,7 +527,26 @@ function decideBlock(type, id) {
     <div class="reject-reasons" id="rr-${type}">${REJECT_REASONS.map((r, i) => `<button data-reason="${esc(r)}"><span class="kbd">${i + 1}</span> ${esc(r)}</button>`).join('')}</div>`;
 }
 
+function extrasBlock(type, id, label, domain) {
+  const k = type === 'account' ? domain : id, dnc = k && S.suppressed.has(k);
+  const hid = S.hs.get(key(type, id)), url = hid && S.hsStatus?.portal_id ? `https://app.hubspot.com/contacts/${S.hsStatus.portal_id}/record/${type === 'account' ? '0-2' : '0-1'}/${hid}` : null;
+  return `<div class="chips" style="margin-top:10px">
+    ${k ? `<button class="btn" data-dnc="${esc(k)}" data-label="${esc(label)}" data-on="${dnc ? 1 : 0}" style="font-size:12px;padding:3px 9px">${dnc ? 'Remove from do-not-contact' : 'Do not contact'}</button>` : ''}
+    ${hid ? (url ? `<a class="chip hs" href="${esc(url)}" target="_blank" rel="noopener">Open in HubSpot ↗</a>` : '<span class="chip hs">In HubSpot</span>') : ''}
+  </div>`;
+}
+
+async function toggleSuppression(k, label, on) {
+  const res = await fetch('api/suppression', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ key: k, label, reason: on ? null : 'Asked not to be contacted', remove: !!on }) });
+  if (!res.ok) return toast('Could not save');
+  if (on) S.suppressed.delete(k); else S.suppressed.set(k, { key: k, label });
+  toast(on ? 'Removed from do-not-contact' : 'Added to do-not-contact: excluded from export and HubSpot');
+  renderQueue(); renderAccounts(); renderExport();
+}
+
 function wireDecide(el, type, id) {
+  el.querySelectorAll('[data-dnc]').forEach(b => b.onclick = () => toggleSuppression(b.dataset.dnc, b.dataset.label, b.dataset.on === '1'));
   el.querySelectorAll('[data-act]').forEach(b => b.onclick = () => {
     const act = b.dataset.act;
     if (act === 'reject') openReject(type); else decide(type, id, act);
@@ -461,7 +563,9 @@ function renderDrawer() {
     <span class="chip lane lane-${c.lane}">${LANES[c.lane].label} · ${c.score}</span>
     <h2 style="margin-top:8px">${esc(c.name)}</h2>
     <div class="sub">${esc(c.title || 'No title listed')}<br><b style="color:var(--ink)">${esc(a?.name || c.company || '')}</b></div>
+    ${c.brief ? `<div class="brief">${esc(c.brief)}${c.opener ? `<div class="op"><b>Opener:</b> ${esc(c.opener)}</div>` : ''}</div>` : ''}
     ${decideBlock('contact', c.id)}
+    ${extrasBlock('contact', c.id, c.name)}
     <h3>Why this score</h3>${breakdown(c)}<div style="height:8px"></div>${reasonList(c.reasons)}
     <h3>At the event</h3>
     <dl class="kv"><dt>Event</dt><dd>${esc(ev.name)}</dd><dt>When</dt><dd>${fmtDate(ev.start, ev.end)} · ${until(ev.start)}</dd><dt>Role</dt><dd>${esc(c.role_at_event || '—')}</dd>${c.session ? `<dt>Session</dt><dd>${esc(c.session)}</dd>` : ''}<dt>Source</dt><dd>${src ? `<a href="${esc(src)}" target="_blank" rel="noopener">Open source page ↗</a>` : '—'} <span style="color:var(--muted)">(${c.source_check === 'exact' ? 'name found on saved copy' : c.source_check === 'partial' ? 'name partly matched' : 'not found on saved copy'})</span></dd><dt>Edition</dt><dd>${esc(c.edition || '—')}</dd></dl>
@@ -524,6 +628,7 @@ function renderAccountDrawer() {
     <h2 style="margin-top:8px">${esc(a.name)}</h2>
     <div class="sub">${esc(a.profile?.industry || '')}${a.profile?.hq_country ? ' · ' + esc(a.profile.hq_country) : ''}</div>
     ${decideBlock('account', a.id)}
+    ${extrasBlock('account', a.id, a.name, a.profile?.domain)}
     <h3>Why this score</h3>${reasonList(a.reasons)}
     <h3>At target events</h3>
     <ul class="reasons">${a.events.map(e => { const ev = S.events[e]; const roles = [...new Set([...apps.filter(x => x.event_id === e).map(x => x.tier || x.role), ...people.filter(p => p.event_id === e).map(p => p.role_at_event)])]; return `<li><span>${esc(ev.short)} · ${until(ev.start)}</span><span style="font-weight:400;color:var(--muted)">${esc(roles.join(', '))}</span></li>`; }).join('')}</ul>
@@ -554,7 +659,7 @@ async function decide(type, id, decision, reason = null) {
   if (decision !== 'clear') S.undo.push({ type, id, prev });
   toast(decision === 'approve' ? 'Approved' : decision === 'reject' ? `Rejected${reason ? ': ' + reason : ''}` : 'Decision cleared');
   if (type === 'contact') { if (decision !== 'clear') moveSel(1, true); renderQueue(); } else { if (decision !== 'clear') moveSelA(1, true); renderAccounts(); }
-  renderLearning(); renderExport();
+  renderInsights(); renderExport();
 }
 
 async function undo() {
@@ -675,25 +780,375 @@ function renderSim(th = +(store.get('simTh') || S.data.meta.lanes.fast_track)) {
   $('simRange').oninput = e => { store.set('simTh', e.target.value); renderSim(+e.target.value); };
 }
 
-// ---------- export ----------
+// ---------- HubSpot and export ----------
+async function refreshHubspot() {
+  try { S.hsStatus = await (await fetch('api/hubspot/status')).json(); } catch { S.hsStatus = { ok: false, configured: false, message: 'Could not reach the server' }; }
+  const st = S.hsStatus, dot = $('hsPill').querySelector('.dot');
+  dot.className = 'dot ' + (st.ok ? 'ok' : st.configured ? 'bad' : '');
+  $('hsPill').title = st.message || '';
+  renderExport();
+}
+
+function approvedSets() {
+  const okC = S.contacts.filter(c => decisionOf('contact', c.id)?.decision === 'approve' && !isSuppressed(c));
+  const okA = new Set([...S.data.accounts.filter(a => decisionOf('account', a.id)?.decision === 'approve' && !S.suppressed.has(a.profile?.domain)).map(a => a.id), ...okC.map(c => c.account_id).filter(Boolean)]);
+  return { okC, okA };
+}
+
 function renderExport() {
-  const okC = S.contacts.filter(c => decisionOf('contact', c.id)?.decision === 'approve');
-  const okA = new Set([...S.data.accounts.filter(a => decisionOf('account', a.id)?.decision === 'approve').map(a => a.id), ...okC.map(c => c.account_id).filter(Boolean)]);
+  if (!S.data) return;
+  const { okC, okA } = approvedSets(), st = S.hsStatus || {};
   const noDomain = [...okA].filter(id => !S.accounts[id]?.profile?.domain).length;
+  const inHs = { contact: okC.filter(c => S.hs.has(key('contact', c.id))).length, account: [...okA].filter(id => S.hs.has(key('account', id))).length };
   $('exportView').innerHTML = `
-    <div class="panel">
-      <h3>Export approved leads for HubSpot</h3>
-      <p class="lead">Two CSVs in HubSpot's import format, linked by <b>Company domain name</b>, so contacts attach to their companies on import. HubSpot de-duplicates companies by domain; contacts are matched by email once enrichment adds one.</p>
-      <div class="nums" style="display:flex;gap:28px;margin:6px 0 16px"><div><div class="big num">${okC.length}</div><div style="color:var(--muted)">approved contacts</div></div><div><div class="big num">${okA.size}</div><div style="color:var(--muted)">companies</div></div></div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn primary" href="api/export/companies.csv">Download companies.csv</a><a class="btn primary" href="api/export/contacts.csv">Download contacts.csv</a></div>
-      ${noDomain ? `<div class="note">${noDomain} approved compan${noDomain === 1 ? 'y has' : 'ies have'} no domain yet; HubSpot will create ${noDomain === 1 ? 'it' : 'them'} by name. Enrichment would fill this in.</div>` : ''}
+    <div class="grid2">
+      <div class="panel">
+        <h3><i class="dot ${st.ok ? 'ok' : st.configured ? 'bad' : ''}"></i>&nbsp; HubSpot connection</h3>
+        <p class="lead">${st.ok ? `Connected to portal ${esc(st.portal_id || '')}. The light in the header turns red if the token expires or HubSpot stops answering.` : st.configured ? `Not healthy: ${esc(st.message)}` : 'No token configured yet. Export the CSVs below in the meantime.'}</p>
+        <dl class="kv"><dt>Last push</dt><dd>${st.last_sync ? `${esc(st.last_sync.created_at.replace('T', ' ').slice(0, 16))} UTC · ${esc(st.last_sync.message)}` : '—'}</dd>
+        <dt>In HubSpot</dt><dd>${S.data.hubspot.filter(h => h.object_type === 'account').length} companies · ${S.data.hubspot.filter(h => h.object_type === 'contact').length} contacts</dd></dl>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+          <button class="btn primary" id="pushBtn" ${st.ok ? '' : 'disabled'}>Push ${okC.length} contacts and ${okA.size} companies</button>
+          <button class="btn" id="hsRefresh">Check connection</button>
+        </div>
+        <div id="pushResult"></div>
+      </div>
+      <div class="panel">
+        <h3>Approved and ready</h3>
+        <div class="nums" style="display:flex;gap:28px;margin:6px 0 12px"><div><div class="big num">${okC.length}</div><div style="color:var(--muted)">contacts · ${inHs.contact} already in HubSpot</div></div><div><div class="big num">${okA.size}</div><div style="color:var(--muted)">companies · ${inHs.account} already in HubSpot</div></div></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="api/export/companies.csv">companies.csv</a><a class="btn" href="api/export/contacts.csv">contacts.csv</a></div>
+        <p class="lead" style="margin-top:10px">The same data as HubSpot import files, linked by Company domain name. Leads on the do-not-contact list (${S.suppressed.size}) are never exported or pushed.</p>
+        ${noDomain ? `<div class="note">${noDomain} approved compan${noDomain === 1 ? 'y has' : 'ies have'} no domain yet, so ${noDomain === 1 ? 'it is' : 'they are'} matched by our own id instead. Enrichment would fill this in.</div>` : ''}
+      </div>
     </div>
     <div class="panel">
-      <h3>What the import carries</h3>
-      <p class="lead">Standard HubSpot fields (name, job title, company, domain, country, industry) plus a few custom properties so sales can see why a lead is there: fit score, fit reasons, source event, role at the event, session and the source URL. The Email column is empty on purpose: public event pages don't list emails, and contact details should come from a provider with a proper legal basis.</p>
-      <p class="lead" style="margin:0">Next step: push straight to HubSpot through its API (upsert companies by domain and contacts by email, set the owner, and enrol in an event sequence), instead of downloading files.</p>
+      <h3>How records map, and why there are no duplicates</h3>
+      <p class="lead">Each company and contact carries our own stable id (<b>GM account id</b>, <b>GM lead id</b>). A push looks for the record we pushed before, then for that id, then (for companies) for the domain, and only creates a record if none exists. Pushing twice updates; it never duplicates. Contacts are linked to their company.</p>
+      <table class="t"><thead><tr><th>Cockpit</th><th>HubSpot</th></tr></thead><tbody>
+        <tr><td>Company name, domain, country</td><td>Name, Company domain name, Country/Region</td></tr>
+        <tr><td>Fit score, reasons, segment, events</td><td>GM fit score, GM fit reasons, GM segment, GM source events (created on first push)</td></tr>
+        <tr><td>Person: name, title, company</td><td>First name, Last name, Job title, Company name; lifecycle stage Lead</td></tr>
+        <tr><td>Event, session, source page</td><td>GM source event, GM session at event, GM source URL</td></tr>
+        <tr><td>Email</td><td>Left empty on purpose: comes from an enrichment provider with a legal basis</td></tr>
+      </tbody></table>
+      <p class="lead" style="margin:12px 0 0">Next: sync back from HubSpot (meetings, deal stages) so Insights can show which sources and segments turn into pilots.</p>
     </div>`;
+  $('hsRefresh').onclick = () => { toast('Checking…'); refreshHubspot(); };
+  $('pushBtn').onclick = pushHubspot;
 }
+
+async function pushHubspot() {
+  $('pushBtn').disabled = true; $('pushBtn').textContent = 'Pushing…';
+  const res = await fetch('api/hubspot/push', { method: 'POST' });
+  const out = await res.json();
+  if (!res.ok) { $('pushResult').innerHTML = `<div class="err">${esc(out.detail || 'Push failed')}</div>`; $('pushBtn').disabled = false; return; }
+  toast(out.message);
+  await load();
+  $('pushResult').innerHTML = `<div class="note">${esc(out.message)}${out.errors?.length ? '<br>' + out.errors.map(esc).join('<br>') : ''}</div>`;
+}
+
+// ---------- criteria ----------
+const CRIT_LABELS = {
+  lanes: 'Lanes: where a lead lands', role: 'Role: what the person does', functions: 'Function (best match counts)',
+  seniority: 'Seniority', interest: 'Talks about the problem', company: 'Company: who they work for', size_points: 'Company size',
+  event: 'Event: how and when they appear', account: 'Accounts (companies)', fast_track: 'Fast track from', review: 'Review from',
+  buyer_points: 'Operating company (buyer)', core_industry_points: 'Core industry', other_industry_points: 'Other industry',
+  core_industries: 'Core industries (matched in the industry label)', dach_points: 'Based in DACH', erp_points: 'ERP publicly known',
+  speaker_points: 'Speaker / keynote / panelist', moderator_points: 'Moderator / chair', soon_days: '"Soon" means within (days)',
+  soon_points: 'Event soon', later_days: '"Later" means within (days)', later_points: 'Event later', far_points: 'Event further out',
+  generalmind_present_points: 'GeneralMind has a stand there', company_multiplier: 'Company fit multiplier', per_event_points: 'Per target event',
+  max_event_points: 'Event points cap', named_contact_points: 'Has a named contact', target_contact_points: 'Has a contact in a target role',
+  target_contact_role_min: 'Target role means role fit of at least', other_points: 'Any other title',
+};
+const ORDER = ['lanes', 'role', 'company', 'event', 'account'];
+const range = k => /days/.test(k) ? [0, 365, 1] : /multiplier/.test(k) ? [0, 3, 0.1] : /^(fast_track|review|target_contact_role_min)$/.test(k) ? [0, 100, 1] : [0, 40, 1];
+const getPath = (o, p) => p.split('.').reduce((x, k) => x?.[k], o);
+const setPath = (o, p, v) => { const ks = p.split('.'), last = ks.pop(); ks.reduce((x, k) => x[k], o)[last] = v; };
+const activeVersion = kind => S.config[kind].find(v => v.active);
+
+function flatDiff(a, b, p = '', out = []) {
+  if (Array.isArray(a) || Array.isArray(b)) { if (JSON.stringify(a) !== JSON.stringify(b)) out.push([p, Array.isArray(a) ? `${a.length} words` : a, Array.isArray(b) ? `${b.length} words${b.length === a?.length ? ' (edited)' : ''}` : b]); return out; }
+  if (a && typeof a === 'object') { Object.keys(b || {}).forEach(k => flatDiff(a[k], b[k], p ? `${p}.${k}` : k, out)); return out; }
+  if (a !== b) out.push([p, a, b]);
+  return out;
+}
+
+function maxes(cfg) {
+  const m = o => Math.max(...Object.values(o).map(v => typeof v === 'object' ? v.points : v).filter(Number.isFinite));
+  const r = cfg.role, c = cfg.company, e = cfg.event;
+  return {
+    role: m(r.functions) + Math.max(r.seniority.c_level.points, r.seniority.head.points, r.seniority.manager.points, r.seniority.other_points) + r.interest.points,
+    company: c.buyer_points + Math.max(c.core_industry_points, c.other_industry_points) + m(c.size_points) + c.dach_points + c.erp_points,
+    event: Math.max(e.speaker_points, e.moderator_points) + Math.max(e.soon_points, e.later_points, e.far_points) + e.generalmind_present_points,
+  };
+}
+
+function lever(path, val, label, activeVal) {
+  const k = path.split('.').pop(), [lo, hi, step] = range(k);
+  return `<div class="lever ${val !== activeVal ? 'changed' : ''}"><label>${esc(label)}</label>
+    <input type="range" min="${lo}" max="${hi}" step="${step}" value="${val}" data-path="${esc(path)}"><output>${val}</output></div>`;
+}
+
+function edGroup(obj, act, path) {
+  let html = '';
+  for (const [k, v] of Object.entries(obj)) {
+    const p = path ? `${path}.${k}` : k, a = getPath(act, p);
+    if (k === 'label' || k === 'keywords') continue;
+    if (v && typeof v === 'object' && !Array.isArray(v) && 'points' in v) {
+      const kw = v.keywords ? `<button class="kwbtn" data-kw="${esc(p)}">${v.keywords.length} keywords</button>` : '';
+      html += `<div class="lever ${v.points !== a?.points ? 'changed' : ''}"><label>${esc(v.label || CRIT_LABELS[k] || k)}${kw}</label>
+        <input type="range" min="0" max="40" value="${v.points}" data-path="${esc(p)}.points"><output>${v.points}</output>
+        ${v.keywords ? `<div class="kw" id="kw-${esc(p)}"><textarea rows="3" data-list="${esc(p)}.keywords" title="Comma-separated. Wrap in \\b for whole words, e.g. \\bcpo\\b">${esc(v.keywords.join(', '))}</textarea></div>` : ''}</div>`;
+    } else if (v && typeof v === 'object' && !Array.isArray(v)) {
+      html += `<h4>${esc(CRIT_LABELS[k] || k.replace(/_/g, ' '))}</h4>` + edGroup(v, act, p);
+    } else if (Array.isArray(v)) {
+      html += `<div class="lever"><label>${esc(CRIT_LABELS[k] || k)}</label><div style="grid-column:2/4"><textarea rows="2" data-list="${esc(p)}">${esc(v.join(', '))}</textarea></div></div>`;
+    } else if (typeof v === 'number') {
+      html += lever(p, v, CRIT_LABELS[k] || (path.endsWith('size_points') ? `${k} employees` : k.replace(/_/g, ' ')), a);
+    }
+  }
+  return html;
+}
+
+function renderCriteria() {
+  if (!S.config) return;
+  const act = activeVersion('scoring');
+  if (!S.draft) { S.draft = JSON.parse(act.body); S.draftBase = act.version; }
+  const actCfg = JSON.parse(act.body);
+  $('criteria').innerHTML = `
+    <div class="crit">
+      <div>
+        <div class="panel">
+          <h3>How a contact's score adds up</h3>
+          <p class="lead">Every lead's fit score is the sum of these parts, capped at 100. Move a slider and the preview on the right shows how the ranking would change, before anything is saved. Click "keywords" to see and edit how a criterion is matched.</p>
+          <div id="capBar"></div>
+          <div style="color:var(--muted);font-size:12.5px">Editing version ${S.draftBase} · active is v${act.version}.</div>
+        </div>
+        ${ORDER.map(sec => `<div class="panel ed"><h3>${esc(CRIT_LABELS[sec])}</h3>${edGroup({ [sec]: S.draft[sec] }[sec], actCfg, sec)}</div>`).join('')}
+      </div>
+      <div class="side">
+        <div class="panel" id="preview"><h3>Preview</h3><div class="note">Change something to see its effect.</div></div>
+        <div class="panel">
+          <h3>Save</h3>
+          <div id="diff"></div>
+          <input id="verNote" placeholder="What changed and why (required)" style="width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)">
+          <div id="saveErr"></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn primary" id="saveAct">Save and activate</button><button class="btn" id="saveOnly">Save as draft version</button><button class="btn" id="resetDraft">Reset</button></div>
+        </div>
+        <div class="panel versions"><h3>Versions</h3>
+          <table class="t"><tbody>${S.config.scoring.map(v => `<tr><td><b>v${v.version}</b> ${v.active ? '<span class="tag-active">active</span>' : ''}<br><small style="color:var(--muted)">${esc(v.note || '')}<br>${esc(v.author || v.source)} · ${esc(v.created_at.slice(0, 16).replace('T', ' '))}</small></td>
+            <td style="text-align:right;white-space:nowrap"><button class="btn" data-load="${v.id}">Edit</button> ${v.active ? '' : `<button class="btn" data-activate="${v.id}">Activate</button>`}</td></tr>`).join('')}</tbody></table>
+          <p class="lead" style="margin:10px 0 0">Activating a version rescores every lead. Reviewer decisions are kept, and each records the version that suggested it, so versions can be compared.</p>
+        </div>
+      </div>
+    </div>`;
+  const root = $('criteria');
+  root.querySelectorAll('input[type=range]').forEach(inp => inp.oninput = () => {
+    const v = +inp.value; setPath(S.draft, inp.dataset.path, v); inp.nextElementSibling.textContent = v;
+    inp.closest('.lever').classList.toggle('changed', v !== getPath(actCfg, inp.dataset.path));
+    schedulePreview(); renderDiff(actCfg); renderCap();
+  });
+  root.querySelectorAll('textarea[data-list]').forEach(t => t.onchange = () => {
+    setPath(S.draft, t.dataset.list, t.value.split(',').map(s => s.trim()).filter(Boolean)); schedulePreview(); renderDiff(actCfg);
+  });
+  root.querySelectorAll('[data-kw]').forEach(b => b.onclick = () => document.getElementById(`kw-${b.dataset.kw}`).classList.toggle('on'));
+  root.querySelectorAll('[data-load]').forEach(b => b.onclick = () => { const v = S.config.scoring.find(x => x.id === +b.dataset.load); S.draft = JSON.parse(v.body); S.draftBase = v.version; renderCriteria(); schedulePreview(); });
+  root.querySelectorAll('[data-activate]').forEach(b => b.onclick = () => activateVersion(+b.dataset.activate));
+  $('resetDraft').onclick = () => { S.draft = null; renderCriteria(); };
+  $('saveAct').onclick = () => saveScoring(true);
+  $('saveOnly').onclick = () => saveScoring(false);
+  renderDiff(actCfg); renderCap();
+  if (S.preview) renderPreview();
+}
+
+function renderCap() {
+  const mx = maxes(S.draft), total = mx.role + mx.company + mx.event;
+  $('capBar').innerHTML = `<div class="cap"><span style="flex:${mx.role};background:var(--accent)">Role up to ${mx.role}</span><span style="flex:${mx.company};background:var(--partner)">Company up to ${mx.company}</span><span style="flex:${mx.event};background:var(--review)">Event up to ${mx.event}</span></div>
+    <div style="color:var(--muted);font-size:12.5px">Maximum possible: ${total}${total > 100 ? ' (scores are capped at 100)' : ''}</div>`;
+}
+
+function renderDiff(actCfg) {
+  const d = flatDiff(actCfg, S.draft);
+  $('diff').innerHTML = d.length ? `<div class="diff">${d.map(([p, a, b]) => `${esc(p)}: ${esc(a)} → <b>${esc(b)}</b>`).join('<br>')}</div>` : '<div class="note">No changes from the active version.</div>';
+}
+
+let previewTimer;
+function schedulePreview() { clearTimeout(previewTimer); previewTimer = setTimeout(runPreview, 350); }
+async function runPreview() {
+  const res = await fetch('api/scoring/preview', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ body: JSON.stringify(S.draft) }) });
+  const out = await res.json();
+  if (!res.ok) { $('preview').innerHTML = `<h3>Preview</h3><div class="err">${esc(out.detail)}</div>`; return; }
+  S.preview = out; renderPreview();
+}
+
+function agreement(lanesOf) {
+  let agree = 0, n = 0;
+  S.contacts.forEach(c => {
+    const d = decisionOf('contact', c.id), lane = lanesOf(c);
+    if (!d || !lane) return;
+    if (lane === 'fast_track') { n++; if (d.decision === 'approve') agree++; }
+    else if (['filtered', 'competitor'].includes(lane)) { n++; if (d.decision === 'reject') agree++; }
+  });
+  return n ? `${Math.round(100 * agree / n)}% of ${n}` : '—';
+}
+
+function renderPreview() {
+  const P = S.preview.contacts, lanes = Object.keys(LANES);
+  const now = {}, draft = {};
+  S.contacts.forEach(c => { now[c.lane] = (now[c.lane] || 0) + 1; const p = P[c.id]; if (p) draft[p[1]] = (draft[p[1]] || 0) + 1; });
+  const moved = S.contacts.filter(c => P[c.id] && P[c.id][1] !== c.lane);
+  const into = moved.filter(c => P[c.id][1] === 'fast_track').sort((a, b) => P[b.id][0] - P[a.id][0]);
+  const out = moved.filter(c => c.lane === 'fast_track').sort((a, b) => b.score - a.score);
+  const person = c => `<li><span>${esc(c.name)} <small style="color:var(--muted)">${esc(S.accounts[c.account_id]?.name || c.company || '')}</small></span><span>${c.score}→${P[c.id][0]}</span></li>`;
+  $('preview').innerHTML = `<h3>Preview: contacts per lane</h3>
+    <table class="t"><thead><tr><th>Lane</th><th>Active</th><th>Draft</th><th></th></tr></thead><tbody>${lanes.map(l => { const dlt = (draft[l] || 0) - (now[l] || 0); return `<tr><td><span class="chip lane lane-${l}">${LANES[l].label}</span></td><td>${now[l] || 0}</td><td>${draft[l] || 0}</td><td class="delta ${dlt > 0 ? 'up' : dlt < 0 ? 'down' : ''}">${dlt ? (dlt > 0 ? '+' : '') + dlt : ''}</td></tr>`; }).join('')}</tbody></table>
+    <h4 style="margin:14px 0 4px;font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em">Replay against past decisions</h4>
+    <div style="font-size:13px">Agreement on clear-cut leads: active <b>${agreement(c => c.lane)}</b> · draft <b>${agreement(c => P[c.id]?.[1])}</b></div>
+    ${into.length ? `<h4 style="margin:14px 0 4px;font-size:12px;color:var(--fast)">Into fast track (${into.length})</h4><ul class="reasons">${into.slice(0, 6).map(person).join('')}</ul>` : ''}
+    ${out.length ? `<h4 style="margin:14px 0 4px;font-size:12px;color:var(--competitor)">Out of fast track (${out.length})</h4><ul class="reasons">${out.slice(0, 6).map(person).join('')}</ul>` : ''}`;
+}
+
+async function saveScoring(activate) {
+  const note = $('verNote').value.trim();
+  if (!note) { $('saveErr').innerHTML = '<div class="err">Add a short note so the history makes sense later.</div>'; return; }
+  const res = await fetch('api/config', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ kind: 'scoring', body: JSON.stringify(S.draft), note, author: S.reviewer || null, activate }) });
+  const out = await res.json();
+  if (!res.ok) { $('saveErr').innerHTML = `<div class="err">${esc(out.detail)}</div>`; return; }
+  toast(activate ? `Saved and activated: every lead rescored` : `Saved as v${out.version}`);
+  S.draft = null; S.preview = null; await load();
+}
+
+async function activateVersion(id) {
+  const res = await fetch(`api/config/${id}/activate`, { method: 'POST' });
+  const out = await res.json();
+  if (!res.ok) return toast(out.detail || 'Could not activate');
+  toast(`${out.kind === 'scoring' ? 'Scoring' : 'Playbook'} v${out.version} is now active`);
+  S.draft = null; S.preview = null; await load();
+}
+
+// ---------- playbooks ----------
+const PLAYBOOKS = [
+  ['playbook:events', 'Finding events', 'What the event-finding agent looks for and how it judges an event.'],
+  ['playbook:sourcing', 'Sourcing leads from an event', 'How the extraction agent and its checker pull people and companies from event pages.'],
+  ['playbook:profiling', 'Profiling companies', 'How each company is classified (buyer, partner, competitor…) and profiled.'],
+];
+function md(src) {
+  const lines = esc(src).split('\n'), out = []; let list = null;
+  const inline = s => s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*(.+?)\*/g, '<i>$1</i>');
+  for (const l of lines) {
+    const li = l.match(/^\s*(?:[-*]|\d+\.)\s+(.*)/);
+    if (li) { if (!list) { list = l.trim().match(/^\d/) ? 'ol' : 'ul'; out.push(`<${list}>`); } out.push(`<li>${inline(li[1])}</li>`); continue; }
+    if (list) { out.push(`</${list}>`); list = null; }
+    if (/^# /.test(l)) out.push(`<h1>${inline(l.slice(2))}</h1>`);
+    else if (/^## /.test(l)) out.push(`<h2>${inline(l.slice(3))}</h2>`);
+    else if (l.trim()) out.push(`<p>${inline(l)}</p>`);
+  }
+  if (list) out.push(`</${list}>`);
+  return out.join('');
+}
+function renderPlaybooks() {
+  if (!S.config) return;
+  S.pbEdit = S.pbEdit || {};
+  $('playbooks').innerHTML = `<div class="panel"><h3>Playbooks: the instructions the engine follows</h3><p class="lead">The pipeline's AI steps follow these instructions, in plain language. They're versioned like the scoring: edit, save with a note, and switch back any time. A change takes effect the next time sourcing runs (in v1 that's a manual run; next step is a daily scheduled run that also picks up new speaker lists).</p></div>
+    <div class="grid2">${PLAYBOOKS.map(([kind, title, sub]) => {
+      const vs = S.config[kind], act = vs.find(v => v.active), editing = S.pbEdit[kind];
+      return `<div class="panel pb" data-kind="${kind}">
+        <div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><div><h3>${esc(title)}</h3><p class="lead" style="margin:0 0 10px">${esc(sub)}</p></div>
+        <select data-ver>${vs.map(v => `<option value="${v.id}" ${v.active ? 'selected' : ''}>v${v.version}${v.active ? ' (active)' : ''} · ${esc((v.note || '').slice(0, 30))}</option>`).join('')}</select></div>
+        ${editing ? `<textarea data-body>${esc(editing.body)}</textarea><input data-note placeholder="What changed and why" style="width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)">
+          <div style="display:flex;gap:8px;margin-top:10px"><button class="btn primary" data-save>Save and activate</button><button class="btn" data-cancel>Cancel</button></div>`
+        : `<div class="md">${md((vs.find(v => v.id === (S.pbView?.[kind] || act.id)) || act).body)}</div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn" data-edit>Edit</button>${S.pbView?.[kind] && S.pbView[kind] !== act.id ? '<button class="btn" data-act>Make this version active</button>' : ''}</div>`}
+      </div>`;
+    }).join('')}</div>`;
+  $('playbooks').querySelectorAll('.pb').forEach(card => {
+    const kind = card.dataset.kind, vs = S.config[kind];
+    card.querySelector('[data-ver]').onchange = e => { S.pbView = { ...(S.pbView || {}), [kind]: +e.target.value }; renderPlaybooks(); };
+    card.querySelector('[data-edit]')?.addEventListener('click', () => { const v = vs.find(x => x.id === (S.pbView?.[kind])) || vs.find(x => x.active); S.pbEdit[kind] = { body: v.body }; renderPlaybooks(); });
+    card.querySelector('[data-act]')?.addEventListener('click', () => activateVersion(S.pbView[kind]));
+    card.querySelector('[data-cancel]')?.addEventListener('click', () => { delete S.pbEdit[kind]; renderPlaybooks(); });
+    card.querySelector('[data-save]')?.addEventListener('click', async () => {
+      const body = card.querySelector('[data-body]').value, note = card.querySelector('[data-note]').value.trim();
+      if (!note) return toast('Add a short note first');
+      const res = await fetch('api/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kind, body, note, author: S.reviewer || null, activate: true }) });
+      if (!res.ok) return toast('Could not save');
+      delete S.pbEdit[kind]; S.pbView = { ...(S.pbView || {}), [kind]: null }; toast('Saved'); await load();
+    });
+  });
+}
+
+// ---------- insights ----------
+function renderInsights() {
+  const C = S.contacts, dec = C.filter(c => decisionOf('contact', c.id)), ok = dec.filter(c => decisionOf('contact', c.id).decision === 'approve');
+  const inHs = S.data.hubspot.filter(h => h.object_type === 'contact').length;
+  const buyers = C.filter(c => ['fast_track', 'review'].includes(c.lane));
+  const tiles = [['Events', S.data.events.length], ['Named contacts', C.length], ['Companies', S.data.accounts.length], ['Reviewed', dec.length], ['Approved', ok.length], ['In HubSpot', inHs]];
+  const steps = [['Sourced', C.length], ['Worth a look (fast track + review)', buyers.length], ['Reviewed', dec.length], ['Approved', ok.length], ['In HubSpot', inHs]];
+  const later = ['Contacted', 'Replied', 'Meeting held', 'Pilot started'];
+  const max = Math.max(1, C.length);
+  const byEvent = S.data.events.map(e => { const cs = C.filter(c => c.event_id === e.id); return { e, n: cs.length, fast: cs.filter(c => c.lane === 'fast_track').length, rev: cs.filter(c => c.lane === 'review').length, ok: cs.filter(c => decisionOf('contact', c.id)?.decision === 'approve').length, avg: cs.length ? Math.round(cs.reduce((s, c) => s + c.score, 0) / cs.length) : 0 }; });
+  const groups = {};
+  C.forEach(c => { const ind = S.accounts[c.account_id]?.profile?.industry || 'Unknown'; const g = groups[ind] = groups[ind] || { n: 0, fast: 0, ok: 0, score: 0 }; g.n++; g.score += c.score; if (c.lane === 'fast_track') g.fast++; if (decisionOf('contact', c.id)?.decision === 'approve') g.ok++; });
+  const days = {};
+  S.history.forEach(d => { const k = d.decided_at.slice(0, 10); days[k] = (days[k] || 0) + 1; });
+  const dayKeys = Object.keys(days).sort().slice(-14), dmax = Math.max(1, ...Object.values(days));
+  $('insights').innerHTML = `
+    <div class="tiles">${tiles.map(([k, v]) => `<div class="tile"><div class="v">${v}</div><div class="k">${k}</div></div>`).join('')}</div>
+    <div class="grid2">
+      <div class="panel"><h3>Funnel</h3><p class="lead">From event page to HubSpot. The grey steps fill in once outreach runs and HubSpot syncs outcomes back; until then they're empty rather than guessed.</p>
+        <div class="funnel">${steps.map(([k, v]) => `<div class="f"><span>${k}</span><div class="b" style="width:${Math.max(0.5, 100 * v / max)}%"></div><b class="num">${v}</b></div>`).join('')}${later.map(k => `<div class="f later"><span>${k}</span><div class="b" style="width:0.5%"></div><span>—</span></div>`).join('')}</div></div>
+      <div class="panel"><h3>Review activity</h3><p class="lead">Decisions per day (last 14 days with activity). Every decision is kept with who made it and what the scoring suggested.</p>
+        ${dayKeys.length ? `<div class="spark">${dayKeys.map(k => `<span title="${k}: ${days[k]}" style="height:${100 * days[k] / dmax}%"></span>`).join('')}</div><div style="display:flex;justify-content:space-between;color:var(--faint);font-size:11px;margin-top:4px"><span>${dayKeys[0]}</span><span>${dayKeys[dayKeys.length - 1]}</span></div>` : '<div class="note">No decisions yet.</div>'}
+        <h4 style="margin:16px 0 6px;font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em">Change log</h4>
+        <ul class="logl">${S.data.log.slice(0, 8).map(l => `<li><time>${esc(l.created_at.slice(5, 16).replace('T', ' '))}</time><span>${esc(l.message)}</span></li>`).join('') || '<li>Nothing yet</li>'}</ul></div>
+    </div>
+    <div class="grid2">
+      <div class="panel"><h3>Where to spend the effort: by event</h3><p class="lead">Fast-track contacts per event. With outcomes synced back, this becomes meetings and pilots per event.</p>
+        <table class="t"><thead><tr><th>Event</th><th>Contacts</th><th>Fast</th><th>Review</th><th>Approved</th><th>Avg</th></tr></thead><tbody>${byEvent.sort((a, b) => b.fast - a.fast).map(r => `<tr><td>${esc(r.e.short)} <small style="color:var(--muted)">${until(r.e.start)}</small></td><td>${r.n}</td><td><b>${r.fast}</b></td><td>${r.rev}</td><td>${r.ok}</td><td>${r.avg}</td></tr>`).join('')}</tbody></table></div>
+      <div class="panel"><h3>By industry</h3><p class="lead">Which segments the events give us the most good contacts in.</p>
+        <table class="t"><thead><tr><th>Industry</th><th>Contacts</th><th>Fast</th><th>Approved</th><th>Avg</th></tr></thead><tbody>${Object.entries(groups).sort((a, b) => b[1].fast - a[1].fast || b[1].n - a[1].n).slice(0, 12).map(([k, g]) => `<tr><td>${esc(k)}</td><td>${g.n}</td><td><b>${g.fast}</b></td><td>${g.ok}</td><td>${Math.round(g.score / g.n)}</td></tr>`).join('')}</tbody></table></div>
+    </div>`;
+  renderLearning();
+}
+
+// ---------- feedback with element picking ----------
+let picking = false, hoverEl = null, picked = null;
+function cssPath(el) {
+  const parts = [];
+  while (el && el.nodeType === 1 && el !== document.body && parts.length < 6) {
+    let p = el.tagName.toLowerCase();
+    if (el.id) { parts.unshift(`${p}#${el.id}`); break; }
+    const cls = [...el.classList].filter(c => !['sel', 'fb-hover', 'on', 'done'].includes(c)).slice(0, 2);
+    if (cls.length) p += '.' + cls.join('.');
+    parts.unshift(p); el = el.parentElement;
+  }
+  return parts.join(' > ');
+}
+function startPick() { picking = true; document.body.classList.add('picking'); toast('Click the part of the page your note is about · Esc for a general note'); }
+function stopPick() { picking = false; document.body.classList.remove('picking'); hoverEl?.classList.remove('fb-hover'); hoverEl = null; }
+document.addEventListener('mouseover', e => { if (!picking || e.target.closest('#fbBtn')) return; hoverEl?.classList.remove('fb-hover'); hoverEl = e.target; hoverEl.classList.add('fb-hover'); }, true);
+document.addEventListener('click', e => {
+  if (!picking || e.target.closest('#fbBtn')) return;
+  e.preventDefault(); e.stopPropagation();
+  const el = e.target; stopPick();
+  picked = { selector: cssPath(el), text: (el.innerText || el.value || '').trim().slice(0, 200), row: el.closest('[data-id]')?.dataset.id || null, viewport: `${innerWidth}x${innerHeight}` };
+  openFeedback();
+}, true);
+document.addEventListener('keydown', e => { if (picking && e.key === 'Escape') { stopPick(); picked = null; openFeedback(); } }, true);
+function openFeedback() {
+  $('fbTarget').innerHTML = picked ? `<b>About:</b> ${esc(picked.text.slice(0, 120) || picked.selector)}` : 'A general note (nothing selected)';
+  $('fbText').value = '';
+  const dlg = $('fbDlg');
+  dlg.onclose = async () => {
+    const text = $('fbText').value.trim();
+    if (dlg.returnValue !== 'ok' || !text) return;
+    const res = await fetch('api/feedback', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ comment: text, target: picked, view: S.view, author: S.reviewer || null }) });
+    toast(res.ok ? 'Thanks, noted' : 'Could not save the note');
+  };
+  dlg.showModal(); $('fbText').focus();
+}
+$('fbBtn').onclick = e => { e.stopPropagation(); picking ? (stopPick(), picked = null, openFeedback()) : startPick(); };
+$('hsPill').onclick = () => document.querySelector('#tabs [data-view="hubspot"]').click();
 
 // ---------- about ----------
 function renderAbout() {

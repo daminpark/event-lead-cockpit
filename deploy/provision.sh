@@ -3,6 +3,7 @@
 # checks what is already there. Needs deploy/local.env, ~/.cloudflared/cert.pem and gh signed in.
 #   ./deploy/provision.sh           # everything
 #   ./deploy/provision.sh secrets   # re-copy HUBSPOT_TOKEN / OPENROUTER_API_KEY from deploy/local.env
+#   ./deploy/provision.sh <step>    # one step: container, packages, tunnel, deploy_key, secrets, first_deploy
 set -euo pipefail
 cd "$(dirname "$0")/.."
 # shellcheck disable=SC1091
@@ -75,7 +76,7 @@ first_deploy() {
 
 case "$STEP" in
   all) container; packages; tunnel; deploy_key; secrets; first_deploy ;;
-  secrets) secrets ;;
-  *) echo "usage: $0 [all|secrets]"; exit 1 ;;
+  container|packages|tunnel|deploy_key|secrets|first_deploy) "$STEP" ;;
+  *) echo "usage: $0 [all|container|packages|tunnel|deploy_key|secrets|first_deploy]"; exit 1 ;;
 esac
 say "done: https://$SITE_HOST"

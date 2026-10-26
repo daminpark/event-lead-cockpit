@@ -224,6 +224,51 @@ CREATE TABLE IF NOT EXISTS decisions (
   score INTEGER,
   decided_at TEXT NOT NULL
 );
+-- Scoring settings and playbooks are versioned data: every save is a new row, one row per kind is active.
+CREATE TABLE IF NOT EXISTS config_versions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  kind TEXT NOT NULL,                 -- scoring | playbook:events | playbook:sourcing | playbook:profiling
+  version INTEGER NOT NULL,
+  body TEXT NOT NULL,
+  note TEXT,
+  author TEXT,
+  source TEXT NOT NULL,               -- repo | ui
+  created_at TEXT NOT NULL,
+  active INTEGER NOT NULL DEFAULT 0
+);
+CREATE TABLE IF NOT EXISTS feedback (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  comment TEXT NOT NULL,
+  target TEXT,                        -- the element picked on the page, as JSON
+  view TEXT,
+  author TEXT,
+  created_at TEXT NOT NULL,
+  handled_at TEXT,
+  handled_note TEXT
+);
+CREATE TABLE IF NOT EXISTS suppression (
+  key TEXT PRIMARY KEY,               -- contact id or company domain
+  label TEXT,
+  reason TEXT,
+  added_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS hubspot_sync (
+  object_type TEXT NOT NULL,
+  object_id TEXT NOT NULL,
+  hubspot_id TEXT NOT NULL,
+  synced_at TEXT NOT NULL,
+  PRIMARY KEY (object_type, object_id)
+);
+CREATE TABLE IF NOT EXISTS events_log (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  kind TEXT NOT NULL,                 -- build | config | hubspot | feedback
+  message TEXT NOT NULL,
+  data TEXT,
+  created_at TEXT NOT NULL
+);
+"""
+
+LEAD_TABLES = """
 DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS contacts;
 DROP TABLE IF EXISTS accounts;
@@ -236,14 +281,75 @@ CREATE TABLE appearances (account_id TEXT, event_id TEXT, role TEXT, data TEXT N
 CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
 """
 
+PLAYBOOKS = {"playbook:events": "events.md", "playbook:sourcing": "sourcing.md", "playbook:profiling": "profiling.md"}
 
-def build(today: dt.date):
+
+def now():
+    return dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+
+
+def connect(path=DB):
+    con = sqlite3.connect(path)
+    con.row_factory = sqlite3.Row
+    con.executescript(SCHEMA)
+    return con
+
+
+def repo_configs():
     with open(os.path.join(ROOT, "scoring.toml"), "rb") as f:
-        cfg = tomllib.load(f)
+        configs = {"scoring": json.dumps(tomllib.load(f), ensure_ascii=False, indent=1)}
+    for kind, name in PLAYBOOKS.items():
+        with open(os.path.join(ROOT, "playbooks", name), encoding="utf-8") as f:
+            configs[kind] = f.read()
+    return configs
+
+
+def sync_repo_configs(con):
+    """A changed file in the repo becomes a new version. It's activated only if the active
+    version also came from the repo, so a version someone chose in the cockpit is never overridden."""
+    for kind, body in repo_configs().items():
+        latest_repo = con.execute(
+            "SELECT body FROM config_versions WHERE kind = ? AND source = 'repo' ORDER BY version DESC LIMIT 1", (kind,)
+        ).fetchone()
+        if latest_repo and latest_repo["body"] == body:
+            continue
+        active = con.execute("SELECT source FROM config_versions WHERE kind = ? AND active = 1", (kind,)).fetchone()
+        save_version(con, kind, body, "From the repository", "repo", "repo", activate=active is None or active["source"] == "repo")
+
+
+def save_version(con, kind, body, note, author, source, activate=False):
+    version = (con.execute("SELECT MAX(version) FROM config_versions WHERE kind = ?", (kind,)).fetchone()[0] or 0) + 1
+    cur = con.execute(
+        "INSERT INTO config_versions (kind, version, body, note, author, source, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        (kind, version, body, note, author, source, now()),
+    )
+    if activate:
+        activate_version(con, cur.lastrowid)
+    return cur.lastrowid
+
+
+def activate_version(con, version_id):
+    kind = con.execute("SELECT kind FROM config_versions WHERE id = ?", (version_id,)).fetchone()["kind"]
+    con.execute("UPDATE config_versions SET active = (id = ?) WHERE kind = ?", (version_id, kind))
+
+
+def active_scoring(con):
+    row = con.execute("SELECT id, version, body FROM config_versions WHERE kind = 'scoring' AND active = 1").fetchone()
+    return json.loads(row["body"]), row["version"]
+
+
+def compute(cfg, today):
+    """Score every contact and account with the given settings. Pure: writes nothing except the
+    source-check file when the saved pages are present."""
     events = {e["id"]: e for e in load_json(os.path.join(DATA, "events.json"), [])}
     for e in events.values():
         e["short"] = re.sub(r"\s*\(.*?\)|\s+20\d\d.*$", "", e["name"]).strip()
     by_alias, by_key = load_profiles()
+    briefs = {}
+    for path in sorted(glob.glob(os.path.join(DATA, "briefs", "*.json"))):
+        for b in load_json(path, []):
+            if b.get("id"):
+                briefs[b["id"]] = b
 
     def profile_for(name):
         return by_alias.get(name) or by_key.get(company_key(name))
@@ -270,9 +376,14 @@ def build(today: dt.date):
             continue
         event = events[ex["event_id"]]
         text = source_texts(event["id"]) if have_sources else ""
+        seen = set()
         for p in ex.get("people", []):
             if not p.get("name"):
                 continue
+            cid = slug(event["id"], p["name"])
+            if cid in seen:
+                continue
+            seen.add(cid)
             company = p.get("company") or ""
             acct = account_for(company) if company else None
             profile = acct["profile"] if acct else None
@@ -280,7 +391,6 @@ def build(today: dt.date):
             c_pts, c_reasons, c_tags = score_company(profile, cfg)
             e_pts, e_reasons = score_event(p.get("role_at_event", "speaker"), event, today, cfg)
             score = min(100, r_pts + c_pts + e_pts)
-            cid = slug(event["id"], p["name"])
             if have_sources:
                 checks[cid] = found_in_source(p["name"], text)
             check = checks.get(cid, "missing")
@@ -303,6 +413,7 @@ def build(today: dt.date):
                 "score": score, "role_fit": r_pts, "company_fit": c_pts, "event_fit": e_pts,
                 "reasons": r_reasons + c_reasons + e_reasons, "tags": r_tags + c_tags + [f"event:{event['id']}"],
                 "confidence": confidence, "confidence_notes": conf_notes,
+                "brief": briefs.get(cid, {}).get("brief"), "opener": briefs.get(cid, {}).get("opener"),
             }
             contact["lane"] = lane_for(profile, score, confidence, cfg)
             contacts.append(contact)
@@ -328,14 +439,11 @@ def build(today: dt.date):
         reasons = [dict(r, points=round(r["points"] * a_cfg["company_multiplier"])) for r in c_reasons]
         ev_pts = min(a_cfg["max_event_points"], a_cfg["per_event_points"] * len(acct["events"]))
         reasons.append({"label": f"At {len(acct['events'])} target event{'s' if len(acct['events']) != 1 else ''}", "points": ev_pts, "kind": "event"})
-        score = sum(r["points"] for r in reasons)
         if acct["contacts"]:
-            score += a_cfg["named_contact_points"]
             reasons.append({"label": f"{len(acct['contacts'])} named contact{'s' if len(acct['contacts']) != 1 else ''} at events", "points": a_cfg["named_contact_points"], "kind": "event"})
             if max(c["role_fit"] for c in acct["contacts"]) >= a_cfg["target_contact_role_min"]:
-                score += a_cfg["target_contact_points"]
                 reasons.append({"label": "Has a contact in a target role", "points": a_cfg["target_contact_points"], "kind": "role"})
-        score = min(100, score)
+        score = min(100, sum(r["points"] for r in reasons))
         confidence = (profile or {}).get("confidence", "low") if profile else "low"
         if confidence not in ("high", "medium", "low"):
             confidence = "medium"
@@ -351,30 +459,41 @@ def build(today: dt.date):
     if have_sources:
         with open(checks_path, "w", encoding="utf-8") as f:
             json.dump(checks, f, indent=0, sort_keys=True)
+    return events, contacts, account_rows, appearances
 
-    con = sqlite3.connect(DB)
-    con.executescript(SCHEMA)
+
+def build(today=None, con=None):
+    """Rebuild leads and scores with the active scoring version. Decisions and versions are kept."""
+    today = today or dt.date.today()
+    own = con is None
+    con = con or connect()
+    sync_repo_configs(con)
+    cfg, version = active_scoring(con)
+    events, contacts, account_rows, appearances = compute(cfg, today)
+    con.executescript(LEAD_TABLES)
     con.executemany("INSERT INTO events VALUES (?, ?)", [(e["id"], json.dumps(e, ensure_ascii=False)) for e in events.values()])
-    con.executemany("INSERT OR REPLACE INTO contacts VALUES (?, ?, ?, ?, ?, ?)",
+    con.executemany("INSERT INTO contacts VALUES (?, ?, ?, ?, ?, ?)",
                     [(c["id"], c["account_id"], c["event_id"], c["score"], c["lane"], json.dumps(c, ensure_ascii=False)) for c in contacts])
     con.executemany("INSERT INTO accounts VALUES (?, ?, ?, ?)",
                     [(a["id"], a["score"], a["lane"], json.dumps(a, ensure_ascii=False)) for a in account_rows])
     con.executemany("INSERT INTO appearances VALUES (?, ?, ?, ?)",
                     [(a["account_id"], a["event_id"], a["role"], json.dumps(a, ensure_ascii=False)) for a in appearances])
-    meta = {"built_at": dt.datetime.now().isoformat(timespec="minutes"), "today": today.isoformat(), "lanes": cfg["lanes"]}
+    meta = {"built_at": dt.datetime.now().isoformat(timespec="minutes"), "today": today.isoformat(),
+            "lanes": cfg["lanes"], "scoring_version": version}
     con.executemany("INSERT INTO meta VALUES (?, ?)", [(k, json.dumps(v)) for k, v in meta.items()])
-    con.commit()
-    con.close()
-
     lanes = {}
     for c in contacts:
         lanes[c["lane"]] = lanes.get(c["lane"], 0) + 1
-    missing = sum(1 for c in contacts if c["source_check"] == "missing")
-    print(f"{len(events)} events, {len(contacts)} contacts, {len(account_rows)} accounts, {len(appearances)} listed appearances")
-    print(f"contact lanes: {lanes}; not found in source: {missing}")
+    summary = {"contacts": len(contacts), "accounts": len(account_rows), "lanes": lanes, "scoring_version": version}
+    con.execute("INSERT INTO events_log (kind, message, data, created_at) VALUES ('build', ?, ?, ?)",
+                (f"Rebuilt with scoring v{version}: {len(contacts)} contacts, {len(account_rows)} accounts", json.dumps(summary), now()))
+    con.commit()
+    if own:
+        con.close()
+    return summary
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--today", default=dt.date.today().isoformat())
-    build(dt.date.fromisoformat(ap.parse_args().today))
+    print(build(dt.date.fromisoformat(ap.parse_args().today)))

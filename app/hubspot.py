@@ -1,0 +1,203 @@
+"""Push approved leads to HubSpot: companies and contacts, linked, without duplicates.
+
+Every record carries our own stable id (gm_account_id / gm_lead_id), so a lead pushed twice
+updates the same HubSpot record, even if the local sync table were lost.
+"""
+
+import json
+import os
+import time
+
+import httpx
+
+API = "https://api.hubapi.com"
+TIMEOUT = httpx.Timeout(20.0)
+
+COMPANY_PROPS = [
+    ("gm_account_id", "GM account id", "string", "text"),
+    ("gm_fit_score", "GM fit score", "number", "number"),
+    ("gm_fit_reasons", "GM fit reasons", "string", "textarea"),
+    ("gm_segment", "GM segment", "string", "text"),
+    ("gm_source_events", "GM source events", "string", "textarea"),
+]
+CONTACT_PROPS = [
+    ("gm_lead_id", "GM lead id", "string", "text"),
+    ("gm_fit_score", "GM fit score", "number", "number"),
+    ("gm_fit_reasons", "GM fit reasons", "string", "textarea"),
+    ("gm_source_event", "GM source event", "string", "text"),
+    ("gm_source_url", "GM source URL", "string", "text"),
+    ("gm_session", "GM session at event", "string", "textarea"),
+]
+
+
+class HubSpotError(Exception):
+    pass
+
+
+def token():
+    return os.environ.get("HUBSPOT_TOKEN", "").strip()
+
+
+class Client:
+    def __init__(self):
+        if not token():
+            raise HubSpotError("No HUBSPOT_TOKEN configured")
+        self.http = httpx.Client(base_url=API, timeout=TIMEOUT, headers={"Authorization": f"Bearer {token()}"})
+
+    def request(self, method, path, **kw):
+        for attempt in range(4):
+            r = self.http.request(method, path, **kw)
+            if r.status_code == 429:  # free tier: about 100 requests per 10 seconds
+                time.sleep(float(r.headers.get("Retry-After", 2)) + attempt)
+                continue
+            if r.status_code >= 400 and r.status_code != 404:
+                raise HubSpotError(f"{method} {path}: {r.status_code} {r.text[:300]}")
+            return r
+        raise HubSpotError(f"{method} {path}: rate limited")
+
+    def portal_id(self):
+        r = self.request("GET", "/account-info/v3/details")
+        return r.json().get("portalId") if r.status_code == 200 else None
+
+    def health(self):
+        r = self.request("GET", "/crm/v3/objects/companies", params={"limit": 1})
+        return r.status_code == 200
+
+    def ensure_properties(self):
+        created = []
+        for obj, props, group in (("companies", COMPANY_PROPS, "companyinformation"), ("contacts", CONTACT_PROPS, "contactinformation")):
+            for name, label, kind, field in props:
+                if self.request("GET", f"/crm/v3/properties/{obj}/{name}").status_code == 200:
+                    continue
+                self.request("POST", f"/crm/v3/properties/{obj}", json={
+                    "name": name, "label": label, "type": kind, "fieldType": field, "groupName": group,
+                    "description": "Set by the event lead cockpit",
+                })
+                created.append(f"{obj}.{name}")
+        return created
+
+    def find(self, obj, prop, value):
+        if not value:
+            return None
+        r = self.request("POST", f"/crm/v3/objects/{obj}/search", json={
+            "filterGroups": [{"filters": [{"propertyName": prop, "operator": "EQ", "value": value}]}], "limit": 1,
+        })
+        results = r.json().get("results", []) if r.status_code == 200 else []
+        return results[0]["id"] if results else None
+
+    def upsert(self, obj, known_id, id_prop, id_value, props, fallback=None):
+        """Update the record we know, else find it by our id (or a fallback like domain), else create it."""
+        hid = known_id
+        if hid and self.request("GET", f"/crm/v3/objects/{obj}/{hid}").status_code == 404:
+            hid = None
+        hid = hid or self.find(obj, id_prop, id_value) or (self.find(obj, *fallback) if fallback else None)
+        if hid:
+            self.request("PATCH", f"/crm/v3/objects/{obj}/{hid}", json={"properties": props})
+            return hid, False
+        r = self.request("POST", f"/crm/v3/objects/{obj}", json={"properties": props})
+        return r.json()["id"], True
+
+    def associate(self, contact_id, company_id):
+        self.request("PUT", f"/crm/v4/objects/contacts/{contact_id}/associations/default/companies/{company_id}")
+
+
+def reasons_text(reasons):
+    return "; ".join(f"{r['label']} (+{r['points']})" for r in reasons if r["points"])[:2000]
+
+
+def company_props(account, events):
+    p = account.get("profile") or {}
+    props = {
+        "name": account["name"], "gm_account_id": account["id"], "gm_fit_score": account["score"],
+        "gm_fit_reasons": reasons_text(account["reasons"]), "gm_segment": p.get("segment") or "",
+        "gm_source_events": " | ".join(events[e]["name"] for e in account["events"] if e in events),
+    }
+    if p.get("domain"):
+        props["domain"] = p["domain"]
+    if p.get("hq_country"):
+        props["country"] = p["hq_country"]
+    return props
+
+
+def contact_props(contact, account, events):
+    ev = events.get(contact["event_id"], {})
+    props = {
+        "firstname": contact["first_name"], "lastname": contact["last_name"], "jobtitle": contact.get("title") or "",
+        "company": (account or {}).get("name") or contact.get("company") or "", "gm_lead_id": contact["id"],
+        "gm_fit_score": contact["score"], "gm_fit_reasons": reasons_text(contact["reasons"]),
+        "gm_source_event": f"{ev.get('name', '')} ({ev.get('start', '')})", "gm_source_url": contact.get("source_url") or "",
+        "gm_session": contact.get("session") or "",
+    }
+    return props
+
+
+def push(con, approved_accounts, approved_contacts, accounts_by_id, events, synced_at):
+    """Push everything approved. Returns a summary; raises HubSpotError if HubSpot can't be reached."""
+    hs = Client()
+    created_props = hs.ensure_properties()
+    known = {(r["object_type"], r["object_id"]): r["hubspot_id"] for r in con.execute("SELECT * FROM hubspot_sync")}
+    summary = {"companies_created": 0, "companies_updated": 0, "contacts_created": 0, "contacts_updated": 0,
+               "properties_created": created_props, "errors": []}
+
+    def save(kind, oid, hid):
+        con.execute("INSERT OR REPLACE INTO hubspot_sync VALUES (?, ?, ?, ?)", (kind, oid, hid, synced_at))
+        known[(kind, oid)] = hid
+
+    def push_account(acct):
+        if ("account", acct["id"]) in pushed:
+            return known.get(("account", acct["id"]))
+        domain = (acct.get("profile") or {}).get("domain")
+        hid, new = hs.upsert("companies", known.get(("account", acct["id"])), "gm_account_id", acct["id"],
+                             company_props(acct, events), fallback=("domain", domain) if domain else None)
+        save("account", acct["id"], hid)
+        pushed.add(("account", acct["id"]))
+        summary["companies_created" if new else "companies_updated"] += 1
+        return hid
+
+    pushed = set()
+    for acct in approved_accounts:
+        try:
+            push_account(acct)
+        except HubSpotError as e:
+            summary["errors"].append(f"{acct['name']}: {e}")
+    for c in approved_contacts:
+        try:
+            acct = accounts_by_id.get(c["account_id"])
+            company_id = push_account(acct) if acct else None
+            hid, new = hs.upsert("contacts", known.get(("contact", c["id"])), "gm_lead_id", c["id"], contact_props(c, acct, events))
+            save("contact", c["id"], hid)
+            summary["contacts_created" if new else "contacts_updated"] += 1
+            if company_id:
+                hs.associate(hid, company_id)
+        except HubSpotError as e:
+            summary["errors"].append(f"{c['name']}: {e}")
+    summary["errors"] = summary["errors"][:20]
+    return summary
+
+
+_status_cache = {"at": 0, "value": None}
+
+
+def status():
+    """Connection health, cached for a minute so the page can show a live light without hammering the API."""
+    if not token():
+        return {"configured": False, "ok": False, "message": "No HubSpot token configured"}
+    if time.time() - _status_cache["at"] < 60 and _status_cache["value"]:
+        return _status_cache["value"]
+    try:
+        hs = Client()
+        value = {"configured": True, "ok": hs.health(), "portal_id": hs.portal_id(), "message": "Connected"}
+    except (HubSpotError, httpx.HTTPError) as e:
+        value = {"configured": True, "ok": False, "message": str(e)[:200]}
+    _status_cache.update(at=time.time(), value=value)
+    return value
+
+
+def record_url(portal_id, kind, hid):
+    if not portal_id or not hid:
+        return None
+    return f"https://app.hubspot.com/contacts/{portal_id}/record/{'0-2' if kind == 'account' else '0-1'}/{hid}"
+
+
+def dumps(v):
+    return json.dumps(v, ensure_ascii=False)
