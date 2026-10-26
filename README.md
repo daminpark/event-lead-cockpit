@@ -6,7 +6,7 @@ The task: *"Find 10 relevant upcoming events for GeneralMind and set up a system
 
 - **Write-up** (what I built and how I'd grow it): [WRITEUP.md](WRITEUP.md)
 - **Live cockpit**: https://leads.193vbr.com (behind an access code)
-- **How it evolved**: the commit history shows each step, from the first version at 17:51 onwards.
+- **How it evolved**: [EVOLUTION.md](EVOLUTION.md), the ideas behind each step. Commits that carry an idea have a one-line "Why"; for the earlier ones it was added afterwards from the build conversation.
 
 ## What it does
 
