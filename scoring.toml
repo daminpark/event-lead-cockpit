@@ -80,7 +80,7 @@ soon_points = 5
 later_days = 120
 later_points = 3
 far_points = 1
-generalmind_present_points = 3   # GeneralMind has a stand there: book a meeting
+generalmind_present_points = 3   # GeneralMind is a partner at the event (stand, talk or pitch)
 
 # --- Accounts ---
 [account]
@@ -109,6 +109,6 @@ current_list_points = 10       # this year's speaker or exhibitor list is out (n
 meetings_per_person_per_day = 8
 acceptance_rate_percent = 25   # share of invited people who accept a meeting
 team_size = 1                  # people we'd send
-team_size_with_stand = 2       # when GeneralMind has a stand: one stays at it
+team_size_with_stand = 2       # when GeneralMind is a partner there
 recommend = 70                 # at or above: recommended
 consider = 35                  # between: worth considering; below: probably skip

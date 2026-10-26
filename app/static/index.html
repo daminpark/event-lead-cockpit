@@ -653,7 +653,7 @@ function renderEventsList() {
   $('eventsList').innerHTML = `
     <div class="panel step">
       <div><div class="stepno">Step 1</div><h3>Choose the events worth going to</h3>
-        <p class="lead" style="margin:0">Time limits how many people we can meet, so each event is judged on the <b>best people we could actually meet there</b> (<b>Best N</b>: their average fit, where N is the meetings possible), plus GeneralMind's stand, timing, travel and whether this year's list is out. Mark events ✓ Going or ✕ Not going; open one to see why it scored as it did and who to meet.</p></div>
+        <p class="lead" style="margin:0">Time limits how many people we can meet, so each event is judged on the <b>best people we could actually meet there</b> (<b>Best N</b>: their average fit, where N is the meetings possible), plus whether GeneralMind is a partner there, timing, travel and whether this year's list is out. Mark events ✓ Going or ✕ Not going; open one to see why it scored as it did and who to meet.</p></div>
     </div>
     <div class="whenbar">${[['upcoming', 'Upcoming'], ['past', 'Past']].map(([k, l]) => `<button class="${when === k ? 'on' : ''}" data-when="${k}">${l} <span class="num">${S.data.events.filter(e => (k === 'past') === !!e.past).length}</span></button>`).join('')}</div>
     <div class="stabs">${EVENT_TABS[when].map(([k, l]) => `<button class="stab ${filter === k ? 'on' : ''}" data-evf="${k}">${l} <span class="num">${counts[k] || 0}</span></button>`).join('')}</div>
@@ -661,7 +661,7 @@ function renderEventsList() {
       const st = eventStatus(e), lane = (EVENT_LANES[e.lane] || ['', 'filtered'])[1], n = statusCounts([e.id]), pl = planFor(e), appr = n.approved + n.hubspot;
       return `<div class="evtable lane-${lane} ${st}" data-ev="${esc(e.id)}">
         <div class="score num">${e.score}</div>
-        <div style="min-width:0"><div class="t1" title="${esc(e.name)}">${esc(e.name)}${e.generalmind_present ? ' <span class="badge">stand</span>' : ''}</div><div class="t2">${esc(e.format || '')}${e.access === 'invitation' ? ' · <b style="color:var(--review)">invitation only</b>' : ''}</div></div>
+        <div style="min-width:0"><div class="t1" title="${esc(e.name)}">${esc(e.name)}${e.generalmind_present ? ' <span class="badge">partner</span>' : ''}</div><div class="t2">${esc(e.format || '')}${e.access === 'invitation' ? ' · <b style="color:var(--review)">invitation only</b>' : e.access === 'partners' ? ' · <b style="color:var(--review)">vendors only as partners</b>' : ''}</div></div>
         <div class="t2"><b style="color:var(--ink)">${fmtDay(e.start)}</b>${e.end && e.end !== e.start ? `–${fmtDay(e.end)}` : ''}<br>${until(e.start)}</div>
         <div class="t2" title="Approximate door to door from Berlin"><b style="color:var(--ink)">${esc(e.city)}</b><br>${travelText(e.travel)}</div>
         <div class="t2" title="Average fit of the best ${pl.meetings} ${pl.unit === 'exhibitors' ? 'exhibitors' : 'people'} we could meet"><b style="color:var(--ink)">${pl.bestAvg}</b> avg<br>best ${pl.meetings}${pl.unit === 'exhibitors' ? ' exh.' : ''}</div>
@@ -702,7 +702,7 @@ function renderEventPage() {
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><a href="#/events" data-back>← All events</a><button class="btn" data-copy="${esc(`#/event/${encodeURIComponent(e.id)}`)}">Copy link</button></div>
     <div class="panel evhead">
       <div style="min-width:0"><div class="stepno">${eventStatusLabel(e)}${e.found_by ? ` · added ${fmtDay(e.added_at)} by ${esc(e.found_by)}` : ''}</div>
-        <h3>${esc(e.name)}${e.generalmind_present ? ' <span class="badge">GeneralMind exhibiting</span>' : ''}</h3>
+        <h3>${esc(e.name)}${e.generalmind_present ? ' <span class="badge">GeneralMind is a partner</span>' : ''}</h3>
         <div class="meta">${fmtDate(e.start, e.end)} · ${esc(e.city)} (${e.travel?.mode === 'local' ? 'no travel' : `${travelText(e.travel)} from Berlin`}) · ${esc(e.format || '')} · ${esc(e.language || '')} · <b>${until(e.start)}</b>${safeUrl(e.url) ? ` · <a href="${esc(e.url)}" target="_blank" rel="noopener">official site ↗</a>` : ''}</div></div>
       <div class="acts2">
         <button class="btn ok ${st === 'going' ? 'on' : ''}" data-going="approve" ${e.past ? 'disabled' : ''}>${st === 'going' ? '✓ Going' : 'Going'}</button>
@@ -716,10 +716,10 @@ function renderEventPage() {
       </div>
       <div class="panel"><h3>Why it scored ${e.score} <span class="chip lane lane-${(EVENT_LANES[e.lane] || ['', 'filtered'])[1]}">${(EVENT_LANES[e.lane] || ['Unscored'])[0]}</span></h3>
         <div class="breakdown">${e.reasons.map(r => `<div class="bk"><span>${esc(r.label)}</span><div class="bkbar"><span style="width:${Math.round(100 * r.points / maxPts)}%"></span></div><b class="num">${r.points ? '+' + r.points : '0'}</b></div>`).join('')}</div>
-        <div style="color:var(--faint);font-size:11.5px;margin-top:8px">${e.score} of 100. The weights are in <a href="#/criteria">Criteria</a> (Events section).</div>
+        <div style="color:var(--faint);font-size:11.5px;margin-top:8px">${e.score} of 100. The weights are in <a href="#/criteria">Criteria</a> (Events: which to go to).</div>
       </div>
     </div>
-    ${e.access === 'invitation' ? `<div class="note" style="margin:0 0 16px"><b>Invitation only:</b> attending needs an invitation from the organiser (or a sponsor or partner slot). Ask early, before planning meetings.</div>` : ''}
+    ${e.access === 'invitation' ? `<div class="note" style="margin:0 0 16px"><b>Invitation only:</b> attending needs an invitation from the organiser (or a sponsor or partner slot). Ask early, before planning meetings.</div>` : e.access === 'partners' ? `<div class="note" style="margin:0 0 16px"><b>Vendors only as partners:</b> companies selling to the attendees can't buy a delegate ticket; they attend as a paying commercial partner.</div>` : ''}
     ${planBlock(e, n)}
     <div class="panel"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">About this event</h3><button class="kwbtn" data-more>${open ? 'Less' : 'More'}</button></div>
       <p style="margin:8px 0 0;font-size:13.5px">${esc(e.why || '')}</p>
@@ -761,7 +761,7 @@ function planBlock(e, n) {
     <div class="plan">We'd send <select data-team>${[1, 2, 3, 4].map(k => `<option value="${k}" ${k === pl.team ? 'selected' : ''}>${k} ${k === 1 ? 'person' : 'people'}</option>`).join('')}</select>
       × <b>${pl.days}</b> day${pl.days > 1 ? 's' : ''} × <b>${pl.meetings_per_person_per_day}</b> meetings a day = <b>${pl.meetings} meetings</b>.
       The best ${pl.meetings} ${unit} here average a fit of <b>${pl.bestAvg}</b>.${fill}</div>
-    <div class="note">${more}${e.generalmind_present ? ' GeneralMind has a stand here: two people means one at the stand and one moving between sessions, both taking meetings.' : ''}</div>
+    <div class="note">${more}${e.generalmind_present ? ' GeneralMind is a partner here, so the default is two people.' : ''}</div>
     ${e.counts.people ? `<div style="font-size:13.5px;margin-top:10px">About ${Math.round(100 * pl.acceptance_rate)}% accept (set in <a href="#/criteria">Criteria</a>), so invite the best <b>~${pl.invites}</b>, best first, and let the replies do the narrowing.</div>
     <div style="display:flex;align-items:center;gap:10px;margin-top:8px"><div class="meter" style="flex:1;height:10px"><span style="width:${pct}%"></span></div><span class="num" style="font-size:13px"><b>${appr}</b> approved of ~${pl.invites}</span></div>` : ''}</div>`;
 }
@@ -1134,7 +1134,7 @@ function renderExport() {
 const LEVERS = [
   ['Events: which to go to', [
     ['event_choice.best_people_points', 'Quality of the best people we could meet', 'Average fit of the best N people, where N is the meetings possible. The main driver.', 0, 80],
-    ['event_choice.generalmind_present_points', 'GeneralMind has a stand', '', 0, 30],
+    ['event_choice.generalmind_present_points', 'GeneralMind is a partner there', 'A stand, a talk or a pitch.', 0, 30],
     ['event_choice.in_window_points', 'Good timing', 'Far enough ahead to book meetings, close enough to plan.', 0, 30],
     ['event_choice.berlin_points', 'In Berlin', 'No travel.', 0, 20],
     ['event_choice.dach_trip_points', 'Elsewhere in Germany, Austria or Switzerland', '', 0, 20],
@@ -1167,10 +1167,10 @@ const MORE_LABELS = {
   'company.core_industries': 'What counts as a core industry (words in the industry name)', 'company.erp_points': 'Runs a known ERP (public)',
   'event.moderator_points': 'Moderating or chairing', 'event.soon_days': '"Soon" means within (days)', 'event.soon_points': 'Event soon',
   'event.later_days': '"Later" means within (days)', 'event.later_points': 'Event later', 'event.far_points': 'Event further out',
-  'event.generalmind_present_points': 'GeneralMind has a stand there',
+  'event.generalmind_present_points': 'GeneralMind is a partner at the event',
   'event_choice.exhibitor_only_share': 'Credit for events that name only exhibitors (%)', 'event_choice.outside_window_points': 'Timing too soon or too far ahead',
   'event_choice.plan_min_days': 'Good timing starts (days ahead)', 'event_choice.plan_max_days': 'Good timing ends (days ahead)',
-  'event_choice.abroad_points': 'Abroad', 'event_choice.team_size': 'People we send', 'event_choice.team_size_with_stand': 'People we send when GeneralMind has a stand',
+  'event_choice.abroad_points': 'Abroad', 'event_choice.team_size': 'People we send', 'event_choice.team_size_with_stand': 'People we send when GeneralMind is a partner there',
   'event_choice.recommend': 'Event "recommended" from', 'event_choice.consider': 'Event "worth considering" from',
   'account.company_multiplier': 'Company fit multiplier', 'account.per_event_points': 'Per target event the company is at',
   'account.max_event_points': 'Cap for events', 'account.named_contact_points': 'Has a named person at an event',

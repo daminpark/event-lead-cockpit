@@ -193,7 +193,7 @@ def score_event(role_at_event: str, event, today, cfg):
     reasons.append({"label": label, "points": pts, "kind": "event"})
     if event.get("generalmind_present"):
         total += e["generalmind_present_points"]
-        reasons.append({"label": "GeneralMind has a stand there", "points": e["generalmind_present_points"], "kind": "event"})
+        reasons.append({"label": "GeneralMind is a partner at the event", "points": e["generalmind_present_points"], "kind": "event"})
     return total, reasons
 
 
@@ -541,7 +541,7 @@ def score_events(events, contacts, account_rows, today, cfg):
                              + (f" (only {len(best)} for {slots} meetings)" if len(best) < slots else ""),
                     "points": round(ec.get("best_people_points", 60) * quality / 100 * share)}]
         if e.get("generalmind_present"):
-            reasons.append({"label": "GeneralMind already has a stand", "points": ec["generalmind_present_points"]})
+            reasons.append({"label": "GeneralMind is a partner there", "points": ec["generalmind_present_points"]})
         days = (dt.date.fromisoformat(e["start"]) - today).days
         if days < 0:
             reasons.append({"label": "Already happened", "points": 0})

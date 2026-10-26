@@ -36,7 +36,7 @@
       "hours": 5.0,
       "km": 505
     },
-    "access": "open"
+    "access": "partners"
   },
   {
     "id": "bme-symposium-2026",
@@ -49,7 +49,7 @@
     "format": "Congress + exhibition",
     "language": "German",
     "url": "https://www.bme.de/symposium",
-    "why": "The largest procurement congress in DACH. CPOs and heads of supply chain and logistics from corporates and large Mittelstand. GeneralMind is a Start-up Partner this year, so meetings can be booked for the stand.",
+    "why": "The largest procurement congress in DACH. CPOs and heads of supply chain and logistics from corporates and large Mittelstand. GeneralMind is a Start-up Partner this year, with a pitch in the Start-up Arena on Wed 18 Nov, 16:10 to 16:40. Whether the partnership includes a stand isn't published.",
     "personas": [
       "procurement",
       "supply_chain",

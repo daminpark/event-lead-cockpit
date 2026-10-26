@@ -18,7 +18,7 @@ Heads of procurement, supply chain, logistics, order management / customer servi
 2. Names available: a public speaker list, agenda, exhibitor or participant list.
 3. Timing: soon enough to act on, far enough to book meetings.
 4. DACH relevance.
-5. Bonus: GeneralMind is exhibiting or speaking.
+5. Bonus: GeneralMind is a partner there (exhibiting, speaking or pitching).
 
 ## Rules
 - Confirm dates on the organiser's own site, never an aggregator alone. Mark anything unconfirmed.

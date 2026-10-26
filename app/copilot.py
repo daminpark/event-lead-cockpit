@@ -184,7 +184,7 @@ class Tools:
         out = []
         for e in sorted(self.events.values(), key=lambda e: -e.get("score", 0)):
             out.append({"id": e["id"], "name": e["name"], "dates": f"{e['start']} to {e['end']}", "city": e.get("city"),
-                        "score": e.get("score"), "status": self.event_status(e), "generalmind_has_a_stand": bool(e.get("generalmind_present")),
+                        "score": e.get("score"), "status": self.event_status(e), "generalmind_is_a_partner_there": bool(e.get("generalmind_present")),
                         "strong_fit_people": e.get("counts", {}).get("strong"), "people": e.get("counts", {}).get("people"),
                         "link": f"#/event/{e['id']}"})
         return out
