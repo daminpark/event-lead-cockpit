@@ -36,7 +36,11 @@
       "hours": 5.0,
       "km": 505
     },
-    "access": "partners"
+    "access": "partners",
+    "cost": {
+      "money_per_person_eur": null,
+      "way_in": "Vendors only as paying commercial partners (price on request)"
+    }
   },
   {
     "id": "bme-symposium-2026",
@@ -80,7 +84,11 @@
       "hours": 0.5,
       "km": 0
     },
-    "access": "open"
+    "access": "open",
+    "cost": {
+      "money_per_person_eur": 3005,
+      "way_in": "Vendor ticket €2,995 (no VAT); GeneralMind's Start-up Partner package may cover some passes: ask BME"
+    }
   },
   {
     "id": "hamburger-logistiktage-2027",
@@ -119,7 +127,11 @@
       "hours": 2.5,
       "km": 255
     },
-    "access": "invitation"
+    "access": "invitation",
+    "cost": {
+      "money_per_person_eur": null,
+      "way_in": "Invitation only; vendors come as paying partners (price on request)"
+    }
   },
   {
     "id": "hannover-messe-2027",
@@ -152,7 +164,12 @@
       "hours": 2.5,
       "km": 250
     },
-    "access": "open"
+    "access": "open",
+    "cost": {
+      "money_per_person_eur": 119,
+      "days": 1,
+      "way_in": "Day ticket €29 excl. VAT (on sale late November) and a day trip by train"
+    }
   },
   {
     "id": "handelsblatt-cpo-2027",
@@ -184,7 +201,11 @@
       "hours": 5.0,
       "km": 475
     },
-    "access": "open"
+    "access": "open",
+    "cost": {
+      "money_per_person_eur": 2610,
+      "way_in": "€2,300 early bird excl. VAT until 18 Dec; every registration is vetted, so ask first whether a vendor is accepted"
+    }
   },
   {
     "id": "ep-sce-2027",
@@ -217,7 +238,11 @@
       "hours": 0.5,
       "km": 0
     },
-    "access": "invitation"
+    "access": "invitation",
+    "cost": {
+      "money_per_person_eur": null,
+      "way_in": "Invitation only; vendors only as sponsors (price on request)"
+    }
   },
   {
     "id": "ssow-europe-2027",
@@ -250,7 +275,12 @@
       "hours": 6.5,
       "km": 2320
     },
-    "access": "open"
+    "access": "open",
+    "cost": {
+      "money_per_person_eur": 4759,
+      "days": 2,
+      "way_in": "Vendor 'Conference Only' pass €4,099 excl. VAT (the two main conference days)"
+    }
   },
   {
     "id": "bme-eloesungstage-2027",
@@ -283,7 +313,11 @@
       "hours": 5.0,
       "km": 475
     },
-    "access": "open"
+    "access": "open",
+    "cost": {
+      "money_per_person_eur": 2555,
+      "way_in": "Vendor ticket €2,095 for both days if booked by 30 Nov"
+    }
   },
   {
     "id": "handelslogistik-2027",
@@ -316,7 +350,11 @@
       "hours": 5.0,
       "km": 475
     },
-    "access": "open"
+    "access": "open",
+    "cost": {
+      "money_per_person_eur": 1805,
+      "way_in": "About €1,495 excl. VAT on 2026 prices; 2027 sales not open yet"
+    }
   },
   {
     "id": "procurement-summit-2027",
@@ -353,6 +391,10 @@
       "hours": 2.5,
       "km": 255
     },
-    "access": "open"
+    "access": "open",
+    "cost": {
+      "money_per_person_eur": 1290,
+      "way_in": "Expo & Conference ticket €1,050 excl. VAT (€1,000 until 31 Oct)"
+    }
   }
 ]

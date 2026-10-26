@@ -101,9 +101,11 @@ in_window_points = 15          # far enough ahead to book meetings, not so far t
 outside_window_points = 5
 plan_min_days = 14
 plan_max_days = 200
-berlin_points = 10             # no travel
-dach_trip_points = 6
-abroad_points = 2
+# cost per meeting: what attending costs (vendor ticket, travel, hotel, and people's days including travel time) per conversation
+cost_points = 10               # at or below the "good" cost per meeting
+cost_good_eur = 150
+cost_poor_eur = 600            # at or above: no points
+day_rate_eur = 500             # what a day of someone's time is worth, travel time included
 current_list_points = 10       # this year's speaker or exhibitor list is out (not last year's)
 # meeting plan: no invitations (cold email isn't allowed), so we meet speakers in the break after their talk
 meetings_per_person_per_day = 8   # the most conversations one colleague can have in a day

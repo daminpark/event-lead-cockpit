@@ -217,7 +217,7 @@ dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid 
 .grouphead { display: flex; justify-content: space-between; gap: 12px; padding: 9px 14px; background: var(--panel-2); border-bottom: 1px solid var(--line); font-weight: 600; font-size: 13px; cursor: default; }
 .grouphead span { color: var(--muted); font-weight: 500; }
 .mobile-only { display: none; }
-.evtable { display: grid; grid-template-columns: 52px minmax(0, 2.4fr) 92px 82px 84px 78px 74px 132px 92px; gap: 14px; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--line-2); cursor: pointer; }
+.evtable { display: grid; grid-template-columns: 52px minmax(0, 2.4fr) 92px 82px 70px 84px 78px 74px 132px 92px; gap: 14px; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--line-2); cursor: pointer; }
 .evtable:last-child { border-bottom: 0; }
 .evtable:hover { background: var(--panel-2); }
 .evtable .sorth { border: 0; background: none; padding: 0; text-align: left; font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; cursor: pointer; white-space: nowrap; }
@@ -363,7 +363,7 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
   .evnums, .evacts { grid-column: 1 / -1; justify-content: flex-start; }
   .evmore { padding-left: 16px; }
   .evtable { grid-template-columns: 48px minmax(0, 1fr) 80px 110px; }
-  .evtable > :nth-child(4), .evtable > :nth-child(5), .evtable > :nth-child(6), .evtable > :nth-child(7), .evtable > :nth-child(9) { display: none; }
+  .evtable > :nth-child(4), .evtable > :nth-child(5), .evtable > :nth-child(6), .evtable > :nth-child(7), .evtable > :nth-child(8), .evtable > :nth-child(10) { display: none; }
   .bk { grid-template-columns: minmax(0, 1fr) 70px 36px; }
   .stabs { overflow-x: auto; }
   .row .c-company, .row .c-reasons { grid-column: 2 / 4; }
@@ -629,6 +629,7 @@ function planFor(e) {
   const team = e.team || p.team_default, cur = p.by_team?.[team] || { meetings: 0, slots: 0, avg: 0, total: 0 }, nxt = p.by_team?.[team + 1];
   const extra = nxt ? nxt.meetings - cur.meetings : 0;
   return { ...p, team, meetings: cur.meetings, slots: cur.slots, bestAvg: cur.avg, schedule: cur.schedule || [], clashes: cur.clashes || 0,
+           perMeeting: p.cost_per_person != null && cur.meetings ? Math.round(team * p.cost_per_person / cur.meetings) : null,
            nextCount: extra, nextAvg: extra > 0 ? Math.round((nxt.total - cur.total) / extra) : 0 };
 }
 const travelText = t => !t ? '—' : t.mode === 'local' ? 'In Berlin' : `${t.hours} h ${t.mode}`;
@@ -637,6 +638,7 @@ const EVENT_COLS = [
   ['name', 'Event', e => e.name.toLowerCase()],
   ['date', 'Date', e => e.start],
   ['travel', 'Travel', e => e.travel?.hours ?? 99],
+  ['cost', 'Cost', e => planFor(e).perMeeting ?? 1e9],
   ['quality', 'Best N', e => planFor(e).bestAvg],
   ['meetings', 'Meetings', e => planFor(e).meetings],
   ['approved', 'Approved', e => { const n = statusCounts([e.id]); return n.approved + n.hubspot; }],
@@ -667,6 +669,7 @@ function renderEventsList() {
         <div style="min-width:0"><div class="t1" title="${esc(e.name)}">${esc(e.name)}${e.generalmind_present ? ' <span class="badge">partner</span>' : ''}</div><div class="t2">${esc(e.format || '')}${e.access === 'invitation' ? ' · <b style="color:var(--review)">invitation only</b>' : e.access === 'partners' ? ' · <b style="color:var(--review)">vendors only as partners</b>' : ''}</div></div>
         <div class="t2"><b style="color:var(--ink)">${fmtDay(e.start)}</b>${e.end && e.end !== e.start ? `–${fmtDay(e.end)}` : ''}<br>${until(e.start)}</div>
         <div class="t2" title="Approximate door to door from Berlin"><b style="color:var(--ink)">${esc(e.city)}</b><br>${travelText(e.travel)}</div>
+        <div class="t2" title="${esc(e.cost?.way_in || '')}">${pl.perMeeting != null ? `<b style="color:var(--ink)">€${pl.perMeeting}</b><br>a meeting` : '<b style="color:var(--ink)">—</b><br>no ticket'}</div>
         <div class="t2" title="Average fit of the best ${pl.meetings} ${pl.unit === 'exhibitors' ? 'exhibitors' : 'people'} we could meet"><b style="color:var(--ink)">${pl.bestAvg}</b> avg<br>best ${pl.meetings}${pl.unit === 'exhibitors' ? ' exh.' : ''}</div>
         <div class="t2" title="${pl.timetable ? 'From the timetable: the people we can catch in the break after their talk' : `${pl.team} ${pl.team === 1 ? 'person' : 'people'} × ${pl.days} days × up to ${pl.per_day} a day (an estimate until the timetable is out)`}"><b style="color:var(--ink)">${pl.meetings}</b><br>${pl.timetable ? 'timetable' : 'estimate'}</div>
         <div class="t2">${appr ? `<b style="color:var(--fast)">${appr}</b>` : '0'}<br>of ${pl.meetings}</div>
@@ -768,6 +771,7 @@ function planBlock(e, n) {
       ${pl.schedule.map(b => `<div style="margin-top:8px"><div class="t2"><b style="color:var(--ink)">${fmtDay(b.date)} · ${b.end && b.end !== '23:59' ? `${esc(b.start)}–${esc(b.end)}` : `from ${esc(b.start)}`}</b> ${esc({ other: 'changeover', evening: 'evening event', 'stage exit': 'at the stage exit' }[b.kind] || b.kind)}</div><div style="font-size:13px">${b.ids.map(who).filter(Boolean).join(' · ')}</div></div>`).join('')}</details>` : '';
   return `<div class="panel"><h3>Meeting plan</h3>
     <div class="plan">${what}</div>
+    <div style="font-size:13.5px;margin-top:8px">${pl.perMeeting != null ? `Attending costs about <b>€${(pl.team * pl.cost_per_person).toLocaleString('en-GB')}</b> for ${pl.team === 1 ? 'one person' : `${pl.team} people`} (ticket, travel and ${pl.days} day${pl.days > 1 ? 's' : ''} each), so <b>€${pl.perMeeting}</b> a meeting.` : `<b>No ticket for vendors.</b>`} <span style="color:var(--muted)">${esc(e.cost?.way_in || '')}</span></div>
     <div class="note">${unit === 'exhibitors' ? 'Exhibitors are met at their stands; no booking needed.' : "No invitations: cold email isn't allowed, so speakers are met as they come off stage, in the break or at the stage exit."} ${more}${e.generalmind_present ? ' GeneralMind is a partner here, so the default is two people.' : ''}</div>
     ${schedule}
     ${pl.meetings ? `<div style="display:flex;align-items:center;gap:10px;margin-top:10px"><div class="meter" style="flex:1;height:10px"><span style="width:${pct}%"></span></div><span class="num" style="font-size:13px"><b>${appr}</b> approved of ${pl.meetings}</span></div>` : ''}</div>`;
@@ -1207,8 +1211,8 @@ const LEVERS = [
     ['event_choice.best_people_points', 'Quality of the best people we could meet', 'Average fit of the best N people, where N is the meetings possible. The main driver.', 0, 80],
     ['event_choice.generalmind_present_points', 'GeneralMind is a partner there', 'A stand, a talk or a pitch.', 0, 30],
     ['event_choice.in_window_points', 'Good timing', 'Far enough ahead to book meetings, close enough to plan.', 0, 30],
-    ['event_choice.berlin_points', 'In Berlin', 'No travel.', 0, 20],
-    ['event_choice.dach_trip_points', 'Elsewhere in Germany, Austria or Switzerland', '', 0, 20],
+    ['event_choice.cost_points', 'Cheap per meeting', 'Points at or below a good cost per meeting: ticket, travel, hotel and people\'s days.', 0, 30],
+    ['event_choice.day_rate_eur', "A day of someone's time (€)", 'Counts travel time too, so long trips cost more.', 0, 1500],
     ['event_choice.current_list_points', "This year's list is out", "Otherwise the names are last year's.", 0, 20],
   ]],
   ['Meeting plan', [
@@ -1241,7 +1245,7 @@ const MORE_LABELS = {
   'event.generalmind_present_points': 'GeneralMind is a partner at the event',
   'event_choice.exhibitor_only_share': 'Credit for events that name only exhibitors (%)', 'event_choice.outside_window_points': 'Timing too soon or too far ahead',
   'event_choice.plan_min_days': 'Good timing starts (days ahead)', 'event_choice.plan_max_days': 'Good timing ends (days ahead)',
-  'event_choice.abroad_points': 'Abroad', 'event_choice.team_size': 'People we send', 'event_choice.team_size_with_stand': 'People we send when GeneralMind is a partner there',
+  'event_choice.cost_good_eur': 'A good cost per meeting (€): full points', 'event_choice.cost_poor_eur': 'A poor cost per meeting (€): no points', 'event_choice.team_size': 'People we send', 'event_choice.team_size_with_stand': 'People we send when GeneralMind is a partner there',
   'event_choice.recommend': 'Event "recommended" from', 'event_choice.consider': 'Event "worth considering" from',
   'account.company_multiplier': 'Company fit multiplier', 'account.per_event_points': 'Per target event the company is at',
   'account.max_event_points': 'Cap for events', 'account.named_contact_points': 'Has a named person at an event',

@@ -631,7 +631,8 @@ def score_events(events, contacts, account_rows, today, cfg):
         worth = (sum(c["lane"] in ("fast_track", "review") for c in people) if people
                  else sum(a["lane"] in ("fast_track", "review") for a in companies))
         # Time, not names, is the limit: judge the event on the best people we could actually meet.
-        length = (dt.date.fromisoformat(e.get("end") or e["start"]) - dt.date.fromisoformat(e["start"])).days + 1
+        cost = e.get("cost") or {}
+        length = cost.get("days") or (dt.date.fromisoformat(e.get("end") or e["start"]) - dt.date.fromisoformat(e["start"])).days + 1
         team = ec.get("team_size_with_stand", 2) if e.get("generalmind_present") else ec.get("team_size", 1)
         leads, unit = [c for c in people if c["lane"] in ("fast_track", "review", "filtered")], "people"
         if not leads:  # trade fairs whose lists only name exhibitors: the companies are the prospects
@@ -661,12 +662,17 @@ def score_events(events, contacts, account_rows, today, cfg):
             reasons.append({"label": f"{days // 7} weeks away: time to book meetings", "points": ec["in_window_points"]})
         else:
             reasons.append({"label": f"{days // 30} months away: plans still vague", "points": ec["outside_window_points"]})
-        if e.get("city") == "Berlin":
-            reasons.append({"label": "In Berlin: no travel", "points": ec["berlin_points"]})
-        elif e.get("country") in ("DE", "AT", "CH"):
-            reasons.append({"label": f"In {e.get('city')}: short trip", "points": ec["dach_trip_points"]})
-        else:
-            reasons.append({"label": f"In {e.get('city')}: abroad", "points": ec["abroad_points"]})
+        # Cost per meeting: money (ticket, travel, hotel) and people's days, travel time included, per conversation.
+        hours = (e.get("travel") or {}).get("hours") or 0
+        per_person = None if cost.get("money_per_person_eur") is None else \
+            cost["money_per_person_eur"] + ec["day_rate_eur"] * (length + 2 * hours / 8)
+        if per_person is None:
+            reasons.append({"label": f"No ticket for vendors: {cost.get('way_in') or 'sponsors or invited guests only'}", "points": 0})
+        elif best:
+            per_meeting = team * per_person / len(best)
+            share = min(1, max(0, (ec["cost_poor_eur"] - per_meeting) / (ec["cost_poor_eur"] - ec["cost_good_eur"])))
+            reasons.append({"label": f"€{per_meeting:,.0f} per meeting: ticket, travel and {length} day{'s' if length > 1 else ''} per person",
+                            "points": round(ec["cost_points"] * share)})
         if any("previous" not in (s.get("edition") or "") for s in e.get("sources", [])):
             reasons.append({"label": "This year's list is out", "points": ec["current_list_points"]})
         else:
@@ -678,6 +684,7 @@ def score_events(events, contacts, account_rows, today, cfg):
                      else "consider" if e["score"] >= ec["consider"] else "skip")
         # meeting plan (people sent can be changed per event in the cockpit)
         e["plan"] = {"days": length, "team_default": team, "per_day": ec.get("meetings_per_person_per_day", 8), "unit": unit,
+                     "cost_per_person": round(per_person) if per_person is not None else None,
                      "timetable": bool(tt),
                      "by_team": {k: {"meetings": len(v["scores"]), "slots": v["slots"], "total": sum(v["scores"]),
                                      "avg": round(sum(v["scores"]) / len(v["scores"])) if v["scores"] else 0,
