@@ -1215,6 +1215,7 @@ $('hsPill').onclick = () => document.querySelector('#tabs [data-view="hubspot"]'
 function renderAbout() {
   const n = S.contacts.length, a = S.data.accounts.length;
   $('about').innerHTML = `
+    <p><a class="btn primary" href="writeup" target="_blank" rel="noopener">Read the full write-up ↗</a></p>
     <h2>What this is</h2>
     <p>A working first version of an event-led lead engine for GeneralMind. It takes 10 upcoming events where your buyers go, pulls the people and companies listed on their public pages, scores each one with visible reasons, and puts them in front of a person to approve or reject. Approved leads export in HubSpot's import format.</p>
     <p>It works the same way as Autopilot: a score with a threshold, a cockpit for the uncertain cases, and a record of every human decision so the scoring can learn and, step by step, earn the right to skip review.</p>

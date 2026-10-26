@@ -22,6 +22,7 @@ Pierre Park · 26 October 2026 · Cockpit: https://leads.193vbr.com (access code
 **The pipeline.** For each event it saves the public speaker, agenda, exhibitor and partner pages, extracts name, title, company and talk, and then a second, sceptical pass checks every lead against the saved page and removes what it can't find. Each company is classified (buyer, partner, competitor, vendor, other) and given an estimated industry, size, country and, where public, ERP. A rules-based score with visible reasons puts every contact and company in a lane. Result: **680 people (699 event listings) and 786 companies; 241 contacts on fast track, 159 for review.**
 
 **The cockpit** is built for the person who goes and meets these people:
+
 - **Review:** each lead has a five-second brief (who, why they matter, an opener for the event), the score's reasons, data confidence and the source link. Approve or reject with a reason, by click or keyboard. A do-not-contact list covers a person across every event.
 - **Criteria:** every weight and keyword is visible and adjustable, with a live preview of how the ranking changes and how the change would have agreed with past decisions. Each save is a numbered version that can be reactivated; invalid settings are refused.
 - **Playbooks:** the plain-language instructions the AI steps follow (finding events, sourcing leads, profiling companies), versioned the same way.
@@ -30,6 +31,7 @@ Pierre Park · 26 October 2026 · Cockpit: https://leads.193vbr.com (access code
 - **HubSpot:** approved leads go to HubSpot through the API (companies and contacts, linked, deduplicated by our own ids), with a connection light, or as CSV import files.
 
 Two things stood out:
+
 - **GeneralMind is exhibiting at the BME-Symposium on 18–19 November.** The cockpit has 62 fast-track contacts there, so the first use is filling the stand's calendar.
 - **Exhibitor lists mean different things at different events.** At most congresses the exhibitors are vendors (much of the BME partner wall is lio, tacto, Pactum, Mercanis and others), so they're kept as market intel. At Hannover Messe and the Hamburger Logistiktage it's the other way round: the exhibitors are manufacturers and logistics firms with order desks, so the list is a prospect list for order-to-cash.
 
@@ -40,6 +42,7 @@ Choices on purpose: rules rather than a model (with no outcome data yet, a score
 Sources feed the cockpit, enrichment fills the gaps, people review, HubSpot receives, and outcomes flow back into the scoring.
 
 **Sources and signals.** Events are one source. The stronger ones show the pain directly, or that something is about to change:
+
 - *Hiring:* companies advertising for *Sachbearbeiter Auftragsabwicklung*, *Kreditorenbuchhaltung* or *Vertriebsinnendienst* pay people to do by hand what Autopilot does. Several open roles at once is the strongest single signal I can think of.
 - *ERP change:* SAP ECC mainstream maintenance ends in 2027, so many companies are redesigning order and invoice processes as they move to S/4HANA.
 - *E-invoicing:* larger German companies must send B2B e-invoices from January 2027, which puts accounts payable on the agenda this year.
@@ -64,6 +67,7 @@ Sources feed the cockpit, enrichment fills the gaps, people review, HubSpot rece
 Six events haven't published 2027 lists yet, so they use the previous edition's speakers and say so. Trade-fair lists are capped at about 100 DACH companies. Company data is estimated and ERP is mostly unknown. Sourcing ran once, not on a schedule.
 
 Next, in order:
+
 1. A daily run that re-checks the event pages and adds new speakers as 2027 lists appear.
 2. The hiring signal for DACH as the second source.
 3. Enrichment for fast-track accounts: the right persona and a verified email.

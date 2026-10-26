@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event Lead Cockpit: Write-up</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #ffffff; --ink: #1b1c1f; --muted: #5d6169; --line: #e5e5e1; --accent: #2f4fd8; }
+@media (prefers-color-scheme: dark) { :root { --bg: #131416; --ink: #ececee; --muted: #a0a4ab; --line: #2c2e33; --accent: #7d95ff; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.55 Inter, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 780px; margin: 0 auto; padding: 40px 20px 60px; }
+h1 { font-size: 24px; letter-spacing: -.02em; margin: 0 0 4px; }
+h1 + p { color: var(--muted); margin-top: 0; }
+h2 { font-size: 17px; margin: 28px 0 8px; padding-top: 14px; border-top: 1px solid var(--line); }
+p, li { margin: 6px 0; }
+ul, ol { padding-left: 20px; }
+a { color: var(--accent); }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 10px 0 14px; }
+th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+td:nth-child(2), td:nth-child(3) { white-space: nowrap; }
+em { color: var(--muted); }
+@media print {
+  :root { --bg: #fff; --ink: #000; --muted: #444; --line: #ccc; }
+  body { font-size: 10.3px; line-height: 1.5; } main { padding: 0; max-width: none; }
+  h1 { font-size: 17px; } h2 { font-size: 12.5px; margin: 10px 0 4px; padding-top: 6px; }
+  p, li { margin: 3px 0; } ul, ol { margin: 3px 0; padding-left: 16px; }
+  table { font-size: 9px; margin: 6px 0 8px; } th, td { padding: 2px 6px; }
+  @page { size: A4; margin: 13mm 14mm; }
+}
+</style></head><body><main>
+<h1>Event lead cockpit: write-up</h1>
+<p>Pierre Park · 26 October 2026 · Cockpit: https://leads.193vbr.com (access code in the email)</p>
+<h2>1. What I built</h2>
+<p><strong>Ten events where GeneralMind's buyers go</strong>, November 2026 to June 2027, mostly DACH. Dates were checked on the organisers' own sites.</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Date</th>
+<th>Where</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>European Manufacturing &amp; Supply Chain Strategies Summit</td>
+<td>3–4 Nov 2026</td>
+<td>Munich</td>
+<td>Heads of supply chain and operations at manufacturers</td>
+</tr>
+<tr>
+<td>BME-Symposium Einkauf und Logistik</td>
+<td>18–19 Nov 2026</td>
+<td>Berlin</td>
+<td>Largest DACH procurement congress; GeneralMind is a start-up partner</td>
+</tr>
+<tr>
+<td>Hamburger Logistiktage</td>
+<td>24–25 Feb 2027</td>
+<td>Hamburg</td>
+<td>300 invited logistics heads from retail, consumer goods and logistics</td>
+</tr>
+<tr>
+<td>Hannover Messe</td>
+<td>5–8 Apr 2027</td>
+<td>Hannover</td>
+<td>Exhibitors are manufacturers with order desks</td>
+</tr>
+<tr>
+<td>Handelsblatt CPO-Summit</td>
+<td>6–7 Apr 2027</td>
+<td>Düsseldorf</td>
+<td>CPOs of large DACH groups</td>
+</tr>
+<tr>
+<td>BME EP&amp;SCE Summit</td>
+<td>19–20 Apr 2027</td>
+<td>Berlin</td>
+<td>Invitation-only, CPOs and supply chain chiefs</td>
+</tr>
+<tr>
+<td>SSOW Europe</td>
+<td>10–13 May 2027</td>
+<td>Estoril</td>
+<td>Heads of shared services, P2P and O2C</td>
+</tr>
+<tr>
+<td>BME-eLÖSUNGSTAGE</td>
+<td>11–12 May 2027</td>
+<td>Düsseldorf</td>
+<td>Digital procurement and P2P; AI invoice automation on the 2026 agenda</td>
+</tr>
+<tr>
+<td>LOG Handelslogistik Kongress</td>
+<td>8–9 Jun 2027</td>
+<td>Cologne</td>
+<td>Logistics heads at retailers and consumer brands</td>
+</tr>
+<tr>
+<td>Procurement Summit</td>
+<td>23–24 Jun 2027</td>
+<td>Hamburg</td>
+<td>In-house procurement, incl. wholesalers like Würth and Berner</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The pipeline.</strong> For each event it saves the public speaker, agenda, exhibitor and partner pages, extracts name, title, company and talk, and then a second, sceptical pass checks every lead against the saved page and removes what it can't find. Each company is classified (buyer, partner, competitor, vendor, other) and given an estimated industry, size, country and, where public, ERP. A rules-based score with visible reasons puts every contact and company in a lane. Result: <strong>680 people (699 event listings) and 786 companies; 241 contacts on fast track, 159 for review.</strong></p>
+<p><strong>The cockpit</strong> is built for the person who goes and meets these people:</p>
+<ul>
+<li><strong>Review:</strong> each lead has a five-second brief (who, why they matter, an opener for the event), the score's reasons, data confidence and the source link. Approve or reject with a reason, by click or keyboard. A do-not-contact list covers a person across every event.</li>
+<li><strong>Criteria:</strong> every weight and keyword is visible and adjustable, with a live preview of how the ranking changes and how the change would have agreed with past decisions. Each save is a numbered version that can be reactivated; invalid settings are refused.</li>
+<li><strong>Playbooks:</strong> the plain-language instructions the AI steps follow (finding events, sourcing leads, profiling companies), versioned the same way.</li>
+<li><strong>Copilot:</strong> a chat that answers questions about the data and proposes changes as inactive versions, with a one-click Activate. It never changes what's live on its own.</li>
+<li><strong>Insights:</strong> the funnel, decisions over time, versions compared by replaying every decision, and a feedback inbox. A Feedback button lets anyone point at part of the page and leave a note.</li>
+<li><strong>HubSpot:</strong> approved leads go to HubSpot through the API (companies and contacts, linked, deduplicated by our own ids), with a connection light, or as CSV import files.</li>
+</ul>
+<p>Two things stood out:</p>
+<ul>
+<li><strong>GeneralMind is exhibiting at the BME-Symposium on 18–19 November.</strong> The cockpit has 62 fast-track contacts there, so the first use is filling the stand's calendar.</li>
+<li><strong>Exhibitor lists mean different things at different events.</strong> At most congresses the exhibitors are vendors (much of the BME partner wall is lio, tacto, Pactum, Mercanis and others), so they're kept as market intel. At Hannover Messe and the Hamburger Logistiktage it's the other way round: the exhibitors are manufacturers and logistics firms with order desks, so the list is a prospect list for order-to-cash.</li>
+</ul>
+<p>Choices on purpose: rules rather than a model (with no outcome data yet, a score people can read and argue with is more useful); speakers and exhibitors rather than attendees (attendee lists aren't public); no emails, no phone numbers and no LinkedIn; sites that block automated access are respected (transport logistic's directory does, so it was replaced).</p>
+<h2>2. From event cockpit to a full lead-generation system</h2>
+<p>Sources feed the cockpit, enrichment fills the gaps, people review, HubSpot receives, and outcomes flow back into the scoring.</p>
+<p><strong>Sources and signals.</strong> Events are one source. The stronger ones show the pain directly, or that something is about to change:</p>
+<ul>
+<li><em>Hiring:</em> companies advertising for <em>Sachbearbeiter Auftragsabwicklung</em>, <em>Kreditorenbuchhaltung</em> or <em>Vertriebsinnendienst</em> pay people to do by hand what Autopilot does. Several open roles at once is the strongest single signal I can think of.</li>
+<li><em>ERP change:</em> SAP ECC mainstream maintenance ends in 2027, so many companies are redesigning order and invoice processes as they move to S/4HANA.</li>
+<li><em>E-invoicing:</em> larger German companies must send B2B e-invoices from January 2027, which puts accounts payable on the agenda this year.</li>
+<li><em>Lookalikes</em> of current customers (Kloeckner, Oatly, bofrost*, Sennheiser, Müller lila Logistik): same industry, size and ERP.</li>
+<li><em>Partners:</em> SAP partners and integrators know who is migrating; they have their own lane for that reason.</li>
+<li><em>Champions moving:</em> a pilot user who changes jobs is the warmest lead there is.</li>
+</ul>
+<p><strong>ICP and scoring.</strong> <em>Fit</em> is fairly stable: industry, size (roughly 500 to 20,000 employees), DACH first, ERP, and the persona (order management, AP and shared services, procurement, supply chain; heads as buyers, team leads as champions). <em>Timing</em> comes from signals and fades. Priority goes to high fit with a recent signal. Competitors are routed out, consultancies to the partner track, customers and open deals to their owner.</p>
+<p><strong>Enrichment.</strong> Cheap data first, expensive last: firmographics for every account; contacts and verified business emails only for accounts above the fit threshold, through a waterfall of providers (for example Apollo, then a second one when it misses), orchestrated in Clay.</p>
+<p><strong>Review with feedback.</strong> The same loop as Autopilot. At first a person reviews everything. Each decision stores the score's suggestion and the settings version. Reject reasons map to rules ("wrong role" is a title rule, "too small" a size threshold). When a score band reaches high agreement over enough decisions (say 90% over 50), it skips review, one band and one source at a time. Every settings change is replayed against past decisions before it goes live, the same way a pilot replays 30–50 real cases. Decisions don't change the scoring on their own; they produce suggestions a person accepts as a new version.</p>
+<p><strong>HubSpot.</strong> Check existing records first (customers, open deals, owners) so a known company gets a new signal rather than a duplicate. Upsert companies by domain and contacts by email once enriched, assign an owner by segment or territory, and enrol the contact in a sequence matching the signal (meeting request before an event, e-invoicing, S/4 migration). Meetings and deal stages sync back so the scoring learns from outcomes, not only from reviewers.</p>
+<p><strong>Measuring.</strong> A funnel per source, segment and settings version: sourced, approved, contacted, replied, meeting, pilot, customer. Plus cost per meeting by source and review time per lead. Every few weeks, move effort to what turns into pilots and stop what doesn't. Test two or three messages per segment on small lists rather than one big send.</p>
+<p><strong>GDPR and German law.</strong> Business contact data from public sources under legitimate interest, with a documented balancing test, the source stored per lead (the cockpit does this), people informed at first contact, a shared suppression list, and unused leads deleted after a set period. Under §7 UWG, advertising by email needs the recipient's prior consent even when the recipient is a business, and a phone call to a business needs at least presumed consent. So in Germany the first touch is better made in person at the event, through a partner, or by phone with a clear business reason. That's one more reason event-led outreach suits this market. I'd confirm the details with counsel.</p>
+<h2>3. What v1 leaves out, and what I'd build next</h2>
+<p>Six events haven't published 2027 lists yet, so they use the previous edition's speakers and say so. Trade-fair lists are capped at about 100 DACH companies. Company data is estimated and ERP is mostly unknown. Sourcing ran once, not on a schedule.</p>
+<p>Next, in order:</p>
+<ol>
+<li>A daily run that re-checks the event pages and adds new speakers as 2027 lists appear.</li>
+<li>The hiring signal for DACH as the second source.</li>
+<li>Enrichment for fast-track accounts: the right persona and a verified email.</li>
+<li>Outcomes synced back from HubSpot, so versions and sources are compared on meetings and pilots.</li>
+</ol>
+<p><em>How it was built: Python, FastAPI, SQLite and one HTML page, on a small server at home, deployed from GitHub. Extraction, checking, profiling and briefs were done by AI agents, each checked by a second agent; the scoring itself is plain rules in a config file. Built in an afternoon with Claude Code.</em></p>
+</main></body></html>

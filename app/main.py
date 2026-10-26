@@ -100,6 +100,11 @@ def index():
     return FileResponse(os.path.join(STATIC, "index.html"), headers={"Cache-Control": "no-cache"})
 
 
+@app.get("/writeup")
+def writeup():
+    return FileResponse(os.path.join(STATIC, "writeup.html"), headers={"Cache-Control": "no-cache"})
+
+
 @app.get("/healthz")
 def healthz():
     return {"ok": True, "version": VERSION}
