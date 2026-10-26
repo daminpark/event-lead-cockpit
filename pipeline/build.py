@@ -502,7 +502,10 @@ def compute(cfg, today):
 
 def score_events(events, contacts, account_rows, today, cfg):
     """Step 1 is choosing which events to attend: score each one from what its lists contain."""
-    ec = cfg["event_choice"]
+    ec = cfg.get("event_choice")
+    if not ec:  # a scoring version saved before event scoring existed: use the repository's event settings
+        with open(os.path.join(ROOT, "scoring.toml"), "rb") as f:
+            ec = tomllib.load(f)["event_choice"]
     for e in events.values():
         people = [c for c in contacts if c["event_id"] == e["id"]]
         named = {c["account_id"] for c in people}
@@ -534,7 +537,7 @@ def score_events(events, contacts, account_rows, today, cfg):
         if e.get("city") == "Berlin":
             reasons.append({"label": "In Berlin: no travel", "points": ec["berlin_points"]})
         elif e.get("country") in ("DE", "AT", "CH"):
-            reasons.append({"label": f"In {e.get('city')}: short trip", "points": ec["dach_points"]})
+            reasons.append({"label": f"In {e.get('city')}: short trip", "points": ec["dach_trip_points"]})
         else:
             reasons.append({"label": f"In {e.get('city')}: abroad", "points": ec["abroad_points"]})
         if any("previous" not in (s.get("edition") or "") for s in e.get("sources", [])):
@@ -543,9 +546,12 @@ def score_events(events, contacts, account_rows, today, cfg):
             reasons.append({"label": "Only last year's list so far", "points": 0})
         e["score"] = min(100, sum(r["points"] for r in reasons))
         e["reasons"] = reasons
-        e["lane"] = "recommended" if e["score"] >= ec["recommend"] else "consider" if e["score"] >= ec["consider"] else "skip"
-        e["counts"] = {"people": len(people), "strong": strong_people, "worth": worth,
-                       "companies_without_contact": len(companies), "strong_companies": strong_companies}
+        e["past"] = dt.date.fromisoformat(e.get("end") or e["start"]) < today
+        e["lane"] = ("past" if e["past"] else "recommended" if e["score"] >= ec["recommend"]
+                     else "consider" if e["score"] >= ec["consider"] else "skip")
+        e["counts"] = {"people": len(people), "strong": strong_people, "worth": worth if people else 0,
+                       "companies_without_contact": len(companies), "strong_companies": strong_companies,
+                       "worth_companies": 0 if people else worth}
 
 
 def build(today=None, con=None):

@@ -77,7 +77,7 @@ main { padding: 20px 24px 60px; max-width: 1440px; margin: 0 auto; }
 
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 16px; align-items: start; }
 .list { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-.row { display: grid; grid-template-columns: 70px minmax(180px, 1.3fr) minmax(160px, 1.1fr) minmax(130px, .8fr) minmax(170px, 1.2fr) 92px; gap: 14px; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--line-2); cursor: pointer; }
+.row { display: grid; grid-template-columns: 70px minmax(170px, 1.2fr) minmax(150px, 1fr) minmax(180px, 1.5fr) 92px; gap: 14px; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--line-2); cursor: pointer; }
 .row:last-child { border-bottom: 0; }
 .row:hover { background: var(--panel-2); }
 .row.sel { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
@@ -100,6 +100,7 @@ main { padding: 20px 24px 60px; max-width: 1440px; margin: 0 auto; }
 .btn.no { color: var(--competitor); }
 .btn.no:hover, .btn.no.on { background: var(--competitor-soft); border-color: var(--competitor); }
 .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
 .btn.icon { width: 34px; padding: 5px 0; text-align: center; }
 .status { font-size: 12px; font-weight: 600; }
 .status.approve { color: var(--fast); }
@@ -201,6 +202,24 @@ dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid 
 .stab span { background: var(--line-2); border-radius: 999px; padding: 1px 8px; font-size: 12px; margin-left: 4px; }
 .pushbar { background: var(--accent-soft); border-radius: 10px; padding: 8px 12px; }
 .fitcell { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.pwrap { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 16px; align-items: start; }
+.rail { position: sticky; top: 76px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px; max-height: calc(100vh - 96px); overflow: auto; }
+.rail h5 { margin: 10px 8px 4px; font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--faint); }
+.railitem { display: block; width: 100%; text-align: left; border: 0; background: none; border-radius: 8px; padding: 8px 10px; }
+.railitem:hover { background: var(--panel-2); }
+.railitem.on { background: var(--accent-soft); }
+.railitem b { display: block; font-size: 13px; line-height: 1.3; }
+.railitem small { display: block; color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+.railitem .rc { display: flex; gap: 6px; margin-top: 4px; font-size: 11px; color: var(--muted); flex-wrap: wrap; }
+.railitem .rc span b { display: inline; font-size: 11px; color: var(--ink); }
+.railitem.dim { opacity: .55; }
+.evhead { display: flex; gap: 16px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.evhead h3 { margin: 2px 0; font-size: 17px; }
+.evhead .meta { color: var(--muted); font-size: 13px; }
+.evhead .acts2 { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.grouphead { display: flex; justify-content: space-between; gap: 12px; padding: 9px 14px; background: var(--panel-2); border-bottom: 1px solid var(--line); font-weight: 600; font-size: 13px; cursor: default; }
+.grouphead span { color: var(--muted); font-weight: 500; }
+.mobile-only { display: none; }
 .fitcell .sug { font-size: 10.5px; color: var(--lc, var(--muted)); font-weight: 600; white-space: nowrap; }
 .cp-open { background: var(--accent) !important; color: #fff !important; border-color: var(--accent) !important; font-weight: 600; }
 .cp { position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100vw); background: var(--panel); border-left: 1px solid var(--line); box-shadow: var(--shadow); z-index: 45; display: flex; flex-direction: column; transform: translateX(105%); transition: transform .2s ease; }
@@ -271,6 +290,9 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
 .logl li time { color: var(--faint); white-space: nowrap; font-variant-numeric: tabular-nums; }
 
 @media (max-width: 1100px) {
+  .pwrap { grid-template-columns: 1fr; }
+  .rail { display: none; }
+  .mobile-only { display: inline-block; }
   .crit { grid-template-columns: 1fr; }
   .crit .side { position: static; }
   .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -296,7 +318,8 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
   .evnums, .evacts { grid-column: 1 / -1; justify-content: flex-start; }
   .evmore { padding-left: 16px; }
   .stabs { overflow-x: auto; }
-  .row .c-company, .row .c-event, .row .c-reasons { grid-column: 2 / 4; }
+  .row .c-company, .row .c-reasons { grid-column: 2 / 4; }
+  .evhead { flex-direction: column; align-items: flex-start; }
   .row .acts { grid-column: 3; grid-row: 1; }
   .head { display: none; }
   .grid2 { grid-template-columns: 1fr; }
@@ -338,33 +361,34 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
   <section class="view on" id="v-events"><div id="eventsView"></div></section>
 
   <section class="view" id="v-people">
-    <div class="panel step" style="margin-bottom:12px">
-      <div><div class="stepno">Step 2</div><h3>Choose who to meet</h3>
-        <p class="lead" style="margin:0">Everyone starts in <b>To review</b>, best fit first. Approve the people worth meeting, then send them to HubSpot from <b>Approved</b>. Nothing is approved automatically.</p></div>
-    </div>
-    <div class="stabs" id="statusTabs"></div>
-    <div class="toolbar">
-      <select id="fEvent" title="Which events"></select>
-      <input type="search" id="q" placeholder="Search name, title, company…">
-      <select id="fSuggest">
-        <option value="">All suggestions</option>
-        <option value="fast_track">Strong fit</option>
-        <option value="review">Possible</option>
-        <option value="filtered">Low fit</option>
-      </select>
-      <select id="fFunction"></select>
-      <select id="fSort">
-        <option value="score">Sort: fit</option>
-        <option value="date">Sort: event date</option>
-        <option value="company">Sort: company</option>
-      </select>
-      <label title="Partners, competitors and existing customers are kept out of review by default"><input type="checkbox" id="fOther"> Partners, competitors &amp; customers</label>
-      <span class="count" id="qCount"></span>
-    </div>
-    <div class="toolbar pushbar" id="pushBar" style="display:none"></div>
-    <div class="layout">
-      <div class="list" id="qList"></div>
-      <aside class="drawer" id="drawer"></aside>
+    <div class="pwrap">
+      <aside class="rail" id="rail"></aside>
+      <div class="pmain">
+        <div class="panel evhead" id="evHead"></div>
+        <div class="stabs" id="statusTabs"></div>
+        <div class="toolbar">
+          <select id="fEvent" class="mobile-only" title="Which events"></select>
+          <input type="search" id="q" placeholder="Search name, title, company…">
+          <select id="fSuggest">
+            <option value="">All suggestions</option>
+            <option value="fast_track">Strong fit</option>
+            <option value="review">Possible</option>
+            <option value="filtered">Low fit</option>
+          </select>
+          <select id="fFunction"></select>
+          <select id="fSort">
+            <option value="score">Sort: fit</option>
+            <option value="company">Sort: company</option>
+          </select>
+          <label title="Partners, competitors and existing customers are kept out of review by default"><input type="checkbox" id="fOther"> Partners, competitors &amp; customers</label>
+          <span class="count" id="qCount"></span>
+        </div>
+        <div class="toolbar pushbar" id="pushBar" style="display:none"></div>
+        <div class="layout">
+          <div class="list" id="qList"></div>
+          <aside class="drawer" id="drawer"></aside>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -395,9 +419,9 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
 
 <script>
 const LANES = {
-  fast_track: { label: 'Fast track', hint: 'Suggested approve' },
-  review: { label: 'Review', hint: 'Needs a look' },
-  filtered: { label: 'Filtered', hint: 'Low fit, vendors, other' },
+  fast_track: { label: 'Strong fit', hint: 'Suggested approve' },
+  review: { label: 'Possible', hint: 'Needs a look' },
+  filtered: { label: 'Low fit', hint: 'Low fit, vendors, other' },
   partner: { label: 'Partners', hint: 'SIs, consultancies, ERP' },
   competitor: { label: 'Competitors', hint: 'Kept as market intel' },
   customer: { label: 'Customers', hint: 'Route to account owner' },
@@ -501,7 +525,9 @@ function applyDecision(d) {
 }
 
 function fillFilters() {
+  const keep = $('fFunction').value;
   $('fFunction').innerHTML = '<option value="">All functions</option>' + Object.entries(FUNCTION_LABELS).map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join('');
+  $('fFunction').value = keep;
 }
 
 function renderAll() { renderEvents(); renderPeople(); renderCriteria(); renderPlaybooks(); renderInsights(); renderExport(); if (S.view === 'settings') renderSettings(); renderAbout(); }
@@ -513,11 +539,12 @@ const hsKey = c => key('contact', c.person_key);
 const STATUS = [['review', 'To review'], ['approved', 'Approved'], ['hubspot', 'In HubSpot'], ['rejected', 'Rejected']];
 const SUGGEST = { fast_track: 'Strong fit', review: 'Possible', filtered: 'Low fit', partner: 'Partner', competitor: 'Competitor', customer: 'Customer' };
 const OTHER_LANES = new Set(['partner', 'competitor', 'customer']);
-const EVENT_LANES = { recommended: ['Recommended', 'fast_track'], consider: ['Worth considering', 'review'], skip: ['Probably skip', 'filtered'] };
+const EVENT_LANES = { recommended: ['Recommended', 'fast_track'], consider: ['Worth considering', 'review'], skip: ['Probably skip', 'filtered'], past: ['Already happened', 'filtered'] };
 
 function statusOf(c) {
   const d = decisionOf('contact', c.id);
-  if (d?.decision === 'approve') return S.hs.has(hsKey(c)) ? 'hubspot' : 'approved';
+  // "In HubSpot" means this event listing was sent; the person may already be there from another event
+  if (d?.decision === 'approve') return S.hs.has(key('listing', c.id)) ? 'hubspot' : 'approved';
   if (d?.decision === 'reject') return 'rejected';
   return 'review';
 }
@@ -531,7 +558,7 @@ function topReasons(reasons, n = 3) {
 // ---------- step 1: events ----------
 function renderEvents() {
   const going = goingIds(), people = S.contacts.filter(c => going.includes(c.event_id) && statusOf(c) === 'review' && !OTHER_LANES.has(c.lane));
-  const events = [...S.data.events].sort((a, b) => b.score - a.score || a.start.localeCompare(b.start));
+  const events = [...S.data.events].sort((a, b) => (a.past - b.past) || b.score - a.score || a.start.localeCompare(b.start));
   $('eventsView').innerHTML = `
     <div class="panel step">
       <div><div class="stepno">Step 1</div><h3>Choose the events worth going to</h3>
@@ -551,11 +578,14 @@ function renderEvents() {
             <div class="t2">${fmtDate(e.start, e.end)} · ${esc(e.city)} · ${esc(e.format)} · <b>${until(e.start)}</b> · <span class="chip lane lane-${lane}">${label}</span></div>
             <div class="chips" style="margin-top:6px">${e.reasons.map(r => `<span class="chip pts">${r.points ? `<b>+${r.points}</b> ` : ''}${esc(r.label)}</span>`).join('')}</div>
           </div>
-          <div class="evnums"><div><b>${e.counts.strong}</b>strong fit</div><div><b>${e.counts.worth}</b>worth a look</div><div><b>${e.counts.people}</b>people</div></div>
+          <div class="evnums">${e.counts.people
+            ? `<div><b>${e.counts.strong}</b>strong fit</div><div><b>${e.counts.worth}</b>worth a look</div><div><b>${e.counts.people}</b>people</div>`
+            : `<div><b>${e.counts.strong_companies}</b>strong-fit exhibitors</div><div><b>${e.counts.companies_without_contact}</b>exhibitors</div><div><b>0</b>named people yet</div>`}</div>
           <div class="evacts">
-            <button class="btn ok ${d?.decision === 'approve' ? 'on' : ''}" data-going="approve">${d?.decision === 'approve' ? '✓ Going' : 'Going'}</button>
+            <button class="btn ok ${d?.decision === 'approve' ? 'on' : ''}" data-going="approve" ${e.past ? 'disabled title="This event has already happened"' : ''}>${d?.decision === 'approve' ? '✓ Going' : 'Going'}</button>
             <button class="btn no ${d?.decision === 'reject' ? 'on' : ''}" data-going="reject">${d?.decision === 'reject' ? '✕ Not going' : 'Not going'}</button>
             <button class="btn" data-people>People →</button>
+            <button class="btn" data-copy="#/people/${encodeURIComponent(e.id)}/review" title="Copy a link to this event's people">Link</button>
             <button class="btn icon" data-more title="Details">${open ? '▴' : '▾'}</button>
           </div>
         </div>
@@ -569,47 +599,103 @@ function renderEvents() {
         </div>` : ''}
       </div>`;
     }).join('')}</div>`;
-  $('toPeople')?.addEventListener('click', () => { S.evScope = 'going'; showView('people'); });
+  $('toPeople')?.addEventListener('click', () => { S.evScope = 'going'; S.status = 'review'; S.sel = null; showView('people'); });
+  wireCopy($('eventsView'));
+  if (S.view === 'events') syncHash();
   $('eventsView').querySelectorAll('.evrow').forEach(row => {
     const id = row.dataset.ev;
     row.querySelectorAll('[data-going]').forEach(b => b.onclick = () => {
       const want = b.dataset.going, cur = decisionOf('event', id)?.decision;
       decide('event', id, cur === want ? 'clear' : want);
     });
-    row.querySelector('[data-people]').onclick = () => { S.evScope = id; showView('people'); };
+    row.querySelector('[data-people]').onclick = () => { S.evScope = id; S.status = 'review'; S.sel = null; showView('people'); };
     row.querySelector('[data-more]').onclick = () => { S.evOpen = S.evOpen === id ? null : id; renderEvents(); };
   });
 }
 
 // ---------- step 2: people ----------
-function scopeContacts() {
-  const scope = S.evScope ?? (goingIds().length ? 'going' : ''), going = goingIds();
+function currentScope() {
+  const going = goingIds();
+  if (S.evScope === undefined || (S.evScope === 'going' && !going.length)) S.evScope = going.length ? 'going' : '';
+  if (S.evScope && S.evScope !== 'going' && !S.events[S.evScope]) S.evScope = going.length ? 'going' : '';
+  return S.evScope;
+}
+function scopeContacts(ignoreFilters = false) {
+  const scope = currentScope(), going = goingIds();
   const q = $('q').value.trim().toLowerCase(), fn = $('fFunction').value, sug = $('fSuggest').value, other = $('fOther').checked;
   return S.contacts.filter(c => {
     if (scope === 'going' ? !going.includes(c.event_id) : scope && c.event_id !== scope) return false;
     if (!other && OTHER_LANES.has(c.lane)) return false;
+    if (ignoreFilters) return true;
     if (sug && c.lane !== sug) return false;
     if (fn && !c.tags.includes(`function:${fn}`)) return false;
     if (q && !`${c.name} ${c.title} ${c.company} ${S.accounts[c.account_id]?.name || ''} ${c.session}`.toLowerCase().includes(q)) return false;
     return true;
   });
 }
+// People are always grouped by event (soonest first), then sorted within the event.
 function contactRows() {
   const rows = scopeContacts().filter(c => statusOf(c) === S.status);
-  const sort = $('fSort').value;
-  rows.sort(sort === 'date' ? (a, b) => S.events[a.event_id].start.localeCompare(S.events[b.event_id].start) || b.score - a.score
-    : sort === 'company' ? (a, b) => (S.accounts[a.account_id]?.name || a.company || '').localeCompare(S.accounts[b.account_id]?.name || b.company || '') || b.score - a.score
-    : (a, b) => b.score - a.score || a.name.localeCompare(b.name));
-  return rows;
+  const by = $('fSort').value === 'company'
+    ? (a, b) => (S.accounts[a.account_id]?.name || a.company || '').localeCompare(S.accounts[b.account_id]?.name || b.company || '') || b.score - a.score
+    : (a, b) => b.score - a.score || a.name.localeCompare(b.name);
+  return rows.sort((a, b) => S.events[a.event_id].start.localeCompare(S.events[b.event_id].start) || a.event_id.localeCompare(b.event_id) || by(a, b));
+}
+
+function statusCounts(eventIds) {
+  const counts = { review: 0, approved: 0, hubspot: 0, rejected: 0, strong: 0 };
+  S.contacts.forEach(c => {
+    if (!eventIds.includes(c.event_id) || OTHER_LANES.has(c.lane)) return;
+    const st = statusOf(c); counts[st]++;
+    if (st === 'review' && c.lane === 'fast_track') counts.strong++;
+  });
+  return counts;
+}
+
+function renderRail() {
+  const going = goingIds(), scope = currentScope();
+  const item = (key, title, sub, ids, dim = false) => {
+    const n = statusCounts(ids);
+    return `<button class="railitem ${scope === key ? 'on' : ''} ${dim ? 'dim' : ''}" data-scope="${esc(key)}"><b>${esc(title)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}
+      <div class="rc"><span><b>${n.review}</b> to review</span><span><b>${n.approved}</b> approved</span><span><b>${n.hubspot}</b> in HubSpot</span></div></button>`;
+  };
+  const byDate = [...S.data.events].sort((a, b) => a.start.localeCompare(b.start));
+  const others = byDate.filter(e => !going.includes(e.id));
+  $('rail').innerHTML = (going.length ? item('going', 'All events we\'re going to', `${going.length} event${going.length > 1 ? 's' : ''}`, going) : '')
+    + `<h5>${going.length ? 'Going' : 'Mark events as Going in step 1'}</h5>`
+    + byDate.filter(e => going.includes(e.id)).map(e => item(e.id, e.short, `${fmtDate(e.start, e.end)} · ${e.city}`, [e.id])).join('')
+    + `<h5>Other events</h5>` + item('', 'All events', `${S.data.events.length} events`, S.data.events.map(e => e.id))
+    + others.map(e => item(e.id, e.short, `${fmtDate(e.start, e.end)} · ${decisionOf('event', e.id)?.decision === 'reject' ? 'not going' : 'undecided'}`, [e.id], true)).join('');
+  $('rail').querySelectorAll('[data-scope]').forEach(b => b.onclick = () => { S.evScope = b.dataset.scope; S.sel = null; S.pushSel.clear(); renderPeople(); });
+}
+
+function renderEvHead() {
+  const scope = currentScope(), e = S.events[scope];
+  if (!e) {
+    const going = goingIds();
+    $('evHead').innerHTML = `<div><div class="stepno">Step 2</div><h3>${scope === 'going' ? `People at the ${going.length} event${going.length > 1 ? 's' : ''} we're going to` : 'People at all events'}</h3>
+      <div class="meta">Everyone starts in <b>To review</b>, best fit first, grouped by event. Approve the people worth meeting, then send them to HubSpot from <b>Approved</b>. Nothing is approved automatically.</div></div>
+      <div class="acts2"><button class="btn" data-copy="${esc(hashFor())}">Copy link</button></div>`;
+  } else {
+    const d = decisionOf('event', e.id)?.decision, n = statusCounts([e.id]);
+    $('evHead').innerHTML = `<div><div class="stepno">Step 2 · ${d === 'approve' ? 'Going' : d === 'reject' ? 'Not going' : 'Not decided yet'}</div>
+      <h3>${esc(e.name)}${e.generalmind_present ? ' <span class="badge">GeneralMind exhibiting</span>' : ''}</h3>
+      <div class="meta">${fmtDate(e.start, e.end)} · ${esc(e.city)} · ${until(e.start)} · event score ${e.score} · <b>${n.strong}</b> strong fit still to review · <b>${n.approved + n.hubspot}</b> approved to meet</div></div>
+      <div class="acts2">
+        <button class="btn ok ${d === 'approve' ? 'on' : ''}" data-going="approve">${d === 'approve' ? '✓ Going' : 'Going'}</button>
+        <button class="btn no ${d === 'reject' ? 'on' : ''}" data-going="reject">${d === 'reject' ? '✕ Not going' : 'Not going'}</button>
+        <button class="btn" data-copy="${esc(hashFor())}">Copy link</button>
+      </div>`;
+    $('evHead').querySelectorAll('[data-going]').forEach(b => b.onclick = () => decide('event', e.id, decisionOf('event', e.id)?.decision === b.dataset.going ? 'clear' : b.dataset.going));
+  }
+  wireCopy($('evHead'));
 }
 
 function fillScope() {
-  const going = goingIds();
-  if (S.evScope === undefined) S.evScope = going.length ? 'going' : '';
-  if (S.evScope === 'going' && !going.length) S.evScope = '';
+  const going = goingIds(), scope = currentScope();
   $('fEvent').innerHTML = `<option value="going" ${going.length ? '' : 'disabled'}>Events we're going to (${going.length})</option><option value="">All events</option>`
     + [...S.data.events].sort((a, b) => a.start.localeCompare(b.start)).map(e => `<option value="${esc(e.id)}">${esc(e.short)}${going.includes(e.id) ? ' ✓' : ''}</option>`).join('');
-  $('fEvent').value = S.evScope;
+  $('fEvent').value = scope;
 }
 
 function actionsCell(c) {
@@ -621,7 +707,9 @@ function actionsCell(c) {
 }
 
 function renderPeople() {
-  fillScope();
+  if (!S.data) return;
+  const scope = currentScope();
+  fillScope(); renderRail(); renderEvHead();
   const scoped = scopeContacts(), counts = {};
   scoped.forEach(c => { const st = statusOf(c); counts[st] = (counts[st] || 0) + 1; });
   $('statusTabs').innerHTML = STATUS.map(([k, label]) => `<button class="stab ${S.status === k ? 'on' : ''}" data-st="${k}">${label} <span class="num">${counts[k] || 0}</span></button>`).join('');
@@ -629,29 +717,37 @@ function renderPeople() {
   const rows = contactRows();
   $('qCount').textContent = `${rows.length} ${rows.length === 1 ? 'person' : 'people'}`;
   if (!rows.find(r => r.id === S.sel)) S.sel = rows[0]?.id || null;
-  // the Approved tab is where people are sent to HubSpot
-  [...S.pushSel].forEach(id => { if (!rows.find(r => r.id === id)) S.pushSel.delete(id); });
-  const st = S.hsStatus || {};
+  [...S.pushSel].forEach(id => { const c = S.contacts.find(x => x.id === id); if (!c || statusOf(c) !== 'approved' || isSuppressed(c)) S.pushSel.delete(id); });
+  const st = S.hsStatus || {}, ev = S.events[scope];
   $('pushBar').style.display = S.status === 'approved' ? '' : 'none';
   if (S.status === 'approved') $('pushBar').innerHTML = `
-    <label><input type="checkbox" id="selAll" ${rows.length && S.pushSel.size === rows.length ? 'checked' : ''}> Select all</label>
+    <label><input type="checkbox" id="selAll" ${rows.length && rows.every(r => isSuppressed(r) || S.pushSel.has(r.id)) ? 'checked' : ''}> Select all${ev ? ` at ${esc(ev.short)}` : ''}</label>
     <button class="btn primary" id="pushSel" ${S.pushSel.size && st.ok ? '' : 'disabled'}>Send ${S.pushSel.size || ''} to HubSpot</button>
-    <a class="btn" href="api/export/contacts.csv">Download CSV</a>
+    <a class="btn" href="api/export/contacts.csv${ev ? `?event=${encodeURIComponent(ev.id)}` : scope === 'going' ? `?event=${encodeURIComponent(goingIds().join(','))}` : ''}">Download CSV${ev ? ` for ${esc(ev.short)}` : scope === 'going' ? ' for these events' : ''}</a>
     <span style="color:var(--muted);font-size:12.5px"><i class="dot ${st.ok ? 'ok' : st.configured ? 'bad' : ''}"></i> ${st.ok ? 'HubSpot connected' : st.configured ? 'HubSpot not reachable' : 'Connect HubSpot in Settings'}</span>
     <span id="pushMsg" style="font-size:12.5px">${S.pushResult || ''}</span>`;
-  const empty = { review: 'Nothing left to review here. Check the other events or statuses.', approved: 'Nobody approved yet. Approve people in To review.', hubspot: 'Nobody sent to HubSpot yet. Send approved people from the Approved tab.', rejected: 'Nobody rejected.' }[S.status];
-  const head = `<div class="row head"><div>Fit</div><div>Person</div><div class="c-company">Company</div><div class="c-event">Event</div><div class="c-reasons">In five seconds</div><div style="text-align:right">${S.status === 'review' ? 'Decide' : ''}</div></div>`;
-  $('qList').innerHTML = rows.length ? head + rows.map(c => {
-    const a = S.accounts[c.account_id], p = a?.profile || {}, ev = S.events[c.event_id];
-    return `<div class="row lane-${c.lane} ${c.id === S.sel ? 'sel' : ''}" data-id="${esc(c.id)}">
-      <div class="fitcell">${S.status === 'approved' ? `<input type="checkbox" class="pick" ${S.pushSel.has(c.id) ? 'checked' : ''} title="Select for HubSpot">` : ''}<div class="score num" title="${SUGGEST[c.lane]}">${c.score}</div><div class="sug">${SUGGEST[c.lane]}</div></div>
+  const noPeople = ev && !S.contacts.some(c => c.event_id === ev.id);
+  const empty = noPeople ? `No named people at ${esc(ev.short)} yet: its lists only name exhibiting companies (${ev.counts.companies_without_contact}). They're under ▾ details on the Events page; the next step for them is finding the right person through an enrichment provider.` : { review: 'Nothing left to review here.', approved: 'Nobody approved yet. Approve people in To review.', hubspot: 'Nobody sent to HubSpot yet. Send approved people from the Approved tab.', rejected: 'Nobody rejected.' }[S.status];
+  const head = `<div class="row head"><div>Fit</div><div>Person</div><div class="c-company">Company</div><div class="c-reasons">In five seconds</div><div style="text-align:right">${S.status === 'review' ? 'Decide' : ''}</div></div>`;
+  let html = '', lastEvent = null;
+  const perEvent = {};
+  rows.forEach(c => { perEvent[c.event_id] = (perEvent[c.event_id] || 0) + 1; });
+  rows.forEach(c => {
+    if (c.event_id !== lastEvent) {
+      const e = S.events[c.event_id];
+      html += `<div class="grouphead">${esc(e.name)} <span>${fmtDate(e.start, e.end)} · ${esc(e.city)} · ${perEvent[c.event_id]} ${STATUS.find(x => x[0] === S.status)[1].toLowerCase()}</span></div>`;
+      lastEvent = c.event_id;
+    }
+    const a = S.accounts[c.account_id], p = a?.profile || {};
+    html += `<div class="row lane-${c.lane} ${c.id === S.sel ? 'sel' : ''}" data-id="${esc(c.id)}">
+      <div class="fitcell">${S.status === 'approved' ? `<input type="checkbox" class="pick" ${S.pushSel.has(c.id) ? 'checked' : ''} ${isSuppressed(c) ? 'disabled title="On the do-not-contact list"' : 'title="Select for HubSpot"'}>` : ''}<div class="score num">${c.score}</div><div class="sug">${SUGGEST[c.lane]}</div></div>
       <div><div class="t1">${esc(c.name)}</div><div class="t2">${esc(c.title || 'No title listed')}</div></div>
       <div class="c-company"><div class="t1">${esc(a?.name || c.company || '—')}</div><div class="chips">${p.industry ? `<span class="chip">${esc(p.industry)}</span>` : ''}${p.hq_country ? `<span class="chip">${esc(p.hq_country)}</span>` : ''}${c.confidence === 'low' ? '<span class="chip warn">check data</span>' : ''}</div></div>
-      <div class="c-event"><div class="t1" style="font-weight:500">${esc(ev.short)}</div><div class="t2">${esc(c.role_at_event || '')} · ${until(ev.start)}</div></div>
-      <div class="c-reasons">${isSuppressed(c) ? '<span class="chip dnc">Do not contact</span> ' : ''}${c.brief ? `<div class="brief-line">${esc(c.brief)}</div>` : `<div class="chips">${topReasons(c.reasons)}</div>`}</div>
+      <div class="c-reasons">${isSuppressed(c) ? '<span class="chip dnc">Do not contact</span> ' : ''}${S.status !== 'hubspot' && S.hs.has(hsKey(c)) ? '<span class="chip hs" title="Sent from another event">Already in HubSpot</span> ' : ''}${c.brief ? `<div class="brief-line">${esc(c.brief)}</div>` : `<div class="chips">${topReasons(c.reasons)}</div>`}</div>
       ${actionsCell(c)}
     </div>`;
-  }).join('') : `<div class="empty">${empty}</div>`;
+  });
+  $('qList').innerHTML = rows.length ? head + html : `<div class="empty">${empty}</div>`;
   $('qList').querySelectorAll('.row[data-id]').forEach(r => r.onclick = e => {
     const id = r.dataset.id;
     if (e.target.closest('.pick')) { e.target.checked ? S.pushSel.add(id) : S.pushSel.delete(id); renderPeople(); return; }
@@ -662,10 +758,42 @@ function renderPeople() {
     else if (act === 'reject') { $('drawer').classList.add('open'); renderPeople(); openReject(); }
     else { $('drawer').classList.add('open'); renderPeople(); }
   });
-  if ($('selAll')) $('selAll').onchange = e => { S.pushSel = new Set(e.target.checked ? rows.map(r => r.id) : []); renderPeople(); };
+  if ($('selAll')) $('selAll').onchange = e => { S.pushSel = new Set(e.target.checked ? rows.filter(r => !isSuppressed(r)).map(r => r.id) : []); renderPeople(); };
   if ($('pushSel')) $('pushSel').onclick = pushSelected;
   renderDrawer();
+  if (S.view === 'people') syncHash();
 }
+
+// ---------- shareable links ----------
+const VIEWS = ['events', 'people', 'criteria', 'playbooks', 'insights', 'settings', 'about'];
+function hashFor(view = S.view) {
+  if (view === 'events') return '#/events' + (S.evOpen ? `/${encodeURIComponent(S.evOpen)}` : '');
+  if (view === 'people') {
+    const scope = S.data ? currentScope() : (S.evScope ?? 'going');
+    return `#/people/${encodeURIComponent(scope === '' ? 'all' : scope)}/${S.status}` + (S.sel ? `/${encodeURIComponent(S.sel)}` : '');
+  }
+  return `#/${view}`;
+}
+function personHash(c) { return `#/people/${encodeURIComponent(c.event_id)}/${statusOf(c)}/${encodeURIComponent(c.id)}`; }
+function syncHash(push = false) {
+  const h = hashFor();
+  if (location.hash !== h) history[push ? 'pushState' : 'replaceState'](null, '', h);
+}
+function applyHash() {
+  const [view, a, b, c] = location.hash.replace(/^#\/?/, '').split('/').map(x => { try { return decodeURIComponent(x || ''); } catch { return ''; } });
+  if (view === 'people') {
+    if (a) S.evScope = a === 'all' ? '' : a;
+    if (STATUS.some(([k]) => k === b)) S.status = b;
+    S.sel = c || null;
+  }
+  if (view === 'events') S.evOpen = a || null;
+  return VIEWS.includes(view) ? view : null;
+}
+function copyLink(hash) {
+  const url = `${location.origin}${location.pathname}${hash}`;
+  (navigator.clipboard?.writeText(url) || Promise.reject()).then(() => toast('Link copied: anyone with the access code can open it'), () => prompt('Copy this link', url));
+}
+function wireCopy(el) { el.querySelectorAll('[data-copy]').forEach(b => b.onclick = () => copyLink(b.dataset.copy)); }
 
 async function pushSelected() {
   const ids = [...S.pushSel];
@@ -713,7 +841,7 @@ function decideBlock(c) {
   const status = st === 'approved' ? `<div class="note"><span class="status approve">Approved</span>${who} · waiting to be sent to HubSpot</div>`
     : st === 'rejected' ? `<div class="note"><span class="status reject">Rejected</span>${d.reason ? `: ${esc(d.reason)}` : ''}${who}</div>` : '';
   const btns = st === 'review' ? `<button class="btn ok" data-act="approve">✓ Approve <span class="kbd">A</span></button><button class="btn no" data-act="reject">✕ Reject <span class="kbd">R</span></button>`
-    : st === 'approved' ? `<button class="btn" data-act="clear">Unapprove <span class="kbd">U</span></button><button class="btn no" data-act="reject">✕ Reject</button>`
+    : st === 'approved' ? `<button class="btn" data-act="clear">Unapprove</button><button class="btn no" data-act="reject">✕ Reject</button>`
     : `<button class="btn" data-act="clear">Restore to review</button><button class="btn ok" data-act="approve">✓ Approve</button>`;
   return `${status}<div class="decide">${btns}</div>
     <div class="reject-reasons" id="rr-contact">${REJECT_REASONS.map((r, i) => `<button data-reason="${esc(r)}"><span class="kbd">${i + 1}</span> ${esc(r)}</button>`).join('')}</div>`;
@@ -738,7 +866,7 @@ function renderDrawer() {
     <div class="sub">${esc(c.title || 'No title listed')}<br><b style="color:var(--ink)">${esc(a?.name || c.company || '')}</b></div>
     ${c.brief ? `<div class="brief">${esc(c.brief)}${c.opener ? `<div class="op"><b>Opener:</b> ${esc(c.opener)}</div>` : ''}</div>` : ''}
     ${decideBlock(c)}
-    <div class="chips" style="margin-top:10px"><button class="btn" data-dnc style="font-size:12px;padding:3px 9px">${dnc ? 'Remove from do-not-contact' : 'Do not contact'}</button></div>
+    <div class="chips" style="margin-top:10px"><button class="btn" data-dnc style="font-size:12px;padding:3px 9px">${dnc ? 'Remove from do-not-contact' : 'Do not contact'}</button><button class="btn" data-copy="${esc(personHash(c))}" style="font-size:12px;padding:3px 9px">Copy link</button></div>
     ${c.also_at?.length ? `<div class="note">Also listed at ${c.also_at.map(e => esc(S.events[e]?.short || e)).join(', ')}. Do-not-contact and HubSpot treat these as one person.</div>` : ''}
     <h3>At the event</h3>
     <dl class="kv"><dt>Event</dt><dd>${esc(ev.name)}</dd><dt>When</dt><dd>${fmtDate(ev.start, ev.end)} · ${until(ev.start)}</dd><dt>Role</dt><dd>${esc(c.role_at_event || '—')}</dd>${c.session ? `<dt>Session</dt><dd>${esc(c.session)}</dd>` : ''}<dt>Source</dt><dd>${src ? `<a href="${esc(src)}" target="_blank" rel="noopener">Open source page ↗</a>` : '—'} <span style="color:var(--muted)">(${c.source_check === 'exact' ? 'name found on saved copy' : c.source_check === 'partial' ? 'name partly matched' : 'not found on saved copy'})</span></dd><dt>Edition</dt><dd>${esc(c.edition || '—')}</dd></dl>
@@ -748,6 +876,7 @@ function renderDrawer() {
     <h3>Company</h3>${companyBlock(c, a)}
     <div class="hint"><span class="kbd">J</span>/<span class="kbd">K</span> move · <span class="kbd">A</span> approve · <span class="kbd">R</span> then <span class="kbd">1</span>–<span class="kbd">6</span> reject · <span class="kbd">U</span> undo · <span class="kbd">O</span> open source</div>`;
   el.querySelector('[data-dnc]').onclick = () => toggleSuppression(c.person_key, c.name, dnc);
+  wireCopy(el);
   el.querySelectorAll('[data-act]').forEach(b => b.onclick = () => b.dataset.act === 'reject' ? openReject() : decide('contact', c.id, b.dataset.act));
   el.querySelectorAll('[data-reason]').forEach(b => b.onclick = () => decide('contact', c.id, 'reject', b.dataset.reason));
   wireClose(el);
@@ -790,6 +919,10 @@ async function decide(type, id, decision, reason = null, fromUndo = false) {
 async function undo() {
   const last = S.undo.pop();
   if (!last) return toast('Nothing to undo');
+  if (last.type === 'contact') {
+    const c = S.contacts.find(x => x.id === last.id);
+    if (c && statusOf(c) === 'hubspot') return toast(`${c.name} is already in HubSpot: change it there`);
+  }
   if (last.type === 'contact') S.sel = last.id;
   await decide(last.type, last.id, last.prev ? last.prev.decision : 'clear', last.prev?.reason, true);
 }
@@ -815,7 +948,7 @@ function askReviewer() {
 }
 
 document.addEventListener('keydown', e => {
-  if (e.target.matches('input, select, textarea') || e.metaKey || e.ctrlKey || e.altKey || $('whoDlg').open || $('fbDlg').open) return;
+  if (e.target?.matches?.('input, select, textarea') || e.metaKey || e.ctrlKey || e.altKey || $('whoDlg').open || $('fbDlg').open) return;
   if (S.view !== 'people') return;
   const id = S.sel, k = e.key.toLowerCase(), c = S.contacts.find(x => x.id === id);
   if ('jkaruo123456'.includes(k) || e.key.startsWith('Arrow')) track('key', `${e.key} on ${id}`);
@@ -913,7 +1046,7 @@ function renderExport() {
         <dl class="kv"><dt>Last push</dt><dd>${st.last_sync ? `${esc(st.last_sync.created_at.replace('T', ' ').slice(0, 16))} UTC · ${esc(st.last_sync.message)}` : '—'}</dd>
         <dt>In HubSpot</dt><dd>${S.data.hubspot.filter(h => h.object_type === 'account').length} companies · ${S.data.hubspot.filter(h => h.object_type === 'contact').length} contacts</dd></dl>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
-          <button class="btn" id="pushBtn" ${st.ok ? '' : 'disabled'}>Send all ${okC.length} approved people now</button>
+          <button class="btn" id="pushBtn" ${st.ok ? '' : 'disabled'} title="Usually you send per event from People → Approved">Send everyone approved, all events (${okC.length})</button>
           <button class="btn" id="hsRefresh">Check connection</button>
         </div>
         <div id="pushResult">${S.pushResult || ''}</div>
@@ -968,7 +1101,7 @@ const CRIT_LABELS = {
   target_contact_role_min: 'Target role means role fit of at least', other_points: 'Any other title',
   event_choice: 'Events: which to attend (step 1)', per_strong_lead_points: 'Per strong-fit person or exhibitor', max_strong_lead_points: 'Cap for strong-fit people',
   worth_a_look_share_points: 'Share of the list worth a look', in_window_points: 'Good timing (time to book meetings)', outside_window_points: 'Too soon or too far ahead',
-  plan_min_days: 'Good timing starts (days ahead)', plan_max_days: 'Good timing ends (days ahead)', berlin_points: 'In Berlin', dach_points: 'Elsewhere in DACH',
+  plan_min_days: 'Good timing starts (days ahead)', plan_max_days: 'Good timing ends (days ahead)', berlin_points: 'In Berlin', dach_trip_points: 'Elsewhere in DACH',
   abroad_points: 'Abroad', current_list_points: "This year's list is out", recommend: 'Recommended from', consider: 'Worth considering from',
 };
 const ORDER = ['event_choice', 'lanes', 'role', 'company', 'event', 'account'];
@@ -1451,9 +1584,10 @@ $('cpClear').onclick = () => { S.cp = []; store.set('cp', '[]'); renderCp(); };
 
 // ---------- wiring ----------
 const OLD_VIEWS = { queue: 'people', accounts: 'people', hubspot: 'settings' };
-function showView(name) {
+function showView(name, push = true) {
   S.view = OLD_VIEWS[name] || name;
   if (!$(`v-${S.view}`)) S.view = 'events';
+  syncHash(push);
   $('tabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.view === S.view));
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === `v-${S.view}`));
   if (S.view === 'settings') renderSettings();
@@ -1461,11 +1595,13 @@ function showView(name) {
   if (S.view === 'events') renderEvents();
   store.set('view', S.view);
 }
+window.addEventListener('popstate', () => { const v = applyHash(); if (v && S.data) showView(v, false); });
 $('tabs').querySelectorAll('button').forEach(b => b.onclick = () => showView(b.dataset.view));
 ['q', 'fFunction', 'fSort', 'fSuggest', 'fOther'].forEach(id => $(id).addEventListener('input', renderPeople));
-$('fEvent').addEventListener('change', e => { S.evScope = e.target.value; renderPeople(); });
+$('fEvent').addEventListener('change', e => { S.evScope = e.target.value; S.sel = null; renderPeople(); });
 $('whoBtn').onclick = () => { store.set('reviewerAsked', ''); askReviewer(); };
-load().then(() => showView(store.get('view') || 'events'))
+const initialView = applyHash();
+load().then(() => showView(initialView || store.get('view') || 'events', false))
   .catch(err => { document.querySelector('main').innerHTML = `<div class="empty">Could not load data: ${esc(err.message)}</div>`; });
 </script>
 </body>

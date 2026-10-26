@@ -45,8 +45,9 @@ h1{font-size:18px;margin:0 0 4px}p{color:var(--muted);margin:0 0 18px;font-size:
 input{width:100%;box-sizing:border-box;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);margin-bottom:12px}
 button{width:100%;font:inherit;font-weight:600;padding:10px;border:0;border-radius:9px;background:var(--accent);color:#fff;cursor:pointer}
 .err{color:#bf2f2f;font-size:13px;margin:-4px 0 12px}</style></head><body>
-<form method="post" action="login"><h1>Event Lead Cockpit</h1><p>Case study for GeneralMind. Please enter the access code from the email.</p>
-ERROR<input name="code" type="password" autocomplete="current-password" autofocus placeholder="Access code"><button>Open</button></form></body></html>"""
+<form method="post" action="login"><input type="hidden" name="next" id="next"><h1>Event Lead Cockpit</h1><p>Case study for GeneralMind. Please enter the access code from the email.</p>
+ERROR<input name="code" type="password" autocomplete="current-password" autofocus placeholder="Access code"><button>Open</button></form>
+<script>document.getElementById('next').value = location.hash</script></body></html>"""
 
 
 def role_for(value):
@@ -88,11 +89,12 @@ async def require_code(request: Request, call_next):
 
 
 @app.post("/login")
-def login(code: str = Form(max_length=200)):
+def login(code: str = Form(max_length=200), next: str = Form(default="", max_length=400)):
     if not role_for(code.strip()):
         threading.Event().wait(1.5)  # slow down guessing
         return HTMLResponse(LOGIN_PAGE.replace("ERROR", '<div class="err">That code didn\'t work.</div>'), status_code=401)
-    resp = RedirectResponse("./", status_code=303)
+    # back to the shared link the person opened (only in-app #/ links)
+    resp = RedirectResponse("./" + (next if re.fullmatch(r"#/[A-Za-z0-9_\-./%]*", next) else ""), status_code=303)
     resp.set_cookie("gm_code", code.strip(), max_age=60 * 60 * 24 * 30, httponly=True, secure=True, samesite="lax")
     return resp
 
@@ -458,19 +460,22 @@ def approved(con, only=None):
     contacts = [json.loads(r["data"]) for r in con.execute("SELECT data FROM contacts")]
     ok = lambda kind, oid: decisions.get((kind, oid), {}).get("decision") == "approve"
     domain_ok = lambda a: (a.get("profile") or {}).get("domain") not in suppressed
+    # A selected listing brings every approved listing of the same person, so HubSpot gets all their events.
+    keys = {c["person_key"] for c in contacts if c["id"] in only} if only is not None else None
     people = {}
     for c in contacts:
         if not ok("contact", c["id"]) or c["person_key"] in suppressed or c["id"] in suppressed:
             continue
-        if only is not None and c["id"] not in only:
+        if keys is not None and c["person_key"] not in keys:
             continue
         if c["account_id"] and not domain_ok(accounts.get(c["account_id"], {})):
             continue
         best = people.get(c["person_key"])
         events_seen = (best or {}).get("approved_events", []) + [c["event_id"]]
+        listing_ids = (best or {}).get("approved_ids", []) + [c["id"]]
         if not best or c["score"] > best["score"]:
             best = c
-        people[c["person_key"]] = best | {"approved_events": events_seen}
+        people[c["person_key"]] = best | {"approved_events": events_seen, "approved_ids": listing_ids}
     approved_contacts = list(people.values())
     # Companies go to HubSpot with their approved people; company-only approvals only in a full push.
     account_ids = ({a for a in accounts if ok("account", a) and domain_ok(accounts[a])} if only is None else set()) | \
@@ -506,9 +511,12 @@ def export_companies():
 
 
 @app.get("/api/export/contacts.csv")
-def export_contacts():
+def export_contacts(event: str | None = None):
     with db() as con:
         events, _, contacts, accounts = approved(con)
+    if event:  # one or more events' approved people (comma-separated ids), for that meeting list
+        wanted = set(event.split(","))
+        contacts = [c for c in contacts if wanted & set(c.get("approved_events") or [c["event_id"]])]
     header = ["First name", "Last name", "Job title", "Company name", "Company domain name", "Email", "Lifecycle stage",
               "GM lead id", "GM fit score", "GM fit reasons", "GM source event", "GM source URL", "GM session at event"]
     rows = []
@@ -518,7 +526,7 @@ def export_contacts():
         rows.append([c["first_name"], c["last_name"], c.get("title") or "", props["company"],
                      (acct.get("profile") or {}).get("domain") or "", "", "lead", c["person_key"], c["score"],
                      props["gm_fit_reasons"], props["gm_source_event"], props["gm_source_url"], props["gm_session"]])
-    return csv_response("hubspot-contacts.csv", header, rows)
+    return csv_response(f"hubspot-contacts{'-' + re.sub(r'[^a-z0-9-]', '', event)[:60] if event else ''}.csv", header, rows)
 
 
 @app.get("/api/hubspot/status")

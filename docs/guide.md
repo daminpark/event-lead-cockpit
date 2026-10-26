@@ -6,10 +6,12 @@ It finds the people and companies worth meeting at upcoming events, explains why
 ## The everyday flow
 1. **Events (step 1).** Each event has a score with its reasons: how many strong-fit people its lists name, how much of the list is worth a look, whether GeneralMind already has a stand, timing, travel, and whether this year's list is out. Mark the events you'll attend as **Going** (or **Not going**). Click ▾ for details, including companies exhibiting there with no named person yet.
 2. **People (step 2).** By default you see the people at the events you're going to. Everyone starts in **To review**, best fit first. Read the five-second brief, click a row for the full picture, then **Approve** (A) or **Reject** (R, then a reason 1–6). **U** undoes. Nothing is ever approved automatically.
-3. **Approved.** Tick the people to send (or Select all) and click **Send to HubSpot**. You can unapprove anyone here; they go back to To review.
+3. **Approved.** Tick the people to send (or Select all) and click **Send to HubSpot**, usually one event at a time. You can unapprove anyone here; they go back to To review. **Download CSV** gives the same list as a file.
 4. **In HubSpot.** Sent people move here, with a link to their HubSpot record. From then on, the work happens in HubSpot.
 
-People from events you're not going to aren't deleted: choose "All events" or a single event in the event menu to see them.
+People are always grouped by event. The list on the left shows each event with its counts (to review, approved, in HubSpot); pick one to work on just that event. People from events you're not going to aren't deleted: they're under "Other events".
+
+Every screen has its own link (the address bar, or **Copy link** on events and people), so you can send a colleague straight to an event's approved list or one person's card. They'll need the access code.
 
 ## Suggestions
 The score suggests, it never decides:
@@ -41,7 +43,7 @@ The funnel from sourced to HubSpot, decisions over time, the change log, which e
 Click **Feedback**, then click the part of the page your note is about (or press Esc for a general note). The note is saved with what you were looking at and your last few actions, so it can be reproduced. Errors in the page or on the server are recorded the same way. Both appear under **Insights**, with their status.
 
 ## Do not contact
-On any contact or account, **Do not contact** keeps that person (across every event) or company out of exports and HubSpot.
+On any person's card, **Do not contact** keeps that person out of exports and HubSpot, across every event they appear at.
 
 ## HubSpot
 The light in the header shows whether the connection is healthy. Each push creates or updates companies and contacts, linked, and never duplicates: every record carries the cockpit's own id. Emails are left empty on purpose; they should come from an enrichment provider with a proper legal basis.

@@ -170,6 +170,8 @@ def push(con, approved_accounts, approved_contacts, accounts_by_id, events, sync
             company_id = push_account(acct) if acct else None
             hid, new = hs.upsert("contacts", known.get(("contact", c["person_key"])), "gm_lead_id", c["person_key"], contact_props(c, acct, events))
             save("contact", c["person_key"], hid)
+            for listing in c.get("approved_ids") or [c["id"]]:  # each event listing sent, so the cockpit can show it as "In HubSpot"
+                save("listing", listing, hid)
             summary["contacts_created" if new else "contacts_updated"] += 1
             if company_id:
                 hs.associate(hid, company_id)
