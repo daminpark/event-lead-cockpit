@@ -203,6 +203,9 @@ def decide(d: Decision):
         row = con.execute(f"SELECT score, lane FROM {table} WHERE id = ?", (d.object_id,)).fetchone()
         if not row:
             raise HTTPException(404, "Unknown lead")
+        if d.object_type == "contact" and d.decision != "approve" and con.execute(
+                "SELECT 1 FROM hubspot_sync WHERE object_type = 'listing' AND object_id = ?", (d.object_id,)).fetchone():
+            raise HTTPException(409, "Already in HubSpot: remove them from HubSpot first (owner), then change the decision")
         cur = con.execute(
             "INSERT INTO decisions (object_type, object_id, decision, reason, reviewer, suggested_lane, score, decided_at, scoring_version)"
             " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",

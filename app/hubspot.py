@@ -88,8 +88,10 @@ class Client:
         results = r.json().get("results", []) if r.status_code == 200 else []
         return results[0]["id"] if results else None
 
-    def upsert(self, obj, known_id, id_prop, id_value, props, fallback=None):
-        """Update the record we know, else find it by our id (or a fallback like domain), else create it."""
+    def upsert(self, obj, known_id, id_prop, id_value, props, fallback=None, on_create=None):
+        """Update the record we know, else find it by our id (or a fallback like domain), else create it.
+        An existing record only gets `props` (our GM fields); `on_create` (name, title, ...) is sent only when we create it,
+        so what sales has corrected, or a customer's own record, is never overwritten."""
         hid = known_id
         if hid and self.request("GET", f"/crm/v3/objects/{obj}/{hid}").status_code == 404:
             hid = None
@@ -97,7 +99,7 @@ class Client:
         if hid:
             self.request("PATCH", f"/crm/v3/objects/{obj}/{hid}", json={"properties": props})
             return hid, False
-        r = self.request("POST", f"/crm/v3/objects/{obj}", json={"properties": props})
+        r = self.request("POST", f"/crm/v3/objects/{obj}", json={"properties": props | (on_create or {})})
         return r.json()["id"], True
 
     def archive(self, obj, hid, id_prop, expected):
@@ -133,13 +135,32 @@ def company_props(account, events):
     return props
 
 
+def source_event(contact, event):
+    """e.g. "Speaker at BME-eLÖSUNGSTAGE 2027 (2027-05-11), from the 2026 edition's list": last year's names aren't confirmed attendees."""
+    text = f"{event['name']} ({event['start']})"
+    if event["id"] != contact["event_id"]:
+        return text
+    role, edition = contact.get("role_at_event"), contact.get("edition") or ""
+    text = f"{role.capitalize()} at {text}" if role else text
+    return text + (f", from the {edition.split()[0]} edition's list" if "previous" in edition else "")
+
+
+STANDARD = {"companies": ("name", "domain", "country"), "contacts": ("firstname", "lastname", "jobtitle", "company")}
+
+
+def split(obj, props):
+    """Our GM fields (always sent) and HubSpot's standard fields (sent only when we create the record)."""
+    std = {k: v for k, v in props.items() if k in STANDARD[obj]}
+    return {k: v for k, v in props.items() if k not in std}, std
+
+
 def contact_props(contact, account, events):
     evs = [events[e] for e in contact.get("approved_events") or [contact["event_id"]] if e in events]
     props = {
         "firstname": contact["first_name"], "lastname": contact["last_name"], "jobtitle": contact.get("title") or "",
         "company": (account or {}).get("name") or contact.get("company") or "", "gm_lead_id": contact["person_key"],
         "gm_fit_score": contact["score"], "gm_fit_reasons": reasons_text(contact["reasons"]),
-        "gm_source_event": " | ".join(f"{e['name']} ({e['start']})" for e in evs), "gm_source_url": contact.get("source_url") or "",
+        "gm_source_event": " | ".join(source_event(contact, e) for e in evs), "gm_source_url": contact.get("source_url") or "",
         "gm_session": contact.get("session") or "",
     }
     return props
@@ -162,8 +183,9 @@ def push(con, approved_accounts, approved_contacts, accounts_by_id, events, sync
         if ("account", acct["id"]) in pushed:
             return known.get(("account", acct["id"]))
         domain = (acct.get("profile") or {}).get("domain")
+        gm, std = split("companies", company_props(acct, events))
         hid, new = hs.upsert("companies", known.get(("account", acct["id"])), "gm_account_id", acct["id"],
-                             company_props(acct, events), fallback=("domain", domain) if domain else None)
+                             gm, fallback=("domain", domain) if domain else None, on_create=std)
         save("account", acct["id"], hid)
         if new:  # remember which companies the cockpit created, so only those can ever be removed again
             save("account_created", acct["id"], hid)
@@ -181,7 +203,9 @@ def push(con, approved_accounts, approved_contacts, accounts_by_id, events, sync
         try:
             acct = accounts_by_id.get(c["account_id"])
             company_id = push_account(acct) if acct else None
-            hid, new = hs.upsert("contacts", known.get(("contact", c["person_key"])), "gm_lead_id", c["person_key"], contact_props(c, acct, events))
+            gm, std = split("contacts", contact_props(c, acct, events))
+            hid, new = hs.upsert("contacts", known.get(("contact", c["person_key"])), "gm_lead_id", c["person_key"], gm,
+                                 on_create=std | {"lifecyclestage": "lead"})
             save("contact", c["person_key"], hid)
             for listing in c.get("approved_ids") or [c["id"]]:  # each event listing sent, so the cockpit can show it as "In HubSpot"
                 save("listing", listing, hid)

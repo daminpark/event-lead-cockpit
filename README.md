@@ -10,7 +10,7 @@ The task: *"Find 10 relevant upcoming events for GeneralMind and set up a system
 
 ## What it does
 
-1. **Events.** Ten events (procurement and supply-chain congresses, trade fairs where the exhibitors are the prospects, a shared-services week), each judged on the best people we could actually meet there (the average fit of the best N, where N is the meetings possible), then whether GeneralMind has a stand, timing, travel time from Berlin and whether this year's list is out. Each event has an AI summary, its score broken down, and a meeting plan (people sent × days × meetings a day, so how many to invite). You mark events Going or Not going.
+1. **Events.** Ten events (procurement and supply-chain congresses, trade fairs where the exhibitors are the prospects, a shared-services week), each judged on the best people we could actually meet there (the average fit of the best N, where N is the meetings possible), then whether GeneralMind is a partner there, timing, travel time from Berlin and whether this year's list is out. Each event has an AI summary, its score broken down, and a meeting plan (people sent × days × meetings a day, so how many to invite). You mark events Going or Not going.
 2. **People.** About 700 people named on the events' speaker, agenda and partner pages, each with a fit score and its reasons, a five-second brief and an opener for the event. Everyone starts in *To review*; a person approves or rejects. Nothing is approved automatically.
 3. **HubSpot.** Approved people are sent with their companies, linked and deduplicated by the cockpit's own ids, with the fit score, reasons, source event and source page as properties. Or downloaded per event as a CSV.
 

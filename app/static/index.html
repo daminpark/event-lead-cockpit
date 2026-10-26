@@ -1593,7 +1593,7 @@ async function renderSettings() {
   $('settingsView').innerHTML = `
     <div class="panel"><h3>Settings</h3><p class="lead">You're signed in as <b>${owner ? 'owner' : 'team member'}</b>. ${owner ? 'You can manage the connections below. Keys are stored on the server and never shown again in full.' : 'The owner manages connections and the copilot model; everything else in the cockpit is yours to use.'}</p></div>
     <div class="grid2">
-      ${conn('hubspot', 'HubSpot', 'A private app token lets the cockpit create and update companies and contacts. In HubSpot: Settings → Integrations → Private apps (or Development → Legacy apps) → create an app with read and write access to contacts and companies and their properties, then copy its token.', 'pat-…')}
+      ${conn('hubspot', 'HubSpot', 'A service key lets the cockpit create and update companies and contacts. In HubSpot: Settings → Integrations → Service Keys → create a key with read and write access to contacts and companies and their properties, then copy it. Tokens from older private apps still work.', 'pat-…')}
       ${conn('openrouter', 'OpenRouter (copilot)', 'The copilot talks to AI models through OpenRouter, so the model can be changed below without touching code. Create a key at openrouter.ai → Keys, ideally with a monthly credit limit.', 'sk-or-…')}
     </div>
     <div id="exportView"></div>
