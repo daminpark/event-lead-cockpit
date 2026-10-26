@@ -56,7 +56,7 @@ TOOLS = [
         "parameters": {"type": "object", "properties": {}}}},
     {"type": "function", "function": {
         "name": "get_events",
-        "description": "The events with dates, city, why they matter and their source pages.",
+        "description": "The events with dates, city, why they matter, their event score and reasons, whether the team is going, and their source pages.",
         "parameters": {"type": "object", "properties": {}}}},
     {"type": "function", "function": {
         "name": "get_config",
@@ -207,7 +207,11 @@ class Tools:
                 "decisions": decided, "reject_reasons": reasons, "hubspot": synced, "accounts": len(self.accounts)}
 
     def get_events(self):
-        return [json.loads(r["data"]) for r in self.con.execute("SELECT data FROM events")]
+        events = [json.loads(r["data"]) for r in self.con.execute("SELECT data FROM events")]
+        for e in events:  # step 1 decisions: which events the team is going to
+            d = self.decisions.get(("event", e["id"]))
+            e["going"] = {"approve": "going", "reject": "not going"}.get(d["decision"]) if d else "undecided"
+        return sorted(events, key=lambda e: -e.get("score", 0))
 
     def get_config(self, kind):
         row = self.con.execute("SELECT version, body FROM config_versions WHERE kind = ? AND active = 1", (kind,)).fetchone()

@@ -184,7 +184,7 @@ def data(request: Request):
 # ---------- decisions ----------
 
 class Decision(BaseModel):
-    object_type: Literal["contact", "account"]
+    object_type: Literal["contact", "account", "event"]
     object_id: str = Field(max_length=200)
     decision: Literal["approve", "reject", "clear"]
     reason: str | None = Field(default=None, max_length=200)
@@ -193,7 +193,7 @@ class Decision(BaseModel):
 
 @app.post("/api/decisions")
 def decide(d: Decision):
-    table = "contacts" if d.object_type == "contact" else "accounts"
+    table = {"contact": "contacts", "account": "accounts", "event": "events"}[d.object_type]
     with db() as con:
         row = con.execute(f"SELECT score, lane FROM {table} WHERE id = ?", (d.object_id,)).fetchone()
         if not row:
@@ -448,7 +448,7 @@ def compare_versions():
 
 # ---------- export and HubSpot ----------
 
-def approved(con):
+def approved(con, only=None):
     """Approved, not suppressed: accounts, and contacts merged to one row per person (best-scoring appearance,
     with all their approved events)."""
     decisions = latest_decisions(con)
@@ -462,6 +462,8 @@ def approved(con):
     for c in contacts:
         if not ok("contact", c["id"]) or c["person_key"] in suppressed or c["id"] in suppressed:
             continue
+        if only is not None and c["id"] not in only:
+            continue
         if c["account_id"] and not domain_ok(accounts.get(c["account_id"], {})):
             continue
         best = people.get(c["person_key"])
@@ -470,7 +472,8 @@ def approved(con):
             best = c
         people[c["person_key"]] = best | {"approved_events": events_seen}
     approved_contacts = list(people.values())
-    account_ids = {a for a in accounts if ok("account", a) and domain_ok(accounts[a])} | \
+    # Companies go to HubSpot with their approved people; company-only approvals only in a full push.
+    account_ids = ({a for a in accounts if ok("account", a) and domain_ok(accounts[a])} if only is None else set()) | \
                   {c["account_id"] for c in approved_contacts if c["account_id"] in accounts}
     return events, [accounts[a] for a in account_ids], approved_contacts, accounts
 
@@ -526,13 +529,17 @@ def hubspot_status():
     return hubspot.status() | {"last_sync": dict(last) if last else None, "synced": {r["object_type"]: r["n"] for r in synced}}
 
 
+class Push(BaseModel):
+    contact_ids: list[str] | None = Field(default=None, max_length=2000)  # None: everything approved
+
+
 @app.post("/api/hubspot/push")
-def hubspot_push():
+def hubspot_push(p: Push | None = None):
     if not write_lock.acquire(blocking=False):
         raise HTTPException(409, "A push or rebuild is already running")
     try:
         with db() as con:
-            events, accounts, contacts, by_id = approved(con)
+            events, accounts, contacts, by_id = approved(con, set(p.contact_ids) if p and p.contact_ids is not None else None)
             try:
                 summary = hubspot.push(con, accounts, contacts, by_id, events, pipeline.now())
             except (hubspot.HubSpotError, hubspot.httpx.HTTPError) as e:

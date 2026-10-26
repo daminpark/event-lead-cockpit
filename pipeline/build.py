@@ -299,7 +299,7 @@ DROP TABLE IF EXISTS contacts;
 DROP TABLE IF EXISTS accounts;
 DROP TABLE IF EXISTS appearances;
 DROP TABLE IF EXISTS meta;
-CREATE TABLE events (id TEXT PRIMARY KEY, data TEXT NOT NULL);
+CREATE TABLE events (id TEXT PRIMARY KEY, score INTEGER, lane TEXT, data TEXT NOT NULL);
 CREATE TABLE contacts (id TEXT PRIMARY KEY, account_id TEXT, event_id TEXT, score INTEGER, lane TEXT, data TEXT NOT NULL);
 CREATE TABLE accounts (id TEXT PRIMARY KEY, score INTEGER, lane TEXT, data TEXT NOT NULL);
 CREATE TABLE appearances (account_id TEXT, event_id TEXT, role TEXT, data TEXT NOT NULL);
@@ -493,10 +493,59 @@ def compute(cfg, today):
         row["lane"] = lane_for(profile, score, confidence, cfg)
         account_rows.append(row)
 
+    score_events(events, contacts, account_rows, today, cfg)
     if have_sources:
         with open(checks_path, "w", encoding="utf-8") as f:
             json.dump(checks, f, indent=0, sort_keys=True)
     return events, contacts, account_rows, appearances
+
+
+def score_events(events, contacts, account_rows, today, cfg):
+    """Step 1 is choosing which events to attend: score each one from what its lists contain."""
+    ec = cfg["event_choice"]
+    for e in events.values():
+        people = [c for c in contacts if c["event_id"] == e["id"]]
+        named = {c["account_id"] for c in people}
+        # Exhibitor-only companies (no named person yet) count too: at a trade fair they are the prospects.
+        companies = [a for a in account_rows if e["id"] in a["events"] and a["id"] not in named]
+        strong_people = sum(c["lane"] == "fast_track" for c in people)
+        strong_companies = sum(a["lane"] == "fast_track" for a in companies)
+        strong = strong_people + strong_companies
+        reasons = []
+        pts = min(ec["max_strong_lead_points"], ec["per_strong_lead_points"] * strong)
+        label = f"{strong_people} strong-fit people" + (f" and {strong_companies} strong-fit exhibitors" if strong_companies else "")
+        reasons.append({"label": label, "points": pts})
+        listed = len(people) or len(companies)
+        worth = (sum(c["lane"] in ("fast_track", "review") for c in people) if people
+                 else sum(a["lane"] in ("fast_track", "review") for a in companies))
+        share = worth / listed if listed else 0
+        reasons.append({"label": f"{round(100 * share)}% of the list worth a look", "points": round(ec["worth_a_look_share_points"] * share)})
+        if e.get("generalmind_present"):
+            reasons.append({"label": "GeneralMind already has a stand", "points": ec["generalmind_present_points"]})
+        days = (dt.date.fromisoformat(e["start"]) - today).days
+        if days < 0:
+            reasons.append({"label": "Already happened", "points": 0})
+        elif days < ec["plan_min_days"]:
+            reasons.append({"label": f"Only {days} days away: little time to book meetings", "points": ec["outside_window_points"]})
+        elif days <= ec["plan_max_days"]:
+            reasons.append({"label": f"{days // 7} weeks away: time to book meetings", "points": ec["in_window_points"]})
+        else:
+            reasons.append({"label": f"{days // 30} months away: plans still vague", "points": ec["outside_window_points"]})
+        if e.get("city") == "Berlin":
+            reasons.append({"label": "In Berlin: no travel", "points": ec["berlin_points"]})
+        elif e.get("country") in ("DE", "AT", "CH"):
+            reasons.append({"label": f"In {e.get('city')}: short trip", "points": ec["dach_points"]})
+        else:
+            reasons.append({"label": f"In {e.get('city')}: abroad", "points": ec["abroad_points"]})
+        if any("previous" not in (s.get("edition") or "") for s in e.get("sources", [])):
+            reasons.append({"label": "This year's list is out", "points": ec["current_list_points"]})
+        else:
+            reasons.append({"label": "Only last year's list so far", "points": 0})
+        e["score"] = min(100, sum(r["points"] for r in reasons))
+        e["reasons"] = reasons
+        e["lane"] = "recommended" if e["score"] >= ec["recommend"] else "consider" if e["score"] >= ec["consider"] else "skip"
+        e["counts"] = {"people": len(people), "strong": strong_people, "worth": worth,
+                       "companies_without_contact": len(companies), "strong_companies": strong_companies}
 
 
 def build(today=None, con=None):
@@ -517,7 +566,8 @@ def build(today=None, con=None):
         cfg, version = json.loads(row["body"]), row["version"]
         events, contacts, account_rows, appearances = compute(cfg, today)
     con.executescript(LEAD_TABLES)
-    con.executemany("INSERT INTO events VALUES (?, ?)", [(e["id"], json.dumps(e, ensure_ascii=False)) for e in events.values()])
+    con.executemany("INSERT INTO events VALUES (?, ?, ?, ?)",
+                    [(e["id"], e["score"], e["lane"], json.dumps(e, ensure_ascii=False)) for e in events.values()])
     con.executemany("INSERT INTO contacts VALUES (?, ?, ?, ?, ?, ?)",
                     [(c["id"], c["account_id"], c["event_id"], c["score"], c["lane"], json.dumps(c, ensure_ascii=False)) for c in contacts])
     con.executemany("INSERT INTO accounts VALUES (?, ?, ?, ?)",

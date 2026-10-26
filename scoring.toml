@@ -90,3 +90,20 @@ max_event_points = 20
 named_contact_points = 10 # at least one named person at an event
 target_contact_points = 10 # at least one contact whose role fit is strong
 target_contact_role_min = 30
+
+# --- Events: which to attend (step 1, before choosing people) ---
+[event_choice]
+per_strong_lead_points = 2     # each strong-fit person (or exhibiting company with no named contact yet)
+max_strong_lead_points = 40
+worth_a_look_share_points = 20 # share of the people listed who are worth a look
+generalmind_present_points = 15
+in_window_points = 15          # far enough ahead to book meetings, not so far that plans are vague
+outside_window_points = 5
+plan_min_days = 14
+plan_max_days = 200
+berlin_points = 10             # no travel
+dach_points = 6
+abroad_points = 2
+current_list_points = 10       # this year's speaker or exhibitor list is out (not last year's)
+recommend = 70                 # at or above: recommended
+consider = 35                  # between: worth considering; below: probably skip

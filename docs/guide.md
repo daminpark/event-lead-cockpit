@@ -4,29 +4,26 @@
 It finds the people and companies worth meeting at upcoming events, explains why each one matters, and lets you approve the good ones and send them to HubSpot. The next step with a lead is usually meeting them face to face at the event.
 
 ## The everyday flow
-1. Open **Contacts**. The **Fast track** and **Review** tiles are selected by default: the leads worth a look, best first.
-2. Read the brief on each row: who they are, why they matter, and an opener for the event. Click a row for the full picture.
-3. **Approve** (A) or **Reject** (R, then a reason 1–6). The next lead is selected automatically. **U** undoes the last decision.
-4. In **HubSpot**, push the approved leads (or download the CSV files).
+1. **Events (step 1).** Each event has a score with its reasons: how many strong-fit people its lists name, how much of the list is worth a look, whether GeneralMind already has a stand, timing, travel, and whether this year's list is out. Mark the events you'll attend as **Going** (or **Not going**). Click ▾ for details, including companies exhibiting there with no named person yet.
+2. **People (step 2).** By default you see the people at the events you're going to. Everyone starts in **To review**, best fit first. Read the five-second brief, click a row for the full picture, then **Approve** (A) or **Reject** (R, then a reason 1–6). **U** undoes. Nothing is ever approved automatically.
+3. **Approved.** Tick the people to send (or Select all) and click **Send to HubSpot**. You can unapprove anyone here; they go back to To review.
+4. **In HubSpot.** Sent people move here, with a link to their HubSpot record. From then on, the work happens in HubSpot.
 
-## Lanes
-- **Fast track**: strong role and company fit, solid data. Suggested approve.
-- **Review**: plausible but uncertain. You decide.
-- **Filtered**: low fit, or vendors, associations and universities. Still there in case you want to rescue one.
-- **Partners**: SAP partners, integrators, consultancies. A different motion (referrals, co-selling).
-- **Competitors**: order, invoice and procurement automation vendors. Market intel, not leads.
-- **Customers**: existing GeneralMind customers. For their account owner, not for prospecting.
+People from events you're not going to aren't deleted: choose "All events" or a single event in the event menu to see them.
 
-Click a tile to show only that lane. Cmd/Ctrl-click to combine lanes.
+## Suggestions
+The score suggests, it never decides:
+- **Strong fit**: strong role and company fit, solid data.
+- **Possible**: plausible but uncertain.
+- **Low fit**: weak fit, or vendors, associations and universities. Listed last, in case you want to rescue one.
+
+**Partners** (SAP partners, integrators, consultancies: a referral and co-selling channel), **competitors** (order, invoice and procurement automation vendors: market intel) and **existing customers** (for their account owner) are kept out of review by default. Tick "Partners, competitors & customers" to see them.
 
 ## Scores
 Each contact gets 0–100 points: **role** (what they do and how senior), **company** (operating company, industry, size, DACH, ERP), and **event** (speaking or moderating, how soon, whether GeneralMind has a stand). Every point shows up as a reason. Company details are estimates until an enrichment provider confirms them. **Data confidence** drops when a list is from last year's edition, the company profile is uncertain, or the name wasn't found on the saved source page.
 
-## Accounts
-The same review at company level: every company seen at a target event, its contacts, and why it scored as it did. Approving a contact also brings its company along to HubSpot.
-
-## Events
-The ten events with dates, why they matter, their source pages, and how many good leads each produced.
+## Companies
+Each person's card shows their company: type (potential buyer, partner, competitor), industry, size, ERP where public, which events it exhibits at, and who else from it is on the lists. Approving a person brings their company along to HubSpot, linked.
 
 ## Changing how leads are scored (Criteria)
 Every weight and keyword is a slider or a list. As you change something, the preview shows how many leads would move between lanes, who would enter or leave fast track, and how well the change agrees with past decisions. Nothing changes until you **Save and activate**. Every save is a numbered version with a note; any older version can be activated again. Settings that would break the scoring are refused.
