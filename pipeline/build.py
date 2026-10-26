@@ -378,7 +378,13 @@ def active_scoring(con):
     return json.loads(row["body"]), row["version"]
 
 
-def compute(cfg, today):
+def settled_accounts(con):
+    """Companies someone has decided on or sent to HubSpot: their ids are kept when names share a domain."""
+    return {r[0] for r in con.execute("SELECT object_id FROM decisions WHERE object_type = 'account' "
+                                      "UNION SELECT object_id FROM hubspot_sync WHERE object_type = 'account'")}
+
+
+def compute(cfg, today, settled=()):
     """Score every contact and account with the given settings. Pure: writes nothing except the
     source-check file when the saved pages are present."""
     events = {e["id"]: e for e in load_json(os.path.join(DATA, "events.json"), [])}
@@ -401,19 +407,44 @@ def compute(cfg, today):
     checks = {} if have_sources else load_json(checks_path, {})
 
     contacts, accounts, appearances = [], {}, []
+    extracted = [ex for ex in (load_json(p, None) for p in sorted(glob.glob(os.path.join(DATA, "extracted", "*.json"))))
+                 if ex and ex.get("event_id") in events]
 
-    def account_for(name):
+    def resolve(name):
         profile = profile_for(name)
         display = (profile or {}).get("name") or name
-        aid = slug(company_key(display) or display)
+        return slug(company_key(display) or display), display, profile
+
+    # One company per website domain, as HubSpot has it: names whose profiles share a domain (DHL Global
+    # Forwarding, DHL Supply Chain) become one. The one kept is the one already decided on or in HubSpot, then
+    # the surer profile, then the first id, so it doesn't change as lists grow. Profiles that disagree on what
+    # the company is (segment, existing customer) stay apart until they're fixed; the build warns.
+    found = {}
+    for ex in extracted:
+        for name in [p["company"] for p in ex.get("people", []) if p.get("name") and p.get("company")] + \
+                    [c["name"] for c in ex.get("companies", []) if c.get("name")]:
+            a = resolve(name)
+            found.setdefault(a[0], a)
+    by_domain = {}
+    for a in found.values():
+        if (a[2] or {}).get("domain"):
+            by_domain.setdefault(a[2]["domain"], []).append(a)
+    sure = {"high": 0, "medium": 1, "low": 2}
+    merged_into = {}
+    for same in by_domain.values():
+        if len({(a[2].get("segment"), bool(a[2].get("existing_customer"))) for a in same}) > 1:
+            continue
+        keep = min(same, key=lambda a: (a[0] not in settled, sure.get(a[2].get("confidence"), 3), a[0]))
+        merged_into |= {a[0]: keep for a in same if a is not keep}
+
+    def account_for(name):
+        a = resolve(name)
+        aid, display, profile = merged_into.get(a[0], a)
         if aid not in accounts:
             accounts[aid] = {"id": aid, "name": display, "profile": profile, "events": set(), "contacts": [], "roles": set()}
         return accounts[aid]
 
-    for path in sorted(glob.glob(os.path.join(DATA, "extracted", "*.json"))):
-        ex = load_json(path, None)
-        if not ex or ex.get("event_id") not in events:
-            continue
+    for ex in extracted:
         event = events[ex["event_id"]]
         text = source_texts(event["id"]) if have_sources else ""
         seen = set()
@@ -500,6 +531,7 @@ def compute(cfg, today):
             "events": sorted(acct["events"], key=lambda e: events[e]["start"]), "roles": sorted(acct["roles"]),
             "contact_ids": [c["id"] for c in acct["contacts"]], "confidence": confidence,
             "profile": profile or {}, "estimated": True,
+            "merged_from": sorted(old for old, keep in merged_into.items() if keep[0] == acct["id"]),
         }
         row["lane"] = lane_for(profile, score, confidence, cfg)
         account_rows.append(row)
@@ -654,8 +686,9 @@ def build(today=None, con=None):
     con = con or connect()
     sync_repo_configs(con)
     cfg, version = active_scoring(con)
+    settled = settled_accounts(con)
     try:
-        events, contacts, account_rows, appearances = compute(cfg, today)
+        events, contacts, account_rows, appearances = compute(cfg, today, settled)
     except (KeyError, TypeError) as e:
         # An older version picked in the cockpit may lack a setting added since; score with the repo's latest instead.
         row = con.execute("SELECT id, version, body FROM config_versions WHERE kind = 'scoring' AND source = 'repo' ORDER BY version DESC LIMIT 1").fetchone()
@@ -663,7 +696,36 @@ def build(today=None, con=None):
         con.execute("INSERT INTO events_log (kind, message, created_at) VALUES ('config', ?, ?)",
                     (f"Scoring v{version} no longer fits ({e}); switched to v{row['version']} from the repository", now()))
         cfg, version = json.loads(row["body"]), row["version"]
-        events, contacts, account_rows, appearances = compute(cfg, today)
+        events, contacts, account_rows, appearances = compute(cfg, today, settled)
+    # Decisions stay where they were made (they're read through merged_from). A merged company's HubSpot link
+    # moves to the one kept only if that has none; otherwise HubSpot has two records for one website, which is
+    # logged for someone to merge there.
+    links = {(r["object_type"], r["object_id"]): r["hubspot_id"] for r in con.execute(
+        "SELECT * FROM hubspot_sync WHERE object_type IN ('account', 'account_created')")}
+    moved = []
+    for a in account_rows:
+        for old in a["merged_from"]:
+            theirs, mine = links.get(("account", old)), links.get(("account", a["id"])) or links.get(("account_created", a["id"]))
+            if theirs and not mine:
+                con.execute("UPDATE hubspot_sync SET object_id = ? WHERE object_type IN ('account', 'account_created') AND object_id = ?", (a["id"], old))
+                con.execute("UPDATE hubspot_sync SET hubspot_id = ? WHERE object_type = 'contact_account' AND hubspot_id = ?", (a["id"], old))
+                links[("account", a["id"])] = theirs
+                moved.append(f"{old} into {a['id']}")
+            elif theirs and theirs != mine:
+                msg = (f"HubSpot has two companies for {a['profile']['domain']}: {theirs} (sent as {old}) and {mine} "
+                       f"({a['name']}). Merge them in HubSpot.")
+                if not con.execute("SELECT 1 FROM events_log WHERE message = ?", (msg,)).fetchone():
+                    con.execute("INSERT INTO events_log (kind, message, created_at) VALUES ('build', ?, ?)", (msg, now()))
+                    print(msg)
+    if moved:
+        print("moved HubSpot links of companies sharing a domain: " + ", ".join(moved))
+    by_domain = {}
+    for a in account_rows:
+        if a["profile"].get("domain"):
+            by_domain.setdefault(a["profile"]["domain"], []).append(a["name"])
+    for domain, names in by_domain.items():
+        if len(names) > 1:
+            print(f"not merged, their profiles disagree on segment or existing customer: {', '.join(names)} ({domain})")
     con.executescript(LEAD_TABLES)
     con.executemany("INSERT INTO events VALUES (?, ?, ?, ?)",
                     [(e["id"], e["score"], e["lane"], json.dumps(e, ensure_ascii=False)) for e in events.values()])

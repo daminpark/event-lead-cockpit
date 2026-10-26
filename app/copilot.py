@@ -221,7 +221,7 @@ class Tools:
         errors = self.validate(cfg)
         if errors:
             return {"error": "; ".join(errors[:6])}
-        _, contacts, _, _ = pipeline.compute(cfg, dt.date.today())
+        _, contacts, _, _ = pipeline.compute(cfg, dt.date.today(), pipeline.settled_accounts(self.con))
         now_lanes, new_lanes = {}, {}
         for c in self.contacts:
             now_lanes[SUGGESTION[c["lane"]]] = now_lanes.get(SUGGESTION[c["lane"]], 0) + 1
