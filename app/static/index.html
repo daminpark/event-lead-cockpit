@@ -1299,7 +1299,7 @@ async function renderSettings() {
       ${conn('openrouter', 'OpenRouter (copilot)', 'The copilot talks to AI models through OpenRouter, so the model can be changed below without touching code. Create a key at openrouter.ai → Keys, ideally with a monthly credit limit.', 'sk-or-…')}
     </div>
     <div class="panel"><h3>Copilot model</h3><p class="lead">Applies to everyone. Prices are per million tokens in / out.</p><select id="setModel" ${owner ? '' : 'disabled'} style="width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)"><option>Loading…</option></select></div>
-    <div class="panel"><h3>You</h3><p class="lead">Your name is saved with your decisions and notes.</p><button class="btn" id="setWho">Reviewer: ${esc(S.reviewer || 'not set')}</button></div>`;
+    <div class="panel"><h3>You</h3><p class="lead">Your name is saved with your decisions and notes.</p><button class="btn" id="setWho">Reviewer: ${esc(S.reviewer || 'not set')}</button> <a class="btn" href="logout">Sign out (to use another code)</a></div>`;
   const root = $('settingsView');
   root.querySelectorAll('[data-save-secret]').forEach(b => b.onclick = () => saveSecret(b.dataset.saveSecret, root.querySelector(`[data-secret="${b.dataset.saveSecret}"]`).value));
   root.querySelectorAll('[data-remove-secret]').forEach(b => b.onclick = () => { if (confirm('Remove this key?')) saveSecret(b.dataset.removeSecret, ''); });

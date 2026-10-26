@@ -33,7 +33,7 @@ OWNER_CODE = os.environ.get("COCKPIT_OWNER_CODE", "").strip()  # also manages ke
 OPEN = os.environ.get("COCKPIT_ALLOW_OPEN") == "1"  # local development only
 if not CODE and not OPEN:
     raise RuntimeError("Set COCKPIT_CODE (or COCKPIT_ALLOW_OPEN=1 for local development)")
-OPEN_PATHS = {"/healthz", "/login"}
+OPEN_PATHS = {"/healthz", "/login", "/logout"}
 
 LOGIN_PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Event Lead Cockpit</title><style>
@@ -94,6 +94,13 @@ def login(code: str = Form(max_length=200)):
         return HTMLResponse(LOGIN_PAGE.replace("ERROR", '<div class="err">That code didn\'t work.</div>'), status_code=401)
     resp = RedirectResponse("./", status_code=303)
     resp.set_cookie("gm_code", code.strip(), max_age=60 * 60 * 24 * 30, httponly=True, secure=True, samesite="lax")
+    return resp
+
+
+@app.get("/logout")
+def logout():
+    resp = RedirectResponse("./", status_code=303)
+    resp.delete_cookie("gm_code")
     return resp
 
 
