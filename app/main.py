@@ -14,7 +14,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
-from app import hubspot
+from app import copilot, hubspot
 from pipeline import build as pipeline
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -354,3 +354,59 @@ def hubspot_push():
         return summary | {"message": msg}
     finally:
         write_lock.release()
+
+
+# ---------- copilot ----------
+
+@app.get("/api/copilot/models")
+def copilot_models():
+    with db() as con:
+        current = copilot.setting(con, "copilot_model")
+    if not copilot.key():
+        return {"configured": False, "current": current, "models": []}
+    try:
+        models = copilot.models()
+        return {"configured": True, "current": current or copilot.default_model(), "models": models}
+    except Exception as e:
+        return {"configured": True, "current": current, "models": [], "error": str(e)[:200]}
+
+
+class Setting(BaseModel):
+    key: Literal["copilot_model"]
+    value: str = Field(max_length=200)
+
+
+@app.post("/api/settings")
+def save_setting(s: Setting):
+    with db() as con:
+        con.execute("INSERT OR REPLACE INTO settings VALUES (?, ?)", (s.key, s.value))
+        log(con, "config", f"Copilot model set to {s.value}")
+        con.commit()
+    return {"ok": True}
+
+
+class ChatMessage(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(max_length=8000)
+
+
+class Chat(BaseModel):
+    messages: list[ChatMessage] = Field(max_length=40)
+    context: dict | None = None
+    author: str | None = Field(default=None, max_length=60)
+
+
+@app.post("/api/copilot")
+def copilot_chat(c: Chat):
+    with db() as con:
+        try:
+            out = copilot.chat(con, [m.model_dump() for m in c.messages], c.context or {}, latest_decisions, validate_scoring, c.author)
+        except RuntimeError as e:
+            raise HTTPException(503, str(e))
+        question = next((m.content for m in reversed(c.messages) if m.role == "user"), "")
+        con.execute("INSERT INTO copilot_log (author, question, reply, actions, model, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+                    (c.author, question[:4000], out["reply"][:8000], json.dumps(out["actions"]), out["model"], pipeline.now()))
+        for a in out["actions"]:
+            log(con, "copilot", a)
+        con.commit()
+    return out

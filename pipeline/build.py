@@ -259,6 +259,16 @@ CREATE TABLE IF NOT EXISTS hubspot_sync (
   synced_at TEXT NOT NULL,
   PRIMARY KEY (object_type, object_id)
 );
+CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS copilot_log (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  author TEXT,
+  question TEXT NOT NULL,
+  reply TEXT,
+  actions TEXT,
+  model TEXT,
+  created_at TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS events_log (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   kind TEXT NOT NULL,                 -- build | config | hubspot | feedback

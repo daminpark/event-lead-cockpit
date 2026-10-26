@@ -178,6 +178,21 @@ dialog::backdrop { background: rgba(0,0,0,.35); }
 dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-2); color: var(--ink); margin: 10px 0 14px; }
 
 .pill { display: inline-flex; align-items: center; gap: 6px; }
+.cp-open { background: var(--accent) !important; color: #fff !important; border-color: var(--accent) !important; font-weight: 600; }
+.cp { position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100vw); background: var(--panel); border-left: 1px solid var(--line); box-shadow: var(--shadow); z-index: 45; display: flex; flex-direction: column; transform: translateX(105%); transition: transform .2s ease; }
+.cp.open { transform: none; }
+.cp-head { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.cp-head select { flex: 1; min-width: 0; font: inherit; font-size: 12px; color: var(--ink); background: var(--panel-2); border: 1px solid var(--line); border-radius: 7px; padding: 4px 6px; }
+.cp-msgs { flex: 1; overflow: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.cp-msg { max-width: 92%; padding: 9px 12px; border-radius: 12px; font-size: 13.5px; line-height: 1.5; }
+.cp-msg.user { align-self: flex-end; background: var(--accent); color: #fff; border-bottom-right-radius: 4px; white-space: pre-wrap; }
+.cp-msg.assistant { align-self: flex-start; background: var(--panel-2); border: 1px solid var(--line-2); border-bottom-left-radius: 4px; }
+.cp-msg.assistant p { margin: 0 0 6px; } .cp-msg.assistant ul, .cp-msg.assistant ol { margin: 4px 0; padding-left: 18px; }
+.cp-msg .acts-note { margin-top: 8px; font-size: 12px; color: var(--fast); }
+.cp-sugg { display: flex; flex-wrap: wrap; gap: 6px; }
+.cp-sugg button { border: 1px solid var(--line); background: var(--panel-2); border-radius: 999px; padding: 5px 10px; font-size: 12.5px; text-align: left; }
+.cp-form { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--line); }
+.cp-form textarea { flex: 1; font: inherit; font-size: 13.5px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-2); color: var(--ink); resize: none; }
 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--faint); display: inline-block; }
 .dot.ok { background: var(--fast); box-shadow: 0 0 0 3px var(--fast-soft); }
 .dot.bad { background: var(--competitor); box-shadow: 0 0 0 3px var(--competitor-soft); }
@@ -275,11 +290,17 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
     <button data-view="about">How it works</button>
   </nav>
   <div class="who">
+    <button id="cpBtn" class="pill cp-open" title="Ask questions, propose changes">✦ Copilot</button>
     <button id="hsPill" class="pill" title="HubSpot connection"><i class="dot"></i>HubSpot</button>
     <span id="built"></span>
     <button id="whoBtn" title="Your name is saved with your decisions">Reviewer: <b id="whoName">—</b></button>
   </div>
 </header>
+<aside id="cp" class="cp" aria-label="Copilot">
+  <div class="cp-head"><b>Copilot</b><select id="cpModel" title="Model (via OpenRouter)"></select><button id="cpClear" class="btn" title="Start a new conversation">New</button><button id="cpClose" class="close" style="display:block" aria-label="Close">×</button></div>
+  <div class="cp-msgs" id="cpMsgs"></div>
+  <form id="cpForm" class="cp-form"><textarea id="cpIn" rows="2" placeholder="Ask about leads, scoring or playbooks… (Enter to send)"></textarea><button class="btn primary">Send</button></form>
+</aside>
 <button id="fbBtn" class="fb-btn" title="Point at something and leave a note">Feedback</button>
 
 <main>
@@ -1181,6 +1202,49 @@ function renderAbout() {
     <h2>What v1 leaves out on purpose</h2>
     <p>No emails or phone numbers (public pages don't carry them, and they should come from an enrichment provider with a proper legal basis). No LinkedIn scraping. Company details are AI estimates and labelled as such. No login: anyone with the link can review.</p>`;
 }
+
+
+// ---------- copilot ----------
+const CP_SUGGEST = ['Who are the 10 people GeneralMind should book meetings with at BME?', 'Why is the selected lead scored the way it is?',
+  'Which events give us the most fast-track contacts in logistics?', 'Propose a scoring change so logistics providers rank higher',
+  'What would you change in the events playbook to find more order-management people?'];
+S.cp = (() => { try { return JSON.parse(store.get('cp') || '[]') } catch { return [] } })();
+function renderCp(pending = false) {
+  const box = $('cpMsgs');
+  box.innerHTML = (S.cp.length ? '' : `<div class="note" style="margin:0">Ask about the leads, events, scoring or playbooks. The copilot can look things up and <b>propose</b> changes as new versions; it never changes what's live. A person reviews and activates them.</div><div class="cp-sugg">${CP_SUGGEST.map(q => `<button data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`)
+    + S.cp.map(m => `<div class="cp-msg ${m.role}">${m.role === 'user' ? esc(m.content) : md(m.content)}${m.actions?.length ? `<div class="acts-note">${m.actions.map(a => '✓ ' + esc(a)).join('<br>')}</div>` : ''}</div>`).join('')
+    + (pending ? '<div class="cp-msg assistant" style="color:var(--muted)">Thinking…</div>' : '');
+  box.querySelectorAll('[data-q]').forEach(b => b.onclick = () => { $('cpIn').value = b.dataset.q; $('cpForm').requestSubmit(); });
+  box.scrollTop = box.scrollHeight;
+}
+async function loadModels() {
+  try {
+    const out = await (await fetch('api/copilot/models')).json();
+    const sel = $('cpModel');
+    if (!out.configured) { sel.innerHTML = '<option>No OpenRouter key yet</option>'; sel.disabled = true; return; }
+    const list = out.models.length ? out.models : [{ id: out.current, name: out.current, price: '' }];
+    sel.innerHTML = list.map(m => `<option value="${esc(m.id)}" ${m.id === out.current ? 'selected' : ''}>${esc(m.name)}${m.price ? ' · ' + esc(m.price) : ''}</option>`).join('');
+    sel.onchange = async () => { await fetch('api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: 'copilot_model', value: sel.value }) }); toast('Model saved for everyone'); };
+  } catch { $('cpModel').innerHTML = '<option>Models unavailable</option>'; }
+}
+$('cpForm').onsubmit = async e => {
+  e.preventDefault();
+  const q = $('cpIn').value.trim(); if (!q) return;
+  $('cpIn').value = '';
+  S.cp.push({ role: 'user', content: q }); renderCp(true);
+  const sel = S.view === 'accounts' ? { account: S.accounts[S.aSel]?.name, account_id: S.aSel } : { contact: S.contacts.find(c => c.id === S.sel)?.name, contact_id: S.sel };
+  const res = await fetch('api/copilot', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages: S.cp.map(({ role, content }) => ({ role, content })).slice(-20), context: { view: S.view, ...sel }, author: S.reviewer || null }) });
+  const out = await res.json().catch(() => ({}));
+  S.cp.push(res.ok ? { role: 'assistant', content: out.reply, actions: out.actions } : { role: 'assistant', content: `Sorry, that didn't work: ${out.detail || 'server error'}` });
+  store.set('cp', JSON.stringify(S.cp.slice(-30)));
+  renderCp();
+  if (out.actions?.length) { const r = await fetch('api/config'); S.config = await r.json(); renderCriteria(); renderPlaybooks(); }
+};
+$('cpIn').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('cpForm').requestSubmit(); } });
+$('cpBtn').onclick = () => { $('cp').classList.add('open'); renderCp(); loadModels(); $('cpIn').focus(); };
+$('cpClose').onclick = () => $('cp').classList.remove('open');
+$('cpClear').onclick = () => { S.cp = []; store.set('cp', '[]'); renderCp(); };
 
 // ---------- wiring ----------
 $('tabs').querySelectorAll('button').forEach(b => b.onclick = () => {
