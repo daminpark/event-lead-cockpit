@@ -1,0 +1,24 @@
+[Unit]
+Description=GeneralMind event lead cockpit
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=gmcockpit
+Group=gmcockpit
+EnvironmentFile=-/etc/default/gm-cockpit
+Environment=COCKPIT_DB=/var/lib/gm-cockpit/cockpit.db
+WorkingDirectory=/opt/gm-cockpit
+ExecStart=/opt/gm-cockpit-venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8080 --proxy-headers
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/gm-cockpit
+MemoryMax=384M
+
+[Install]
+WantedBy=multi-user.target

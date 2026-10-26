@@ -248,6 +248,12 @@ def build(today: dt.date):
     def profile_for(name):
         return by_alias.get(name) or by_key.get(company_key(name))
 
+    # The saved pages stay out of git, so their check results are kept in a small committed file
+    # that a server can build from.
+    checks_path = os.path.join(DATA, "source_checks.json")
+    have_sources = os.path.isdir(os.path.join(DATA, "sources"))
+    checks = {} if have_sources else load_json(checks_path, {})
+
     contacts, accounts, appearances = [], {}, []
 
     def account_for(name):
@@ -263,7 +269,7 @@ def build(today: dt.date):
         if not ex or ex.get("event_id") not in events:
             continue
         event = events[ex["event_id"]]
-        text = source_texts(event["id"])
+        text = source_texts(event["id"]) if have_sources else ""
         for p in ex.get("people", []):
             if not p.get("name"):
                 continue
@@ -274,7 +280,10 @@ def build(today: dt.date):
             c_pts, c_reasons, c_tags = score_company(profile, cfg)
             e_pts, e_reasons = score_event(p.get("role_at_event", "speaker"), event, today, cfg)
             score = min(100, r_pts + c_pts + e_pts)
-            check = found_in_source(p["name"], text)
+            cid = slug(event["id"], p["name"])
+            if have_sources:
+                checks[cid] = found_in_source(p["name"], text)
+            check = checks.get(cid, "missing")
             confidence, conf_notes = "high", []
             if "previous" in (p.get("edition") or ""):
                 confidence = "medium"
@@ -286,7 +295,6 @@ def build(today: dt.date):
                 confidence = "low"
                 conf_notes.append("Name not found in the saved source page")
             first, last = split_name(p["name"])
-            cid = slug(event["id"], p["name"])
             contact = {
                 "id": cid, "name": p["name"], "first_name": first, "last_name": last,
                 "title": p.get("title"), "company": company, "account_id": acct["id"] if acct else None,
@@ -339,6 +347,10 @@ def build(today: dt.date):
         }
         row["lane"] = lane_for(profile, score, confidence, cfg)
         account_rows.append(row)
+
+    if have_sources:
+        with open(checks_path, "w", encoding="utf-8") as f:
+            json.dump(checks, f, indent=0, sort_keys=True)
 
     con = sqlite3.connect(DB)
     con.executescript(SCHEMA)

@@ -1,0 +1,10 @@
+[Unit]
+Description=Deploy the lead cockpit from GitHub if main has moved
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/etc/default/gm-cockpit-autodeploy
+ExecStart=/usr/local/sbin/gm-cockpit-autodeploy
+TimeoutStartSec=300

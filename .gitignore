@@ -3,3 +3,4 @@ __pycache__/
 data/cockpit.db
 .env
 data/sources/
+deploy/local.env
