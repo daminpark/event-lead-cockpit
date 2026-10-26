@@ -23,6 +23,7 @@ body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.55 Inte
 main { max-width: 780px; margin: 0 auto; padding: 40px 20px 60px; }
 h1 { font-size: 24px; letter-spacing: -.02em; margin: 0 0 4px; }
 h1 + p { color: var(--muted); margin-top: 0; }
+h1 ~ h1 { font-size: 19px; margin: 34px 0 4px; color: var(--accent); }
 h2 { font-size: 17px; margin: 28px 0 8px; padding-top: 14px; border-top: 1px solid var(--line); }
 p, li { margin: 6px 0; }
 ul, ol { padding-left: 20px; }
@@ -35,10 +36,11 @@ em { color: var(--muted); }
 @media print {
   :root { --bg: #fff; --ink: #000; --muted: #444; --line: #ccc; }
   body { font-size: 10.3px; line-height: 1.5; } main { padding: 0; max-width: none; }
-  h1 { font-size: 17px; } h2 { font-size: 12.5px; margin: 10px 0 4px; padding-top: 6px; }
+  h1 { font-size: 17px; } h1 ~ h1 { font-size: 14px; margin: 14px 0 2px; } h2 { font-size: 12.5px; margin: 10px 0 4px; padding-top: 6px; }
   p, li { margin: 3px 0; } ul, ol { margin: 3px 0; padding-left: 16px; }
   table { font-size: 9px; margin: 6px 0 8px; } th, td { padding: 2px 6px; }
   @page { size: A4; margin: 13mm 14mm; }
+  h1, h2 { break-after: avoid-page; page-break-after: avoid; } li, tr { break-inside: avoid; }
 }
 </style></head><body><main>
 """ + body + "\n</main></body></html>\n"

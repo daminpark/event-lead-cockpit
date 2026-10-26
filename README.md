@@ -10,11 +10,11 @@ The task: *"Find 10 relevant upcoming events for GeneralMind and set up a system
 
 ## What it does
 
-1. **Events.** Ten events (procurement and supply-chain congresses, trade fairs where the exhibitors are the prospects, a shared-services week), each judged on the best people we could actually meet there (the average fit of the best N, where N is the meetings possible), then what a meeting costs (ticket, travel, hotel and people's days), whether GeneralMind is a partner there, timing and whether this year's list is out. Each event has an AI summary, its score broken down, and a meeting plan (people sent × days × meetings a day, so how many to invite). You mark events Going or Not going.
+1. **Events.** Ten events (procurement and supply-chain congresses, trade fairs where the exhibitors are the prospects, a shared-services week), each judged on the best people we could actually meet there (from the timetable where it's out: who we can catch as they come off stage), then what a meeting costs (ticket, travel, hotel and people's days), whether GeneralMind is a partner there, timing and whether this year's list is out. Each event has an AI summary, its score broken down, and a meeting plan (who to catch, and when). There are no invitations: cold email isn't allowed in Germany. You mark events Going or Not going.
 2. **People.** About 700 people named on the events' speaker, agenda and partner pages, each with a fit score and its reasons, a five-second brief and an opener for the event. Everyone starts in *To review*; a person approves or rejects. Nothing is approved automatically.
-3. **HubSpot.** Approved people are sent with their companies, linked and deduplicated by the cockpit's own ids, with the fit score, reasons, source event and source page as properties. Or downloaded per event as a CSV.
+3. **HubSpot.** Approved people are sent with their companies, linked, with the fit score, reasons, source event and source page as properties. The cockpit checks HubSpot first: records it already has keep their own details, and an unsure match waits for a person. Or download per event as a CSV.
 
-Around that: scoring settings and playbooks that are versioned (preview a change against past decisions before activating it), a playbook editor with a line diff and a model that discusses and edits the draft, a help assistant that answers from the cockpit's data and links to the right page, a feedback button that records what the person was doing, error logging, owner and team roles, and a do-not-contact list.
+Around that: playbooks and scoring that are versioned (a change shows its effect before it's saved), a playbook editor with old and new side by side and a model that discusses and edits the draft, a help assistant that answers from the cockpit's data and links to the right page, a feedback button that records what the person was doing, error logging, owner and team roles, and a do-not-contact list.
 
 ## How it's built
 

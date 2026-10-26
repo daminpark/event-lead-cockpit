@@ -4,7 +4,7 @@ I built this on 26 October 2026 with Claude Code, which wrote most of the code. 
 
 ## Start: the whole loop once (17:51)
 Ten events, the people on their public pages, a score with reasons, a review screen and HubSpot ([08d5125]). Then the principles I kept to:
-- **A person decides.** Nothing is approved automatically, and decisions don't change the scoring on their own. A change is tested against past decisions first ([d756e96]).
+- **A person decides.** Nothing is approved automatically, and decisions don't change the scoring on their own. Every decision is recorded with the scoring version it was made under, so a change can be checked against them ([d756e96]).
 - **Visible and versioned.** The rules and the agents' instructions can be read, changed and rolled back ([bb356d6]).
 - **Quick to improve.** Feedback by pointing at the page, and a chat that answers questions ([90dbe76]).
 - **Legal.** Public business information only; when an event's site blocked automated access, we replaced the event rather than work around it ([ef52986]).

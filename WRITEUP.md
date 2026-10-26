@@ -1,76 +1,107 @@
-# Event lead cockpit: write-up
+# Event lead cockpit for GeneralMind
 
-Pierre Park · 26 October 2026 · Cockpit: https://leads.193vbr.com (access code in the email)
+Pierre Park, 26 October 2026  
+Cockpit: https://leads.193vbr.com (access code in the email) · Code and how it evolved: https://github.com/daminpark/event-lead-cockpit
 
-## 1. What I built
+# Part 1: What I built
 
-**Ten events where GeneralMind's buyers go**, November 2026 to June 2027, mostly DACH. Dates were checked on the organisers' own sites.
+## The idea
 
-| Event | Date | Where | Why |
+- Event leads are for meeting people face to face, and time at the event is the limit.
+- So choose the events first, then the people and companies worth meeting there.
+- A person decides at every step. Nothing is approved or sent on its own.
+
+## The cockpit
+
+- **10 events**, November 2026 to June 2027, nine in Germany. Each is scored on the best people we could actually meet there, what a meeting costs (tickets, travel, hotel and people's days), timing, whether GeneralMind is a partner, and whether this year's list is out.
+- **699 listings** (680 people, mostly speakers) and **786 companies** from public speaker, programme, partner and exhibitor pages. A second AI pass removed any name it couldn't find on the saved page.
+- **Every person and company has a score with its reasons**: role, company fit and the event. 241 are suggested as a strong fit, 159 as possible.
+- **A meeting plan per event.** Where the timetable is out (BME, Procurement Summit), the cockpit places the best people at the moment they come off stage, up to eight conversations a day per colleague, and scores the event on that plan. Elsewhere it's an estimate until the agenda appears.
+- **Review per event**: To review → Approved → In HubSpot, or Rejected. Undecided means no.
+- **HubSpot**: approved people go with their company, linked. The cockpit checks HubSpot first; records it already has keep their own details and only get our fields (score, reasons, event, source).
+- **Playbooks**: the plain-language steps the AI follows (find events → source people → profile companies → score). Versioned, compared side by side, with a model to discuss changes.
+
+## Where to go
+| Event | When | Cost per meeting | Recommendation |
 |---|---|---|---|
-| European Manufacturing & Supply Chain Strategies Summit | 3–4 Nov 2026 | Munich | Heads of supply chain and operations at manufacturers |
-| BME-Symposium Einkauf und Logistik | 18–19 Nov 2026 | Berlin | Largest DACH procurement congress; GeneralMind is a start-up partner |
-| Hamburger Logistiktage | 24–25 Feb 2027 | Hamburg | 300 invited logistics heads from retail, consumer goods and logistics |
-| Hannover Messe | 5–8 Apr 2027 | Hannover | Exhibitors are manufacturers with order desks |
-| Handelsblatt CPO-Summit | 6–7 Apr 2027 | Düsseldorf | CPOs of large DACH groups |
-| BME EP&SCE Summit | 19–20 Apr 2027 | Berlin | Invitation-only, CPOs and supply chain chiefs |
-| SSOW Europe | 10–13 May 2027 | Estoril | Heads of shared services, P2P and O2C |
-| BME-eLÖSUNGSTAGE | 11–12 May 2027 | Düsseldorf | Digital procurement and P2P; AI invoice automation on the 2026 agenda |
-| LOG Handelslogistik Kongress | 8–9 Jun 2027 | Cologne | Logistics heads at retailers and consumer brands |
-| Procurement Summit | 23–24 Jun 2027 | Hamburg | In-house procurement, incl. wholesalers like Würth and Berner |
+| BME-Symposium, Berlin | 18–19 Nov | €254 | **Go.** GeneralMind is a Start-up Partner, pitching on 18 Nov at 16:10 |
+| BME-eLÖSUNGSTAGE | 11–12 May | €261 | **Go.** The closest topic: digital procure-to-pay |
+| Handelsblatt CPO-Summit | 6–7 Apr | €265 | **Go, if they accept a vendor.** CPOs of large DACH groups; registrations are vetted, so ask first |
+| Procurement Summit | 23–24 Jun | €163 | **Go.** The best value; any attendee can book meetings in its app |
+| Hannover Messe | 5–8 Apr | €117 | **A day of stand visits.** 108 manufacturers worth walking up to |
+| SSOW Europe, Estoril | 10–13 May | €411 | Decide in January: the right buyers, but a €4,099 ticket and abroad |
+| LOG Handelslogistik | 8–9 Jun | €214 | Skip unless the 2027 list is stronger |
+| BME EP&SCE | 19–20 Apr | no ticket | Only as a sponsor |
+| EMS-SCMS | 3–4 Nov | no ticket | Skip: 8 days away, vendors only as paying partners |
+| Hamburger Logistiktage | 24–25 Feb | no ticket | Skip: invitation only |
 
-**The pipeline.** For each event it saves the public speaker, agenda, exhibitor and partner pages, extracts name, title, company and talk, and then a second, sceptical pass checks every lead against the saved page and removes what it can't find. Each company is classified (buyer, partner, competitor, vendor, other) and given an estimated industry, size, country and, where public, ERP. A rules-based score with visible reasons puts every contact and company in a lane. Result: **680 people (699 event listings) and 786 companies; 241 contacts on fast track, 159 for review.**
+Cost per meeting is approximate: the vendor ticket, travel, hotel and each person's days (€500 a day, travel time included), divided by the conversations we could have.
 
-**The cockpit** is built for the person who goes and meets these people:
+## How the meetings happen
 
-- **Review:** each lead has a five-second brief (who, why they matter, an opener for the event), the score's reasons, data confidence and the source link. Approve or reject with a reason, by click or keyboard. A do-not-contact list covers a person across every event.
-- **Criteria:** every weight and keyword is visible and adjustable, with a live preview of how the ranking changes and how the change would have agreed with past decisions. Each save is a numbered version that can be reactivated; invalid settings are refused.
-- **Playbooks:** the plain-language instructions the AI steps follow (finding events, sourcing leads, profiling companies), versioned the same way.
-- **Copilot:** a chat that answers questions about the data and proposes changes as inactive versions, with a one-click Activate. It never changes what's live on its own.
-- **Insights:** the funnel, decisions over time, versions compared by replaying every decision, and a feedback inbox. A Feedback button lets anyone point at part of the page and leave a note.
-- **HubSpot:** approved leads go to HubSpot through the API (companies and contacts, linked, deduplicated by our own ids), with a connection light, or as CSV import files.
+- **No cold email.** In Germany it needs prior consent, between businesses too (§7 Abs. 2 Nr. 2 UWG). So no invitation campaigns.
+- **Speakers**: catch them as they come off stage, in the break or at the stage exit.
+- **Exhibitors**: walk up to their stand. This matters at trade fairs; at congresses most exhibitors are vendors.
+- **The very best few**: through the event's own app where it allows it, or an introduction.
+- **Follow-up email** only once they've agreed.
 
-Two things stood out:
+## Left out on purpose
 
-- **GeneralMind is exhibiting at the BME-Symposium on 18–19 November.** The cockpit has 62 fast-track contacts there, so the first use is filling the stand's calendar.
-- **Exhibitor lists mean different things at different events.** At most congresses the exhibitors are vendors (much of the BME partner wall is lio, tacto, Pactum, Mercanis and others), so they're kept as market intel. At Hannover Messe and the Hamburger Logistiktage it's the other way round: the exhibitors are manufacturers and logistics firms with order desks, so the list is a prospect list for order-to-cash.
+- Automatic approval, cold email, LinkedIn, phone numbers.
+- Company data is estimated until enrichment, and 405 listings come from last year's lists (marked as such).
 
-Choices on purpose: rules rather than a model (with no outcome data yet, a score people can read and argue with is more useful); speakers and exhibitors rather than attendees (attendee lists aren't public); no emails, no phone numbers and no LinkedIn; sites that block automated access are respected (transport logistic's directory does, so it was replaced).
+# Part 2: From events to a full lead-generation system
 
-## 2. From event cockpit to a full lead-generation system
+## One loop for every source
+Events are only the first source. Every lead, whatever its source, goes through the same five steps:
 
-Sources feed the cockpit, enrichment fills the gaps, people review, HubSpot receives, and outcomes flow back into the scoring.
+1. **A source finds it, with a reason**: "speaking at BME on 18 November", or "hiring two order-processing clerks since October".
+2. **The same criteria judge it.** One description of a good customer (company type, size, industry, DACH, ERP, and the person's role) and one set of scores, visible and versioned under Playbooks → Scoring. The source only adds its reason and how fresh it is.
+3. **Enrichment fills the gaps.** Public pages give estimates and no contact details. A data provider (Apollo, or a DACH provider, possibly through Clay) confirms size, industry and ERP and finds the right person, such as the head of order management. Lookups cost money, so only for leads that pass the criteria. Contact details are used only with a legal basis, for example once someone has agreed to hear from us.
+4. **A person reviews it** in the cockpit, with an optional reason for every decision.
+5. **HubSpot receives it; outcomes come back.** Met, follow-up, deal flow back into the cockpit and show which sources and criteria work.
 
-**Sources and signals.** Events are one source. The stronger ones show the pain directly, or that something is about to change:
+## Sources, in the order I'd add them
 
-- *Hiring:* companies advertising for *Sachbearbeiter Auftragsabwicklung*, *Kreditorenbuchhaltung* or *Vertriebsinnendienst* pay people to do by hand what Autopilot does. Several open roles at once is the strongest single signal I can think of.
-- *ERP change:* SAP ECC mainstream maintenance ends in 2027, so many companies are redesigning order and invoice processes as they move to S/4HANA.
-- *E-invoicing:* larger German companies must send B2B e-invoices from January 2027, which puts accounts payable on the agenda this year.
-- *Lookalikes* of current customers (Kloeckner, Oatly, bofrost*, Sennheiser, Müller lila Logistik): same industry, size and ERP.
-- *Partners:* SAP partners and integrators know who is migrating; they have their own lane for that reason.
-- *Champions moving:* a pilot user who changes jobs is the warmest lead there is.
+- **Events** (built): who is on stage or at a stand.
+- **Hiring signals**: companies advertising for a *Sachbearbeiter Auftragsabwicklung* or *Kreditorenbuchhaltung* pay people to do by hand what Autopilot does. New ones every week, all year.
+- **Timing signals**: SAP ECC mainstream maintenance ends in 2027, and larger German companies must send e-invoices from 2027. Both put order and invoice processes on the table.
+- **Lookalikes** of current customers (Kloeckner, Oatly, bofrost*, Sennheiser, Müller lila Logistik): same industry, size and ERP.
+- **Partners**: SAP partners and integrators know who is migrating.
 
-**ICP and scoring.** *Fit* is fairly stable: industry, size (roughly 500 to 20,000 employees), DACH first, ERP, and the persona (order management, AP and shared services, procurement, supply chain; heads as buyers, team leads as champions). *Timing* comes from signals and fades. Priority goes to high fit with a recent signal. Competitors are routed out, consultancies to the partner track, customers and open deals to their owner.
+## Built, and what's next
+**Built**: events as the first source, scoring with reasons, the meeting plan from the timetable (BME, Procurement Summit), review per event, HubSpot with a check before every send, versioned playbooks and scoring, and feedback from any page.
 
-**Enrichment.** Cheap data first, expensive last: firmographics for every account; contacts and verified business emails only for accounts above the fit threshold, through a waterfall of providers (for example Apollo, then a second one when it misses), orchestrated in Clay.
+**Not built yet**
 
-**Review with feedback.** The same loop as Autopilot. At first a person reviews everything. Each decision stores the score's suggestion and the settings version. Reject reasons map to rules ("wrong role" is a title rule, "too small" a size threshold). When a score band reaches high agreement over enough decisions (say 90% over 50), it skips review, one band and one source at a time. Every settings change is replayed against past decisions before it goes live, the same way a pilot replays 30–50 real cases. Decisions don't change the scoring on their own; they produce suggestions a person accepts as a new version.
+- **A reason on every decision**, optional and one click, so we learn how people actually choose.
+- **Each colleague's timetable**: approving people fills it, and when two come off stage at the same moment the cockpit asks which matters more.
+- **Exhibitors as stand visits**: companies rated possible or better become leads to approve.
+- **Outcomes back from HubSpot**: met, follow-up, deal, per event, source and person.
+- **A scheduled agent** that keeps event pages and timetables current and proposes new events for a person to accept.
+- **Hiring signals**, then the other sources one at a time, each judged on meetings per hour spent.
+- **Enrichment**, only for leads that pass the criteria.
+- **Suggestions from outcomes** once there is enough data: the system proposes a new version with its evidence, and a person switches it on.
 
-**HubSpot.** Check existing records first (customers, open deals, owners) so a known company gets a new signal rather than a duplicate. Upsert companies by domain and contacts by email once enriched, assign an owner by segment or territory, and enrol the contact in a sequence matching the signal (meeting request before an event, e-invoicing, S/4 migration). Meetings and deal stages sync back so the scoring learns from outcomes, not only from reviewers.
+**First, with the people who sell**: review BME's 73 strong and possible names before 18 November. Their reasons are the first real data on how we choose.
 
-**Measuring.** A funnel per source, segment and settings version: sourced, approved, contacted, replied, meeting, pilot, customer. Plus cost per meeting by source and review time per lead. Every few weeks, move effort to what turns into pilots and stop what doesn't. Test two or three messages per segment on small lists rather than one big send.
+**Why not more self-learning now**: ten events a year give too few outcomes to learn from automatically, or to A/B test. Hiring signals bring the volume.
 
-**GDPR and German law.** Business contact data from public sources under legitimate interest, with a documented balancing test, the source stored per lead (the cockpit does this), people informed at first contact, a shared suppression list, and unused leads deleted after a set period. Under §7 UWG, advertising by email needs the recipient's prior consent even when the recipient is a business, and a phone call to a business needs at least presumed consent. So in Germany the first touch is better made in person at the event, through a partner, or by phone with a clear business reason. That's one more reason event-led outreach suits this market. I'd confirm the details with counsel.
+## HubSpot, done carefully
 
-## 3. What v1 leaves out, and what I'd build next
+- Look up before sending; never overwrite.
+- Unsure matches wait as "possible match". Not built yet: an AI says whether it's likely the same person or company, and a person confirms.
+- People we stop pursuing are marked, not deleted.
 
-Six events haven't published 2027 lists yet, so they use the previous edition's speakers and say so. Trade-fair lists are capped at about 100 DACH companies. Company data is estimated and ERP is mostly unknown. Sourcing ran once, not on a schedule.
+## GDPR
 
-Next, in order:
+- Public business information only. The basis is legitimate interest, with a documented balancing test, and the source is stored for each lead.
+- People are told within a month of collection (Article 14).
+- Do not contact keeps a person out everywhere, and objections in HubSpot flow back into it.
 
-1. A daily run that re-checks the event pages and adds new speakers as 2027 lists appear.
-2. The hiring signal for DACH as the second source.
-3. Enrichment for fast-track accounts: the right persona and a verified email.
-4. Outcomes synced back from HubSpot, so versions and sources are compared on meetings and pilots.
+# A parallel
 
-*How it was built: Python, FastAPI, SQLite and one HTML page, on a small server at home, deployed from GitHub. Extraction, checking, profiling and briefs were done by AI agents, each checked by a second agent; the scoring itself is plain rules in a config file. Built in an afternoon with Claude Code.*
+- It's Autopilot's pattern: score each item, let a person handle the uncertain ones, learn from their decisions.
+- My guesthouse system works the same way (https://demo.thetachbrook.com/?tour). Changes are first tested on 117 real past conversations. More than 80% of guest messages now go out with nobody involved.
+
+*Built with Claude Code: Python, FastAPI, SQLite and one HTML page, deployed from GitHub.*
