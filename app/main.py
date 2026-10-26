@@ -28,6 +28,9 @@ write_lock = threading.Lock()  # one writer at a time for rebuilds and pushes
 # The leads are real people, and the page can push to HubSpot and spend on the copilot,
 # so everything sits behind a shared access code (sent with the link).
 CODE = os.environ.get("COCKPIT_CODE", "").strip()
+OPEN = os.environ.get("COCKPIT_ALLOW_OPEN") == "1"  # local development only
+if not CODE and not OPEN:
+    raise RuntimeError("Set COCKPIT_CODE (or COCKPIT_ALLOW_OPEN=1 for local development)")
 OPEN_PATHS = {"/healthz", "/login"}
 
 LOGIN_PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,7 +48,9 @@ ERROR<input name="code" type="password" autocomplete="current-password" autofocu
 
 
 def code_ok(value):
-    return not CODE or (value is not None and hmac.compare_digest(value.encode(), CODE.encode()))
+    if not CODE:
+        return OPEN
+    return value is not None and hmac.compare_digest(value.encode(), CODE.encode())
 
 
 @app.middleware("http")

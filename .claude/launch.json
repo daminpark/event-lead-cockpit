@@ -4,7 +4,7 @@
     {
       "name": "cockpit",
       "runtimeExecutable": "uv",
-      "runtimeArgs": ["run", "uvicorn", "app.main:app", "--port", "8765"],
+      "env": {"COCKPIT_ALLOW_OPEN": "1"}, "runtimeArgs": ["run", "uvicorn", "app.main:app", "--port", "8765"],
       "port": 8765
     }
   ]
