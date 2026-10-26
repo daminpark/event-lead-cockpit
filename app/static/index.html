@@ -1199,8 +1199,17 @@ function renderAbout() {
       <li><b>Competitors</b>: other order, invoice and procurement automation vendors. Not leads, but useful market intel.</li>
       <li><b>Customers</b>: existing GeneralMind customers. Routed to the account owner rather than prospected.</li>
     </ul>
+    <h2>Flexible, but hard to break</h2>
+    <ul>
+      <li><b>Criteria</b>: every weight and keyword behind the score is visible and adjustable. A slider shows the effect on the ranking before anything is saved, including how the change would have agreed with past reviewer decisions. Saving creates a numbered version; any version can be reactivated. Invalid settings are refused.</li>
+      <li><b>Playbooks</b>: the plain-language instructions the AI steps follow when finding events, sourcing leads and profiling companies. Versioned the same way.</li>
+      <li><b>Copilot</b>: answers questions about the data and proposes changes, but only as new inactive versions. A person previews and activates them. The model is chosen in the panel (via OpenRouter).</li>
+      <li><b>Code</b> changes go through git: feedback left with the Feedback button is picked up, fixed, committed, and the server deploys the new commit by itself, with a health check that keeps the old version running if the new one fails.</li>
+    </ul>
+    <h2>HubSpot</h2>
+    <p>Approved leads are pushed through HubSpot's API: companies and contacts, linked, each carrying our own id so a second push updates rather than duplicates. A light in the header shows whether the connection is healthy. The do-not-contact list is never pushed or exported.</p>
     <h2>What v1 leaves out on purpose</h2>
-    <p>No emails or phone numbers (public pages don't carry them, and they should come from an enrichment provider with a proper legal basis). No LinkedIn scraping. Company details are AI estimates and labelled as such. No login: anyone with the link can review.</p>`;
+    <p>No emails or phone numbers (public pages don't carry them, and they should come from an enrichment provider with a proper legal basis). No LinkedIn scraping, and sites that block automated access are respected (transport logistic's exhibitor directory does, so it isn't used). Company details are AI estimates and labelled as such. No login: anyone with the link can review, so the copilot has an hourly cap.</p>`;
 }
 
 
