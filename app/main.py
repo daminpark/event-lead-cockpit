@@ -479,12 +479,12 @@ def compare_versions():
 
 def approved(con, only=None):
     """Approved, not suppressed: accounts, and contacts merged to one row per person (best-scoring appearance,
-    with all their approved events)."""
+    with all their approved events, and the title and company of their most recent listing)."""
     decisions = latest_decisions(con)
     suppressed = {r["key"] for r in con.execute("SELECT key FROM suppression")}
     events = {e["id"]: e for e in (json.loads(r["data"]) for r in con.execute("SELECT data FROM events"))}
     accounts = {r["id"]: json.loads(r["data"]) for r in con.execute("SELECT id, data FROM accounts")}
-    contacts = [json.loads(r["data"]) for r in con.execute("SELECT data FROM contacts")]
+    contacts = [c | c.get("current", {}) for c in (json.loads(r["data"]) for r in con.execute("SELECT data FROM contacts"))]
     ok = lambda kind, oid: decisions.get((kind, oid), {}).get("decision") == "approve"
     domain_ok = lambda a: (a.get("profile") or {}).get("domain") not in suppressed
     # A selected listing brings every approved listing of the same person, so HubSpot gets all their events.
@@ -709,6 +709,7 @@ def hubspot_remove(r: Remove):
         if not row:
             raise HTTPException(404, "Unknown person")
         c = json.loads(row["data"])
+        c |= c.get("current", {})  # the company they were sent with
         try:
             out = hubspot.remove_person(con, c["person_key"], c.get("account_id"))
         except (hubspot.HubSpotError, hubspot.httpx.HTTPError) as e:

@@ -401,19 +401,42 @@ def compute(cfg, today):
     checks = {} if have_sources else load_json(checks_path, {})
 
     contacts, accounts, appearances = [], {}, []
+    extracted = [ex for ex in (load_json(p, None) for p in sorted(glob.glob(os.path.join(DATA, "extracted", "*.json"))))
+                 if ex and ex.get("event_id") in events]
 
-    def account_for(name):
+    def resolve(name):
         profile = profile_for(name)
         display = (profile or {}).get("name") or name
-        aid = slug(company_key(display) or display)
+        return slug(company_key(display) or display), display, profile
+
+    # One company per website domain, as HubSpot has it: names whose profiles share a domain (DHL Global
+    # Forwarding, DHL Supply Chain) become the one with the most people, then the surer profile, then the first id.
+    found, named = {}, {}
+    for ex in extracted:
+        listed = [(p["company"], slug(ex["event_id"], p["name"])) for p in ex.get("people", []) if p.get("name") and p.get("company")]
+        for name, cid in listed + [(c["name"], None) for c in ex.get("companies", []) if c.get("name")]:
+            a = resolve(name)
+            found.setdefault(a[0], a)
+            if cid:
+                named.setdefault(a[0], set()).add(cid)
+    by_domain = {}
+    for a in found.values():
+        if (a[2] or {}).get("domain"):
+            by_domain.setdefault(a[2]["domain"], []).append(a)
+    sure = {"high": 0, "medium": 1, "low": 2}
+    merged_into = {}
+    for same in by_domain.values():
+        keep = min(same, key=lambda a: (-len(named.get(a[0], ())), sure.get(a[2].get("confidence"), 3), a[0]))
+        merged_into |= {a[0]: keep for a in same if a is not keep}
+
+    def account_for(name):
+        a = resolve(name)
+        aid, display, profile = merged_into.get(a[0], a)
         if aid not in accounts:
             accounts[aid] = {"id": aid, "name": display, "profile": profile, "events": set(), "contacts": [], "roles": set()}
         return accounts[aid]
 
-    for path in sorted(glob.glob(os.path.join(DATA, "extracted", "*.json"))):
-        ex = load_json(path, None)
-        if not ex or ex.get("event_id") not in events:
-            continue
+    for ex in extracted:
         event = events[ex["event_id"]]
         text = source_texts(event["id"]) if have_sources else ""
         seen = set()
@@ -478,6 +501,14 @@ def compute(cfg, today):
         by_person.setdefault(c["person_key"], []).append(c)
     for c in contacts:
         c["also_at"] = [o["event_id"] for o in by_person[c["person_key"]] if o["id"] != c["id"]]
+    # What HubSpot and the CSV get once per person: the title and company of their most recent listing
+    # (this year's list over last year's), not whichever event happens to come first.
+    for same in by_person.values():
+        recent = sorted(same, key=lambda c: ("previous" not in (c["edition"] or ""), c["edition"] or "", events[c["event_id"]]["start"]), reverse=True)
+        at = next((c for c in recent if c["company"]), recent[0])
+        current = {"title": next((c["title"] for c in recent if c["title"]), None), "company": at["company"], "account_id": at["account_id"]}
+        for c in same:
+            c["current"] = current
 
     a_cfg = cfg["account"]
     account_rows = []
@@ -500,6 +531,7 @@ def compute(cfg, today):
             "events": sorted(acct["events"], key=lambda e: events[e]["start"]), "roles": sorted(acct["roles"]),
             "contact_ids": [c["id"] for c in acct["contacts"]], "confidence": confidence,
             "profile": profile or {}, "estimated": True,
+            "merged_from": sorted(old for old, keep in merged_into.items() if keep[0] == acct["id"]),
         }
         row["lane"] = lane_for(profile, score, confidence, cfg)
         account_rows.append(row)
@@ -592,6 +624,15 @@ def build(today=None, con=None):
                     (f"Scoring v{version} no longer fits ({e}); switched to v{row['version']} from the repository", now()))
         cfg, version = json.loads(row["body"]), row["version"]
         events, contacts, account_rows, appearances = compute(cfg, today)
+    # A company merged into another with the same domain hands over its decisions and HubSpot link,
+    # unless the one kept already has a link of its own.
+    merged = {old: a["id"] for a in account_rows for old in a["merged_from"]}
+    for old, new in merged.items():
+        con.execute("UPDATE decisions SET object_id = ? WHERE object_type = 'account' AND object_id = ?", (new, old))
+        con.execute("UPDATE OR IGNORE hubspot_sync SET object_id = ? WHERE object_type IN ('account', 'account_created') AND object_id = ?", (new, old))
+        con.execute("DELETE FROM hubspot_sync WHERE object_type IN ('account', 'account_created') AND object_id = ?", (old,))
+    if merged:
+        print(f"merged {len(merged)} companies sharing a domain: " + ", ".join(f"{old} into {new}" for old, new in merged.items()))
     con.executescript(LEAD_TABLES)
     con.executemany("INSERT INTO events VALUES (?, ?, ?, ?)",
                     [(e["id"], e["score"], e["lane"], json.dumps(e, ensure_ascii=False)) for e in events.values()])
