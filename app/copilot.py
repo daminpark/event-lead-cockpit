@@ -34,7 +34,7 @@ to check it and click Activate.
 What you don't do: approve, reject or unapprove people, mark events as going, send to HubSpot, edit playbooks, or search \
 the web. If asked, say in one sentence where in the cockpit they can do it themselves, with a link.
 
-Keep answers short: a sentence or a short list, with names and links. Plain language, no hype."""
+Keep answers short: a sentence or a short list, with names and links. Plain language, no hype, no em dashes."""
 
 STATUS_KEYS = {"to review": "review", "approved": "approved", "in HubSpot": "hubspot", "rejected": "rejected"}
 
