@@ -1,0 +1,1192 @@
+[
+ {
+  "aliases": [
+   "Gebr. Heinemann"
+  ],
+  "name": "Gebr. Heinemann",
+  "domain": "gebr-heinemann.de",
+  "segment": "buyer",
+  "segment_reason": "Hamburg travel-retail and duty-free distributor and retailer with high supplier order and invoice volume.",
+  "industry": "Retail",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Aurubis"
+  ],
+  "name": "Aurubis",
+  "domain": "aurubis.com",
+  "segment": "buyer",
+  "segment_reason": "Hamburg copper producer and recycler with large raw-material procurement and customer order volume.",
+  "industry": "Metals & materials",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "KAEFER Schiffsausbau"
+  ],
+  "name": "KAEFER Schiffsausbau",
+  "domain": "kaefer.com",
+  "segment": "buyer",
+  "segment_reason": "Marine interior-outfitting unit of the Bremen-based KAEFER industrial services group; project procurement buyer.",
+  "industry": "Industrial services",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Domino's Pizza"
+  ],
+  "name": "Domino's Pizza",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Pizza delivery chain with group-level procurement; the event page does not say which Domino's entity.",
+  "industry": "Food & beverage",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "DMI"
+  ],
+  "name": "DMI",
+  "domain": "dmi.de",
+  "segment": "buyer",
+  "segment_reason": "Operating services company (event page: digitisation and archiving of medical records for hospitals) with procurement, fleet and facility spend.",
+  "industry": "Healthcare services",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "Höegh Autoliners"
+  ],
+  "name": "Höegh Autoliners",
+  "domain": "hoeghautoliners.com",
+  "segment": "buyer",
+  "segment_reason": "Norwegian ro-ro car-carrier shipping line; logistics operator with procurement and invoice volume.",
+  "industry": "Logistics & transport",
+  "hq_country": "NO",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Hansgrohe"
+  ],
+  "name": "Hansgrohe",
+  "domain": "hansgrohe.com",
+  "segment": "buyer",
+  "segment_reason": "Black Forest manufacturer of bathroom and kitchen fittings selling through wholesale channels.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Sonic Healthcare Germany"
+  ],
+  "name": "Sonic Healthcare Germany",
+  "domain": "sonichealthcare.de",
+  "segment": "buyer",
+  "segment_reason": "German laboratory-medicine group buying large volumes of lab consumables and services.",
+  "industry": "Healthcare",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Hagleitner Hygiene International"
+  ],
+  "name": "Hagleitner Hygiene International",
+  "domain": "hagleitner.com",
+  "segment": "buyer",
+  "segment_reason": "Austrian manufacturer of professional hygiene products and dispensers with B2B order volume.",
+  "industry": "Consumer goods",
+  "hq_country": "AT",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "FEAG"
+  ],
+  "name": "FEAG",
+  "domain": "feag.de",
+  "segment": "buyer",
+  "segment_reason": "Likely the German FEAG group (electrical switchgear manufacturing); identity not confirmed by the event page.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "DFB"
+  ],
+  "name": "DFB (Deutscher Fußball-Bund)",
+  "domain": "dfb.de",
+  "segment": "other",
+  "segment_reason": "German Football Association, a sports federation rather than a commercial buyer.",
+  "industry": "Sports association",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "NABU"
+  ],
+  "name": "NABU",
+  "domain": "nabu.de",
+  "segment": "other",
+  "segment_reason": "German nature-conservation NGO.",
+  "industry": "NGO",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Zeppelin Power Systems"
+  ],
+  "name": "Zeppelin Power Systems",
+  "domain": "zeppelin.com",
+  "segment": "buyer",
+  "segment_reason": "Zeppelin Group company selling and servicing engines, gensets and energy systems; parts and equipment order volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "CSL Behring"
+  ],
+  "name": "CSL Behring",
+  "domain": "cslbehring.com",
+  "segment": "buyer",
+  "segment_reason": "Global plasma-therapies biopharma company (part of CSL) with a large German site in Marburg.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Berner Group"
+  ],
+  "name": "Berner Group",
+  "domain": "berner-group.com",
+  "segment": "buyer",
+  "segment_reason": "Künzelsau family-owned B2B distributor of fasteners, tools and chemicals; order-heavy wholesaler.",
+  "industry": "Wholesale & distribution",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Kährs Group"
+  ],
+  "name": "Kährs Group",
+  "domain": "kahrsgroup.com",
+  "segment": "buyer",
+  "segment_reason": "Swedish wood and resilient flooring manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "SE",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Bosch"
+  ],
+  "name": "Bosch",
+  "domain": "bosch.com",
+  "segment": "buyer",
+  "segment_reason": "Global engineering and automotive supplier with very large procurement and order volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Long-standing, widely reported SAP customer (S/4HANA programmes)",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "TKMS"
+  ],
+  "name": "TKMS (thyssenkrupp Marine Systems)",
+  "domain": "thyssenkrupp-marinesystems.com",
+  "segment": "buyer",
+  "segment_reason": "Kiel naval shipbuilder (submarines and frigates) with complex direct-material procurement.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Reifenhäuser"
+  ],
+  "name": "Reifenhäuser",
+  "domain": "reifenhauser.com",
+  "segment": "buyer",
+  "segment_reason": "Family-owned Troisdorf maker of extrusion lines for plastics and film.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Raiffeisen Bank International"
+  ],
+  "name": "Raiffeisen Bank International",
+  "domain": "rbinternational.com",
+  "segment": "buyer",
+  "segment_reason": "Large Austrian banking group with indirect procurement and invoice volume; no order-to-cash use case, so a weaker fit.",
+  "industry": "Financial services",
+  "hq_country": "AT",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Wabtec"
+  ],
+  "name": "Wabtec",
+  "domain": "wabteccorp.com",
+  "segment": "buyer",
+  "segment_reason": "US rail equipment manufacturer with European operations and large supplier base.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "E. Breuninger"
+  ],
+  "name": "Breuninger (E. Breuninger GmbH & Co.)",
+  "domain": "breuninger.com",
+  "segment": "buyer",
+  "segment_reason": "Stuttgart premium department-store and online fashion retailer.",
+  "industry": "Retail",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "kohlpharma"
+  ],
+  "name": "kohlpharma",
+  "domain": "kohlpharma.com",
+  "segment": "buyer",
+  "segment_reason": "Germany's largest pharmaceutical parallel importer; order-heavy pharma distribution business.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "KWS Group"
+  ],
+  "name": "KWS Group (KWS SAAT)",
+  "domain": "kws.com",
+  "segment": "buyer",
+  "segment_reason": "Einbeck plant-breeding and seed producer with global operations.",
+  "industry": "Agriculture",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Telefónica"
+  ],
+  "name": "Telefónica",
+  "domain": "telefonica.com",
+  "segment": "buyer",
+  "segment_reason": "Spanish telecoms group (O2 in Germany) with large procurement and supplier-invoice volume.",
+  "industry": "Telecommunications",
+  "hq_country": "ES",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "11A | HR Vendor Management System"
+  ],
+  "name": "11A HR Vendor Management System",
+  "domain": "dein11a.de",
+  "segment": "vendor",
+  "segment_reason": "Vendor-management system for temporary-staffing suppliers; HR procurement niche, not order or invoice automation.",
+  "industry": "Software",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Achilles"
+  ],
+  "name": "Achilles",
+  "domain": "achilles.com",
+  "segment": "vendor",
+  "segment_reason": "Supplier risk, prequalification and ESG data provider.",
+  "industry": "Software",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "ACT Commodities"
+  ],
+  "name": "ACT Commodities",
+  "domain": "actgroup.com",
+  "segment": "vendor",
+  "segment_reason": "Environmental commodities and decarbonisation services provider.",
+  "industry": "Energy & environment services",
+  "hq_country": "NL",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "apsolut"
+  ],
+  "name": "apsolut",
+  "domain": "apsolut.com",
+  "segment": "partner",
+  "segment_reason": "SAP Ariba and SAP procurement consultancy, part of the All for One Group since 2026 (per event page).",
+  "industry": "Consulting",
+  "hq_country": null,
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Avetta"
+  ],
+  "name": "Avetta",
+  "domain": "avetta.com",
+  "segment": "vendor",
+  "segment_reason": "Contractor and supplier prequalification and compliance platform.",
+  "industry": "Software",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "AWS Systemtechnik"
+  ],
+  "name": "AWS Systemtechnik",
+  "domain": "aws-cost-engineering.de",
+  "segment": "partner",
+  "segment_reason": "Cost and value engineering services for strategic procurement; more likely to refer than to implement.",
+  "industry": "Consulting",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "ctrl+s"
+  ],
+  "name": "ctrl+s",
+  "domain": "ctrl-s.io",
+  "segment": "vendor",
+  "segment_reason": "Scope 3 carbon-accounting and supplier-engagement software.",
+  "industry": "Software",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Definic.ai"
+  ],
+  "name": "Definic.ai",
+  "domain": "definic.ai",
+  "segment": "competitor",
+  "segment_reason": "AI platform for sourcing IT services; procurement-workflow software, adjacent to Autopilot rather than overlapping.",
+  "industry": "Software",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Doxis"
+  ],
+  "name": "Doxis",
+  "domain": "doxis.com",
+  "segment": "competitor",
+  "segment_reason": "AI document-management and intelligent content automation platform whose capture covers invoice and order documents.",
+  "industry": "Software",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "EFESO Management Consultants"
+  ],
+  "name": "EFESO Management Consultants",
+  "domain": "efeso.com",
+  "segment": "partner",
+  "segment_reason": "International consultancy focused on procurement and operations performance.",
+  "industry": "Consulting",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Einmalbedarfe"
+  ],
+  "name": "Einmalbedarfe (KKSC)",
+  "domain": "einmalbedarfe.de",
+  "segment": "vendor",
+  "segment_reason": "KKSC's managed one-creditor service for one-off and C-part purchases; a procurement service, not software.",
+  "industry": "Procurement services",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "F. REYHER"
+  ],
+  "name": "F. REYHER",
+  "domain": "reyher.de",
+  "segment": "buyer",
+  "segment_reason": "Hamburg wholesaler of fasteners and fixing technology serving about 12,000 customers; order-heavy distributor.",
+  "industry": "Wholesale & distribution",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "FIS"
+  ],
+  "name": "FIS Informationssysteme und Consulting",
+  "domain": "fis-gmbh.de",
+  "segment": "partner",
+  "segment_reason": "SAP Gold Partner offering consulting, development, implementation and support.",
+  "industry": "Consulting",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Foxit"
+  ],
+  "name": "Foxit",
+  "domain": "foxit.com",
+  "segment": "vendor",
+  "segment_reason": "PDF and e-signature software vendor.",
+  "industry": "Software",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "fruuts"
+  ],
+  "name": "fruuts",
+  "domain": "fruuts.com",
+  "segment": "vendor",
+  "segment_reason": "Digital procurement of contingent staff and micro-suppliers as a smart MSP; HR procurement niche.",
+  "industry": "Software",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "GAIN"
+  ],
+  "name": "GAIN",
+  "domain": "getgain.com",
+  "segment": "competitor",
+  "segment_reason": "Israeli start-up building autonomous AI employees for procurement tasks such as supplier negotiations.",
+  "industry": "Software",
+  "hq_country": "IL",
+  "dach": false,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Gambit Consulting"
+  ],
+  "name": "GAMBIT Consulting",
+  "domain": null,
+  "segment": "partner",
+  "segment_reason": "SAP and IT consultancy for S/4 implementations, carve-outs and data harmonisation.",
+  "industry": "Consulting",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Hivebuy"
+  ],
+  "name": "Hivebuy",
+  "domain": "hivebuy.com",
+  "segment": "competitor",
+  "segment_reason": "AI-driven purchase-to-pay software for indirect spend, including automated orders and invoice handling.",
+  "industry": "Software",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Horváth"
+  ],
+  "name": "Horváth",
+  "domain": "horvath-partners.com",
+  "segment": "partner",
+  "segment_reason": "Independent management consultancy (transformation, performance management, digitalisation) with procurement practice.",
+  "industry": "Consulting",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Icertis"
+  ],
+  "name": "Icertis",
+  "domain": "icertis.com",
+  "segment": "competitor",
+  "segment_reason": "AI contract-lifecycle-management platform for procurement; adjacent to rather than overlapping with order or invoice automation.",
+  "industry": "Software",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Integrity Next"
+  ],
+  "name": "IntegrityNext",
+  "domain": "integritynext.com",
+  "segment": "vendor",
+  "segment_reason": "Supply-chain sustainability and compliance monitoring platform.",
+  "industry": "Software",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "ISPnext"
+  ],
+  "name": "ISPnext",
+  "domain": "ispnext.com",
+  "segment": "competitor",
+  "segment_reason": "Cloud source-to-pay suite including invoice processing and purchasing modules.",
+  "industry": "Software",
+  "hq_country": "NL",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "JABIL"
+  ],
+  "name": "Jabil",
+  "domain": "jabil.com",
+  "segment": "buyer",
+  "segment_reason": "Global electronics contract manufacturer with huge PO and invoice volume; exhibited its procurement and supply-chain services arm.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "jupitos"
+  ],
+  "name": "jupitos",
+  "domain": "jupitos.com",
+  "segment": "partner",
+  "segment_reason": "Ivalua procurement-software implementation specialist, acquired by H&Z Group in 2026.",
+  "industry": "Consulting",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "KAISER+KRAFT"
+  ],
+  "name": "KAISER+KRAFT",
+  "domain": "kaiserkraft.de",
+  "segment": "buyer",
+  "segment_reason": "B2B distributor of office, warehouse and operating equipment (TAKKT group); order-heavy wholesaler.",
+  "industry": "Wholesale & distribution",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Markit"
+  ],
+  "name": "Markit",
+  "domain": "markit.eu",
+  "segment": "vendor",
+  "segment_reason": "B2B marketplace specialised in IT procurement.",
+  "industry": "Marketplace",
+  "hq_country": "EE",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Metroplan"
+  ],
+  "name": "Metroplan",
+  "domain": "metroplan.de",
+  "segment": "partner",
+  "segment_reason": "Consultancy advising on digitalisation roadmaps and eProcurement tool selection.",
+  "industry": "Consulting",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Naboo Group"
+  ],
+  "name": "Naboo",
+  "domain": "naboo.app",
+  "segment": "vendor",
+  "segment_reason": "Procurement marketplace for meetings and events (MICE) spend.",
+  "industry": "Marketplace",
+  "hq_country": "FR",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Nasher"
+  ],
+  "name": "NASHER Negotiation Institute",
+  "domain": "nasher.com",
+  "segment": "vendor",
+  "segment_reason": "Negotiation training and consulting; neither competitor nor a likely implementation partner.",
+  "industry": "Training",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Negotiation Advisory Group"
+  ],
+  "name": "Negotiation Advisory Group",
+  "domain": null,
+  "segment": "partner",
+  "segment_reason": "Boutique consultancy for strategic negotiations and procurement optimisation; possible referral partner.",
+  "industry": "Consulting",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "nemensis"
+  ],
+  "name": "nemensis",
+  "domain": "nemensis.de",
+  "segment": "vendor",
+  "segment_reason": "Freelancer brokerage and contingent-workforce services.",
+  "industry": "Staffing",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "OPUS"
+  ],
+  "name": "opus Technologies",
+  "domain": "opus-tech.ai",
+  "segment": "competitor",
+  "segment_reason": "Berlin AI-agent start-up (founded 2024) automating manual coordination in operational procurement along the order process; direct overlap.",
+  "industry": "Software",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Outerscore"
+  ],
+  "name": "Outerscore",
+  "domain": "outerscore.com",
+  "segment": "vendor",
+  "segment_reason": "Vendor-management system for skill-based hiring and contingent labour sourcing.",
+  "industry": "Software",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "party.rent"
+  ],
+  "name": "party.rent",
+  "domain": null,
+  "segment": "vendor",
+  "segment_reason": "Event and office furniture rental services.",
+  "industry": "Rental services",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Payhawk"
+  ],
+  "name": "Payhawk",
+  "domain": "payhawk.com",
+  "segment": "competitor",
+  "segment_reason": "Spend-management platform combining corporate cards, procurement and accounts payable.",
+  "industry": "Software",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Process.Science"
+  ],
+  "name": "Process.Science",
+  "domain": "process-science.com",
+  "segment": "competitor",
+  "segment_reason": "Hamburg process-mining software (Power BI and Qlik); adjacent, like Celonis.",
+  "industry": "Software",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "RAJAPACK Deutschland"
+  ],
+  "name": "RAJAPACK Deutschland",
+  "domain": "rajapack.de",
+  "segment": "buyer",
+  "segment_reason": "German arm of the RAJA group, a B2B packaging-supplies distributor; high order volume.",
+  "industry": "Wholesale & distribution",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "SapienceS2P"
+  ],
+  "name": "SapienceS2P",
+  "domain": "sapiences2p.com",
+  "segment": "partner",
+  "segment_reason": "Small SAP Ariba and S/4HANA procurement consultancy that also markets AI procurement solutions.",
+  "industry": "Consulting",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "Sedex"
+  ],
+  "name": "Sedex",
+  "domain": "sedex.com",
+  "segment": "vendor",
+  "segment_reason": "Supply-chain ESG data and audit platform.",
+  "industry": "Software",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "SpendOne"
+  ],
+  "name": "SpendOne",
+  "domain": "spendone.com",
+  "segment": "competitor",
+  "segment_reason": "German AI-agent platform automating long-tail spend from request through virtual cards to booking.",
+  "industry": "Software",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "TESISQUARE"
+  ],
+  "name": "TESISQUARE",
+  "domain": "tesisquare.com",
+  "segment": "competitor",
+  "segment_reason": "Italian supply-chain collaboration platform covering supplier order collaboration and logistics; partial overlap.",
+  "industry": "Software",
+  "hq_country": "IT",
+  "dach": false,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "valantic"
+  ],
+  "name": "valantic",
+  "domain": "valantic.com",
+  "segment": "partner",
+  "segment_reason": "Digital and SAP consultancy with a procurement and supply-chain consulting practice.",
+  "industry": "Consulting",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "XFT"
+  ],
+  "name": "XFT",
+  "domain": "xft.com",
+  "segment": "competitor",
+  "segment_reason": "Walldorf SAP add-on vendor for document and process management, including an incoming-invoice manager.",
+  "industry": "Software",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "51-200",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Zentreo"
+  ],
+  "name": "Zentreo",
+  "domain": "zentreo.ai",
+  "segment": "competitor",
+  "segment_reason": "AI platform reading technical drawings to source drawing parts; adjacent sourcing software.",
+  "industry": "Software",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "ZIP HQ"
+  ],
+  "name": "Zip",
+  "domain": "ziphq.com",
+  "segment": "competitor",
+  "segment_reason": "AI intake-to-procure orchestration platform for enterprise procurement.",
+  "industry": "Software",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ }
+]

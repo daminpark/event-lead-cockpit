@@ -1,0 +1,1198 @@
+[
+ {
+  "aliases": [
+   "Berliner Verkehrsbetriebe (BVG)"
+  ],
+  "name": "Berliner Verkehrsbetriebe (BVG)",
+  "domain": "bvg.de",
+  "segment": "buyer",
+  "segment_reason": "Berlin's publicly owned public-transport operator with large procurement and supplier-invoice volume.",
+  "industry": "Logistics & transport",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "KPMG AG Wirtschaftsprüfungsgesellschaft"
+  ],
+  "name": "KPMG (Germany)",
+  "domain": "kpmg.com",
+  "segment": "partner",
+  "segment_reason": "Big Four audit and advisory firm with finance-transformation and SAP consulting practices that could refer or implement.",
+  "industry": "Consulting",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Delvo Technology GmbH"
+  ],
+  "name": "Delvo",
+  "domain": "delvo.ai",
+  "segment": "competitor",
+  "segment_reason": "Berlin AI start-up selling procurement agents for spend, contract and negotiation preparation (procurement workflow automation).",
+  "industry": "Software",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Gerhard Schubert GmbH"
+  ],
+  "name": "Gerhard Schubert",
+  "domain": "schubert.group",
+  "segment": "buyer",
+  "segment_reason": "Family-owned packaging-machine manufacturer from Crailsheim with machine and spare-parts order flow.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Zürcher Hochschule für angewandte Wissenschaften"
+  ],
+  "name": "ZHAW Zürcher Hochschule für angewandte Wissenschaften",
+  "domain": "zhaw.ch",
+  "segment": "other",
+  "segment_reason": "Swiss university of applied sciences.",
+  "industry": "Education",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "EWM GmbH"
+  ],
+  "name": "EWM",
+  "domain": "ewm-group.com",
+  "segment": "buyer",
+  "segment_reason": "German manufacturer of arc-welding equipment selling through dealers, with purchasing and order volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Hensoldt AG"
+  ],
+  "name": "Hensoldt",
+  "domain": "hensoldt.net",
+  "segment": "buyer",
+  "segment_reason": "Listed German defence-electronics manufacturer (sensors, radar, optronics) with large supplier base.",
+  "industry": "Aerospace & defense",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "AS Creations"
+  ],
+  "name": "A.S. Création Tapeten",
+  "domain": "as-creation.com",
+  "segment": "buyer",
+  "segment_reason": "Most likely A.S. Création Tapeten AG, a German wallpaper manufacturer selling to DIY and retail chains.",
+  "industry": "Consumer goods",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Sanacorp Pharmahandel GmbH"
+  ],
+  "name": "Sanacorp Pharmahandel",
+  "domain": "sanacorp.de",
+  "segment": "buyer",
+  "segment_reason": "German pharmaceutical wholesaler supplying pharmacies, with very high order and supplier-invoice volume.",
+  "industry": "Wholesale & distribution",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Kirsch Pharma GmbH"
+  ],
+  "name": "Kirsch Pharma",
+  "domain": "kirschpharma.com",
+  "segment": "buyer",
+  "segment_reason": "Owner-managed Salzgitter company trading and supplying pharmaceutical and nutritional raw materials, with international branches.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "51-200",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Schweizerische Bundesbahnen SBB CFF FFS"
+  ],
+  "name": "SBB (Swiss Federal Railways)",
+  "domain": "sbb.ch",
+  "segment": "buyer",
+  "segment_reason": "State-owned Swiss railway operator with a large group procurement function.",
+  "industry": "Logistics & transport",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "SAP S/4HANA greenfield programme, first go-live June 2023 (SAP and ScaledAgile case studies)",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "EnviroChemie GmbH"
+  ],
+  "name": "EnviroChemie",
+  "domain": "envirochemie.com",
+  "segment": "buyer",
+  "segment_reason": "German maker of industrial water and wastewater treatment plants (Envirotec group).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "B. Braun Melsungen AG"
+  ],
+  "name": "B. Braun",
+  "domain": "bbraun.com",
+  "segment": "buyer",
+  "segment_reason": "Family-owned medical-technology and pharma manufacturer with global supply chain and order volume.",
+  "industry": "Medical technology",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "CIO interview on S/4HANA upgrade (CIO.de); SAP S/4HANA job postings",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Mibelle Group"
+  ],
+  "name": "Mibelle Group",
+  "domain": "mibellegroup.com",
+  "segment": "buyer",
+  "segment_reason": "Swiss contract manufacturer of cosmetics, personal-care and nutrition products (Migros group).",
+  "industry": "Consumer goods",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "BRAND INTERNATIONAL GMBH"
+  ],
+  "name": "BRAND Group (BRAND INTERNATIONAL)",
+  "domain": "brand-group.com",
+  "segment": "buyer",
+  "segment_reason": "Shared-services and group procurement company of the Wertheim lab-equipment maker BRAND (BRAND, VACUUBRAND, VITLAB).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Airbus Operations GmbH"
+  ],
+  "name": "Airbus",
+  "domain": "airbus.com",
+  "segment": "buyer",
+  "segment_reason": "German aircraft-production entity of Airbus, a very large manufacturer with huge procurement volume.",
+  "industry": "Aerospace & defense",
+  "hq_country": "FR",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Selected RISE with SAP on sovereign cloud (SAP news, July 2026)",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Villeroy & Boch"
+  ],
+  "name": "Villeroy & Boch",
+  "domain": "villeroy-boch.com",
+  "segment": "buyer",
+  "segment_reason": "Ceramics, bathroom and tableware manufacturer selling through retail and wholesale channels.",
+  "industry": "Consumer goods",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Universität Mannheim"
+  ],
+  "name": "Universität Mannheim",
+  "domain": "uni-mannheim.de",
+  "segment": "other",
+  "segment_reason": "Public university.",
+  "industry": "Education",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Körber AG"
+  ],
+  "name": "Körber",
+  "domain": "koerber.com",
+  "segment": "buyer",
+  "segment_reason": "Hamburg industrial technology group (pharma packaging, tissue, supply-chain systems) with large purchasing volume; also sells supply-chain software, not order automation.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "CEWE Stiftung & Co. KGaA"
+  ],
+  "name": "CEWE",
+  "domain": "cewe.de",
+  "segment": "buyer",
+  "segment_reason": "Listed photo-products and online-printing manufacturer selling direct and through retail partners.",
+  "industry": "Consumer goods",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "ZF Friedrichshafen AG"
+  ],
+  "name": "ZF Friedrichshafen",
+  "domain": "zf.com",
+  "segment": "buyer",
+  "segment_reason": "Global automotive supplier with very high procurement and order volume.",
+  "industry": "Automotive",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "S/4HANA decision announced 2017; S/4HANA on RISE carve-out reported Oct 2026 (e3mag)",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "ALDI Nord Group"
+  ],
+  "name": "ALDI Nord",
+  "domain": "aldi-nord.de",
+  "segment": "buyer",
+  "segment_reason": "Discount grocery retailer with very high supplier order and invoice volume.",
+  "industry": "Retail",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Menck GmbH"
+  ],
+  "name": "MENCK",
+  "domain": "menck.com",
+  "segment": "buyer",
+  "segment_reason": "Kaltenkirchen maker of hydraulic offshore pile-driving hammers (Acteon group).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "51-200",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Ypsomed AG"
+  ],
+  "name": "Ypsomed",
+  "domain": "ypsomed.com",
+  "segment": "buyer",
+  "segment_reason": "Swiss manufacturer of injection pens and diabetes-care devices.",
+  "industry": "Medical technology",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Nestlé Deutschland AG",
+   "Nestlé"
+  ],
+  "name": "Nestlé",
+  "domain": "nestle.com",
+  "segment": "buyer",
+  "segment_reason": "World's largest food and beverage company; German subsidiary seen at BME.",
+  "industry": "Food & beverage",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Long-running SAP-based GLOBE programme (widely published)",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "QIAGEN GmbH"
+  ],
+  "name": "QIAGEN",
+  "domain": "qiagen.com",
+  "segment": "buyer",
+  "segment_reason": "Life-science and molecular-diagnostics manufacturer; QIAGEN GmbH is the Hilden operating company.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Apollo Tyres Ltd"
+  ],
+  "name": "Apollo Tyres",
+  "domain": "apollotyres.com",
+  "segment": "buyer",
+  "segment_reason": "Indian tyre manufacturer with European operations (Vredestein).",
+  "industry": "Automotive",
+  "hq_country": "IN",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "BÜFA-Group"
+  ],
+  "name": "BÜFA Group",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Oldenburg family-owned chemicals group (composites, cleaning chemicals, chemical trading).",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Siemens AG",
+   "Siemens"
+  ],
+  "name": "Siemens",
+  "domain": "siemens.com",
+  "segment": "buyer",
+  "segment_reason": "Global industrial technology manufacturer with very large procurement and order volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Long-standing, widely documented SAP customer",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Vogelsang GmbH & Co. KG"
+  ],
+  "name": "Vogelsang",
+  "domain": "vogelsang.info",
+  "segment": "buyer",
+  "segment_reason": "Family-owned maker of pumps and machinery for agriculture, biogas and industry.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "thyssenkrupp AG, Business Segment Automotive Technology"
+  ],
+  "name": "thyssenkrupp Automotive Technology",
+  "domain": "thyssenkrupp.com",
+  "segment": "buyer",
+  "segment_reason": "Automotive components segment of the thyssenkrupp group (steering, dampers, camshafts, plant engineering).",
+  "industry": "Automotive",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "DPD"
+  ],
+  "name": "DPD",
+  "domain": "dpd.com",
+  "segment": "buyer",
+  "segment_reason": "Parcel delivery network of La Poste's Geopost; national entity not stated on the page.",
+  "industry": "Logistics & transport",
+  "hq_country": "FR",
+  "dach": null,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Alfred Ritter GmbH & Co. KG"
+  ],
+  "name": "Ritter Sport (Alfred Ritter)",
+  "domain": "ritter-sport.com",
+  "segment": "buyer",
+  "segment_reason": "Family-owned chocolate manufacturer selling to food retail.",
+  "industry": "Food & beverage",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Citadel FlexPower"
+  ],
+  "name": "FlexPower (a Citadel company)",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Small Hamburg power trader for renewables and batteries, acquired by Citadel in 2025; weak fit (little order or invoice volume).",
+  "industry": "Energy & utilities",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "51-200",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Franke Home Solutions"
+  ],
+  "name": "Franke Home Solutions",
+  "domain": "franke.com",
+  "segment": "buyer",
+  "segment_reason": "Kitchen sinks, taps and hoods division of the Swiss Franke Group.",
+  "industry": "Consumer goods",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "BME Marketing GmbH"
+  ],
+  "name": "BME Marketing GmbH",
+  "domain": "bme.de",
+  "segment": "other",
+  "segment_reason": "Events and marketing subsidiary of the German procurement association BME e.V. (event organiser).",
+  "industry": "Association & events",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Tacto"
+  ],
+  "name": "Tacto",
+  "domain": "tacto.ai",
+  "segment": "competitor",
+  "segment_reason": "Munich AI procurement software for mid-sized manufacturers.",
+  "industry": "Software",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "51-200",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "RasenBallsport Leipzig GmbH"
+  ],
+  "name": "RB Leipzig",
+  "domain": "rbleipzig.com",
+  "segment": "buyer",
+  "segment_reason": "Professional football club operating company; weak fit for order automation.",
+  "industry": "Sports & entertainment",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Elia Group"
+  ],
+  "name": "Elia Group",
+  "domain": "eliagroup.eu",
+  "segment": "buyer",
+  "segment_reason": "Electricity transmission system operator in Belgium and, via 50Hertz, eastern Germany, with large capex procurement.",
+  "industry": "Energy & utilities",
+  "hq_country": "BE",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "BSH Hausgeräte GmbH"
+  ],
+  "name": "BSH Hausgeräte",
+  "domain": "bsh-group.com",
+  "segment": "buyer",
+  "segment_reason": "Bosch-owned home-appliance manufacturer with high retail order and supplier volume.",
+  "industry": "Consumer goods",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Company-wide move to SAP S/4HANA (SAP News; 2022 WHU interview)",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "KRONES AG",
+   "Krones AG"
+  ],
+  "name": "Krones",
+  "domain": "krones.com",
+  "segment": "buyer",
+  "segment_reason": "Beverage filling and packaging machine manufacturer with large spare-parts and service order flow.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Upgrade to SAP S/4HANA completed 2025 (Krones notice; e3mag)",
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "DZ HYP AG",
+   "DZ HYP"
+  ],
+  "name": "DZ HYP",
+  "domain": "dzhyp.de",
+  "segment": "buyer",
+  "segment_reason": "Mortgage bank of the DZ BANK cooperative group; indirect procurement and invoices only, weak fit.",
+  "industry": "Financial services",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "AutoScout24"
+  ],
+  "name": "AutoScout24",
+  "domain": "autoscout24.com",
+  "segment": "vendor",
+  "segment_reason": "Online car marketplace (tech platform) rather than a goods-flow business.",
+  "industry": "Online marketplace",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Merck KGaA Darmstadt"
+  ],
+  "name": "Merck KGaA",
+  "domain": "merckgroup.com",
+  "segment": "buyer",
+  "segment_reason": "Darmstadt science and technology group (healthcare, life science, electronics).",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "RISE with SAP / S/4HANA Cloud partnership announced Feb 2023",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Atreus"
+  ],
+  "name": "Atreus",
+  "domain": "atreus.de",
+  "segment": "partner",
+  "segment_reason": "Munich interim-management and consulting firm placing operations, supply-chain and procurement leaders; possible referral partner.",
+  "industry": "Consulting",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "EnablerMinds",
+   "EnablerMinds GmbH"
+  ],
+  "name": "EnablerMinds",
+  "domain": "enablerminds.com",
+  "segment": "partner",
+  "segment_reason": "German data and AI consultancy and integrator for manufacturing and supply-chain clients (ERP, MES, WMS integration).",
+  "industry": "IT services",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Former Philip Morris International and Chemours | IMD Executive MBA Candidate"
+  ],
+  "name": "Individual (former Philip Morris International / Chemours)",
+  "domain": null,
+  "segment": "other",
+  "segment_reason": "Individual speaker without a current employer.",
+  "industry": "unknown",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Danone"
+  ],
+  "name": "Danone",
+  "domain": "danone.com",
+  "segment": "buyer",
+  "segment_reason": "Global dairy, plant-based and waters food company.",
+  "industry": "Food & beverage",
+  "hq_country": "FR",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Danone Argentina on SAP S/4HANA via RISE with SAP (SAP News 2023-24); group-wide status not verified",
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Allied Vehicles Group"
+  ],
+  "name": "Allied Vehicles Group",
+  "domain": "allied-vehicles.co.uk",
+  "segment": "buyer",
+  "segment_reason": "Glasgow vehicle converter and manufacturer (wheelchair-accessible vehicles, taxis).",
+  "industry": "Automotive",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Sika CZ"
+  ],
+  "name": "Sika",
+  "domain": "sika.com",
+  "segment": "buyer",
+  "segment_reason": "Czech unit of the Swiss construction-chemicals group Sika.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Electrolux Group"
+  ],
+  "name": "Electrolux Group",
+  "domain": "electroluxgroup.com",
+  "segment": "buyer",
+  "segment_reason": "Swedish home-appliance manufacturer.",
+  "industry": "Consumer goods",
+  "hq_country": "SE",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Cloetta"
+  ],
+  "name": "Cloetta",
+  "domain": "cloetta.com",
+  "segment": "buyer",
+  "segment_reason": "Swedish confectionery manufacturer.",
+  "industry": "Food & beverage",
+  "hq_country": "SE",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Straumann Group"
+  ],
+  "name": "Straumann Group",
+  "domain": "straumann.com",
+  "segment": "buyer",
+  "segment_reason": "Basel dental-implant and orthodontics manufacturer.",
+  "industry": "Medical technology",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Location Decisions"
+  ],
+  "name": "Location Decisions",
+  "domain": "location-decisions.com",
+  "segment": "vendor",
+  "segment_reason": "Berlin corporate location and site-selection advisory firm; service vendor, not an implementation or referral fit.",
+  "industry": "Consulting",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Nexteer Automotive"
+  ],
+  "name": "Nexteer Automotive",
+  "domain": "nexteer.com",
+  "segment": "buyer",
+  "segment_reason": "Steering and driveline systems supplier headquartered in Michigan.",
+  "industry": "Automotive",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Alstom"
+  ],
+  "name": "Alstom",
+  "domain": "alstom.com",
+  "segment": "buyer",
+  "segment_reason": "French rolling-stock and rail-signalling manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "FR",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Festo"
+  ],
+  "name": "Festo",
+  "domain": "festo.com",
+  "segment": "buyer",
+  "segment_reason": "Family-owned automation-technology manufacturer with high catalogue order volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Philip Morris International"
+  ],
+  "name": "Philip Morris International",
+  "domain": "pmi.com",
+  "segment": "buyer",
+  "segment_reason": "Global tobacco and smoke-free products manufacturer.",
+  "industry": "Consumer goods",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Shotton Mill"
+  ],
+  "name": "Shotton Mill",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Paper mill in Flintshire, Wales, being redeveloped by Eren into a recycled containerboard and tissue plant.",
+  "industry": "Paper & packaging",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "51-200",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Rotkäppchen-Mumm Sektkellereien"
+  ],
+  "name": "Rotkäppchen-Mumm",
+  "domain": "rotkaeppchen-mumm.de",
+  "segment": "buyer",
+  "segment_reason": "German sparkling-wine and spirits producer selling to food retail.",
+  "industry": "Food & beverage",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Accell Group"
+  ],
+  "name": "Accell Group",
+  "domain": "accell-group.com",
+  "segment": "buyer",
+  "segment_reason": "Dutch bicycle and e-bike manufacturer (Batavus, Haibike, Raleigh) selling through dealers.",
+  "industry": "Consumer goods",
+  "hq_country": "NL",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Henkel"
+  ],
+  "name": "Henkel",
+  "domain": "henkel.com",
+  "segment": "buyer",
+  "segment_reason": "Düsseldorf adhesives and consumer-brands manufacturer.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Move to SAP S/4HANA via RISE with SAP announced Apr 2023",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Boston Consulting Group (BCG)"
+  ],
+  "name": "Boston Consulting Group (BCG)",
+  "domain": "bcg.com",
+  "segment": "partner",
+  "segment_reason": "Strategy consultancy with operations, procurement and supply-chain practices that could refer.",
+  "industry": "Consulting",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "ABB"
+  ],
+  "name": "ABB",
+  "domain": "abb.com",
+  "segment": "buyer",
+  "segment_reason": "Swiss-Swedish electrification and automation manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Published SAP ERP consolidation programmes; SAP S/4HANA finance roles",
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Eurofighter GmbH"
+  ],
+  "name": "Eurofighter",
+  "domain": "eurofighter.com",
+  "segment": "buyer",
+  "segment_reason": "Programme management company of the Eurofighter Typhoon consortium (Airbus, BAE Systems, Leonardo).",
+  "industry": "Aerospace & defense",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Diageo"
+  ],
+  "name": "Diageo",
+  "domain": "diageo.com",
+  "segment": "buyer",
+  "segment_reason": "London-based spirits and beer producer.",
+  "industry": "Food & beverage",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "RISE with SAP S/4HANA programme with IBM Consulting (Project Voyager, Bain case study)",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Stellantis"
+  ],
+  "name": "Stellantis",
+  "domain": "stellantis.com",
+  "segment": "buyer",
+  "segment_reason": "Global car manufacturer (Peugeot, Fiat, Opel, Jeep).",
+  "industry": "Automotive",
+  "hq_country": "NL",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Pirelli Tyre (Suisse)SA"
+  ],
+  "name": "Pirelli",
+  "domain": "pirelli.com",
+  "segment": "buyer",
+  "segment_reason": "Swiss subsidiary of the Italian tyre manufacturer Pirelli.",
+  "industry": "Automotive",
+  "hq_country": "IT",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Coca-Cola HBC"
+  ],
+  "name": "Coca-Cola HBC",
+  "domain": "coca-colahellenic.com",
+  "segment": "buyer",
+  "segment_reason": "Coca-Cola bottler for 29 markets, headquartered in Switzerland.",
+  "industry": "Food & beverage",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Group CIO: all ERP and CRM systems on SAP across 28 countries (2019 interview)",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Intel",
+   "Intel Germany"
+  ],
+  "name": "Intel",
+  "domain": "intel.com",
+  "segment": "buyer",
+  "segment_reason": "US semiconductor manufacturer; German subsidiary also seen.",
+  "industry": "Semiconductors",
+  "hq_country": "US",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Intel job postings for its SAP S/4HANA transformation",
+  "existing_customer": false,
+  "confidence": "medium"
+ }
+]

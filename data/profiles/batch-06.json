@@ -1,0 +1,1192 @@
+[
+ {
+  "aliases": [
+   "Druseidt, Paul"
+  ],
+  "name": "Paul Druseidt",
+  "domain": "druseidt.de",
+  "segment": "buyer",
+  "segment_reason": "Remscheid family manufacturer of electrical connection technology (busbars, flexible connectors).",
+  "industry": "Electrical equipment",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "ebm-papst Mulfingen"
+  ],
+  "name": "ebm-papst",
+  "domain": "ebmpapst.com",
+  "segment": "buyer",
+  "segment_reason": "Headquarters entity of the ebm-papst group, a large manufacturer of fans and motors; band is group-level.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "EHRT - Maschinenbau"
+  ],
+  "name": "EHRT Maschinenbau",
+  "domain": "ehrt.de",
+  "segment": "buyer",
+  "segment_reason": "Builds punching and bending machines for copper, aluminium and steel bars; listed as 'Rittal Automation Systems' (Friedhelm Loh Group).",
+  "industry": "Machinery",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Eloxalwerk Ludwigsburg"
+  ],
+  "name": "Eloxalwerk Ludwigsburg",
+  "domain": "ceranod.de",
+  "segment": "buyer",
+  "segment_reason": "Surface-treatment (anodising) provider for lightweight metal components; operating industrial business.",
+  "industry": "Metal surface treatment",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Endress+Hauser Process Solutions"
+  ],
+  "name": "Endress+Hauser Process Solutions",
+  "domain": "endress.com",
+  "segment": "buyer",
+  "segment_reason": "Swiss unit of the Endress+Hauser group, a large process-instrumentation manufacturer; band is group-level.",
+  "industry": "Measurement & automation",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "erfi Ernst Fischer"
+  ],
+  "name": "erfi Ernst Fischer",
+  "domain": "erfi.de",
+  "segment": "buyer",
+  "segment_reason": "Freudenstadt manufacturer of technical workstation systems and test/measuring equipment.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Erhardt + Leimer"
+  ],
+  "name": "Erhardt+Leimer",
+  "domain": "erhardt-leimer.com",
+  "segment": "buyer",
+  "segment_reason": "Augsburg-based group making web guiding and inspection systems for industrial production lines.",
+  "industry": "Machinery",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "EUCHNER"
+  ],
+  "name": "EUCHNER",
+  "domain": "euchner.com",
+  "segment": "buyer",
+  "segment_reason": "Family-owned manufacturer of industrial safety switches and safety technology.",
+  "industry": "Industrial automation components",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Faulhaber, Dr. Fritz"
+  ],
+  "name": "FAULHABER",
+  "domain": "faulhaber.com",
+  "segment": "buyer",
+  "segment_reason": "Manufacturer of precision micro drive systems.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Ganter, Otto"
+  ],
+  "name": "Otto Ganter (GANTER)",
+  "domain": "ganternorm.com",
+  "segment": "buyer",
+  "segment_reason": "Furtwangen manufacturer of standard machine parts sold through a catalogue to industrial customers.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Gebr. Kunz"
+  ],
+  "name": "Gebr. Kunz",
+  "domain": "kunz-starkstrom.de",
+  "segment": "buyer",
+  "segment_reason": "Maxdorf company in heavy-current (Starkstrom) electrical engineering, family business since 1922.",
+  "industry": "Electrical equipment",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "GMK electronic design"
+  ],
+  "name": "GMK electronic design",
+  "domain": "gmk-electronic-design.de",
+  "segment": "buyer",
+  "segment_reason": "Builds customised industrial control panels and HMI hardware for OEMs.",
+  "industry": "Electronics manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Graebener"
+  ],
+  "name": "Gräbener Maschinentechnik",
+  "domain": "graebener.com",
+  "segment": "buyer",
+  "segment_reason": "Netphen machine builder developing manufacturing processes and machines (incl. bipolar plates for hydrogen).",
+  "industry": "Machinery",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Greenwood-Power"
+  ],
+  "name": "Greenwood-Power",
+  "domain": "greenwood-power.com",
+  "segment": "buyer",
+  "segment_reason": "Austrian maker of non-conventional instrument transformers (sensors), founded 2017; small.",
+  "industry": "Electrical equipment",
+  "hq_country": "AT",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Gummifabrik Lubeca - Mecklenburg"
+  ],
+  "name": "Gummifabrik Lubeca",
+  "domain": "gummifabrik-lubeca.de",
+  "segment": "buyer",
+  "segment_reason": "Manufacturer of technical rubber and silicone moulded parts since 1976.",
+  "industry": "Plastics & rubber parts",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "HELU KABEL"
+  ],
+  "name": "HELUKABEL",
+  "domain": "helukabel.com",
+  "segment": "buyer",
+  "segment_reason": "Large manufacturer and supplier of cables, wires and connection technology (HELU Group).",
+  "industry": "Cables & connectors",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Herpertz Präzision B. Herpertz"
+  ],
+  "name": "Herpertz Präzision",
+  "domain": "herpertz.de",
+  "segment": "buyer",
+  "segment_reason": "Düren precision engineering firm (toolmaking and precision parts).",
+  "industry": "Metal parts manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "hesco Kunststoffverarbeitung GmbH"
+  ],
+  "name": "hesco Kunststoffverarbeitung",
+  "domain": "hesco.de",
+  "segment": "buyer",
+  "segment_reason": "Family-owned plastics processor in Luckenwalde.",
+  "industry": "Plastics & rubber parts",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Hippe, Erhard"
+  ],
+  "name": "Erhard Hippe",
+  "domain": "hippe.de",
+  "segment": "buyer",
+  "segment_reason": "Hildesheim producer of engineering plastics semi-finished and machined parts.",
+  "industry": "Plastics & rubber parts",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "icotek"
+  ],
+  "name": "icotek",
+  "domain": "icotek.com",
+  "segment": "buyer",
+  "segment_reason": "Manufacturer of cable entry and cable management systems for machinery.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Indu-Sol"
+  ],
+  "name": "Indu-Sol",
+  "domain": "indu-sol.com",
+  "segment": "buyer",
+  "segment_reason": "Makes diagnostic hardware/software for industrial networks (e.g. PROFINET); small manufacturer.",
+  "industry": "Industrial automation components",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "51-200",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "JOKARI"
+  ],
+  "name": "JOKARI",
+  "domain": "jokari.de",
+  "segment": "buyer",
+  "segment_reason": "Producer of cable stripping and de-insulating tools.",
+  "industry": "Tools manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "KNESTEL Technologie & Elektronik"
+  ],
+  "name": "KNESTEL Technologie & Elektronik",
+  "domain": "knestel.de",
+  "segment": "buyer",
+  "segment_reason": "Develops custom electronic and power-electronics systems for industrial applications.",
+  "industry": "Electronics manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Koch, Michael"
+  ],
+  "name": "Michael Koch",
+  "domain": "bremsenergie.de",
+  "segment": "buyer",
+  "segment_reason": "Manufacturer of braking resistors and energy management systems for electric drives.",
+  "industry": "Electrical equipment",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "KSG"
+  ],
+  "name": "KSG",
+  "domain": "ksg-pcb.com",
+  "segment": "buyer",
+  "segment_reason": "Printed circuit board manufacturer in Gornsdorf (prototype to series).",
+  "industry": "Electronics manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Kähler Metallbau und Umwelttechnik"
+  ],
+  "name": "Kähler Metallbau und Umwelttechnik",
+  "domain": "metallbau-umwelttechnik.de",
+  "segment": "buyer",
+  "segment_reason": "Small CNC metal construction and environmental technology firm in Bobzin.",
+  "industry": "Metal parts manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Lacher, Erich Präzisionsteile"
+  ],
+  "name": "Erich Lacher Präzisionsteile",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Pforzheim maker of precision turned parts, gear components and worm gears.",
+  "industry": "Metal parts manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Laufenberg"
+  ],
+  "name": "Laufenberg",
+  "domain": "laufenberg.info",
+  "segment": "buyer",
+  "segment_reason": "Krefeld producer of coated films/release liners; also catalyst-coated membranes and gaskets for hydrogen.",
+  "industry": "Coated materials",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Leicher Engineering"
+  ],
+  "name": "Leicher Engineering",
+  "domain": "leicher-engineering.de",
+  "segment": "buyer",
+  "segment_reason": "Medium-sized supplier of technical components and multi-part assemblies.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "LEMO Elektronik"
+  ],
+  "name": "LEMO Elektronik",
+  "domain": "lemo.com",
+  "segment": "buyer",
+  "segment_reason": "German subsidiary of Swiss LEMO, a maker of push-pull connectors and cable assemblies; band is group-level.",
+  "industry": "Cables & connectors",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "LTB Lasertechnik Berlin"
+  ],
+  "name": "LTB Lasertechnik Berlin",
+  "domain": "ltb-berlin.de",
+  "segment": "buyer",
+  "segment_reason": "Develops and makes UV lasers, spectrometers and laser-based analysers.",
+  "industry": "Photonics & instruments",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Magnet-Schultz"
+  ],
+  "name": "Magnet-Schultz",
+  "domain": "magnet-schultz.com",
+  "segment": "buyer",
+  "segment_reason": "Memmingen manufacturer of electromagnetic actuators, sensors and valves.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Maschinenfabrik Mönninghoff"
+  ],
+  "name": "Maschinenfabrik Mönninghoff",
+  "domain": "moenninghoff.de",
+  "segment": "buyer",
+  "segment_reason": "Bochum maker of high-precision drive elements (clutches, couplings, brakes).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "maxon international"
+  ],
+  "name": "maxon",
+  "domain": "maxongroup.com",
+  "segment": "buyer",
+  "segment_reason": "Swiss manufacturer of precision electric drives (maxon group).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "MeliCon"
+  ],
+  "name": "MeliCon",
+  "domain": "melicon.de",
+  "segment": "buyer",
+  "segment_reason": "Hückelhoven engineering and production of metallic lightweight components.",
+  "industry": "Metal parts manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Meyer Industrie-Electronic"
+  ],
+  "name": "Meyer Industrie-Electronic (MEYLE)",
+  "domain": "meyle.de",
+  "segment": "buyer",
+  "segment_reason": "Manufacturer and distributor of automation and process-control systems and components.",
+  "industry": "Industrial automation components",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "MICRO-EPSILON Messtechnik"
+  ],
+  "name": "MICRO-EPSILON",
+  "domain": "micro-epsilon.com",
+  "segment": "buyer",
+  "segment_reason": "Manufacturer of precision sensors and measuring systems.",
+  "industry": "Sensors & measurement",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "MKT Metall- und Kunststoffverarbeitung"
+  ],
+  "name": "MKT Metall- und Kunststoffverarbeitung",
+  "domain": "mktnet.de",
+  "segment": "buyer",
+  "segment_reason": "Contract machining of thermoset and thermoplastic parts to customer drawings.",
+  "industry": "Plastics & rubber parts",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Müller Industrie-Elektronik"
+  ],
+  "name": "Müller Industrie-Elektronik",
+  "domain": "mueller-ie.com",
+  "segment": "buyer",
+  "segment_reason": "Makes measuring instruments, sensors and digital displays; not related to customer Müller - Die lila Logistik.",
+  "industry": "Sensors & measurement",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Mütec Instruments"
+  ],
+  "name": "MÜTEC Instruments",
+  "domain": "muetec.de",
+  "segment": "buyer",
+  "segment_reason": "Maker of SIL2 transmitters and signal-conditioning instruments.",
+  "industry": "Sensors & measurement",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Nidec DESCH Antriebstechik"
+  ],
+  "name": "Nidec DESCH Antriebstechnik",
+  "domain": "desch.com",
+  "segment": "buyer",
+  "segment_reason": "Arnsberg maker of special drive systems, owned by Nidec; band reflects DESCH, not the Nidec group.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Oesterle GmbH"
+  ],
+  "name": "Oesterle",
+  "domain": "oesterle-gmbh.com",
+  "segment": "buyer",
+  "segment_reason": "Manufactures moulded/cast parts from metal or plastic.",
+  "industry": "Metal parts manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Optris"
+  ],
+  "name": "Optris",
+  "domain": "optris.com",
+  "segment": "buyer",
+  "segment_reason": "Berlin manufacturer of non-contact (infrared) temperature measurement devices.",
+  "industry": "Sensors & measurement",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Pepperl+Fuchs"
+  ],
+  "name": "Pepperl+Fuchs",
+  "domain": "pepperl-fuchs.com",
+  "segment": "buyer",
+  "segment_reason": "Large manufacturer of industrial sensors and explosion-protection equipment.",
+  "industry": "Industrial automation components",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Pilz"
+  ],
+  "name": "Pilz",
+  "domain": "pilz.com",
+  "segment": "buyer",
+  "segment_reason": "Family-owned manufacturer of safe automation products and systems.",
+  "industry": "Industrial automation components",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "PROTEC THE CAP COMPANY"
+  ],
+  "name": "PROTEC The Cap Company",
+  "domain": "protec.de",
+  "segment": "buyer",
+  "segment_reason": "Manufactures protective and masking caps, plugs and cable glands.",
+  "industry": "Plastics & rubber parts",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Rohde & Schwarz"
+  ],
+  "name": "Rohde & Schwarz",
+  "domain": "rohde-schwarz.com",
+  "segment": "buyer",
+  "segment_reason": "Large technology group making test & measurement, communications and security equipment.",
+  "industry": "Electronics manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Rosenberger Hochfrequenztechnik"
+  ],
+  "name": "Rosenberger",
+  "domain": "rosenberger.com",
+  "segment": "buyer",
+  "segment_reason": "Connector and electronic components manufacturer with over 15,500 employees (per listing).",
+  "industry": "Cables & connectors",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Schwer Fittings"
+  ],
+  "name": "Schwer Fittings",
+  "domain": "schwer.com",
+  "segment": "buyer",
+  "segment_reason": "Stainless-steel pipe fittings manufacturer with several European plants.",
+  "industry": "Metal parts manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Sedlmayer"
+  ],
+  "name": "Sedlmayer",
+  "domain": "sedlmayergmbh.de",
+  "segment": "buyer",
+  "segment_reason": "Medium-sized module supplier to the automotive industry, based in Triptis.",
+  "industry": "Automotive",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "SEHO Systems"
+  ],
+  "name": "SEHO Systems",
+  "domain": "seho.de",
+  "segment": "buyer",
+  "segment_reason": "Manufacturer of soldering systems and automated production lines.",
+  "industry": "Machinery",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "SEINE Batteriesysteme"
+  ],
+  "name": "SEINE Batteriesysteme (Albert Seine GmbH)",
+  "domain": "seine-batterien.de",
+  "segment": "buyer",
+  "segment_reason": "Designs and supplies industrial battery systems.",
+  "industry": "Electrical equipment",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Severt Maschinenbau"
+  ],
+  "name": "Severt Maschinenbau",
+  "domain": "severt.de",
+  "segment": "buyer",
+  "segment_reason": "Contract manufacturer of large welded assemblies.",
+  "industry": "Metal parts manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "SIBA"
+  ],
+  "name": "SIBA",
+  "domain": "siba.de",
+  "segment": "buyer",
+  "segment_reason": "Lünen manufacturer of fuse links from miniature to high voltage.",
+  "industry": "Electrical equipment",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Stierli-Bieger"
+  ],
+  "name": "Stierli-Bieger",
+  "domain": "stierli-bieger.com",
+  "segment": "buyer",
+  "segment_reason": "Swiss maker of manual, NC and CNC bending machines for copper bars.",
+  "industry": "Machinery",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Studer Cables"
+  ],
+  "name": "Studer Cables",
+  "domain": "studercables.com",
+  "segment": "buyer",
+  "segment_reason": "Swiss manufacturer of energy and data cables.",
+  "industry": "Cables & connectors",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "SUR Laser- und Metalltechnik"
+  ],
+  "name": "SUR Laser- und Metalltechnik",
+  "domain": "sur-lasertechnik.de",
+  "segment": "buyer",
+  "segment_reason": "Rostock laser cutting and metal processing firm.",
+  "industry": "Metal parts manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "TALLAG Saalfeld"
+  ],
+  "name": "TALLAG Saalfeld",
+  "domain": "samag.de",
+  "segment": "buyer",
+  "segment_reason": "Sheet metal, tube and profile processing in Saalfeld; website points to the SAMAG group.",
+  "industry": "Metal parts manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "TGW Technische Gummi-Walzen"
+  ],
+  "name": "TGW Technische Gummi-Walzen",
+  "domain": "typ-tgw.com",
+  "segment": "buyer",
+  "segment_reason": "Makes technical rubber/PU/silicone rollers; German sister of Swiss TYP AG (not TGW Logistics).",
+  "industry": "Plastics & rubber parts",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "TriOS Mess- und Datentechnik"
+  ],
+  "name": "TriOS Mess- und Datentechnik",
+  "domain": "trios.de",
+  "segment": "buyer",
+  "segment_reason": "Manufacturer of spectral/optical sensors for water monitoring.",
+  "industry": "Sensors & measurement",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "TYP"
+  ],
+  "name": "TYP",
+  "domain": "typ-tgw.com",
+  "segment": "buyer",
+  "segment_reason": "Swiss maker of technical rubber/PU/silicone rollers (TYP AG, Bellach); sister of TGW Technische Gummi-Walzen.",
+  "industry": "Plastics & rubber parts",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Veinland"
+  ],
+  "name": "Veinland",
+  "domain": "veinland.net",
+  "segment": "buyer",
+  "segment_reason": "Develops and produces hardware and software for special industrial and maritime applications.",
+  "industry": "Electronics manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Viscom"
+  ],
+  "name": "Viscom",
+  "domain": "viscom.com",
+  "segment": "buyer",
+  "segment_reason": "Listed Hanover maker of automated optical and X-ray inspection systems.",
+  "industry": "Machinery",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "WAIDELICH-mechanik"
+  ],
+  "name": "WAIDELICH-mechanik",
+  "domain": "waidelich-mechanik.de",
+  "segment": "buyer",
+  "segment_reason": "Contract manufacturer of components and small assemblies, founded 1927.",
+  "industry": "Metal parts manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Weidmüller Interface"
+  ],
+  "name": "Weidmüller",
+  "domain": "weidmueller.com",
+  "segment": "buyer",
+  "segment_reason": "Large manufacturer of industrial connectivity and electrical connection technology.",
+  "industry": "Industrial automation components",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Weiß & Weber"
+  ],
+  "name": "Weiß & Weber",
+  "domain": "weiss-weber.com",
+  "segment": "buyer",
+  "segment_reason": "Exhibitor in the metal parts category; listing gives no description.",
+  "industry": "Metal parts manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "Wevo-Chemie"
+  ],
+  "name": "Wevo-Chemie",
+  "domain": "wevo-chemie.de",
+  "segment": "buyer",
+  "segment_reason": "Family-owned producer of casting compounds, adhesives and sealants.",
+  "industry": "Chemicals",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "WIKA Alexander Wiegand"
+  ],
+  "name": "WIKA",
+  "domain": "wika.com",
+  "segment": "buyer",
+  "segment_reason": "Large manufacturer of pressure, temperature and level measurement instruments (WIKA Group).",
+  "industry": "Sensors & measurement",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Wätas Wärmetauscher Sachsen"
+  ],
+  "name": "WätaS Wärmetauscher Sachsen",
+  "domain": "waetas.de",
+  "segment": "buyer",
+  "segment_reason": "Designs and produces finned heat exchangers.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Wöhner Elektrotechnische Systeme"
+  ],
+  "name": "Wöhner",
+  "domain": "woehner.de",
+  "segment": "buyer",
+  "segment_reason": "Rödental manufacturer of busbar systems and components for power distribution and control.",
+  "industry": "Electrical equipment",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ }
+]

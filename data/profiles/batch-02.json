@@ -1,0 +1,351 @@
+[
+  {"aliases": ["Schoen - Verhandlungsinstitut"], "name": "Schoen – Verhandlungsinstitut", "domain": "schoen-negotiation.com",
+   "segment": "partner", "segment_reason": "Boutique procurement negotiation and cost-engineering consultancy/trainer; referral potential at most.",
+   "industry": "Consulting", "hq_country": null, "dach": null, "employees_band": "1-50",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "low"},
+
+  {"aliases": ["SCHUFA Holding AG"], "name": "SCHUFA", "domain": "schufa.de",
+   "segment": "vendor", "segment_reason": "Credit and company-data provider selling risk, compliance and KYC checks to procurement; no order or invoice automation.",
+   "industry": "Financial services", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Semigator Enterprise"], "name": "Semigator (Haufe Group)", "domain": "semigator.de",
+   "segment": "vendor", "segment_reason": "Training and coaching marketplace with a punch-out catalogue for buying further education; a supplier to procurement, not an automation tool.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Slimstock GmbH", "Slimstock"], "name": "Slimstock", "domain": "slimstock.com",
+   "segment": "vendor", "segment_reason": "Inventory and demand-planning software (Slim4); adjacent supply-chain tech that does not process orders or invoices.",
+   "industry": "Software", "hq_country": "NL", "dach": false, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["SPIRIT Slovenia Business Development Agency"], "name": "SPIRIT Slovenia Business Development Agency", "domain": "spiritslovenia.si",
+   "segment": "other", "segment_reason": "Slovenian government business-development and investment agency.",
+   "industry": "Public sector", "hq_country": "SI", "dach": false, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Solvesall Labs d.o.o."], "name": "Solvesall Labs", "domain": "solvesall.com",
+   "segment": "vendor", "segment_reason": "Ljubljana software house building AI, IoT and mobility/logistics systems; not in order or invoice automation.",
+   "industry": "Software", "hq_country": "SI", "dach": false, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Sourcevise"], "name": "Sourcevise", "domain": "sourcevise.com",
+   "segment": "competitor", "segment_reason": "AI sourcing platform that finds and qualifies suppliers and collects quotes automatically; automates a procurement workflow.",
+   "industry": "Software", "hq_country": null, "dach": null, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["SupplyOn GmbH"], "name": "SupplyOn", "domain": "supplyon.com",
+   "segment": "competitor", "segment_reason": "Supplier-collaboration network for manufacturers covering purchase-order and order-confirmation exchange; overlaps the order flow Autopilot automates.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Tanso Technologies GmbH"], "name": "Tanso", "domain": "tanso.de",
+   "segment": "vendor", "segment_reason": "Carbon-accounting and ESG software for industrial Mittelstand; unrelated to order or invoice processing.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Tehmetal d.o.o."], "name": "Tehmetal", "domain": "tehmetal.com",
+   "segment": "buyer", "segment_reason": "Precision CNC machining manufacturer exhibiting as a supplier; likely too small for meaningful order volume.",
+   "industry": "Industrial manufacturing", "hq_country": null, "dach": false, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Tesi Deutschland GmbH"], "name": "TESISQUARE", "domain": "tesisquare.com",
+   "segment": "competitor", "segment_reason": "Source-to-pay and supplier-collaboration platform (orders, supplier integration, transport); lists bofrost as a customer.",
+   "industry": "Software", "hq_country": "IT", "dach": false, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Trustpair"], "name": "Trustpair", "domain": "trustpair.com",
+   "segment": "vendor", "segment_reason": "Supplier bank-account validation and payment-fraud prevention; sits next to AP but does not process invoices.",
+   "industry": "Software", "hq_country": "FR", "dach": false, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Turnaplast d.o.o."], "name": "Turnaplast", "domain": "turnaplast.si",
+   "segment": "buyer", "segment_reason": "Slovenian plastic injection-moulding manufacturer exhibiting as a supplier; likely small.",
+   "industry": "Industrial manufacturing", "hq_country": "SI", "dach": false, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["W.I.S. Sicherheit + Service GmbH & Co KG"], "name": "W.I.S. Sicherheit + Service", "domain": "wis-sicherheit.de",
+   "segment": "vendor", "segment_reason": "Security-services provider exhibiting to sell to procurement; service firm with low order-processing fit.",
+   "industry": "Security services", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Workday GmbH"], "name": "Workday", "domain": "workday.com",
+   "segment": "partner", "segment_reason": "Finance/HR suite vendor in the ERP ecosystem (treated like SAP/Oracle); also sells sourcing and AP modules, so watch for overlap.",
+   "industry": "Software", "hq_country": "US", "dach": false, "employees_band": "20000+",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["[name removed]: Deutsche Welle TV"], "name": "Deutsche Welle", "domain": "dw.com",
+   "segment": "other", "segment_reason": "Public international broadcaster; the keynote speaker is a journalist.",
+   "industry": "Media", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["1. FC Union Berlin"], "name": "1. FC Union Berlin", "domain": "fc-union-berlin.de",
+   "segment": "other", "segment_reason": "Football club; appears through a keynote by its women's head coach.",
+   "industry": "Sports", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["AXITcapital GmbH"], "name": "AXITcapital", "domain": null,
+   "segment": "other", "segment_reason": "Small advisory/investment firm of a keynote speaker (managing partner and multi-board member); company could not be verified.",
+   "industry": "Financial services", "hq_country": null, "dach": null, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "low"},
+
+  {"aliases": ["BME e.V."], "name": "BME (Bundesverband Materialwirtschaft, Einkauf und Logistik)", "domain": "bme.de",
+   "segment": "other", "segment_reason": "German procurement and logistics association; event organiser.",
+   "industry": "Association", "hq_country": "DE", "dach": true, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["KfW Bankengruppe"], "name": "KfW Bankengruppe", "domain": "kfw.de",
+   "segment": "buyer", "segment_reason": "Large state development bank with real procure-to-pay volume, but bound by public procurement rules and no goods order flow.",
+   "industry": "Financial services", "hq_country": "DE", "dach": true, "employees_band": "5001-20000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "low"},
+
+  {"aliases": ["Bundesministerium der Verteidigung"], "name": "Bundesministerium der Verteidigung (BMVg)", "domain": "bmvg.de",
+   "segment": "other", "segment_reason": "Federal ministry (government body).",
+   "industry": "Public sector", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Kiel Institut für Weltwirtschaft (IfW Kiel)"], "name": "Kiel Institut für Weltwirtschaft (IfW Kiel)", "domain": "ifw-kiel.de",
+   "segment": "other", "segment_reason": "Economic research institute.",
+   "industry": "Research", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Lufthansa Group"], "name": "Lufthansa Group", "domain": "lufthansagroup.com",
+   "segment": "buyer", "segment_reason": "Airline group with very large procurement and supplier-invoice volume (MRO, cargo, catering).",
+   "industry": "Logistics & transport", "hq_country": "DE", "dach": true, "employees_band": "20000+",
+   "erp": "SAP", "erp_evidence": "Group job postings describe SAP FI/CO and an ongoing group-wide S/4HANA finance transformation", "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Syntegon Technology GmbH"], "name": "Syntegon Technology", "domain": "syntegon.com",
+   "segment": "buyer", "segment_reason": "Packaging-machinery manufacturer (ex-Bosch Packaging) with direct-material procurement and order volume.",
+   "industry": "Industrial manufacturing", "hq_country": "DE", "dach": true, "employees_band": "5001-20000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Gore Medical GmbH"], "name": "W. L. Gore & Associates (Gore Medical)", "domain": "gore.com",
+   "segment": "buyer", "segment_reason": "Materials and medical-device manufacturer; the German Gore Medical entity is part of the Gore group.",
+   "industry": "Industrial manufacturing", "hq_country": "US", "dach": false, "employees_band": "5001-20000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Barry Callebaut AG"], "name": "Barry Callebaut", "domain": "barry-callebaut.com",
+   "segment": "buyer", "segment_reason": "Global chocolate and cocoa manufacturer with high B2B order and supplier volume.",
+   "industry": "Food & beverage", "hq_country": "CH", "dach": true, "employees_band": "5001-20000",
+   "erp": "SAP", "erp_evidence": "Public job postings for SAP Finance and plant SAP roles; 2016 SAP sourcing collaboration", "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["SIXT"], "name": "SIXT", "domain": "sixt.com",
+   "segment": "buyer", "segment_reason": "Car-rental and mobility group with large fleet, repair and service invoice volume.",
+   "industry": "Mobility (car rental)", "hq_country": "DE", "dach": true, "employees_band": "5001-20000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["PALFINGER"], "name": "PALFINGER", "domain": "palfinger.com",
+   "segment": "buyer", "segment_reason": "Crane and lifting-equipment manufacturer with dealer orders and direct-material procurement.",
+   "industry": "Industrial manufacturing", "hq_country": "AT", "dach": true, "employees_band": "5001-20000",
+   "erp": "SAP", "erp_evidence": "SAP customer story on a greenfield S/4HANA implementation; current S/4HANA job postings", "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Voith Group"], "name": "Voith Group", "domain": "voith.com",
+   "segment": "buyer", "segment_reason": "Diversified machinery manufacturer (paper, hydro, turbo) with large procurement and order volume.",
+   "industry": "Industrial manufacturing", "hq_country": "DE", "dach": true, "employees_band": "20000+",
+   "erp": "SAP", "erp_evidence": "Publicly reported ECC-to-S/4HANA migration and move to SAP Cloud ERP Private", "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Schaeffler"], "name": "Schaeffler", "domain": "schaeffler.com",
+   "segment": "buyer", "segment_reason": "Automotive and industrial supplier with very high order-confirmation and supplier-invoice volume.",
+   "industry": "Automotive", "hq_country": "DE", "dach": true, "employees_band": "20000+",
+   "erp": "SAP", "erp_evidence": "Announced strategic partnership with SAP centred on S/4HANA; long-time central SAP platform", "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["University of Mannheim"], "name": "University of Mannheim", "domain": "uni-mannheim.de",
+   "segment": "other", "segment_reason": "University.",
+   "industry": "Education", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["GEP Worldwide"], "name": "GEP", "domain": "gep.com",
+   "segment": "competitor", "segment_reason": "Sells source-to-pay software (GEP SMART) including AP and procurement automation, plus procurement services.",
+   "industry": "Software", "hq_country": "US", "dach": false, "employees_band": "5001-20000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["SKion Water"], "name": "SKion Water", "domain": null,
+   "segment": "buyer", "segment_reason": "Water-technology group (Klatten family's SKion) owning plant builders such as Ovivo, Paques and EnviroWater.",
+   "industry": "Industrial manufacturing", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Rodenstock GmbH"], "name": "Rodenstock", "domain": "rodenstock.com",
+   "segment": "buyer", "segment_reason": "Ophthalmic lens and eyewear manufacturer with high order volume from opticians.",
+   "industry": "Consumer goods", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Käserei Champignon Hofmeister GmbH & Co. KG"], "name": "Käserei Champignon Hofmeister", "domain": "champignon.de",
+   "segment": "buyer", "segment_reason": "Allgäu cheese and dairy-ingredients producer supplying retail and industry.",
+   "industry": "Food & beverage", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Thüga AG"], "name": "Thüga", "domain": "thuega.de",
+   "segment": "buyer", "segment_reason": "Holding and network of municipal utilities; buyer itself and a possible door into many Stadtwerke.",
+   "industry": "Energy & utilities", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Brose Fahrzeugteile SE & Co. Kommanditgesellschaft"], "name": "Brose", "domain": "brose.com",
+   "segment": "buyer", "segment_reason": "Large automotive supplier with heavy JIT/JIS order and supplier-invoice flows.",
+   "industry": "Automotive", "hq_country": "DE", "dach": true, "employees_band": "20000+",
+   "erp": "SAP", "erp_evidence": "SAP press release (Nov 2025) on migrating central SAP systems to SAP Cloud ERP Private", "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Brose Fahrzeugteile SE & Co."], "name": "Brose", "domain": "brose.com",
+   "segment": "buyer", "segment_reason": "Large automotive supplier with heavy JIT/JIS order and supplier-invoice flows.",
+   "industry": "Automotive", "hq_country": "DE", "dach": true, "employees_band": "20000+",
+   "erp": "SAP", "erp_evidence": "SAP press release (Nov 2025) on migrating central SAP systems to SAP Cloud ERP Private", "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Volkswagen Poznań Sp. z o.o."], "name": "Volkswagen Poznań", "domain": "volkswagen-poznan.pl",
+   "segment": "buyer", "segment_reason": "Volkswagen Group vehicle and parts plant in Poland; procurement largely steered by VW Group.",
+   "industry": "Automotive", "hq_country": "PL", "dach": false, "employees_band": "5001-20000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Universität der Bundeswehr München"], "name": "Universität der Bundeswehr München", "domain": "unibw.de",
+   "segment": "other", "segment_reason": "University of the German armed forces.",
+   "industry": "Education", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["H&Z Management Consulting"], "name": "H&Z", "domain": "hz.group",
+   "segment": "partner", "segment_reason": "Procurement and supply-chain consultancy now advising on AI in procurement; natural implementation and referral partner.",
+   "industry": "Consulting", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["PIEMONTE AGENCY FOR INVESTMENT AND EXPORT"], "name": "Piemonte Agency (Ceipiemonte)", "domain": "centroestero.org",
+   "segment": "other", "segment_reason": "Regional public investment and export agency matching buyers with Piedmont suppliers.",
+   "industry": "Public sector", "hq_country": "IT", "dach": false, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["BME-Region Thüringen"], "name": "BME Region Thüringen", "domain": "bme.de",
+   "segment": "other", "segment_reason": "Regional chapter of the BME procurement association.",
+   "industry": "Association", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["European Council on Foreign Relations (ECFR)"], "name": "European Council on Foreign Relations (ECFR)", "domain": "ecfr.eu",
+   "segment": "other", "segment_reason": "Pan-European foreign-policy think tank.",
+   "industry": "Research", "hq_country": null, "dach": null, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["ADAC SE"], "name": "ADAC SE", "domain": "adac.de",
+   "segment": "buyer", "segment_reason": "Commercial arm of ADAC (insurance, mobility and roadside services) with sizeable procurement; CPO speaks at the event.",
+   "industry": "Mobility services", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["IBM Infrastructure"], "name": "IBM", "domain": "ibm.com",
+   "segment": "partner", "segment_reason": "IBM Consulting is a major SAP integrator and BPO provider; the speaker covers IBM's own supply-chain transformation.",
+   "industry": "IT services & consulting", "hq_country": "US", "dach": false, "employees_band": "20000+",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Diehl AKO Stiftung & Co. KG"], "name": "Diehl AKO (Diehl Controls)", "domain": "diehl.com",
+   "segment": "buyer", "segment_reason": "Diehl group maker of controls for household appliances; manufacturer with direct-material procurement.",
+   "industry": "Industrial manufacturing", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Bayer", "Bayer AG"], "name": "Bayer", "domain": "bayer.com",
+   "segment": "buyer", "segment_reason": "Global pharma and crop-science group with very large procure-to-pay and order-to-cash volume.",
+   "industry": "Chemicals & pharma", "hq_country": "DE", "dach": true, "employees_band": "20000+",
+   "erp": "SAP", "erp_evidence": "SAP Innovation Awards 2026 entry on Bayer's ERP transformation to S/4HANA Cloud (RISE with SAP) with TCS", "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Ost-Ausschuss der Deutschen Wirtschaft e.V."], "name": "Ost-Ausschuss der Deutschen Wirtschaft", "domain": "ost-ausschuss.de",
+   "segment": "other", "segment_reason": "German business association for Central and Eastern Europe.",
+   "industry": "Association", "hq_country": "DE", "dach": true, "employees_band": "1-50",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["TKM GmbH"], "name": "TKM Group", "domain": "tkmgroup.com",
+   "segment": "buyer", "segment_reason": "TKM GmbH is the Remscheid industrial-knife manufacturer; speaker sat in a defence panel, so identity is not fully certain.",
+   "industry": "Industrial manufacturing", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "low"},
+
+  {"aliases": ["KNDS Deutschland GmbH & Co. KG"], "name": "KNDS Deutschland", "domain": "knds.com",
+   "segment": "buyer", "segment_reason": "Defence-vehicle manufacturer (ex-Krauss-Maffei Wegmann) scaling production and supplier volume.",
+   "industry": "Defence manufacturing", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Mercanis"], "name": "Mercanis", "domain": "mercanis.com",
+   "segment": "competitor", "segment_reason": "AI procurement and source-to-contract platform; named on the competitor seed list.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["American Express Deutschland"], "name": "American Express", "domain": "americanexpress.com",
+   "segment": "vendor", "segment_reason": "Corporate card and B2B payments provider.",
+   "industry": "Financial services", "hq_country": "US", "dach": false, "employees_band": "20000+",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["BWI GmbH"], "name": "BWI", "domain": "bwi.de",
+   "segment": "buyer", "segment_reason": "Federally owned IT service provider to the Bundeswehr with large procurement volume, but bound by public procurement rules.",
+   "industry": "IT services (public sector)", "hq_country": "DE", "dach": true, "employees_band": "5001-20000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "low"},
+
+  {"aliases": ["JAGGAER", "Jaggaer"], "name": "JAGGAER", "domain": "jaggaer.com",
+   "segment": "competitor", "segment_reason": "Source-to-pay suite including e-procurement and invoice automation; named on the competitor seed list.",
+   "industry": "Software", "hq_country": "US", "dach": false, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Chase Prime AI"], "name": "Chase Prime AI", "domain": "chaseprime.ai",
+   "segment": "competitor", "segment_reason": "AI supplier-management layer on top of the ERP for Mittelstand, with AI agents that check order confirmations; direct overlap.",
+   "industry": "Software", "hq_country": null, "dach": true, "employees_band": "1-50",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Lio"], "name": "Lio", "domain": "lio.ai",
+   "segment": "competitor", "segment_reason": "Multi-agent AI for procurement, finance and logistics covering procure-to-pay and document extraction; named on the seed list.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Dexter", "dexter"], "name": "Dexter", "domain": "getdexter.co",
+   "segment": "competitor", "segment_reason": "AI that extracts invoices, contracts and POs for spend and contract-leakage analytics; adjacent document-AI competitor.",
+   "industry": "Software", "hq_country": null, "dach": true, "employees_band": "1-50",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["University of Applied Sciences Munich"], "name": "Hochschule München (Munich University of Applied Sciences)", "domain": "hm.edu",
+   "segment": "other", "segment_reason": "University of applied sciences.",
+   "industry": "Education", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["KERN-LIEBERS"], "name": "KERN-LIEBERS", "domain": "kern-liebers.com",
+   "segment": "buyer", "segment_reason": "Springs and stamped-parts manufacturer with about 40 plants and a centralising, AI-driven procurement agenda.",
+   "industry": "Industrial manufacturing", "hq_country": "DE", "dach": true, "employees_band": "5001-20000",
+   "erp": "SAP", "erp_evidence": "CIO.de report on its global SAP template rollout", "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["EnBW"], "name": "EnBW", "domain": "enbw.com",
+   "segment": "buyer", "segment_reason": "Large integrated utility with high procurement and supplier-invoice volume.",
+   "industry": "Energy & utilities", "hq_country": "DE", "dach": true, "employees_band": "20000+",
+   "erp": "SAP", "erp_evidence": "KPMG client case on EnBW's S/4HANA conversion programme replacing its R/3 landscape", "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["EnBW Energie Baden-Württemberg AG"], "name": "EnBW", "domain": "enbw.com",
+   "segment": "buyer", "segment_reason": "Large integrated utility with high procurement and supplier-invoice volume.",
+   "industry": "Energy & utilities", "hq_country": "DE", "dach": true, "employees_band": "20000+",
+   "erp": "SAP", "erp_evidence": "KPMG client case on EnBW's S/4HANA conversion programme replacing its R/3 landscape", "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["TUP GmbH & Co. KG"], "name": "TUP", "domain": "tup.com",
+   "segment": "vendor", "segment_reason": "Intralogistics software house building custom warehouse-management systems; adjacent tech, not order or invoice automation.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Danfoss Power Solutions GmbH & Co. OHG"], "name": "Danfoss Power Solutions (Danfoss Group)", "domain": "danfoss.com",
+   "segment": "buyer", "segment_reason": "Mobile-hydraulics division of Danfoss; the German entity in Neumünster is a large manufacturing site.",
+   "industry": "Industrial manufacturing", "hq_country": "DK", "dach": false, "employees_band": "20000+",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Institut SEE MORE, Future Research & Development"], "name": "Institut SEE MORE", "domain": null,
+   "segment": "other", "segment_reason": "Futures-research institute of a keynote speaker, author and podcaster; could not be verified.",
+   "industry": "Research", "hq_country": null, "dach": null, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Hochschule München"], "name": "Hochschule München (Munich University of Applied Sciences)", "domain": "hm.edu",
+   "segment": "other", "segment_reason": "University of applied sciences.",
+   "industry": "Education", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Heidelberger Druckmaschinen AG"], "name": "Heidelberger Druckmaschinen (HEIDELBERG)", "domain": "heidelberg.com",
+   "segment": "buyer", "segment_reason": "Printing-press manufacturer with large spare-parts and consumables order volume.",
+   "industry": "Industrial manufacturing", "hq_country": "DE", "dach": true, "employees_band": "5001-20000",
+   "erp": "SAP", "erp_evidence": "DATAGROUP press release (Nov 2025) on taking over operation of its 100+ system SAP landscape", "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Fachhochschule Dortmund"], "name": "Fachhochschule Dortmund", "domain": "fh-dortmund.de",
+   "segment": "other", "segment_reason": "University of applied sciences.",
+   "industry": "Education", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["duisport – Duisburger Hafen AG"], "name": "duisport (Duisburger Hafen)", "domain": "duisport.de",
+   "segment": "buyer", "segment_reason": "Inland port and logistics group (publicly owned AG) with logistics service and supplier-invoice flows.",
+   "industry": "Logistics & transport", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Hochschule für Technik, Wirtschaft und Kultur Leipzig"], "name": "HTWK Leipzig", "domain": "htwk-leipzig.de",
+   "segment": "other", "segment_reason": "University of applied sciences.",
+   "industry": "Education", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"}
+]

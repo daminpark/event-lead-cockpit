@@ -1,0 +1,1200 @@
+[
+ {
+  "aliases": [
+   "Wacker Chemie AG"
+  ],
+  "name": "Wacker Chemie",
+  "domain": "wacker.com",
+  "segment": "buyer",
+  "segment_reason": "Large specialty chemicals manufacturer with high order and invoice volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "SAP",
+  "erp_evidence": "Wacker job postings and an SAP ILM partner case study describe its S/4HANA landscape",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "ZYCUS",
+   "Zycus",
+   "Zycus Inc."
+  ],
+  "name": "Zycus",
+  "domain": "zycus.com",
+  "segment": "competitor",
+  "segment_reason": "Source-to-pay suite vendor with AI procurement and invoice automation.",
+  "industry": "Software",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Dümpelfeld & Partners"
+  ],
+  "name": "Dümpelfeld & Partners",
+  "domain": "duempelfeldpartners.com",
+  "segment": "partner",
+  "segment_reason": "Düsseldorf procurement consultancy and interim-management provider.",
+  "industry": "Consulting",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "H&Z",
+   "H&Z Group"
+  ],
+  "name": "H&Z Management Consulting",
+  "domain": "h-z.com",
+  "segment": "partner",
+  "segment_reason": "Munich management consultancy with procurement and operations practice.",
+  "industry": "Consulting",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Savify AG"
+  ],
+  "name": "Savify",
+  "domain": null,
+  "segment": "partner",
+  "segment_reason": "Small Swiss success-fee consultancy for indirect procurement savings (markets itself as AI-driven).",
+  "industry": "Consulting",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Handelsblatt"
+  ],
+  "name": "Handelsblatt",
+  "domain": "handelsblatt.com",
+  "segment": "other",
+  "segment_reason": "Business newspaper and organiser of the CPO-Summit (media).",
+  "industry": "Media",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "DHL Supply Chain"
+  ],
+  "name": "DHL Supply Chain",
+  "domain": "dhl.com",
+  "segment": "buyer",
+  "segment_reason": "Contract logistics division of DHL Group with large procurement and invoice volume.",
+  "industry": "Logistics & transport",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Evonik"
+  ],
+  "name": "Evonik Industries",
+  "domain": "evonik.com",
+  "segment": "buyer",
+  "segment_reason": "Large specialty chemicals manufacturer.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "2021 Evonik press release on moving its main ERP to SAP S/4HANA (NexGen ERP)",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "HHLA Hamburger Hafen und Logistik"
+  ],
+  "name": "HHLA Hamburger Hafen und Logistik",
+  "domain": "hhla.de",
+  "segment": "buyer",
+  "segment_reason": "Port and intermodal logistics operator with large procurement volume.",
+  "industry": "Logistics & transport",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Uniper",
+   "Uniper SE"
+  ],
+  "name": "Uniper",
+  "domain": "uniper.energy",
+  "segment": "buyer",
+  "segment_reason": "Large energy company with significant procurement volume.",
+  "industry": "Energy & utilities",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "SAP",
+  "erp_evidence": "SAP customer story and adesso press release on S/4HANA Utilities go-live (Nov 2024)",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "K+S Aktiengesellschaft"
+  ],
+  "name": "K+S",
+  "domain": "kpluss.com",
+  "segment": "buyer",
+  "segment_reason": "Potash and salt producer with industrial procurement and order volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "OMV"
+  ],
+  "name": "OMV",
+  "domain": "omv.com",
+  "segment": "buyer",
+  "segment_reason": "Integrated oil, gas and chemicals group.",
+  "industry": "Energy & utilities",
+  "hq_country": "AT",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "OMV press release (2021) on first S/4HANA go-live in its S/4Future programme",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Hapag-Lloyd AG",
+   "Hapag-Lloyd"
+  ],
+  "name": "Hapag-Lloyd",
+  "domain": "hapag-lloyd.com",
+  "segment": "buyer",
+  "segment_reason": "Global container shipping line with large procurement and invoice volume.",
+  "industry": "Logistics & transport",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "SAP",
+  "erp_evidence": "SAP customer document and job postings on its S/4HANA finance transformation (fast4ward)",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Argon & Co Deutschland GmbH",
+   "Argon International",
+   "Argon & Co"
+  ],
+  "name": "Argon & Co",
+  "domain": "argonandco.com",
+  "segment": "partner",
+  "segment_reason": "Operations, supply-chain and procurement consultancy.",
+  "industry": "Consulting",
+  "hq_country": "FR",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Apleona Group"
+  ],
+  "name": "Apleona",
+  "domain": "apleona.com",
+  "segment": "buyer",
+  "segment_reason": "Large facility-services group with heavy procurement and supplier-invoice volume.",
+  "industry": "Facility services",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "ENGIE Deutschland AG"
+  ],
+  "name": "ENGIE Deutschland",
+  "domain": "engie-deutschland.de",
+  "segment": "buyer",
+  "segment_reason": "German energy and building-services arm of ENGIE.",
+  "industry": "Energy & utilities",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Bilfinger"
+  ],
+  "name": "Bilfinger",
+  "domain": "bilfinger.com",
+  "segment": "buyer",
+  "segment_reason": "Industrial services group with large procurement volume.",
+  "industry": "Industrial services",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Deutsche Bahn",
+   "Deutsche Bahn AG"
+  ],
+  "name": "Deutsche Bahn",
+  "domain": "deutschebahn.com",
+  "segment": "buyer",
+  "segment_reason": "State-owned rail and logistics group with very large procurement volume.",
+  "industry": "Logistics & transport",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Long-standing, widely reported SAP customer (SAP run by DB Systel)",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "BASF"
+  ],
+  "name": "BASF",
+  "domain": "basf.com",
+  "segment": "buyer",
+  "segment_reason": "World's largest chemicals producer with very large order and invoice volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Publicly reported group-wide SAP S/4HANA programme",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Walmart"
+  ],
+  "name": "Walmart",
+  "domain": "walmart.com",
+  "segment": "buyer",
+  "segment_reason": "Global retailer; outside DACH core market.",
+  "industry": "Retail",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Westfalen AG"
+  ],
+  "name": "Westfalen",
+  "domain": "westfalen.com",
+  "segment": "buyer",
+  "segment_reason": "Industrial gases and energy supplier (Münster).",
+  "industry": "Energy & utilities",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "E.ON"
+  ],
+  "name": "E.ON",
+  "domain": "eon.com",
+  "segment": "buyer",
+  "segment_reason": "Large energy utility with large procurement volume.",
+  "industry": "Energy & utilities",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Widely reported SAP customer (SAP for Utilities / S/4HANA)",
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Ströer"
+  ],
+  "name": "Ströer",
+  "domain": "stroeer.com",
+  "segment": "buyer",
+  "segment_reason": "Large out-of-home media group with a CPO; invoice volume but weaker order-processing fit.",
+  "industry": "Media",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Technische Hochschule Nürnberg"
+  ],
+  "name": "Technische Hochschule Nürnberg",
+  "domain": "th-nuernberg.de",
+  "segment": "other",
+  "segment_reason": "University of applied sciences.",
+  "industry": "Education",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Covestro"
+  ],
+  "name": "Covestro",
+  "domain": "covestro.com",
+  "segment": "buyer",
+  "segment_reason": "Polymer and materials manufacturer with large order volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "SAP",
+  "erp_evidence": "ASUG session and SAP Innovation Awards 2026 entry on its ECC to S/4HANA transformation",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Miele"
+  ],
+  "name": "Miele",
+  "domain": "miele.com",
+  "segment": "buyer",
+  "segment_reason": "Household appliance manufacturer with large order and procurement volume.",
+  "industry": "Consumer goods",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Miele job posting refers to an ongoing S/4HANA transformation",
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Funke Mediengruppe"
+  ],
+  "name": "Funke Mediengruppe",
+  "domain": "funkemedien.de",
+  "segment": "buyer",
+  "segment_reason": "Large publishing group with a procurement function; weaker order-processing fit.",
+  "industry": "Media",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Knepper-Holding"
+  ],
+  "name": "Knepper Gruppe",
+  "domain": "knepper-gruppe.de",
+  "segment": "buyer",
+  "segment_reason": "Family group in demolition, recycling, scrap trading and logistics (about 330 staff).",
+  "industry": "Recycling & waste",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Egon Zehnder"
+  ],
+  "name": "Egon Zehnder",
+  "domain": "egonzehnder.com",
+  "segment": "vendor",
+  "segment_reason": "Executive search firm; neither a buyer nor a channel for Autopilot.",
+  "industry": "Professional services",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Meyer Werft"
+  ],
+  "name": "Meyer Werft",
+  "domain": "meyerwerft.de",
+  "segment": "buyer",
+  "segment_reason": "Cruise-ship builder with large supplier and invoice volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "tesa"
+  ],
+  "name": "tesa",
+  "domain": "tesa.com",
+  "segment": "buyer",
+  "segment_reason": "Adhesive tape manufacturer (Beiersdorf group).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "target P."
+  ],
+  "name": "targetP",
+  "domain": "targetp.de",
+  "segment": "partner",
+  "segment_reason": "Small procurement consultancy and interim-CPO provider.",
+  "industry": "Consulting",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "FIEGE Logistik"
+  ],
+  "name": "Fiege Logistik",
+  "domain": "fiege.com",
+  "segment": "buyer",
+  "segment_reason": "Large contract logistics provider.",
+  "industry": "Logistics & transport",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "BearingPoint"
+  ],
+  "name": "BearingPoint",
+  "domain": "bearingpoint.com",
+  "segment": "partner",
+  "segment_reason": "Management and technology consultancy with SAP and procurement practices.",
+  "industry": "Consulting",
+  "hq_country": "NL",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "BASF Coatings"
+  ],
+  "name": "BASF Coatings",
+  "domain": "basf.com",
+  "segment": "buyer",
+  "segment_reason": "Coatings division of BASF.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "SAP",
+  "erp_evidence": "Part of BASF, which runs a publicly reported SAP S/4HANA programme",
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Hamburger Energiewerke GmbH"
+  ],
+  "name": "Hamburger Energiewerke",
+  "domain": "hamburger-energiewerke.de",
+  "segment": "buyer",
+  "segment_reason": "Municipal heat and energy utility of Hamburg.",
+  "industry": "Energy & utilities",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Haspa"
+  ],
+  "name": "Hamburger Sparkasse (Haspa)",
+  "domain": "haspa.de",
+  "segment": "buyer",
+  "segment_reason": "Large savings bank; invoice volume but low fit for order processing.",
+  "industry": "Banking & financial services",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "AERZEN"
+  ],
+  "name": "Aerzener Maschinenfabrik (AERZEN)",
+  "domain": "aerzen.com",
+  "segment": "buyer",
+  "segment_reason": "Blower and compressor manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Beckhoff Automation"
+  ],
+  "name": "Beckhoff Automation",
+  "domain": "beckhoff.com",
+  "segment": "buyer",
+  "segment_reason": "Industrial automation manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "DMG MORI"
+  ],
+  "name": "DMG MORI",
+  "domain": "dmgmori.com",
+  "segment": "buyer",
+  "segment_reason": "Machine tool manufacturer (DMG MORI AG, Bielefeld; Japanese parent).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Harting"
+  ],
+  "name": "HARTING Technology Group",
+  "domain": "harting.com",
+  "segment": "buyer",
+  "segment_reason": "Industrial connector manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "SAP",
+  "erp_evidence": "HARTING job postings for SAP S/4HANA in-house consultants",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "ifm electronic"
+  ],
+  "name": "ifm electronic",
+  "domain": "ifm.com",
+  "segment": "buyer",
+  "segment_reason": "Sensor and automation manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "igus"
+  ],
+  "name": "igus",
+  "domain": "igus.de",
+  "segment": "buyer",
+  "segment_reason": "Manufacturer of plastic motion components and cable carriers.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "KAESER"
+  ],
+  "name": "KAESER KOMPRESSOREN",
+  "domain": "kaeser.com",
+  "segment": "buyer",
+  "segment_reason": "Compressed-air systems manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "LAPP"
+  ],
+  "name": "LAPP",
+  "domain": "lapp.com",
+  "segment": "buyer",
+  "segment_reason": "Cable and connection technology manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Phoenix Contact"
+  ],
+  "name": "Phoenix Contact",
+  "domain": "phoenixcontact.com",
+  "segment": "buyer",
+  "segment_reason": "Electrical connection and automation manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Phoenix Contact job postings and 2024 group report on its global S/4HANA transformation",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Rittal"
+  ],
+  "name": "Rittal",
+  "domain": "rittal.com",
+  "segment": "buyer",
+  "segment_reason": "Enclosure and climate-control manufacturer (Friedhelm Loh Group).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Salzgitter AG"
+  ],
+  "name": "Salzgitter",
+  "domain": "salzgitter-ag.com",
+  "segment": "buyer",
+  "segment_reason": "Steel and technology group with large order and procurement volume.",
+  "industry": "Metals & steel",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Partner case studies (consenso, abat) and SAP coverage of its group-wide S/4HANA move",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "SEW-EURODRIVE"
+  ],
+  "name": "SEW-EURODRIVE",
+  "domain": "sew-eurodrive.com",
+  "segment": "buyer",
+  "segment_reason": "Drive technology manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "SEW job postings on a global S/4HANA template project; Avantra case study cites 130+ SAP systems",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "STÜKEN"
+  ],
+  "name": "STÜKEN",
+  "domain": "stueken.de",
+  "segment": "buyer",
+  "segment_reason": "Deep-drawn metal and plastic parts manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "ZIEHL-ABEGG"
+  ],
+  "name": "ZIEHL-ABEGG",
+  "domain": "ziehl-abegg.com",
+  "segment": "buyer",
+  "segment_reason": "Fan and motor manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "ACD Antriebstechnik"
+  ],
+  "name": "ACD Antriebstechnik",
+  "domain": "acd-antriebstechnik.de",
+  "segment": "buyer",
+  "segment_reason": "Mid-sized drive and control electronics manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "alutexx"
+  ],
+  "name": "alutexx",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Listed as a German maker of metal and plastic parts; no further public detail found.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "Arnskötter Präzisionstechnik"
+  ],
+  "name": "Arnskötter Präzisionstechnik",
+  "domain": "arnskoetter.de",
+  "segment": "buyer",
+  "segment_reason": "Small family-run contract machinist (turned and milled parts).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "BARTEC"
+  ],
+  "name": "BARTEC",
+  "domain": "bartec.com",
+  "segment": "buyer",
+  "segment_reason": "Explosion-protection equipment manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Basler"
+  ],
+  "name": "Basler",
+  "domain": "baslerweb.com",
+  "segment": "buyer",
+  "segment_reason": "Machine-vision camera manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Baumer"
+  ],
+  "name": "Baumer",
+  "domain": "baumer.com",
+  "segment": "buyer",
+  "segment_reason": "Sensor and measurement manufacturer (Swiss group).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Berger Holding"
+  ],
+  "name": "Berger Gruppe (Alois Berger)",
+  "domain": "aberger.de",
+  "segment": "buyer",
+  "segment_reason": "Family-owned maker of precision turned and milled parts (about 1,800 staff).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "BGE Elektrotechnik"
+  ],
+  "name": "BGE Elektrotechnik",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Small German electrical products and cable assembly maker.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "Bosch Rexroth"
+  ],
+  "name": "Bosch Rexroth",
+  "domain": "boschrexroth.com",
+  "segment": "buyer",
+  "segment_reason": "Drive and control technology manufacturer (Bosch group).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Boschert"
+  ],
+  "name": "Boschert",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "German metal-parts/machinery exhibitor; exact entity unclear.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "Brandmaier Informative Leuchtanzeigen"
+  ],
+  "name": "Brandmaier Informative Leuchtanzeigen",
+  "domain": "brandmaier.com",
+  "segment": "buyer",
+  "segment_reason": "Small owner-managed maker of LED and LCD information displays.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "BST"
+  ],
+  "name": "BST",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Bielefeld maker of web-guiding and inspection systems (elexis group).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Busse Heizplattentechnik"
+  ],
+  "name": "Busse Heizplattentechnik",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Small heating-plate manufacturer (about 50 staff).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "cab Produkttechnik"
+  ],
+  "name": "cab Produkttechnik",
+  "domain": "cab.de",
+  "segment": "buyer",
+  "segment_reason": "Label printer and marking system manufacturer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "CadCabel"
+  ],
+  "name": "CadCabel",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Wiring-harness manufacturer for control cabinets (about 140 staff).",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "51-200",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Celeroton TurboCell"
+  ],
+  "name": "Celeroton",
+  "domain": "celeroton.com",
+  "segment": "buyer",
+  "segment_reason": "Small Swiss maker of high-speed motors and compressors.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "DEUTA-WERKE"
+  ],
+  "name": "DEUTA-WERKE",
+  "domain": "deuta.de",
+  "segment": "buyer",
+  "segment_reason": "Electronics maker for rail and measurement applications.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "DIAS Infrared"
+  ],
+  "name": "DIAS Infrared",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Dresden maker of infrared measuring and thermal imaging systems.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Dorstener Drahtwerke"
+  ],
+  "name": "Dorstener Drahtwerke",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Family-owned maker of drawn wire, wire cloth and welded mesh.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ }
+]

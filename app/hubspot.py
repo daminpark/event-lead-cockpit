@@ -141,6 +141,7 @@ def push(con, approved_accounts, approved_contacts, accounts_by_id, events, sync
 
     def save(kind, oid, hid):
         con.execute("INSERT OR REPLACE INTO hubspot_sync VALUES (?, ?, ?, ?)", (kind, oid, hid, synced_at))
+        con.commit()  # short write locks, so reviewers can keep deciding while a push runs
         known[(kind, oid)] = hid
 
     def push_account(acct):

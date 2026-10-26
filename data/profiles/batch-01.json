@@ -1,0 +1,351 @@
+[
+  {"aliases": ["Lio Technologies GmbH"], "name": "Lio", "domain": "lio.ai",
+   "segment": "competitor", "segment_reason": "Multi-agent AI that runs procurement end to end (requisitions, document extraction, approvals, P2P); on the seed competitor list.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["osapiens"], "name": "osapiens", "domain": "osapiens.com",
+   "segment": "vendor", "segment_reason": "AI platform for compliance, ESG and supplier intelligence (Mannheim); procurement-adjacent but not order or invoice automation.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Tacto Technology GmbH"], "name": "Tacto", "domain": "tacto.ai",
+   "segment": "competitor", "segment_reason": "AI-based SRM and procurement automation platform for the DACH industrial Mittelstand; on the seed competitor list.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["American Express Europe S.A. (Germany branch)"], "name": "American Express", "domain": "americanexpress.com",
+   "segment": "vendor", "segment_reason": "Corporate cards and B2B payment solutions; a payments provider, not a buyer or automation competitor.",
+   "industry": "Financial services", "hq_country": "US", "dach": false, "employees_band": "20000+",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Coupa Deutschland GmbH", "Coupa"], "name": "Coupa", "domain": "coupa.com",
+   "segment": "competitor", "segment_reason": "Source-to-pay and spend management suite including invoicing and AP automation; on the seed competitor list.",
+   "industry": "Software", "hq_country": "US", "dach": false, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Elevatry GmbH"], "name": "Elevatry", "domain": "elevatry.ai",
+   "segment": "competitor", "segment_reason": "AI platform with agents for strategic procurement (strategy-to-contract); competes for procurement AI budget, though not transactional order or invoice processing.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["JAGGAER Austria GmbH"], "name": "JAGGAER", "domain": "jaggaer.com",
+   "segment": "competitor", "segment_reason": "Source-to-pay and supplier collaboration suite for direct and indirect procurement; on the seed competitor list.",
+   "industry": "Software", "hq_country": "US", "dach": false, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Mercanis (CdC3 GmbH)"], "name": "Mercanis", "domain": "mercanis.com",
+   "segment": "competitor", "segment_reason": "Berlin AI procurement platform (SRM, sourcing, intake, contracts) with AI agents across source-to-pay; on the seed competitor list.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["ORO Labs"], "name": "ORO Labs", "domain": "orolabs.ai",
+   "segment": "competitor", "segment_reason": "AI-powered no-code procurement orchestration platform founded by ex-SAP Ariba leaders; on the seed competitor list.",
+   "industry": "Software", "hq_country": "US", "dach": false, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["F. REYHER Nchfg. GmbH & Co. KG"], "name": "REYHER", "domain": "reyher.de",
+   "segment": "buyer", "segment_reason": "Hamburg fastener and C-parts wholesaler handling about 24,000 order lines a day; strong order-to-cash fit.",
+   "industry": "Wholesale & distribution", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Samsung SDS Europe Ltd.", "Samsung SDS Europe Ltd"], "name": "Samsung SDS", "domain": "samsungsds.com",
+   "segment": "competitor", "segment_reason": "Presents Caidentia, a design-to-source-to-pay procurement SaaS; also a large IT services and logistics provider that could act as a partner.",
+   "industry": "Software & IT services", "hq_country": "KR", "dach": false, "employees_band": "20000+",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["SAP Deutschland SE & Co. KG", "SAP Deutschland SE & Co.KG", "SAP"], "name": "SAP", "domain": "sap.com",
+   "segment": "partner", "segment_reason": "ERP vendor (S/4HANA, Ariba); Autopilot posts into SAP, so SAP is ecosystem partner rather than competitor.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "20000+",
+   "erp": "SAP", "erp_evidence": "SAP is the ERP vendor itself", "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Amazon Business", "amazon business"], "name": "Amazon Business", "domain": "amazon.com",
+   "segment": "vendor", "segment_reason": "Amazon's B2B purchasing marketplace; a marketplace vendor to procurement teams.",
+   "industry": "B2B marketplace", "hq_country": "US", "dach": false, "employees_band": "20000+",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["amc Group", "amc"], "name": "amc Group", "domain": "amc-group.de",
+   "segment": "partner", "segment_reason": "Procurement and SCM consultancy that selects and implements eProcurement tools and co-publishes the BME eSOLUTIONS REPORT; strong referral channel.",
+   "industry": "Consulting", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Bain & Company, Inc.", "Bain & Company"], "name": "Bain & Company", "domain": "bain.com",
+   "segment": "partner", "segment_reason": "Global management consultancy with procurement and operations practices; potential referral and transformation partner.",
+   "industry": "Consulting", "hq_country": "US", "dach": false, "employees_band": "5001-20000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Causa Prima Germany GmbH", "Causa Prima"], "name": "Causa Prima", "domain": "causaprima.ai",
+   "segment": "competitor", "segment_reason": "Autonomous AI agents for accounts payable and receivable (invoice checks, disputes, early-payment discounts); overlaps with P2P invoice automation.",
+   "industry": "Software", "hq_country": null, "dach": null, "employees_band": "1-50",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Delvo"], "name": "Delvo", "domain": "delvo.ai",
+   "segment": "competitor", "segment_reason": "AI agents for strategic procurement linking spend, contract and market data for negotiations; adjacent procurement AI.",
+   "industry": "Software", "hq_country": null, "dach": null, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Dexter Technologies GmbH"], "name": "Dexter", "domain": "getdexter.co",
+   "segment": "competitor", "segment_reason": "AI that extracts invoices, contracts and purchase orders into a spend and contract intelligence layer; adjacent document AI for procurement.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["ERA Group"], "name": "ERA Group", "domain": "eragroup.com",
+   "segment": "partner", "segment_reason": "Cost-reduction and procurement consultancy network (Expense Reduction Analysts) serving 3,500+ DACH clients; possible referral channel.",
+   "industry": "Consulting", "hq_country": "GB", "dach": false, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["GEP"], "name": "GEP", "domain": "gep.com",
+   "segment": "competitor", "segment_reason": "AI-native source-to-pay software (GEP SMART) plus procurement managed services; competes on procurement and P2P automation.",
+   "industry": "Software", "hq_country": "US", "dach": false, "employees_band": "5001-20000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Germany Trade & Invest (GTAI)"], "name": "Germany Trade & Invest (GTAI)", "domain": "gtai.de",
+   "segment": "other", "segment_reason": "Federal economic development and investment promotion agency.",
+   "industry": "Public sector", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Glacis"], "name": "Glacis", "domain": "glacis.com",
+   "segment": "competitor", "segment_reason": "AI agents for supply chain execution that automate supplier, customer and logistics communication in purchasing, order processing and finance; direct overlap with Autopilot.",
+   "industry": "Software", "hq_country": null, "dach": null, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["H&Z Unternehmensberatung"], "name": "H&Z Unternehmensberatung", "domain": "hz.group",
+   "segment": "partner", "segment_reason": "Munich consultancy focused on procurement and supply chain management with digital and AI projects; referral and implementation partner.",
+   "industry": "Consulting", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Ivalua"], "name": "Ivalua", "domain": "ivalua.com",
+   "segment": "competitor", "segment_reason": "Integrated source-to-pay and supplier management platform for large enterprises; on the seed competitor list.",
+   "industry": "Software", "hq_country": "FR", "dach": false, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Kodiak Hub"], "name": "Kodiak Hub", "domain": "kodiakhub.com",
+   "segment": "competitor", "segment_reason": "Swedish AI-enabled SRM suite (supplier onboarding, audits, scorecards); adjacent procurement software rather than order or invoice automation.",
+   "industry": "Software", "hq_country": "SE", "dach": false, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["OPUS-Technologies GmbH"], "name": "OPUS-Technologies", "domain": "opus-tech.ai",
+   "segment": "competitor", "segment_reason": "AI agents that extract data from supplier communication and sync it with the ERP to automate procure-to-pay for industrial Mittelstand; direct overlap.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["ProcureAi GmbH"], "name": "Procure Ai", "domain": "procure.ai",
+   "segment": "competitor", "segment_reason": "AI-native procurement automation platform with 40+ agents from intake to purchasing; on the seed competitor list.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["REMIRA GmbH", "Remira"], "name": "REMIRA", "domain": "remira.de",
+   "segment": "vendor", "segment_reason": "Dortmund supply chain planning and omnichannel commerce software; adjacent tech vendor, not order or invoice document automation.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["retarus GmbH"], "name": "Retarus", "domain": "retarus.com",
+   "segment": "competitor", "segment_reason": "Munich messaging and structured-data exchange provider (EDI, e-invoicing, intelligent capture of incoming documents); overlaps on supplier document intake, could also partner.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Schweitzer"], "name": "Schweitzer Fachinformationen", "domain": "schweitzer-online.de",
+   "segment": "vendor", "segment_reason": "Supplier of professional information, literature and information software to companies.",
+   "industry": "Media", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Sirion"], "name": "Sirion", "domain": "sirion.ai",
+   "segment": "vendor", "segment_reason": "AI-native contract lifecycle management platform; procurement-adjacent but not order, invoice or P2P automation.",
+   "industry": "Software", "hq_country": "US", "dach": false, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["SoftconCIS GmbH", "SoftconCIS"], "name": "SoftconCIS", "domain": "softconcis.de",
+   "segment": "vendor", "segment_reason": "Procurement controlling and reporting software (WebCIS 4.0); analytics rather than transactional automation.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["abics GmbH", "ABICS GmbH"], "name": "abics", "domain": "abics.de",
+   "segment": "partner", "segment_reason": "Young Bremen firm building AI applications on SAP BTP with SAP procurement know-how; SAP-ecosystem partner, possibly also a small competitor.",
+   "industry": "Software & IT services", "hq_country": "DE", "dach": true, "employees_band": "1-50",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "low"},
+
+  {"aliases": ["Chase Prime GmbH"], "name": "Chase Prime", "domain": "chaseprime.ai",
+   "segment": "competitor", "segment_reason": "AI supplier management layer on top of the ERP for manufacturing Mittelstand, including AI agents that check order confirmations; direct overlap on order confirmations.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "1-50",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Datasphere Analytics GmbH"], "name": "Datasphere Analytics", "domain": "datasphere-analytics.com",
+   "segment": "vendor", "segment_reason": "AI commodity market intelligence for industrial buyers (founded 2025); procurement data vendor, not process automation.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "1-50",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Guided Buying AI", "Guided Buying AI GmbH"], "name": "Guided Buying AI", "domain": "guidedbuying.com",
+   "segment": "competitor", "segment_reason": "AI guided-buying layer over punchouts and catalogues that launches automated RFQs for B/C spend; procurement workflow automation.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "1-50",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["qado GmbH", "qado"], "name": "qado", "domain": "qado.ai",
+   "segment": "competitor", "segment_reason": "AI cost-management platform that reads contracts and offers and automates tail-spend negotiations; adjacent procurement AI.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "1-50",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Resourcly", "Resourcly GmbH"], "name": "Resourcly", "domain": "resourcly.com",
+   "segment": "vendor", "segment_reason": "AI harmonisation of parts and material data from PLM and ERP to cut duplicates (founded 2023); engineering and procurement data vendor.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "1-50",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["SOLISTIQ GmbH"], "name": "SOLISTIQ", "domain": "solistiq.com",
+   "segment": "vendor", "segment_reason": "University of Würzburg spin-off (2026) with a foundation model for inventory planning and replenishment; planning vendor, not document automation.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "1-50",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["ADITO Software GmbH"], "name": "ADITO Software", "domain": "adito.de",
+   "segment": "vendor", "segment_reason": "German CRM and business software vendor showing its SRM module; adjacent software vendor.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Aon Versicherungsmakler Deutschland GmbH"], "name": "Aon", "domain": "aon.com",
+   "segment": "vendor", "segment_reason": "Global insurance broker and risk advisor exhibiting as a service provider to procurement.",
+   "industry": "Insurance", "hq_country": "IE", "dach": false, "employees_band": "20000+",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Coface, Niederlassung in Deutschland"], "name": "Coface", "domain": "coface.com",
+   "segment": "vendor", "segment_reason": "Trade credit insurance, business information and receivables services provider.",
+   "industry": "Insurance", "hq_country": "FR", "dach": false, "employees_band": "5001-20000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Craiss Generation Logistik GmbH & Co. KG"], "name": "Craiss", "domain": "craiss.com",
+   "segment": "buyer", "segment_reason": "Family-owned logistics provider (transport management, contract logistics) with 21 sites and about 1,000 staff; logistics buyer profile.",
+   "industry": "Logistics & transport", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["EcoVadis Germany GmbH", "EcoVadis"], "name": "EcoVadis", "domain": "ecovadis.com",
+   "segment": "vendor", "segment_reason": "Sustainability ratings and supplier ESG risk platform; procurement-adjacent vendor.",
+   "industry": "Software", "hq_country": "FR", "dach": false, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["einmalbedarfe.de"], "name": "einmalbedarfe.de", "domain": "einmalbedarfe.de",
+   "segment": "vendor", "segment_reason": "Procurement intermediary handling one-off and C-part purchases under a single-creditor model; service vendor to procurement.",
+   "industry": "Procurement services", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["enPORTAL GmbH"], "name": "enPORTAL", "domain": "enportal.de",
+   "segment": "vendor", "segment_reason": "Digital energy procurement platform and energy data services for businesses.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["FACTUREE – Der Online-Fertiger"], "name": "FACTUREE", "domain": "facturee.de",
+   "segment": "vendor", "segment_reason": "Online manufacturing platform sourcing drawing parts through a certified supplier network; marketplace-style supplier to procurement.",
+   "industry": "Contract manufacturing platform", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Falck Fire Services DE GmbH"], "name": "Falck", "domain": "falck.com",
+   "segment": "vendor", "segment_reason": "Outsourced industrial fire brigade, rescue and site safety services provider.",
+   "industry": "Business services", "hq_country": "DK", "dach": false, "employees_band": "20000+",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Gorenc Metal d.o.o."], "name": "Gorenc Metal", "domain": "gorencmetal.si",
+   "segment": "buyer", "segment_reason": "Slovenian sheet-metal and CNC job shop; an operating manufacturer but small and outside DACH.",
+   "industry": "Industrial manufacturing", "hq_country": "SI", "dach": false, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["GORR Language Service Provider"], "name": "GORR", "domain": "gorr-translation.com",
+   "segment": "vendor", "segment_reason": "Translation and interpreting services provider.",
+   "industry": "Business services", "hq_country": "SI", "dach": false, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Horváth & Partner GmbH"], "name": "Horváth", "domain": "horvath-partners.com",
+   "segment": "partner", "segment_reason": "Stuttgart management consultancy (about 1,400 staff) for transformation, performance management and digitalisation; referral and implementation partner.",
+   "industry": "Consulting", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["INES d.o.o."], "name": "INES", "domain": "ines.si",
+   "segment": "buyer", "segment_reason": "Slovenian machining, cutting and hydraulics manufacturer; an operating manufacturer but small and outside DACH.",
+   "industry": "Industrial manufacturing", "hq_country": "SI", "dach": false, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["KÖTTER Services"], "name": "KÖTTER Services", "domain": "koetter.de",
+   "segment": "vendor", "segment_reason": "Essen-based security, cleaning and facility services group (about 16,400 staff) exhibiting as a service provider.",
+   "industry": "Business services", "hq_country": "DE", "dach": true, "employees_band": "5001-20000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Mittelstand-Digital Zentrum WertNetzWerke", "Mittelstand Digital Zentrum Wertnetzwerke"], "name": "Mittelstand-Digital Zentrum WertNetzWerke", "domain": "mittelstand-digital-wertnetzwerke.de",
+   "segment": "other", "segment_reason": "Federally funded SME digitalisation centre under the Mittelstand-Digital programme.",
+   "industry": "Public sector", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["MOJSTROVINA, d.o.o., Slowenien"], "name": "Mojstrovina", "domain": "mojstrovina.si",
+   "segment": "buyer", "segment_reason": "Slovenian machine-component manufacturer with about 95 staff; an operating manufacturer but small and outside DACH.",
+   "industry": "Industrial manufacturing", "hq_country": "SI", "dach": false, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["MPT d.o.o."], "name": "MPT", "domain": "mpt.si",
+   "segment": "buyer", "segment_reason": "Slovenian injection-moulding and assembly firm with 31 staff; an operating manufacturer but very small and outside DACH.",
+   "industry": "Industrial manufacturing", "hq_country": "SI", "dach": false, "employees_band": "1-50",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["N4 Leipzig GmbH"], "name": "N4", "domain": "n4.de",
+   "segment": "vendor", "segment_reason": "Software house (Saarbrücken and Leipzig) offering custom development and QUICK CONTRACT framework-contract management.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["NASHER Negotiation Institute"], "name": "NASHER Negotiation Institute", "domain": "nasher.com",
+   "segment": "vendor", "segment_reason": "Negotiation consulting and training for procurement teams; a service vendor, unlikely to implement automation.",
+   "industry": "Consulting", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Navan Germany GmbH", "Navan"], "name": "Navan", "domain": "navan.com",
+   "segment": "vendor", "segment_reason": "Business travel and expense management platform; finance-adjacent but not order or supplier invoice automation.",
+   "industry": "Software", "hq_country": "US", "dach": false, "employees_band": "1001-5000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Omnea Limited", "Omnea"], "name": "Omnea", "domain": "omnea.co",
+   "segment": "competitor", "segment_reason": "London AI-native procurement orchestration and intake platform; on the seed competitor list.",
+   "industry": "Software", "hq_country": "GB", "dach": false, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Onventis GmbH", "Onventis"], "name": "Onventis", "domain": "onventis.de",
+   "segment": "competitor", "segment_reason": "Stuttgart source-to-pay SaaS for the Mittelstand, including purchasing and invoice processes and an agentic AI layer.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Orkoplast d.o.o."], "name": "Orkoplast", "domain": "orkoplast.si",
+   "segment": "buyer", "segment_reason": "Vertically integrated Slovenian component maker (tooling, metal forming, plastics; IATF 16949); operating manufacturer outside DACH.",
+   "industry": "Industrial manufacturing", "hq_country": "SI", "dach": false, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Pactum AI"], "name": "Pactum", "domain": "pactum.com",
+   "segment": "competitor", "segment_reason": "Autonomous AI supplier negotiation; on the seed competitor list.",
+   "industry": "Software", "hq_country": "US", "dach": false, "employees_band": "51-200",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Pedlar GmbH"], "name": "Pedlar", "domain": "pedlar.de",
+   "segment": "vendor", "segment_reason": "Procurement intermediary taking over one-off purchases under a single-creditor model; service vendor to operational procurement.",
+   "industry": "Procurement services", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["PIEMONTE - ITALY"], "name": "Piemonte Agency (Regione Piemonte)", "domain": "centroestero.org",
+   "segment": "other", "segment_reason": "Regional government investment and export agency promoting Piedmont suppliers.",
+   "industry": "Public sector", "hq_country": "IT", "dach": false, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["POLYGON Deutschland GmbH"], "name": "POLYGON", "domain": "polygongroup.com",
+   "segment": "vendor", "segment_reason": "Fire and water damage restoration services group (8,000+ staff) exhibiting as a service provider.",
+   "industry": "Business services", "hq_country": "SE", "dach": false, "employees_band": "5001-20000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["Prewave"], "name": "Prewave", "domain": "prewave.com",
+   "segment": "vendor", "segment_reason": "Vienna AI platform for supply chain risk and sustainability monitoring; procurement-adjacent vendor.",
+   "industry": "Software", "hq_country": "AT", "dach": true, "employees_band": "201-1000",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Promena"], "name": "Promena", "domain": "promena.net",
+   "segment": "competitor", "segment_reason": "Cloud procurement suite (e-procurement, sourcing, contracts, SRM) with AI analytics.",
+   "industry": "Software", "hq_country": "TR", "dach": false, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
+
+  {"aliases": ["refundrebel GmbH"], "name": "refundrebel", "domain": "refundrebel.com",
+   "segment": "vendor", "segment_reason": "Mobility tech that automates rail delay compensation and BahnCard management for companies.",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "1-50",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
+
+  {"aliases": ["Rodex Mechatronics d.o.o."], "name": "Rodex Mechatronics", "domain": "rodex-mechatronics.com",
+   "segment": "buyer", "segment_reason": "Slovenian series manufacturer of mechatronic components (tooling, injection moulding, sensors, assembly); operating manufacturer outside DACH.",
+   "industry": "Industrial manufacturing", "hq_country": "SI", "dach": false, "employees_band": "unknown",
+   "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"}
+]
