@@ -16,7 +16,7 @@ from fastapi import Depends, FastAPI, Form, HTTPException, Request
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
-from app import copilot, hubspot, scout, secrets_store
+from app import copilot, hubspot, secrets_store, summaries
 from pipeline import build as pipeline
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -172,9 +172,6 @@ def data(request: Request):
         return {
             "events": [json.loads(r["data"]) | ({"summary": r["text"], "summary_model": r["model"], "summary_at": r["created_at"]} if r["text"] else {})
                        for r in con.execute("SELECT e.data, s.text, s.model, s.created_at FROM events e LEFT JOIN event_summaries s ON s.event_id = e.id")],
-            "candidates": [json.loads(r["data"]) | {"status": r["status"], "found_at": r["found_at"], "decided_at": r["decided_at"]}
-                           for r in con.execute("SELECT * FROM event_candidates ORDER BY found_at DESC")],
-            "scout_runs": [dict(r) for r in con.execute("SELECT * FROM scout_runs ORDER BY id DESC LIMIT 5")],
             "contacts": rows("SELECT data FROM contacts"),
             "accounts": rows("SELECT data FROM accounts"),
             "appearances": rows("SELECT data FROM appearances"),
@@ -604,7 +601,7 @@ def copilot_models():
 
 
 class Setting(BaseModel):
-    key: Literal["copilot_model", "copilot_effort", "scout_daily"]
+    key: Literal["copilot_model", "copilot_effort"]
     value: str = Field(max_length=200)
 
 
@@ -612,12 +609,9 @@ class Setting(BaseModel):
 def save_setting(s: Setting):
     if s.key == "copilot_effort" and s.value not in ("low", "medium", "high"):
         raise HTTPException(400, "Effort is low, medium or high")
-    if s.key == "scout_daily" and s.value not in ("0", "1"):
-        raise HTTPException(400, "Daily scout is on (1) or off (0)")
     with db() as con:
         con.execute("INSERT OR REPLACE INTO settings VALUES (?, ?)", (s.key, s.value))
-        label = {"copilot_model": "Copilot model", "copilot_effort": "Copilot thinking effort", "scout_daily": "Daily event scout"}[s.key]
-        log(con, "config", f"{label} set to {'on' if s.value == '1' else 'off' if s.value == '0' else s.value}")
+        log(con, "config", f"Copilot {'model' if s.key == 'copilot_model' else 'thinking effort'} set to {s.value}")
         con.commit()
     return {"ok": True}
 
@@ -656,8 +650,7 @@ def settings(request: Request):
     with db() as con:
         model = copilot.setting(con, "copilot_model")
         effort = copilot.setting(con, "copilot_effort") or "medium"
-        scout_daily = copilot.setting(con, "scout_daily") == "1"
-    return {"role": request.state.role, "scout_daily": scout_daily, "hubspot": secrets_store.status("hubspot"),
+    return {"role": request.state.role, "hubspot": secrets_store.status("hubspot"),
             "openrouter": secrets_store.status("openrouter") | {"health": secrets_store.health("openrouter")},
             "copilot_model": model, "copilot_effort": effort}
 
@@ -746,46 +739,12 @@ def hubspot_remove(r: Remove):
 
 
 
-# ---------- the event scout and event summaries ----------
-
-@app.post("/api/events/scout")
-def scout_start():
-    try:
-        scout.start("button")
-    except RuntimeError as e:
-        raise HTTPException(409, str(e))
-    return {"ok": True}
-
-
-@app.get("/api/events/scout")
-def scout_status():
-    with db() as con:
-        last = con.execute("SELECT * FROM scout_runs ORDER BY id DESC LIMIT 1").fetchone()
-    return {"running": scout._lock.locked(), "last": dict(last) if last else None}
-
-
-class CandidateAction(BaseModel):
-    action: Literal["track", "dismiss", "restore"]
-
-
-@app.post("/api/events/candidates/{cand_id}")
-def candidate_action(cand_id: str, a: CandidateAction):
-    status = {"track": "tracked", "dismiss": "dismissed", "restore": "new"}[a.action]
-    with write_lock, db() as con:
-        row = con.execute("SELECT data FROM event_candidates WHERE id = ?", (cand_id,)).fetchone()
-        if not row:
-            raise HTTPException(404, "Unknown candidate")
-        con.execute("UPDATE event_candidates SET status = ?, decided_at = ? WHERE id = ?", (status, pipeline.now(), cand_id))
-        log(con, "scout", f"{'Tracked' if a.action == 'track' else 'Dismissed' if a.action == 'dismiss' else 'Restored'} {json.loads(row['data'])['name']}")
-        con.commit()
-        pipeline.build(con=con)  # a tracked event appears in the list (people not sourced yet)
-    return {"ok": True, "status": status}
-
+# ---------- event summaries ----------
 
 @app.post("/api/events/{event_id}/summary")
 def event_summary(event_id: str):
     with db() as con:
         try:
-            return scout.summarize(con, event_id)
+            return summaries.summarize(con, event_id)
         except RuntimeError as e:
             raise HTTPException(400, str(e))

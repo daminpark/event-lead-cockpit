@@ -595,26 +595,11 @@ function renderEventsList() {
   counts.all = S.data.events.length;
   const events = S.data.events.filter(e => filter === 'all' || eventStatus(e) === filter)
     .sort((a, b) => (a.past - b.past) || b.score - a.score || a.start.localeCompare(b.start));
-  const cands = S.data.candidates.filter(c => c.status === 'new');
-  const run = S.scoutRun || S.data.scout_runs[0];
-  const runText = !run ? 'Not run yet' : run.status === 'running' ? 'Searching the web…'
-    : run.status === 'failed' ? `Last run failed: ${esc(run.error || '')}` : `Last run ${esc((run.finished_at || '').slice(0, 16).replace('T', ' '))} UTC · found ${run.found} new${run.cost ? ` · $${(+run.cost).toFixed(2)}` : ''}`;
   $('eventsList').innerHTML = `
     <div class="panel step">
       <div><div class="stepno">Step 1</div><h3>Choose the events worth going to</h3>
         <p class="lead" style="margin:0">Each event is scored on how many strong-fit people its lists name, how much of the list is worth a look, whether GeneralMind already has a stand, timing, travel, and whether this year's list is out. Open an event to see why, then mark it Going or Not going and choose who to meet there.</p></div>
-      <div class="stepside"><button class="btn primary" id="scoutBtn" ${S.scouting ? 'disabled' : ''}>${S.scouting ? 'Searching…' : 'Find new events'}</button>
-        <div style="color:var(--muted);font-size:12px;max-width:260px">${runText}</div></div>
     </div>
-    ${cands.length ? `<div class="panel"><h3>New from the event scout <span class="chip lane lane-review">${cands.length}</span></h3>
-      <p class="lead">Found on the web by the scout, following the Events playbook. Track the ones worth keeping; their people get sourced next. Dates marked unconfirmed should be checked on the organiser's site.</p>
-      <div class="evlist">${cands.map(c => `<div class="evrow" data-cand="${esc(c.id)}"><div class="evmain" style="grid-template-columns:minmax(0,1fr) auto">
-        <div class="evinfo"><div class="t1">${esc(c.name)} <span class="chip">${c.date_confirmed ? 'date confirmed' : 'date unconfirmed'}</span></div>
-          <div class="t2">${fmtDate(c.start, c.end)} · ${esc(c.city || '')}${c.country ? ` (${esc(c.country)})` : ''} · ${esc(c.format || '')} · found ${fmtDay(c.found_at)}</div>
-          <div style="font-size:13px;margin-top:6px">${esc(c.why || '')}</div>
-          <div class="chips" style="margin-top:6px">${safeUrl(c.url) ? `<a class="chip" href="${esc(c.url)}" target="_blank" rel="noopener">Official site ↗</a>` : ''}${(c.sources || []).map(s => safeUrl(s.url) ? `<a class="chip" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.type)} (${esc(s.edition || '')}) ↗</a>` : '').join('')}</div>
-          ${c.notes ? `<div class="note">${esc(c.notes)}</div>` : ''}</div>
-        <div class="evacts"><button class="btn ok" data-track>Track</button><button class="btn no" data-dismiss>Dismiss</button></div></div></div>`).join('')}</div></div>` : ''}
     <div class="stabs">${EVENT_STATUS.map(([k, l]) => `<button class="stab ${filter === k ? 'on' : ''}" data-evf="${k}">${l} <span class="num">${counts[k] || 0}</span></button>`).join('')}</div>
     <div class="list">${events.length ? `<div class="evtable head"><div>Score</div><div>Event</div><div>Status</div><div>People</div><div>Found</div><div></div></div>` + events.map(e => {
       const st = eventStatus(e), lane = (EVENT_LANES[e.lane] || ['', 'filtered'])[1], n = statusCounts([e.id]);
@@ -628,36 +613,8 @@ function renderEventsList() {
         <div class="acts"><span style="color:var(--faint)">›</span></div>
       </div>`;
     }).join('') : '<div class="empty">No events here.</div>'}</div>`;
-  $('scoutBtn').onclick = startScout;
   $('eventsList').querySelectorAll('[data-evf]').forEach(b => b.onclick = () => { S.evFilter = b.dataset.evf; renderEventsList(); });
   $('eventsList').querySelectorAll('[data-ev]').forEach(r => r.onclick = () => openEvent(r.dataset.ev));
-  $('eventsList').querySelectorAll('[data-cand]').forEach(card => {
-    const id = card.dataset.cand;
-    card.querySelector('[data-track]').onclick = () => candidate(id, 'track');
-    card.querySelector('[data-dismiss]').onclick = () => candidate(id, 'dismiss');
-  });
-}
-
-async function startScout() {
-  const r = await fetch('api/events/scout', { method: 'POST' });
-  const out = await r.json().catch(() => ({}));
-  if (!r.ok) return toast(out.detail || 'Could not start the scout');
-  S.scouting = true; S.scoutRun = { status: 'running' }; renderEventsList();
-  toast('The scout is searching the web. This takes a minute or two.');
-  const poll = async () => {
-    const st = await (await fetch('api/events/scout')).json().catch(() => null);
-    if (st?.running) return setTimeout(poll, 3000);
-    S.scouting = false; S.scoutRun = st?.last;
-    await load();
-    toast(st?.last?.status === 'done' ? `The scout found ${st.last.found} new event${st.last.found === 1 ? '' : 's'}` : 'The scout ran into a problem');
-  };
-  setTimeout(poll, 3000);
-}
-
-async function candidate(id, action) {
-  const r = await fetch(`api/events/candidates/${encodeURIComponent(id)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action }) });
-  toast(r.ok ? (action === 'track' ? 'Tracked: it is now in the events list' : 'Dismissed') : 'Could not save');
-  await load();
 }
 
 // ---------- events: one event ----------
@@ -697,7 +654,7 @@ function renderEventPage() {
         ${extra.length ? `<div style="margin-top:8px"><b>Exhibiting with no named person yet (${extra.length}):</b></div><div class="chips" style="margin-top:4px">${extra.slice(0, 30).map(a => `<span class="chip">${esc(a.name)}${a.lane === 'fast_track' ? ' ★' : ''}</span>`).join('')}${extra.length > 30 ? `<span class="chip">and ${extra.length - 30} more</span>` : ''}</div><div class="note">At a trade fair these exhibitors are the prospects; the next step is finding the right person at each through an enrichment provider. ★ marks a strong-fit company.</div>` : ''}</div>` : ''}
     </div>
     <h3 class="sechead">People at this event <span>${e.not_sourced ? '' : `${n.strong} strong fit still to review · ${n.approved + n.hubspot} approved to meet`}</span></h3>
-    ${e.not_sourced ? `<div class="panel"><div class="note" style="margin:0">People not sourced yet. The scout found this event on ${fmtDay(e.found_at)}; reading its speaker and exhibitor lists runs as a batch for now (next build: automatically after tracking).</div></div>` : ''}`;
+    ${e.not_sourced ? `<div class="panel"><div class="note" style="margin:0">People not sourced yet: reading this event's speaker and exhibitor lists hasn't run.</div></div>` : ''}`;
   const top = $('eventTop');
   top.querySelectorAll('[data-going]').forEach(b => b.onclick = () => decide('event', e.id, decisionOf('event', e.id)?.decision === b.dataset.going ? 'clear' : b.dataset.going));
   top.querySelector('[data-more]').onclick = () => { S.evOpen = open ? null : e.id; renderEventPage(); };
