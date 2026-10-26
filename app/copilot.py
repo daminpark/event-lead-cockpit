@@ -104,6 +104,7 @@ def models():
         p = m.get("pricing") or {}
         out.append({"id": m["id"], "name": m.get("name", m["id"]),
                     "price": f"${float(p.get('prompt') or 0) * 1e6:.2f} / ${float(p.get('completion') or 0) * 1e6:.2f} per M tokens"})
+    out.sort(key=lambda m: m["name"].lower())
     _models.update(at=time.time(), list=out)
     return out
 

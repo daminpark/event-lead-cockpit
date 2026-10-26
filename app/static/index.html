@@ -1298,7 +1298,10 @@ async function renderSettings() {
       ${conn('hubspot', 'HubSpot', 'A private app token lets the cockpit create and update companies and contacts. In HubSpot: Settings → Integrations → Private apps (or Development → Legacy apps) → create an app with read and write access to contacts and companies and their properties, then copy its token.', 'pat-…')}
       ${conn('openrouter', 'OpenRouter (copilot)', 'The copilot talks to AI models through OpenRouter, so the model can be changed below without touching code. Create a key at openrouter.ai → Keys, ideally with a monthly credit limit.', 'sk-or-…')}
     </div>
-    <div class="panel"><h3>Copilot model</h3><p class="lead">Applies to everyone. Prices are per million tokens in / out.</p><select id="setModel" ${owner ? '' : 'disabled'} style="width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)"><option>Loading…</option></select></div>
+    <div class="panel"><h3>Copilot model</h3><p class="lead">Applies to everyone. Prices are per million tokens in / out. Only models that can use tools are listed, since the copilot looks things up.</p>
+      <input type="search" id="modelFilter" placeholder="Filter models, e.g. kimi, claude, gemini" ${owner ? '' : 'disabled'} style="width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink);margin-bottom:8px">
+      <select id="setModel" size="10" ${owner ? '' : 'disabled'} style="width:100%;font:inherit;padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)"><option>Loading…</option></select>
+      <div id="modelNow" style="color:var(--muted);font-size:12.5px;margin-top:6px"></div></div>
     <div class="panel"><h3>You</h3><p class="lead">Your name is saved with your decisions and notes.</p><button class="btn" id="setWho">Reviewer: ${esc(S.reviewer || 'not set')}</button> <a class="btn" href="logout">Sign out (to use another code)</a></div>`;
   const root = $('settingsView');
   root.querySelectorAll('[data-save-secret]').forEach(b => b.onclick = () => saveSecret(b.dataset.saveSecret, root.querySelector(`[data-secret="${b.dataset.saveSecret}"]`).value));
@@ -1308,8 +1311,23 @@ async function renderSettings() {
     const m = await (await fetch('api/copilot/models')).json();
     const sel = $('setModel');
     if (!m.configured) { sel.innerHTML = '<option>Add an OpenRouter key first</option>'; sel.disabled = true; return; }
-    sel.innerHTML = m.models.map(x => `<option value="${esc(x.id)}" ${x.id === m.current ? 'selected' : ''}>${esc(x.name)} · ${esc(x.price)}</option>`).join('');
-    sel.onchange = async () => { const r = await fetch('api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: 'copilot_model', value: sel.value }) }); toast(r.ok ? 'Model saved for everyone' : 'Only the owner can change the model'); };
+    const SUGGESTED = ['anthropic/claude-sonnet-5.5', 'google/gemini-4-argon', 'moonshotai/kimi-k3.1-pro', 'openai/gpt-6.1-terra', 'anthropic/claude-haiku-5.5'];
+    const opt = x => `<option value="${esc(x.id)}" ${x.id === m.current ? 'selected' : ''}>${esc(x.name)} · ${esc(x.price)}</option>`;
+    const draw = (q = '') => {
+      const match = x => !q || `${x.id} ${x.name}`.toLowerCase().includes(q.toLowerCase());
+      const sugg = SUGGESTED.map(id => m.models.find(x => x.id === id)).filter(Boolean).filter(match);
+      const rest = m.models.filter(x => !x.id.endsWith(':batch') && !SUGGESTED.includes(x.id)).filter(match);
+      sel.innerHTML = (sugg.length ? `<optgroup label="Suggested">${sugg.map(opt).join('')}</optgroup>` : '') + `<optgroup label="All models (${rest.length})">${rest.map(opt).join('')}</optgroup>`;
+    };
+    draw();
+    const now = m.models.find(x => x.id === m.current);
+    $('modelNow').textContent = now ? `In use: ${now.name} (${now.price})` : `In use: ${m.current}`;
+    $('modelFilter').oninput = e => draw(e.target.value);
+    sel.onchange = async () => {
+      const r = await fetch('api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: 'copilot_model', value: sel.value }) });
+      toast(r.ok ? 'Model saved for everyone' : 'Only the owner can change the model');
+      if (r.ok) { const x = m.models.find(y => y.id === sel.value); m.current = sel.value; $('modelNow').textContent = `In use: ${x?.name || sel.value} (${x?.price || ''})`; }
+    };
   } catch { $('setModel').innerHTML = '<option>Models unavailable</option>'; }
 }
 
