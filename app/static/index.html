@@ -1580,11 +1580,11 @@ async function renderSettings() {
   if (!st) return;
   const owner = st.role === 'owner';
   const conn = (name, title, help, placeholder) => {
-    const c = st[name], ok = name === 'hubspot' ? S.hsStatus?.ok : c.health?.ok;
+    const c = st[name], ok = c.health?.ok;
     return `<div class="panel">
       <h3><i class="dot ${c.set ? (ok ? 'ok' : 'bad') : ''}"></i>&nbsp; ${title}</h3>
       <p class="lead">${help}</p>
-      <dl class="kv"><dt>Status</dt><dd>${c.set ? `Key saved ${c.hint ? `(ends ${esc(c.hint)})` : ''}, ${c.source === 'cockpit' ? 'set here' : 'set on the server'}${name === 'hubspot' && S.hsStatus ? ` · ${S.hsStatus.ok ? 'connection healthy' : esc(S.hsStatus.message || 'not connected')}` : ''}${c.health ? ` · <b style="color:${c.health.ok ? 'var(--fast)' : 'var(--competitor)'}">${esc(c.health.detail)}</b>` : ''}` : 'Not set'}</dd></dl>
+      <dl class="kv"><dt>Status</dt><dd>${c.set ? `Key saved ${c.hint ? `(ends ${esc(c.hint)})` : ''}, ${c.source === 'cockpit' ? 'set here' : 'set on the server'}${c.health ? ` · <b style="color:${c.health.ok ? 'var(--fast)' : 'var(--competitor)'}">${esc(c.health.detail)}</b>` : ''}` : 'Not set'}</dd></dl>
       ${owner ? `<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><input type="password" autocomplete="off" data-secret="${name}" placeholder="${placeholder}" style="flex:1;min-width:220px;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)">
         <button class="btn primary" data-save-secret="${name}">Save</button>${c.source === 'cockpit' ? `<button class="btn" data-remove-secret="${name}">Remove</button>` : ''}</div><div class="err" id="err-${name}"></div>`
       : '<div class="note">Only the owner can change keys.</div>'}

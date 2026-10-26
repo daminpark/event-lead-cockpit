@@ -635,7 +635,7 @@ def settings(request: Request):
     with db() as con:
         model = copilot.setting(con, "copilot_model")
         effort = copilot.setting(con, "copilot_effort") or "medium"
-    return {"role": request.state.role, "hubspot": secrets_store.status("hubspot"),
+    return {"role": request.state.role, "hubspot": secrets_store.status("hubspot") | {"health": secrets_store.health("hubspot")},
             "openrouter": secrets_store.status("openrouter") | {"health": secrets_store.health("openrouter")},
             "copilot_model": model, "copilot_effort": effort}
 
