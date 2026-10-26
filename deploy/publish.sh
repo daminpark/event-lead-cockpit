@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Refresh the public copy (github.com/daminpark/event-lead-cockpit): the same commits and dates, minus the files
-# that name people, and with any name that slipped into another file replaced. Commits made before the "Why:"
-# convention get their why line from deploy/commit-notes.json (written afterwards from the build conversation).
+# that name people, and with any name that slipped into another file replaced. Commits listed in
+# deploy/commit-notes.json get that short "Why:" line instead of their own (written afterwards from the build
+# conversation); an empty entry means no line.
 # Refuses to publish if any person's name is still found anywhere in the history.
 #   ./deploy/publish.sh            # build, check and push
 #   ./deploy/publish.sh --dry-run  # build and check only, and print the public history
@@ -34,9 +35,10 @@ NOTES="$NOTES" uvx --quiet git-filter-repo --quiet --force --invert-paths \
   --commit-callback '
 import json, os
 why = json.load(open(os.environ["NOTES"], encoding="utf-8")).get(commit.original_id.decode())
-if why:
+if why is not None:  # "" drops the line
     subject, _, rest = commit.message.decode().partition("\n")
-    commit.message = (subject + "\n\n" + why + "\n" + ("\n" + rest.lstrip("\n") if rest.strip() else "")).encode()
+    body = "\n".join(l for l in rest.split("\n") if not l.startswith("Why:")).strip("\n")
+    commit.message = ("\n\n".join(x for x in (subject, why, body) if x) + "\n").encode()
 '
 uvx --quiet git-filter-repo --quiet --force --replace-text "$tmp/replace.txt"
 python3 - "$tmp/names.txt" <<'PY'
