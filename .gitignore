@@ -4,3 +4,4 @@ data/cockpit.db
 .env
 data/sources/
 deploy/local.env
+.claude/worktrees/
