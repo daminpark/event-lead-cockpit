@@ -285,6 +285,7 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
 .row .brief-line { color: var(--ink); font-size: 12.5px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .chip.dnc { background: var(--competitor-soft); color: var(--competitor); font-weight: 600; }
 .chip.hs { background: var(--customer-soft); color: var(--customer); font-weight: 600; }
+.hs-line { color: var(--muted); font-size: 12px; margin-top: 3px; }
 
 .crit { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; align-items: start; }
 .crit .side { position: sticky; top: 76px; }
@@ -483,7 +484,7 @@ const FUNCTION_LABELS = {
 
 const S = {
   data: null, events: {}, accounts: {}, contacts: [], decisions: new Map(), history: [],
-  status: 'review', pushSel: new Set(), eventId: null, peopleScope: undefined, evOpen: null, evFilter: 'all',
+  status: 'review', pushSel: new Set(), hsFound: {}, hsChecking: new Set(), eventId: null, peopleScope: undefined, evOpen: null, evFilter: 'all',
   sel: null, reviewer: '', view: 'events', undo: [],
 };
 
@@ -853,12 +854,14 @@ function renderPeople() {
   if (!rows.find(r => r.id === S.sel)) S.sel = rows[0]?.id || null;
   [...S.pushSel].forEach(id => { const c = S.contacts.find(x => x.id === id); if (!c || statusOf(c) !== 'approved' || isSuppressed(c)) S.pushSel.delete(id); });
   const st = S.hsStatus || {}, ev = S.events[scope];
+  if (S.status === 'approved' && st.ok) checkHubspot(rows);
   $('pushBar').style.display = S.status === 'approved' ? '' : 'none';
   if (S.status === 'approved') $('pushBar').innerHTML = `
     <label><input type="checkbox" id="selAll" ${rows.length && rows.every(r => isSuppressed(r) || S.pushSel.has(r.id)) ? 'checked' : ''}> Select all${ev ? ` at ${esc(ev.short)}` : ''}</label>
     <button class="btn primary" id="pushSel" ${S.pushSel.size && st.ok ? '' : 'disabled'}>Send ${S.pushSel.size || ''} to HubSpot</button>
     <a class="btn" href="api/export/contacts.csv${ev ? `?event=${encodeURIComponent(ev.id)}` : scope === 'going' ? `?event=${encodeURIComponent(goingIds().join(','))}` : ''}">Download CSV${ev ? ` for ${esc(ev.short)}` : scope === 'going' ? ' for these events' : ''}</a>
     <span style="color:var(--muted);font-size:12.5px"><i class="dot ${st.ok ? 'ok' : st.configured ? 'bad' : ''}"></i> ${st.ok ? 'HubSpot connected' : st.configured ? 'HubSpot not reachable' : 'Connect HubSpot in Settings'}</span>
+    <span style="color:var(--muted);font-size:12.5px" title="People and their companies">${st.ok ? sendPlan() : ''}</span>
     <span id="pushMsg" style="font-size:12.5px">${S.pushResult || ''}</span>`;
   const noPeople = ev && !S.contacts.some(c => c.event_id === ev.id);
   const empty = noPeople ? `No named people at ${esc(ev.short)} yet: its lists only name exhibiting companies (${ev.counts.companies_without_contact}). Click More under "About this event" to see them; the next step is finding the right person at each through an enrichment provider.` : { review: 'Nothing left to review here.', approved: 'Nobody approved yet. Approve people in To review.', hubspot: 'Nobody sent to HubSpot yet. Send approved people from the Approved tab.', rejected: 'Nobody rejected.' }[S.status];
@@ -877,7 +880,7 @@ function renderPeople() {
       <div class="fitcell">${S.status === 'approved' ? `<input type="checkbox" class="pick" ${S.pushSel.has(c.id) ? 'checked' : ''} ${isSuppressed(c) ? 'disabled title="On the do-not-contact list"' : 'title="Select for HubSpot"'}>` : ''}<div class="score num">${c.score}</div><div class="sug">${SUGGEST[c.lane]}</div></div>
       <div><div class="t1">${esc(c.name)}</div><div class="t2">${esc(c.title || 'No title listed')}</div></div>
       <div class="c-company"><div class="t1">${esc(a?.name || c.company || '—')}</div><div class="chips">${p.industry ? `<span class="chip">${esc(p.industry)}</span>` : ''}${p.hq_country ? `<span class="chip">${esc(p.hq_country)}</span>` : ''}${c.confidence === 'low' ? '<span class="chip warn">check data</span>' : ''}</div></div>
-      <div class="c-reasons">${isSuppressed(c) ? '<span class="chip dnc">Do not contact</span> ' : ''}${S.status !== 'hubspot' && S.hs.has(hsKey(c)) ? '<span class="chip hs" title="Sent from another event">Already in HubSpot</span> ' : ''}${c.brief ? `<div class="brief-line">${esc(c.brief)}</div>` : `<div class="chips">${topReasons(c.reasons)}</div>`}</div>
+      <div class="c-reasons">${isSuppressed(c) ? '<span class="chip dnc">Do not contact</span> ' : ''}${S.status !== 'hubspot' && S.hs.has(hsKey(c)) && !S.hsFound[c.id]?.contact ? '<span class="chip hs" title="Sent from another event">Already in HubSpot</span> ' : ''}${c.brief ? `<div class="brief-line">${esc(c.brief)}</div>` : `<div class="chips">${topReasons(c.reasons)}</div>`}${S.status === 'approved' ? hsLine(c) : ''}</div>
       ${actionsCell(c)}
     </div>`;
   });
@@ -941,6 +944,7 @@ async function pushSelected() {
   catch { out = { detail: 'HubSpot took too long to answer. It may still be running: check again in a minute.' }; }
   S.pushResult = res?.ok ? `<span style="color:var(--fast)">✓ ${esc(out.message)}</span>${out.errors?.length ? ` · ${out.errors.map(esc).join('; ')}` : ''}` : `<span style="color:var(--competitor)">${esc(out.detail || 'Sending failed')}</span>`;
   if (res?.ok) { toast(`Sent to HubSpot: ${ids.length} ${ids.length === 1 ? 'person' : 'people'}`); S.pushSel.clear(); }
+  S.hsFound = {};
   await load();
 }
 
@@ -980,7 +984,7 @@ function decideBlock(c) {
     return `<div class="note"><span class="status approve">In HubSpot</span>${who}. ${u ? `<a href="${esc(u)}" target="_blank" rel="noopener">Open in HubSpot ↗</a>` : ''} Changes from here on happen in HubSpot.
       ${S.data?.meta?.role === 'owner' ? '<div style="margin-top:8px"><button class="btn no" data-remove-hs style="font-size:12px;padding:3px 9px">Remove from HubSpot</button></div>' : ''}</div>`;
   }
-  const status = st === 'approved' ? `<div class="note"><span class="status approve">Approved</span>${who} · waiting to be sent to HubSpot</div>`
+  const status = st === 'approved' ? `<div class="note"><span class="status approve">Approved</span>${who} · waiting to be sent to HubSpot${hsLine(c)}</div>`
     : st === 'rejected' ? `<div class="note"><span class="status reject">Rejected</span>${d.reason ? `: ${esc(d.reason)}` : ''}${who}</div>` : '';
   const btns = st === 'review' ? `<button class="btn ok" data-act="approve">✓ Approve <span class="kbd">A</span></button><button class="btn no" data-act="reject">✕ Reject <span class="kbd">R</span></button>`
     : st === 'approved' ? `<button class="btn" data-act="clear">Unapprove</button><button class="btn no" data-act="reject">✕ Reject</button>`
@@ -1019,11 +1023,12 @@ function renderDrawer() {
     <div class="hint"><span class="kbd">J</span>/<span class="kbd">K</span> move · <span class="kbd">A</span> approve · <span class="kbd">R</span> then <span class="kbd">1</span>–<span class="kbd">6</span> reject · <span class="kbd">U</span> undo · <span class="kbd">O</span> open source</div>`;
   el.querySelector('[data-dnc]').onclick = () => toggleSuppression(c.person_key, c.name, dnc);
   el.querySelector('[data-remove-hs]')?.addEventListener('click', async () => {
-    if (!confirm(`Remove ${c.name} from HubSpot? Their record goes to HubSpot's recycle bin (restorable for 90 days), with their company if nobody else from it is there. Here they go back to Approved.`)) return;
+    if (!confirm(S.hs.has(key('contact_linked', c.person_key)) ? `Remove ${c.name} from HubSpot? They were in HubSpot before the cockpit, so their record stays there. Here they go back to Approved.`
+      : `Remove ${c.name} from HubSpot? Their record goes to HubSpot's recycle bin (restorable for 90 days), with their company if nobody else from it is there. Here they go back to Approved.`)) return;
     const r = await fetch('api/hubspot/remove', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contact_id: c.id }) });
     const out = await r.json().catch(() => ({}));
     toast(r.ok ? `${c.name} removed from HubSpot` : out.detail || 'Could not remove');
-    if (r.ok) { S.status = 'approved'; await load(); }
+    if (r.ok) { S.status = 'approved'; S.hsFound = {}; await load(); }
   });
   wireCopy(el);
   el.querySelectorAll('[data-act]').forEach(b => b.onclick = () => b.dataset.act === 'reject' ? openReject() : decide('contact', c.id, b.dataset.act));
@@ -1119,6 +1124,47 @@ async function refreshHubspot(fresh = false) {
   dot.className = 'dot ' + (st.ok ? 'ok' : st.configured ? 'bad' : '');
   $('hsPill').title = st.message || '';
   renderExport();
+  if (S.status === 'approved' && peopleShown()) renderPeople();
+}
+
+// Before sending: what HubSpot already has for the approved people shown (asked once each; the server caches it too).
+// A failed check never blocks anything: the line says so and sending works as before.
+const peopleShown = () => S.view === 'people' || (S.view === 'events' && !!S.eventId);
+async function checkHubspot(rows) {
+  const ids = rows.map(c => c.id).filter(id => !S.hsFound[id] && !S.hsChecking.has(id)).slice(0, 200);
+  if (!ids.length) return;
+  ids.forEach(id => S.hsChecking.add(id));
+  let out = null;
+  try { const r = await fetch('api/hubspot/lookup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contact_ids: ids }) }); if (r.ok) out = await r.json(); } catch {}
+  ids.forEach(id => { S.hsChecking.delete(id); S.hsFound[id] = out?.[id] || 'error'; });
+  if (peopleShown()) renderPeople();
+}
+const STAGES = { marketingqualifiedlead: 'MQL', salesqualifiedlead: 'SQL' };
+function hsLine(c) {
+  const f = S.hsFound[c.id];
+  if (!f) return S.hsChecking.has(c.id) ? '<div class="hs-line">Checking HubSpot…</div>' : '';
+  if (f === 'error') return `<div class="hs-line">Couldn't check HubSpot</div>`;
+  if (!f.contact && S.hs.has(hsKey(c))) return '';  // sent from another event: the row says so
+  const rec = f.contact || f.company;
+  if (!rec) return '<div class="hs-line">New to HubSpot</div>';
+  const about = [STAGES[rec.stage] || rec.stage, rec.owner && `owner ${rec.owner}`].filter(Boolean).map(esc).join(' · ');
+  const u = hubspotUrl(f.contact ? 'contact' : 'account', rec.id);
+  return `<div class="hs-line">${f.contact ? 'Already in HubSpot' : 'New contact; company in HubSpot'}${about ? `: ${about}` : ''}${u ? ` · <a href="${esc(u)}" target="_blank" rel="noopener">Open ↗</a>` : ''}</div>`;
+}
+// What Send will do with the selection: records to create, and existing ones that only get the GM fields.
+function sendPlan() {
+  const sel = [...S.pushSel].map(id => S.contacts.find(c => c.id === id)).filter(Boolean);
+  if (!sel.length) return '';
+  if (sel.some(c => S.hsChecking.has(c.id))) return 'Checking HubSpot…';
+  if (sel.some(c => !S.hsFound[c.id] || S.hsFound[c.id] === 'error')) return "Couldn't check HubSpot";
+  const seen = new Set(), n = { new: 0, old: 0 };
+  const count = (k, there) => { if (!seen.has(k)) { seen.add(k); n[there ? 'old' : 'new']++; } };
+  sel.forEach(c => {
+    const f = S.hsFound[c.id];
+    count(hsKey(c), f.contact || S.hs.has(hsKey(c)));
+    if (c.account_id) count(key('account', c.account_id), f.company || S.hs.has(key('account', c.account_id)));
+  });
+  return `${n.new} to create · ${n.old} already in HubSpot (GM fields only)`;
 }
 
 function renderExport() {

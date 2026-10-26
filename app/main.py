@@ -546,6 +546,34 @@ def hubspot_status(fresh: bool = False):
     return hubspot.status(fresh) | {"checked_at": pipeline.now(), "last_sync": dict(last) if last else None, "synced": {r["object_type"]: r["n"] for r in synced}}
 
 
+_lookup_cache = {}  # contact id -> (when, answer), so reopening the Approved tab doesn't ask HubSpot again
+
+
+class Lookup(BaseModel):
+    contact_ids: list[str] = Field(max_length=200)  # one event's approved people
+
+
+@app.post("/api/hubspot/lookup")
+def hubspot_lookup(q: Lookup):
+    """What HubSpot already has for each person and their company, before anything is sent. Read-only."""
+    now = dt.datetime.now().timestamp()
+    out = {i: _lookup_cache[i][1] for i in q.contact_ids if now - _lookup_cache.get(i, (0, None))[0] < 600}
+    missing = [i for i in q.contact_ids if i not in out]
+    if missing:
+        with db() as con:
+            people = [json.loads(r["data"]) for r in con.execute(f"SELECT data FROM contacts WHERE id IN ({','.join('?' * len(missing))})", missing)]
+            ids = list({c["account_id"] for c in people if c.get("account_id")})
+            accounts = [json.loads(r["data"]) for r in con.execute(f"SELECT data FROM accounts WHERE id IN ({','.join('?' * len(ids))})", ids)]
+        try:
+            found = hubspot.Client().lookup(accounts, people)
+        except (hubspot.HubSpotError, hubspot.httpx.HTTPError) as e:
+            raise HTTPException(502, f"HubSpot: {e}")
+        for c in people:
+            out[c["id"]] = {"contact": found["contacts"].get(c["person_key"]), "company": found["companies"].get(c.get("account_id"))}
+            _lookup_cache[c["id"]] = (now, out[c["id"]])
+    return out
+
+
 class Push(BaseModel):
     contact_ids: list[str] | None = Field(default=None, max_length=2000)  # None: everything approved
 
@@ -555,6 +583,7 @@ def hubspot_push(p: Push | None = None):
     if not write_lock.acquire(blocking=False):
         raise HTTPException(409, "A push or rebuild is already running")
     try:
+        _lookup_cache.clear()
         with db() as con:
             events, accounts, contacts, by_id = approved(con, set(p.contact_ids) if p and p.contact_ids is not None else None)
             try:
@@ -565,7 +594,8 @@ def hubspot_push(p: Push | None = None):
                 raise HTTPException(502, f"HubSpot: {e}")
             msg = (f"Pushed {summary['companies_created']} new and {summary['companies_updated']} updated companies, "
                    f"{summary['contacts_created']} new and {summary['contacts_updated']} updated contacts"
-                   + (f"; {len(summary['errors'])} errors" if summary["errors"] else ""))
+                   + (f"; {len(summary['errors'])} errors" if summary["errors"] else "")
+                   + ("; couldn't check HubSpot for records it already had" if summary.get("lookup_error") else ""))
             log(con, "hubspot", msg, summary)
             con.commit()
         return summary | {"message": msg}
@@ -654,6 +684,7 @@ def save_secret(sec: Secret):
     if error:
         raise HTTPException(400, error)
     hubspot.reset_status()
+    _lookup_cache.clear()
     with db() as con:
         log(con, "config", f"{'Saved' if sec.value.strip() else 'Removed'} the {'HubSpot token' if sec.name == 'hubspot' else 'OpenRouter key'}")
         con.commit()
@@ -709,6 +740,7 @@ def hubspot_remove(r: Remove):
         if not row:
             raise HTTPException(404, "Unknown person")
         c = json.loads(row["data"])
+        _lookup_cache.clear()
         try:
             out = hubspot.remove_person(con, c["person_key"], c.get("account_id"))
         except (hubspot.HubSpotError, hubspot.httpx.HTTPError) as e:
