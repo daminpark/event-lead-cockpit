@@ -319,8 +319,13 @@ def connect(path=DB):
     con.executescript(SCHEMA)
     if "scoring_version" not in {r["name"] for r in con.execute("PRAGMA table_info(decisions)")}:
         con.execute("ALTER TABLE decisions ADD COLUMN scoring_version INTEGER")
-    if "context" not in {r["name"] for r in con.execute("PRAGMA table_info(feedback)")}:
+    fb_cols = {r["name"] for r in con.execute("PRAGMA table_info(feedback)")}
+    if "context" not in fb_cols:
         con.execute("ALTER TABLE feedback ADD COLUMN context TEXT")  # recent actions and app state
+    if "status" not in fb_cols:  # open | planned | done | wontfix
+        con.execute("ALTER TABLE feedback ADD COLUMN status TEXT NOT NULL DEFAULT 'open'")
+        con.execute("UPDATE feedback SET status = 'done' WHERE handled_at IS NOT NULL")
+        con.commit()
     return con
 
 

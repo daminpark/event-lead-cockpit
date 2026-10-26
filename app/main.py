@@ -385,19 +385,39 @@ def feedback(f: Feedback):
 @app.get("/api/feedback")
 def feedback_list(all: bool = False):
     with db() as con:
-        sql = "SELECT * FROM feedback" + ("" if all else " WHERE handled_at IS NULL") + " ORDER BY id DESC"
+        sql = "SELECT * FROM feedback" + ("" if all else " WHERE status IN ('open', 'planned')") + " ORDER BY id DESC"
         return [dict(r) for r in con.execute(sql)]
 
 
-class Handled(BaseModel):
-    note: str = Field(min_length=1, max_length=1000)
+class NoteUpdate(BaseModel):
+    comment: str | None = Field(default=None, min_length=1, max_length=4000)
+    status: Literal["open", "planned", "done", "wontfix"] | None = None
+    handled_note: str | None = Field(default=None, max_length=1000)
+    author: str | None = Field(default=None, max_length=60)
 
 
-@app.post("/api/feedback/{note_id}/handled")
-def feedback_handled(note_id: int, h: Handled):
+@app.patch("/api/feedback/{note_id}")
+def feedback_update(note_id: int, u: NoteUpdate):
     with db() as con:
-        con.execute("UPDATE feedback SET handled_at = ?, handled_note = ? WHERE id = ?", (pipeline.now(), h.note, note_id))
-        log(con, "feedback", f"Feedback #{note_id} handled: {h.note[:120]}")
+        row = con.execute("SELECT * FROM feedback WHERE id = ?", (note_id,)).fetchone()
+        if not row:
+            raise HTTPException(404, "Unknown note")
+        status = u.status or row["status"]
+        con.execute("UPDATE feedback SET comment = ?, status = ?, handled_note = ?, handled_at = ? WHERE id = ?",
+                    (u.comment if u.comment is not None else row["comment"], status,
+                     u.handled_note if u.handled_note is not None else row["handled_note"],
+                     (row["handled_at"] or pipeline.now()) if status in ("done", "wontfix") else None, note_id))
+        changes = ", ".join(k for k, v in (("text", u.comment), ("status " + (u.status or ""), u.status), ("what was done", u.handled_note)) if v is not None)
+        log(con, "feedback", f"{u.author or 'Someone'} updated feedback #{note_id}: {changes}")
+        con.commit()
+        return dict(con.execute("SELECT * FROM feedback WHERE id = ?", (note_id,)).fetchone())
+
+
+@app.delete("/api/feedback/{note_id}", dependencies=[Depends(owner_only)])
+def feedback_delete(note_id: int):
+    with db() as con:
+        con.execute("DELETE FROM feedback WHERE id = ?", (note_id,))
+        log(con, "feedback", f"Deleted feedback #{note_id}")
         con.commit()
     return {"ok": True}
 

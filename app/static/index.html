@@ -213,6 +213,7 @@ dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid 
 .railitem .rc { display: flex; gap: 6px; margin-top: 4px; font-size: 11px; color: var(--muted); flex-wrap: wrap; }
 .railitem .rc span b { display: inline; font-size: 11px; color: var(--ink); }
 .railitem.dim { opacity: .55; }
+.rscore { flex: 0 0 auto; min-width: 28px; text-align: center; border-radius: 6px; padding: 1px 4px; font-size: 12px; font-weight: 700; background: var(--ls, var(--line-2)); color: var(--lc, var(--muted)); margin-top: 1px; }
 .evhead { display: flex; gap: 16px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .evhead h3 { margin: 2px 0; font-size: 17px; }
 .evhead .meta { color: var(--muted); font-size: 13px; }
@@ -335,11 +336,11 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
 <header>
   <div class="brand"><b>Event Lead Cockpit</b><span>Case study for GeneralMind · Pierre Park</span></div>
   <nav id="tabs">
-    <button data-view="events" class="on">1 · Events</button>
-    <button data-view="people">2 · People</button>
+    <button data-view="events" class="on">Events &amp; people</button>
     <button data-view="criteria">Criteria</button>
     <button data-view="playbooks">Playbooks</button>
     <button data-view="insights">Insights</button>
+    <button data-view="feedback">Feedback</button>
     <button data-view="settings">Settings</button>
     <button data-view="about">How it works</button>
   </nav>
@@ -358,40 +359,42 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
 <button id="fbBtn" class="fb-btn" title="Point at something and leave a note">Feedback</button>
 
 <main>
-  <section class="view on" id="v-events"><div id="eventsView"></div></section>
-
-  <section class="view" id="v-people">
+  <section class="view on" id="v-events">
     <div class="pwrap">
       <aside class="rail" id="rail"></aside>
       <div class="pmain">
-        <div class="panel evhead" id="evHead"></div>
-        <div class="stabs" id="statusTabs"></div>
-        <div class="toolbar">
-          <select id="fEvent" class="mobile-only" title="Which events"></select>
-          <input type="search" id="q" placeholder="Search name, title, company…">
-          <select id="fSuggest">
-            <option value="">All suggestions</option>
-            <option value="fast_track">Strong fit</option>
-            <option value="review">Possible</option>
-            <option value="filtered">Low fit</option>
-          </select>
-          <select id="fFunction"></select>
-          <select id="fSort">
-            <option value="score">Sort: fit</option>
-            <option value="company">Sort: company</option>
-          </select>
-          <label title="Partners, competitors and existing customers are kept out of review by default"><input type="checkbox" id="fOther"> Partners, competitors &amp; customers</label>
-          <span class="count" id="qCount"></span>
-        </div>
-        <div class="toolbar pushbar" id="pushBar" style="display:none"></div>
-        <div class="layout">
-          <div class="list" id="qList"></div>
-          <aside class="drawer" id="drawer"></aside>
+        <div id="overview"></div>
+        <div id="peopleMain">
+          <div class="panel evhead" id="evHead"></div>
+          <div class="stabs" id="statusTabs"></div>
+          <div class="toolbar">
+            <select id="fEvent" class="mobile-only" title="Which events"></select>
+            <input type="search" id="q" placeholder="Search name, title, company…">
+            <select id="fSuggest">
+              <option value="">All suggestions</option>
+              <option value="fast_track">Strong fit</option>
+              <option value="review">Possible</option>
+              <option value="filtered">Low fit</option>
+            </select>
+            <select id="fFunction"></select>
+            <select id="fSort">
+              <option value="score">Sort: fit</option>
+              <option value="company">Sort: company</option>
+            </select>
+            <label title="Partners, competitors and existing customers are kept out of review by default"><input type="checkbox" id="fOther"> Partners, competitors &amp; customers</label>
+            <span class="count" id="qCount"></span>
+          </div>
+          <div class="toolbar pushbar" id="pushBar" style="display:none"></div>
+          <div class="layout">
+            <div class="list" id="qList"></div>
+            <aside class="drawer" id="drawer"></aside>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
+  <section class="view" id="v-feedback"><div id="feedbackView"></div></section>
   <section class="view" id="v-criteria"><div id="criteria"></div></section>
   <section class="view" id="v-playbooks"><div id="playbooks"></div></section>
   <section class="view" id="v-insights"><div id="insights"></div><div id="learning"></div></section>
@@ -530,7 +533,7 @@ function fillFilters() {
   $('fFunction').value = keep;
 }
 
-function renderAll() { renderEvents(); renderPeople(); renderCriteria(); renderPlaybooks(); renderInsights(); renderExport(); if (S.view === 'settings') renderSettings(); renderAbout(); }
+function renderAll() { renderPeople(); renderCriteria(); renderPlaybooks(); renderInsights(); renderExport(); if (S.view === 'settings') renderSettings(); renderAbout(); }
 const isSuppressed = c => S.suppressed.has(c.person_key) || S.suppressed.has(c.id) || (c.account_id && S.suppressed.has(S.accounts[c.account_id]?.profile?.domain));
 const hsKey = c => key('contact', c.person_key);
 
@@ -559,13 +562,13 @@ function topReasons(reasons, n = 3) {
 function renderEvents() {
   const going = goingIds(), people = S.contacts.filter(c => going.includes(c.event_id) && statusOf(c) === 'review' && !OTHER_LANES.has(c.lane));
   const events = [...S.data.events].sort((a, b) => (a.past - b.past) || b.score - a.score || a.start.localeCompare(b.start));
-  $('eventsView').innerHTML = `
+  $('overview').innerHTML = `
     <div class="panel step">
-      <div><div class="stepno">Step 1</div><h3>Choose the events worth going to</h3>
+      <div><div class="stepno">Overview · step 1</div><h3>Choose the events worth going to</h3>
         <p class="lead" style="margin:0">Each event is scored on how many strong-fit people its lists name, how much of the list is worth a look, whether GeneralMind already has a stand, timing, travel, and whether this year's list is out. Mark the ones you'll attend; their people are reviewed in step 2.</p></div>
       <div class="stepside"><div class="big num">${going.length}<span style="font-size:15px;color:var(--muted);font-weight:500"> going</span></div>
         <div style="color:var(--muted);font-size:13px">${people.length} people there to review</div>
-        <button class="btn primary" id="toPeople" ${going.length ? '' : 'disabled'}>Step 2: review the people →</button></div>
+        <button class="btn primary" id="toPeople" ${going.length ? '' : 'disabled'}>Step 2: review their people →</button></div>
     </div>
     <div class="evlist">${events.map(e => {
       const d = decisionOf('event', e.id), [label, lane] = EVENT_LANES[e.lane] || ['', 'filtered'], open = S.evOpen === e.id;
@@ -585,7 +588,7 @@ function renderEvents() {
             <button class="btn ok ${d?.decision === 'approve' ? 'on' : ''}" data-going="approve" ${e.past ? 'disabled title="This event has already happened"' : ''}>${d?.decision === 'approve' ? '✓ Going' : 'Going'}</button>
             <button class="btn no ${d?.decision === 'reject' ? 'on' : ''}" data-going="reject">${d?.decision === 'reject' ? '✕ Not going' : 'Not going'}</button>
             <button class="btn" data-people>People →</button>
-            <button class="btn" data-copy="#/people/${encodeURIComponent(e.id)}/review" title="Copy a link to this event's people">Link</button>
+            <button class="btn" data-copy="#/events/${encodeURIComponent(e.id)}/review" title="Copy a link to this event's people">Link</button>
             <button class="btn icon" data-more title="Details">${open ? '▴' : '▾'}</button>
           </div>
         </div>
@@ -599,16 +602,15 @@ function renderEvents() {
         </div>` : ''}
       </div>`;
     }).join('')}</div>`;
-  $('toPeople')?.addEventListener('click', () => { S.evScope = 'going'; S.status = 'review'; S.sel = null; showView('people'); });
-  wireCopy($('eventsView'));
-  if (S.view === 'events') syncHash();
-  $('eventsView').querySelectorAll('.evrow').forEach(row => {
+  $('toPeople')?.addEventListener('click', () => { S.evScope = 'going'; S.status = 'review'; S.sel = null; renderPeople(); window.scrollTo(0, 0); });
+  wireCopy($('overview'));
+  $('overview').querySelectorAll('.evrow').forEach(row => {
     const id = row.dataset.ev;
     row.querySelectorAll('[data-going]').forEach(b => b.onclick = () => {
       const want = b.dataset.going, cur = decisionOf('event', id)?.decision;
       decide('event', id, cur === want ? 'clear' : want);
     });
-    row.querySelector('[data-people]').onclick = () => { S.evScope = id; S.status = 'review'; S.sel = null; showView('people'); };
+    row.querySelector('[data-people]').onclick = () => { S.evScope = id; S.status = 'review'; S.sel = null; renderPeople(); window.scrollTo(0, 0); };
     row.querySelector('[data-more]').onclick = () => { S.evOpen = S.evOpen === id ? null : id; renderEvents(); };
   });
 }
@@ -616,8 +618,8 @@ function renderEvents() {
 // ---------- step 2: people ----------
 function currentScope() {
   const going = goingIds();
-  if (S.evScope === undefined || (S.evScope === 'going' && !going.length)) S.evScope = going.length ? 'going' : '';
-  if (S.evScope && S.evScope !== 'going' && !S.events[S.evScope]) S.evScope = going.length ? 'going' : '';
+  if (S.evScope === undefined || (S.evScope === 'going' && !going.length)) S.evScope = going.length ? 'going' : 'overview';
+  if (S.evScope && !['going', 'overview'].includes(S.evScope) && !S.events[S.evScope]) S.evScope = going.length ? 'going' : 'overview';
   return S.evScope;
 }
 function scopeContacts(ignoreFilters = false) {
@@ -654,38 +656,47 @@ function statusCounts(eventIds) {
 
 function renderRail() {
   const going = goingIds(), scope = currentScope();
-  const item = (key, title, sub, ids, dim = false) => {
-    const n = statusCounts(ids);
-    return `<button class="railitem ${scope === key ? 'on' : ''} ${dim ? 'dim' : ''}" data-scope="${esc(key)}"><b>${esc(title)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}
-      <div class="rc"><span><b>${n.review}</b> to review</span><span><b>${n.approved}</b> approved</span><span><b>${n.hubspot}</b> in HubSpot</span></div></button>`;
+  const counts = ids => { const n = statusCounts(ids); return `<div class="rc"><span><b>${n.review}</b> to review</span><span><b>${n.approved}</b> approved</span><span><b>${n.hubspot}</b> in HubSpot</span></div>`; };
+  const evItem = e => {
+    const d = decisionOf('event', e.id)?.decision, lane = (EVENT_LANES[e.lane] || ['', 'filtered'])[1];
+    return `<button class="railitem lane-${lane} ${scope === e.id ? 'on' : ''} ${d === 'reject' || e.past ? 'dim' : ''}" data-scope="${esc(e.id)}">
+      <div style="display:flex;gap:8px;align-items:flex-start"><span class="rscore num">${e.score}</span><span style="min-width:0"><b>${esc(e.short)}${d === 'approve' ? ' <span style="color:var(--fast)">✓</span>' : ''}</b>
+      <small>${fmtDate(e.start, e.end)} · ${esc(e.city)}${d === 'reject' ? ' · not going' : e.past ? ' · already happened' : ''}</small></span></div>
+      ${e.counts.people ? counts([e.id]) : `<div class="rc"><span>${e.counts.companies_without_contact} exhibitors, no named people yet</span></div>`}</button>`;
   };
-  const byDate = [...S.data.events].sort((a, b) => a.start.localeCompare(b.start));
-  const others = byDate.filter(e => !going.includes(e.id));
-  $('rail').innerHTML = (going.length ? item('going', 'All events we\'re going to', `${going.length} event${going.length > 1 ? 's' : ''}`, going) : '')
-    + `<h5>${going.length ? 'Going' : 'Mark events as Going in step 1'}</h5>`
-    + byDate.filter(e => going.includes(e.id)).map(e => item(e.id, e.short, `${fmtDate(e.start, e.end)} · ${e.city}`, [e.id])).join('')
-    + `<h5>Other events</h5>` + item('', 'All events', `${S.data.events.length} events`, S.data.events.map(e => e.id))
-    + others.map(e => item(e.id, e.short, `${fmtDate(e.start, e.end)} · ${decisionOf('event', e.id)?.decision === 'reject' ? 'not going' : 'undecided'}`, [e.id], true)).join('');
-  $('rail').querySelectorAll('[data-scope]').forEach(b => b.onclick = () => { S.evScope = b.dataset.scope; S.sel = null; S.pushSel.clear(); renderPeople(); });
+  const byScore = [...S.data.events].sort((a, b) => (a.past - b.past) || b.score - a.score);
+  const undecided = byScore.filter(e => !decisionOf('event', e.id)).length;
+  $('rail').innerHTML = `<button class="railitem ${scope === 'overview' ? 'on' : ''}" data-scope="overview"><b>Overview: choose events</b><small>${going.length} going · ${undecided} still to decide</small></button>`
+    + (going.length ? `<button class="railitem ${scope === 'going' ? 'on' : ''}" data-scope="going"><b>All events we're going to</b><small>${going.length} event${going.length > 1 ? 's' : ''}</small>${counts(going)}</button>` : '')
+    + (going.length ? `<h5>Going</h5>${byScore.filter(e => going.includes(e.id)).map(evItem).join('')}` : '')
+    + `<h5>${going.length ? 'Other events' : 'Events, best first'}</h5>${byScore.filter(e => !going.includes(e.id)).map(evItem).join('')}`
+    + `<button class="railitem ${scope === '' ? 'on' : ''}" data-scope=""><b>Everyone, all events</b><small>for searching across events</small></button>`;
+  $('rail').querySelectorAll('[data-scope]').forEach(b => b.onclick = () => { S.evScope = b.dataset.scope; S.sel = null; S.pushSel.clear(); if (S.evScope !== 'overview' && !STATUS.some(([k]) => k === S.status)) S.status = 'review'; renderPeople(); window.scrollTo(0, 0); });
 }
 
 function renderEvHead() {
   const scope = currentScope(), e = S.events[scope];
   if (!e) {
     const going = goingIds();
-    $('evHead').innerHTML = `<div><div class="stepno">Step 2</div><h3>${scope === 'going' ? `People at the ${going.length} event${going.length > 1 ? 's' : ''} we're going to` : 'People at all events'}</h3>
+    $('evHead').innerHTML = `<div><div class="stepno">Step 2</div><h3>${scope === 'going' ? `People at the ${going.length} event${going.length > 1 ? 's' : ''} we're going to` : 'Everyone, all events'}</h3>
       <div class="meta">Everyone starts in <b>To review</b>, best fit first, grouped by event. Approve the people worth meeting, then send them to HubSpot from <b>Approved</b>. Nothing is approved automatically.</div></div>
       <div class="acts2"><button class="btn" data-copy="${esc(hashFor())}">Copy link</button></div>`;
   } else {
-    const d = decisionOf('event', e.id)?.decision, n = statusCounts([e.id]);
-    $('evHead').innerHTML = `<div><div class="stepno">Step 2 · ${d === 'approve' ? 'Going' : d === 'reject' ? 'Not going' : 'Not decided yet'}</div>
+    const d = decisionOf('event', e.id)?.decision, n = statusCounts([e.id]), open = S.evOpen === e.id;
+    const extra = S.data.accounts.filter(a => a.events.includes(e.id) && !a.contact_ids.some(id => S.contacts.find(c => c.id === id)?.event_id === e.id)).sort((x, y) => y.score - x.score);
+    $('evHead').innerHTML = `<div style="min-width:0;flex:1"><div class="stepno">${e.past ? 'Already happened' : d === 'approve' ? 'Going' : d === 'reject' ? 'Not going' : 'Not decided yet'} · event score ${e.score}</div>
       <h3>${esc(e.name)}${e.generalmind_present ? ' <span class="badge">GeneralMind exhibiting</span>' : ''}</h3>
-      <div class="meta">${fmtDate(e.start, e.end)} · ${esc(e.city)} · ${until(e.start)} · event score ${e.score} · <b>${n.strong}</b> strong fit still to review · <b>${n.approved + n.hubspot}</b> approved to meet</div></div>
+      <div class="meta">${fmtDate(e.start, e.end)} · ${esc(e.city)} · ${esc(e.format)} · ${until(e.start)} · <b>${n.strong}</b> strong fit still to review · <b>${n.approved + n.hubspot}</b> approved to meet</div>
+      <div class="chips" style="margin-top:8px">${e.reasons.map(r => `<span class="chip pts">${r.points ? `<b>+${r.points}</b> ` : ''}${esc(r.label)}</span>`).join('')}<button class="kwbtn" data-more>${open ? 'Less' : 'Details'}</button></div>
+      ${open ? `<div style="margin-top:10px;font-size:13px"><p style="margin:0 0 6px">${esc(e.why)}</p>${e.date_note ? `<div class="note">${esc(e.date_note)}</div>` : ''}
+        <div style="margin-top:6px"><b>Sources:</b> ${e.sources.map(x => { const u = safeUrl(x.url); return `${u ? `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(x.type)}</a>` : esc(x.type)} (${esc(x.edition)})`; }).join(' · ')}</div>
+        ${extra.length ? `<div style="margin-top:8px"><b>Exhibiting with no named person yet (${extra.length}):</b></div><div class="chips" style="margin-top:4px">${extra.slice(0, 30).map(a => `<span class="chip">${esc(a.name)}${a.lane === 'fast_track' ? ' ★' : ''}</span>`).join('')}${extra.length > 30 ? `<span class="chip">and ${extra.length - 30} more</span>` : ''}</div><div class="note">At a trade fair these exhibitors are the prospects; the next step is finding the right person there through an enrichment provider. ★ marks a strong-fit company.</div>` : ''}</div>` : ''}</div>
       <div class="acts2">
-        <button class="btn ok ${d === 'approve' ? 'on' : ''}" data-going="approve">${d === 'approve' ? '✓ Going' : 'Going'}</button>
+        <button class="btn ok ${d === 'approve' ? 'on' : ''}" data-going="approve" ${e.past ? 'disabled' : ''}>${d === 'approve' ? '✓ Going' : 'Going'}</button>
         <button class="btn no ${d === 'reject' ? 'on' : ''}" data-going="reject">${d === 'reject' ? '✕ Not going' : 'Not going'}</button>
         <button class="btn" data-copy="${esc(hashFor())}">Copy link</button>
       </div>`;
+    $('evHead').querySelector('[data-more]').onclick = () => { S.evOpen = open ? null : e.id; renderEvHead(); };
     $('evHead').querySelectorAll('[data-going]').forEach(b => b.onclick = () => decide('event', e.id, decisionOf('event', e.id)?.decision === b.dataset.going ? 'clear' : b.dataset.going));
   }
   wireCopy($('evHead'));
@@ -693,7 +704,7 @@ function renderEvHead() {
 
 function fillScope() {
   const going = goingIds(), scope = currentScope();
-  $('fEvent').innerHTML = `<option value="going" ${going.length ? '' : 'disabled'}>Events we're going to (${going.length})</option><option value="">All events</option>`
+  $('fEvent').innerHTML = `<option value="overview">Overview: choose events</option><option value="going" ${going.length ? '' : 'disabled'}>Events we're going to (${going.length})</option><option value="">Everyone, all events</option>`
     + [...S.data.events].sort((a, b) => a.start.localeCompare(b.start)).map(e => `<option value="${esc(e.id)}">${esc(e.short)}${going.includes(e.id) ? ' ✓' : ''}</option>`).join('');
   $('fEvent').value = scope;
 }
@@ -709,7 +720,12 @@ function actionsCell(c) {
 function renderPeople() {
   if (!S.data) return;
   const scope = currentScope();
-  fillScope(); renderRail(); renderEvHead();
+  fillScope(); renderRail();
+  const overview = scope === 'overview';
+  $('overview').style.display = overview ? '' : 'none';
+  $('peopleMain').style.display = overview ? 'none' : '';
+  if (overview) { renderEvents(); if (S.view === 'events') syncHash(); return; }
+  renderEvHead();
   const scoped = scopeContacts(), counts = {};
   scoped.forEach(c => { const st = statusOf(c); counts[st] = (counts[st] || 0) + 1; });
   $('statusTabs').innerHTML = STATUS.map(([k, label]) => `<button class="stab ${S.status === k ? 'on' : ''}" data-st="${k}">${label} <span class="num">${counts[k] || 0}</span></button>`).join('');
@@ -761,32 +777,34 @@ function renderPeople() {
   if ($('selAll')) $('selAll').onchange = e => { S.pushSel = new Set(e.target.checked ? rows.filter(r => !isSuppressed(r)).map(r => r.id) : []); renderPeople(); };
   if ($('pushSel')) $('pushSel').onclick = pushSelected;
   renderDrawer();
-  if (S.view === 'people') syncHash();
+  if (S.view === 'events') syncHash();
 }
 
 // ---------- shareable links ----------
-const VIEWS = ['events', 'people', 'criteria', 'playbooks', 'insights', 'settings', 'about'];
+const VIEWS = ['events', 'criteria', 'playbooks', 'insights', 'feedback', 'settings', 'about'];
+// #/events                      overview (choose events)
+// #/events/<scope>/<status>/<person>   scope: an event id, "going" or "all"
 function hashFor(view = S.view) {
-  if (view === 'events') return '#/events' + (S.evOpen ? `/${encodeURIComponent(S.evOpen)}` : '');
-  if (view === 'people') {
-    const scope = S.data ? currentScope() : (S.evScope ?? 'going');
-    return `#/people/${encodeURIComponent(scope === '' ? 'all' : scope)}/${S.status}` + (S.sel ? `/${encodeURIComponent(S.sel)}` : '');
+  if (view === 'events') {
+    const scope = S.data ? currentScope() : (S.evScope ?? 'overview');
+    if (scope === 'overview') return '#/events';
+    return `#/events/${encodeURIComponent(scope === '' ? 'all' : scope)}/${S.status}` + (S.sel ? `/${encodeURIComponent(S.sel)}` : '');
   }
   return `#/${view}`;
 }
-function personHash(c) { return `#/people/${encodeURIComponent(c.event_id)}/${statusOf(c)}/${encodeURIComponent(c.id)}`; }
+function personHash(c) { return `#/events/${encodeURIComponent(c.event_id)}/${statusOf(c)}/${encodeURIComponent(c.id)}`; }
 function syncHash(push = false) {
   const h = hashFor();
   if (location.hash !== h) history[push ? 'pushState' : 'replaceState'](null, '', h);
 }
 function applyHash() {
-  const [view, a, b, c] = location.hash.replace(/^#\/?/, '').split('/').map(x => { try { return decodeURIComponent(x || ''); } catch { return ''; } });
-  if (view === 'people') {
-    if (a) S.evScope = a === 'all' ? '' : a;
-    if (STATUS.some(([k]) => k === b)) S.status = b;
+  let [view, a, b, c] = location.hash.replace(/^#\/?/, '').split('/').map(x => { try { return decodeURIComponent(x || ''); } catch { return ''; } });
+  if (view === 'people') view = 'events';  // links from before events and people were one page
+  if (view === 'events') {
+    S.evScope = !a ? 'overview' : a === 'all' ? '' : a;
+    S.status = STATUS.some(([k]) => k === b) ? b : 'review';
     S.sel = c || null;
   }
-  if (view === 'events') S.evOpen = a || null;
   return VIEWS.includes(view) ? view : null;
 }
 function copyLink(hash) {
@@ -837,7 +855,11 @@ function companyBlock(c, a) {
 function decideBlock(c) {
   const st = statusOf(c), d = decisionOf('contact', c.id);
   const who = d ? `${d.reviewer ? ` by ${esc(d.reviewer)}` : ''}` : '';
-  if (st === 'hubspot') { const u = hubspotUrl('contact', S.hs.get(hsKey(c))); return `<div class="note"><span class="status approve">In HubSpot</span>${who}. ${u ? `<a href="${esc(u)}" target="_blank" rel="noopener">Open in HubSpot ↗</a>` : ''} Changes from here on happen in HubSpot.</div>`; }
+  if (st === 'hubspot') {
+    const u = hubspotUrl('contact', S.hs.get(hsKey(c)));
+    return `<div class="note"><span class="status approve">In HubSpot</span>${who}. ${u ? `<a href="${esc(u)}" target="_blank" rel="noopener">Open in HubSpot ↗</a>` : ''} Changes from here on happen in HubSpot.
+      ${S.data?.meta?.role === 'owner' ? '<div style="margin-top:8px"><button class="btn no" data-remove-hs style="font-size:12px;padding:3px 9px">Remove from HubSpot</button></div>' : ''}</div>`;
+  }
   const status = st === 'approved' ? `<div class="note"><span class="status approve">Approved</span>${who} · waiting to be sent to HubSpot</div>`
     : st === 'rejected' ? `<div class="note"><span class="status reject">Rejected</span>${d.reason ? `: ${esc(d.reason)}` : ''}${who}</div>` : '';
   const btns = st === 'review' ? `<button class="btn ok" data-act="approve">✓ Approve <span class="kbd">A</span></button><button class="btn no" data-act="reject">✕ Reject <span class="kbd">R</span></button>`
@@ -876,6 +898,13 @@ function renderDrawer() {
     <h3>Company</h3>${companyBlock(c, a)}
     <div class="hint"><span class="kbd">J</span>/<span class="kbd">K</span> move · <span class="kbd">A</span> approve · <span class="kbd">R</span> then <span class="kbd">1</span>–<span class="kbd">6</span> reject · <span class="kbd">U</span> undo · <span class="kbd">O</span> open source</div>`;
   el.querySelector('[data-dnc]').onclick = () => toggleSuppression(c.person_key, c.name, dnc);
+  el.querySelector('[data-remove-hs]')?.addEventListener('click', async () => {
+    if (!confirm(`Remove ${c.name} from HubSpot? Their record goes to HubSpot's recycle bin (restorable for 90 days), with their company if nobody else from it is there. Here they go back to Approved.`)) return;
+    const r = await fetch('api/hubspot/remove', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contact_id: c.id }) });
+    const out = await r.json().catch(() => ({}));
+    toast(r.ok ? `${c.name} removed from HubSpot` : out.detail || 'Could not remove');
+    if (r.ok) { S.status = 'approved'; await load(); }
+  });
   wireCopy(el);
   el.querySelectorAll('[data-act]').forEach(b => b.onclick = () => b.dataset.act === 'reject' ? openReject() : decide('contact', c.id, b.dataset.act));
   el.querySelectorAll('[data-reason]').forEach(b => b.onclick = () => decide('contact', c.id, 'reject', b.dataset.reason));
@@ -906,8 +935,7 @@ async function decide(type, id, decision, reason = null, fromUndo = false) {
   if (!fromUndo) S.undo.push({ type, id, prev });
   if (type === 'event') {
     toast(decision === 'approve' ? `Going: ${S.events[id].short}` : decision === 'reject' ? `Not going: ${S.events[id].short}` : 'Undecided');
-    if (S.evScope === undefined || (S.evScope === '' && decision === 'approve' && goingIds().length === 1)) S.evScope = 'going';
-    renderEvents(); renderPeople();
+    renderPeople();
   } else {
     toast(decision === 'approve' ? 'Approved' : decision === 'reject' ? `Rejected${reason ? ': ' + reason : ''}` : prev?.decision === 'approve' ? 'Back to review' : 'Restored to review');
     if (!fromUndo && next) S.sel = next;
@@ -949,7 +977,7 @@ function askReviewer() {
 
 document.addEventListener('keydown', e => {
   if (e.target?.matches?.('input, select, textarea') || e.metaKey || e.ctrlKey || e.altKey || $('whoDlg').open || $('fbDlg').open) return;
-  if (S.view !== 'people') return;
+  if (S.view !== 'events' || currentScope() === 'overview') return;
   const id = S.sel, k = e.key.toLowerCase(), c = S.contacts.find(x => x.id === id);
   if ('jkaruo123456'.includes(k) || e.key.startsWith('Arrow')) track('key', `${e.key} on ${id}`);
   if (k === 'j' || e.key === 'ArrowDown') { moveSel(1); renderPeople(); scrollSel(); e.preventDefault(); }
@@ -1353,8 +1381,8 @@ function renderInsights() {
       <div class="panel"><h3>By industry</h3><p class="lead">Which segments the events give us the most good contacts in.</p>
         <table class="t"><thead><tr><th>Industry</th><th>Contacts</th><th>Fast</th><th>Approved</th><th>Avg</th></tr></thead><tbody>${Object.entries(groups).sort((a, b) => b[1].fast - a[1].fast || b[1].n - a[1].n).slice(0, 12).map(([k, g]) => `<tr><td>${esc(k)}</td><td>${g.n}</td><td><b>${g.fast}</b></td><td>${g.ok}</td><td>${Math.round(g.score / g.n)}</td></tr>`).join('')}</tbody></table></div>
     </div>`;
-  $('insights').insertAdjacentHTML('beforeend', `<div class="grid2"><div class="panel" id="versionsCompared"><h3>Scoring versions compared</h3><div class="note">Loading…</div></div><div class="panel" id="fbInbox"><h3>Feedback inbox</h3><div class="note">Loading…</div></div></div><div class="panel" id="errorsPanel"><h3>Errors</h3><div class="note">Loading…</div></div>`);
-  renderVersionsCompared(); renderFeedbackInbox(); renderErrors();
+  $('insights').insertAdjacentHTML('beforeend', `<div class="panel" id="versionsCompared"><h3>Scoring versions compared</h3><div class="note">Loading…</div></div>`);
+  renderVersionsCompared();
   renderLearning();
 }
 
@@ -1366,19 +1394,54 @@ async function renderVersionsCompared() {
       ${r.error ? `<td colspan="3" style="color:var(--muted)">${esc(r.error)}</td>` : `<td>${r.fast_track}</td><td>${r.replay_agreement === null ? '—' : `<b>${r.replay_agreement}%</b> <small style="color:var(--muted)">of ${r.replay_n}</small>`}</td><td>${r.decided_while_active} <small style="color:var(--muted)">(${r.approved_while_active} approved)</small></td>`}</tr>`).join('')}</tbody></table>`;
 }
 
-async function renderFeedbackInbox() {
+// ---------- feedback tab: notes to manage, and errors ----------
+const NOTE_STATUS = { open: 'Open', planned: 'Planned', done: 'Done', wontfix: "Won't do" };
+async function renderFeedbackTab() {
   const notes = await (await fetch('api/feedback?all=true')).json().catch(() => []);
-  if (!$('fbInbox')) return;
-  $('fbInbox').innerHTML = `<h3>Feedback inbox</h3><p class="lead">Notes left with the Feedback button or the copilot. Each one shows what happened to it, so the person who wrote it can see it was acted on.</p>
-    ${notes.length ? `<ul class="logl">${notes.slice(0, 30).map(n => { const t = n.target ? JSON.parse(n.target) : null; return `<li style="display:block"><div style="display:flex;justify-content:space-between;gap:8px"><b>#${n.id} ${esc(n.author || 'Someone')}</b><time>${esc(n.created_at.slice(5, 16).replace('T', ' '))}</time></div>
-      <div>${esc(n.comment)}</div>${t?.text ? `<small style="color:var(--muted)">About: ${esc(t.text.slice(0, 90))}</small>` : ''}${contextBlock(n.context)}
-      <div style="margin-top:4px">${n.handled_at ? `<span class="chip lane lane-fast_track">Handled</span> <small>${esc(n.handled_note || '')}</small>` : `<span class="chip lane lane-review">Open</span> <button class="btn" data-handle="${n.id}" style="padding:1px 8px;font-size:12px">Mark handled</button>`}</div></li>`; }).join('')}</ul>` : '<div class="note">No feedback yet.</div>'}`;
-  $('fbInbox').querySelectorAll('[data-handle]').forEach(b => b.onclick = async () => {
-    const note = prompt('What was done? (e.g. "Fixed in a1b2c3d: wider name column")');
-    if (!note) return;
-    await fetch(`api/feedback/${b.dataset.handle}/handled`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ note }) });
-    renderFeedbackInbox();
+  S.fbFilter = S.fbFilter || 'active';
+  const shown = notes.filter(n => S.fbFilter === 'all' || (S.fbFilter === 'active' ? ['open', 'planned'].includes(n.status) : n.status === S.fbFilter));
+  const count = st => notes.filter(n => st === 'active' ? ['open', 'planned'].includes(n.status) : st === 'all' || n.status === st).length;
+  const owner = S.data?.meta?.role === 'owner';
+  $('feedbackView').innerHTML = `
+    <div class="panel"><h3>Feedback</h3><p class="lead">Notes from the Feedback button, the copilot, or written here. Each keeps what the person was looking at and their last actions, so it can be reproduced. Set a status as it moves along, and write down what was done.</p>
+      <div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap"><textarea id="newNote" rows="2" placeholder="Write a new note…" style="flex:1;min-width:240px;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)"></textarea><button class="btn primary" id="addNote">Add note</button></div></div>
+    <div class="stabs">${[['active', 'Open & planned'], ['open', 'Open'], ['planned', 'Planned'], ['done', 'Done'], ['wontfix', "Won't do"], ['all', 'All']].map(([k, l]) => `<button class="stab ${S.fbFilter === k ? 'on' : ''}" data-fb="${k}">${l} <span class="num">${count(k)}</span></button>`).join('')}</div>
+    <div class="evlist">${shown.map(n => { const t = n.target ? JSON.parse(n.target) : null; const editing = S.fbEdit === n.id; return `<div class="panel" style="margin:0" data-note="${n.id}">
+      <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><div><b>#${n.id}</b> · ${esc(n.author || 'Someone')} · <span style="color:var(--muted)">${esc((n.created_at || '').slice(0, 16).replace('T', ' '))} · on ${esc(n.view || '—')}</span></div>
+        <div style="display:flex;gap:6px;align-items:center"><select data-status>${Object.entries(NOTE_STATUS).map(([k, l]) => `<option value="${k}" ${n.status === k ? 'selected' : ''}>${l}</option>`).join('')}</select>
+        ${editing ? '' : '<button class="btn" data-edit style="padding:3px 9px;font-size:12px">Edit</button>'}${owner ? '<button class="btn no" data-del style="padding:3px 9px;font-size:12px">Delete</button>' : ''}</div></div>
+      ${t?.text ? `<div style="color:var(--muted);font-size:12.5px;margin-top:6px">About: “${esc(t.text.slice(0, 120))}”</div>` : ''}
+      ${editing ? `<textarea data-text rows="3" style="width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink);margin-top:8px">${esc(n.comment)}</textarea>
+        <input data-done value="${esc(n.handled_note || '')}" placeholder="What was done (e.g. fixed in a1b2c3d: wider name column)" style="width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink);margin-top:6px">
+        <div style="display:flex;gap:8px;margin-top:8px"><button class="btn primary" data-save>Save</button><button class="btn" data-cancel>Cancel</button></div>`
+      : `<div style="margin-top:8px;white-space:pre-wrap">${esc(n.comment)}</div>${n.handled_note ? `<div class="note"><b>What was done:</b> ${esc(n.handled_note)}</div>` : ''}`}
+      ${contextBlock(n.context)}</div>`; }).join('') || '<div class="empty">No notes here.</div>'}</div>
+    <div class="panel" id="errorsPanel" style="margin-top:16px"><h3>Errors</h3><div class="note">Loading…</div></div>`;
+  const root = $('feedbackView');
+  root.querySelectorAll('[data-fb]').forEach(b => b.onclick = () => { S.fbFilter = b.dataset.fb; renderFeedbackTab(); });
+  $('addNote').onclick = async () => {
+    const text = $('newNote').value.trim(); if (!text) return;
+    await fetch('api/feedback', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ comment: text, view: 'feedback', author: S.reviewer || null, context: context() }) });
+    toast('Note added'); renderFeedbackTab();
+  };
+  const update = async (id, body) => {
+    const r = await fetch(`api/feedback/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...body, author: S.reviewer || null }) });
+    if (!r.ok) toast('Could not save'); return r.ok;
+  };
+  root.querySelectorAll('[data-note]').forEach(card => {
+    const id = +card.dataset.note;
+    card.querySelector('[data-status]').onchange = async e => { if (await update(id, { status: e.target.value })) { toast(`Marked ${NOTE_STATUS[e.target.value].toLowerCase()}`); renderFeedbackTab(); } };
+    card.querySelector('[data-edit]')?.addEventListener('click', () => { S.fbEdit = id; renderFeedbackTab(); });
+    card.querySelector('[data-cancel]')?.addEventListener('click', () => { S.fbEdit = null; renderFeedbackTab(); });
+    card.querySelector('[data-save]')?.addEventListener('click', async () => {
+      if (await update(id, { comment: card.querySelector('[data-text]').value.trim(), handled_note: card.querySelector('[data-done]').value.trim() })) { S.fbEdit = null; toast('Saved'); renderFeedbackTab(); }
+    });
+    card.querySelector('[data-del]')?.addEventListener('click', async () => {
+      if (!confirm('Delete this note for good?')) return;
+      const r = await fetch(`api/feedback/${id}`, { method: 'DELETE' }); toast(r.ok ? 'Deleted' : 'Only the owner can delete notes'); renderFeedbackTab();
+    });
   });
+  renderErrors();
 }
 
 // ---------- feedback with element picking ----------
@@ -1413,7 +1476,8 @@ function openFeedback() {
     const text = $('fbText').value.trim();
     if (dlg.returnValue !== 'ok' || !text) return;
     const res = await fetch('api/feedback', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ comment: text, target: picked, view: S.view, author: S.reviewer || null, context: context() }) });
-    toast(res.ok ? 'Thanks, noted' : 'Could not save the note');
+    toast(res.ok ? 'Thanks, noted: it\'s in the Feedback tab' : 'Could not save the note');
+    if (S.view === 'feedback') renderFeedbackTab();
   };
   dlg.showModal(); $('fbText').focus();
 }
@@ -1583,7 +1647,7 @@ $('cpClose').onclick = () => $('cp').classList.remove('open');
 $('cpClear').onclick = () => { S.cp = []; store.set('cp', '[]'); renderCp(); };
 
 // ---------- wiring ----------
-const OLD_VIEWS = { queue: 'people', accounts: 'people', hubspot: 'settings' };
+const OLD_VIEWS = { queue: 'events', accounts: 'events', people: 'events', hubspot: 'settings' };
 function showView(name, push = true) {
   S.view = OLD_VIEWS[name] || name;
   if (!$(`v-${S.view}`)) S.view = 'events';
@@ -1591,8 +1655,8 @@ function showView(name, push = true) {
   $('tabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.view === S.view));
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === `v-${S.view}`));
   if (S.view === 'settings') renderSettings();
-  if (S.view === 'people') renderPeople();
-  if (S.view === 'events') renderEvents();
+  if (S.view === 'events') renderPeople();
+  if (S.view === 'feedback') renderFeedbackTab();
   store.set('view', S.view);
 }
 window.addEventListener('popstate', () => { const v = applyHash(); if (v && S.data) showView(v, false); });

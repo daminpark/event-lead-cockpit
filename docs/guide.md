@@ -4,12 +4,13 @@
 It finds the people and companies worth meeting at upcoming events, explains why each one matters, and lets you approve the good ones and send them to HubSpot. The next step with a lead is usually meeting them face to face at the event.
 
 ## The everyday flow
-1. **Events (step 1).** Each event has a score with its reasons: how many strong-fit people its lists name, how much of the list is worth a look, whether GeneralMind already has a stand, timing, travel, and whether this year's list is out. Mark the events you'll attend as **Going** (or **Not going**). Click ▾ for details, including companies exhibiting there with no named person yet.
-2. **People (step 2).** By default you see the people at the events you're going to. Everyone starts in **To review**, best fit first. Read the five-second brief, click a row for the full picture, then **Approve** (A) or **Reject** (R, then a reason 1–6). **U** undoes. Nothing is ever approved automatically.
-3. **Approved.** Tick the people to send (or Select all) and click **Send to HubSpot**, usually one event at a time. You can unapprove anyone here; they go back to To review. **Download CSV** gives the same list as a file.
-4. **In HubSpot.** Sent people move here, with a link to their HubSpot record. From then on, the work happens in HubSpot.
+Everything happens on one page, **Events & people**. The list on the left shows every event with its score, a ✓ if you're going, and its counts (to review, approved, in HubSpot).
+1. **Overview (choose events).** The top of the list. Each event is scored on how many strong-fit people its lists name, how much of the list is worth a look, whether GeneralMind already has a stand, timing, travel, and whether this year's list is out. Mark the events you'll attend as **Going** (or **Not going**).
+2. **Pick an event.** Its header shows why it scored as it did (Details adds the sources and the companies exhibiting with no named person yet). Below are its people, best fit first, each with a five-second brief. **Approve** (A) or **Reject** (R, then a reason 1–6); **U** undoes. Nothing is ever approved automatically.
+3. **Approved.** Tick the people to send (or Select all) and click **Send to HubSpot**; **Download CSV** gives the same list as a file. You can unapprove anyone here.
+4. **In HubSpot.** Sent people move here, with a link to their record. From then on, the work happens in HubSpot. The owner can **Remove from HubSpot** if someone was sent by mistake (it goes to HubSpot's recycle bin, restorable for 90 days).
 
-People are always grouped by event. The list on the left shows each event with its counts (to review, approved, in HubSpot); pick one to work on just that event. People from events you're not going to aren't deleted: they're under "Other events".
+"All events we're going to" shows everyone at your events at once, grouped by event. "Everyone, all events" at the bottom of the list searches across every event, including ones you're not going to.
 
 Every screen has its own link (the address bar, or **Copy link** on events and people), so you can send a colleague straight to an event's approved list or one person's card. They'll need the access code.
 
@@ -37,10 +38,10 @@ The plain-language instructions the AI steps follow when finding events, sourcin
 Ask it anything about the leads, events, scores or playbooks ("who should we meet first at BME?", "why is this lead in review?"). It can propose changes to the criteria or playbooks; they're saved as inactive versions with an **Activate** button, so a person always decides. The owner chooses the model and its thinking effort in Settings.
 
 ## Insights
-The funnel from sourced to HubSpot, decisions over time, the change log, which events and industries give the best leads, how each scoring version compares on past decisions, the feedback inbox and recorded errors.
+The funnel from sourced to HubSpot, decisions over time, the change log, which events and industries give the best leads, and how each scoring version compares on past decisions.
 
 ## Feedback and errors
-Click **Feedback**, then click the part of the page your note is about (or press Esc for a general note). The note is saved with what you were looking at and your last few actions, so it can be reproduced. Errors in the page or on the server are recorded the same way. Both appear under **Insights**, with their status.
+Click the **Feedback** button, then click the part of the page your note is about (or press Esc for a general note). The note is saved with what you were looking at and your last few actions, so it can be reproduced. The **Feedback** tab lists every note: edit it, set its status (open, planned, done, won't do), write down what was done, or add a note directly. Errors in the page or on the server are recorded the same way and listed there too.
 
 ## Do not contact
 On any person's card, **Do not contact** keeps that person out of exports and HubSpot, across every event they appear at.

@@ -20,13 +20,13 @@ mode = sys.argv[1] if len(sys.argv) > 1 else "open"
 if mode == "close":
     now = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
     for i in sys.argv[3:]:
-        con.execute("UPDATE feedback SET handled_at = ?, handled_note = ? WHERE id = ? AND handled_at IS NULL", (now, sys.argv[2], int(i)))
+        con.execute("UPDATE feedback SET handled_at = ?, handled_note = ?, status = 'done' WHERE id = ? AND status IN ('open', 'planned')", (now, f"Fixed in {sys.argv[2]}", int(i)))
     con.commit(); print(f"closed {len(sys.argv) - 3}")
     sys.exit()
-rows = con.execute("SELECT * FROM feedback WHERE handled_at IS NULL ORDER BY id").fetchall()
+rows = con.execute("SELECT * FROM feedback WHERE status IN ('open', 'planned') ORDER BY id").fetchall()
 print(f"{len(rows)} open notes")
 for r in rows:
-    print(f"\n[{r['id']}] {r['created_at']} {r['author'] or '?'} on {r['view'] or '?'}\n  {r['comment']}")
+    print(f"\n[{r['id']}] {r['status']} · {r['created_at']} {r['author'] or '?'} on {r['view'] or '?'}\n  {r['comment']}")
     if r["target"]:
         t = json.loads(r["target"])
         print(f"  target: {t.get('selector')}  text: {(t.get('text') or '')[:150]!r}  row: {t.get('row')}")
