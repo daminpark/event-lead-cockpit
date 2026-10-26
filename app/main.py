@@ -171,7 +171,9 @@ def data(request: Request):
         rows = lambda sql: [json.loads(r["data"]) for r in con.execute(sql)]
         return {
             "events": [json.loads(r["data"]) | ({"summary": r["text"], "summary_model": r["model"], "summary_at": r["created_at"]} if r["text"] else {})
-                       for r in con.execute("SELECT e.data, s.text, s.model, s.created_at FROM events e LEFT JOIN event_summaries s ON s.event_id = e.id")],
+                       | ({"team": int(r["team"])} if r["team"] else {})
+                       for r in con.execute("SELECT e.data, s.text, s.model, s.created_at, t.value AS team FROM events e "
+                                            "LEFT JOIN event_summaries s ON s.event_id = e.id LEFT JOIN settings t ON t.key = 'team:' || e.id")],
             "contacts": rows("SELECT data FROM contacts"),
             "accounts": rows("SELECT data FROM accounts"),
             "appearances": rows("SELECT data FROM appearances"),
@@ -772,3 +774,20 @@ def playbook_chat(kind: Literal["events", "sourcing", "profiling"], c: PlaybookC
                      json.dumps([out["summary"]] if out["draft"] else []), out["model"], pipeline.now()))
         con.commit()
     return out
+
+
+
+class Team(BaseModel):
+    people: int = Field(ge=1, le=10)
+
+
+@app.post("/api/events/{event_id}/team")
+def event_team(event_id: str, t: Team):
+    """How many people we'd send: sets this event's meeting plan."""
+    with db() as con:
+        if not con.execute("SELECT 1 FROM events WHERE id = ?", (event_id,)).fetchone():
+            raise HTTPException(404, "Unknown event")
+        con.execute("INSERT OR REPLACE INTO settings VALUES (?, ?)", (f"team:{event_id}", str(t.people)))
+        log(con, "config", f"Team for {event_id} set to {t.people}")
+        con.commit()
+    return {"ok": True}

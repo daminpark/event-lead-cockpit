@@ -30,7 +30,12 @@
       }
     ],
     "added_at": "2026-10-26",
-    "found_by": "Research agents (first run)"
+    "found_by": "Research agents (first run)",
+    "travel": {
+      "mode": "train",
+      "hours": 5.0,
+      "km": 505
+    }
   },
   {
     "id": "bme-symposium-2026",
@@ -68,7 +73,12 @@
       }
     ],
     "added_at": "2026-10-26",
-    "found_by": "Research agents (first run)"
+    "found_by": "Research agents (first run)",
+    "travel": {
+      "mode": "local",
+      "hours": 0.5,
+      "km": 0
+    }
   },
   {
     "id": "hamburger-logistiktage-2027",
@@ -101,7 +111,12 @@
       }
     ],
     "added_at": "2026-10-26",
-    "found_by": "Research agents (replacement for transport logistic)"
+    "found_by": "Research agents (replacement for transport logistic)",
+    "travel": {
+      "mode": "train",
+      "hours": 2.5,
+      "km": 255
+    }
   },
   {
     "id": "hannover-messe-2027",
@@ -128,7 +143,12 @@
       }
     ],
     "added_at": "2026-10-26",
-    "found_by": "Research agents (first run)"
+    "found_by": "Research agents (first run)",
+    "travel": {
+      "mode": "train",
+      "hours": 2.5,
+      "km": 250
+    }
   },
   {
     "id": "handelsblatt-cpo-2027",
@@ -154,7 +174,12 @@
       }
     ],
     "added_at": "2026-10-26",
-    "found_by": "Research agents (first run)"
+    "found_by": "Research agents (first run)",
+    "travel": {
+      "mode": "train",
+      "hours": 5.0,
+      "km": 475
+    }
   },
   {
     "id": "ep-sce-2027",
@@ -181,7 +206,12 @@
       }
     ],
     "added_at": "2026-10-26",
-    "found_by": "Research agents (first run)"
+    "found_by": "Research agents (first run)",
+    "travel": {
+      "mode": "local",
+      "hours": 0.5,
+      "km": 0
+    }
   },
   {
     "id": "ssow-europe-2027",
@@ -208,7 +238,12 @@
       }
     ],
     "added_at": "2026-10-26",
-    "found_by": "Research agents (first run)"
+    "found_by": "Research agents (first run)",
+    "travel": {
+      "mode": "flight",
+      "hours": 6.5,
+      "km": 2320
+    }
   },
   {
     "id": "bme-eloesungstage-2027",
@@ -235,7 +270,12 @@
       }
     ],
     "added_at": "2026-10-26",
-    "found_by": "Research agents (first run)"
+    "found_by": "Research agents (first run)",
+    "travel": {
+      "mode": "train",
+      "hours": 5.0,
+      "km": 475
+    }
   },
   {
     "id": "handelslogistik-2027",
@@ -262,7 +302,12 @@
       }
     ],
     "added_at": "2026-10-26",
-    "found_by": "Research agents (first run)"
+    "found_by": "Research agents (first run)",
+    "travel": {
+      "mode": "train",
+      "hours": 5.0,
+      "km": 475
+    }
   },
   {
     "id": "procurement-summit-2027",
@@ -293,6 +338,11 @@
       }
     ],
     "added_at": "2026-10-26",
-    "found_by": "Research agents (first run)"
+    "found_by": "Research agents (first run)",
+    "travel": {
+      "mode": "train",
+      "hours": 2.5,
+      "km": 255
+    }
   }
 ]

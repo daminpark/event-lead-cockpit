@@ -4,8 +4,8 @@
 It finds the people and companies worth meeting at upcoming events, explains why each one matters, and lets you approve the good ones and send them to HubSpot. The next step with a lead is usually meeting them face to face at the event.
 
 ## The everyday flow
-1. **Events: choose where to go.** The list shows every event with its score, status (to decide, going, not going, already happened), how many strong-fit people it has, and when and how it was found.
-2. **Open an event.** See a short **AI summary** (why go, who to meet, the main caveat), **why it scored as it did** (each part of the score with its points), and where its names come from. Mark it **Going** or **Not going**.
+1. **Events: choose where to go.** The list shows every event with its score, date, travel time from Berlin, strong-fit people, how many meetings it can realistically give us, how many people are approved, its status (to decide, going, not going, or happened, with whether we went) and when it was found. Click a column to sort.
+2. **Open an event.** See a short **AI summary** (why go, who to meet, the main caveat), **why it scored as it did** (each part of the score with its points), the **meeting plan** (people we'd send × days × meetings a day, and so how many to invite and approve), and where its names come from. Mark it **Going** or **Not going**.
 3. **Choose who to meet.** Below the event are its people, best fit first, each with a five-second brief. **Approve** (A) or **Reject** (R, then a reason 1–6); **U** undoes. Nothing is ever approved automatically.
 4. **Send to HubSpot.** In **Approved**, tick the people (or Select all) and click **Send to HubSpot**; **Download CSV** gives the same list as a file. Sent people move to **In HubSpot**, with a link to their record. The owner can **Remove from HubSpot** if someone was sent by mistake (HubSpot keeps it in its recycle bin for 90 days).
 

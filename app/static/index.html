@@ -221,9 +221,14 @@ dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid 
 .grouphead { display: flex; justify-content: space-between; gap: 12px; padding: 9px 14px; background: var(--panel-2); border-bottom: 1px solid var(--line); font-weight: 600; font-size: 13px; cursor: default; }
 .grouphead span { color: var(--muted); font-weight: 500; }
 .mobile-only { display: none; }
-.evtable { display: grid; grid-template-columns: 52px minmax(0, 2.6fr) 130px minmax(0, 1.3fr) 130px 24px; gap: 14px; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--line-2); cursor: pointer; }
+.evtable { display: grid; grid-template-columns: 52px minmax(0, 2.4fr) 92px 82px 84px 78px 74px 132px 92px; gap: 14px; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--line-2); cursor: pointer; }
 .evtable:last-child { border-bottom: 0; }
 .evtable:hover { background: var(--panel-2); }
+.evtable .sorth { border: 0; background: none; padding: 0; text-align: left; font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; cursor: pointer; white-space: nowrap; }
+.evtable .sorth:hover, .evtable .sorth.on { color: var(--ink); }
+.plan { font-size: 14px; line-height: 1.8; }
+.plan select { font: inherit; padding: 2px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel-2); color: var(--ink); }
+.evlistwrap { overflow-x: auto; }
 .evtable.head { cursor: default; background: var(--panel-2); color: var(--faint); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; padding-top: 8px; padding-bottom: 8px; }
 .evtable.notgoing, .evtable.past { opacity: .6; }
 .evtable .t1 { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -344,8 +349,8 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
   .evmain { grid-template-columns: 48px minmax(0, 1fr); }
   .evnums, .evacts { grid-column: 1 / -1; justify-content: flex-start; }
   .evmore { padding-left: 16px; }
-  .evtable { grid-template-columns: 48px minmax(0, 1fr) auto; }
-  .evtable > :nth-child(4), .evtable > :nth-child(5), .evtable > :nth-child(6) { display: none; }
+  .evtable { grid-template-columns: 48px minmax(0, 1fr) 80px 110px; }
+  .evtable > :nth-child(4), .evtable > :nth-child(5), .evtable > :nth-child(6), .evtable > :nth-child(7), .evtable > :nth-child(9) { display: none; }
   .bk { grid-template-columns: minmax(0, 1fr) 70px 36px; }
   .stabs { overflow-x: auto; }
   .row .c-company, .row .c-reasons { grid-column: 2 / 4; }
@@ -601,31 +606,66 @@ function eventStatus(e) {
 const EVENT_STATUS_LABEL = { todo: 'To decide', going: '✓ Going', notgoing: 'Not going', past: 'Already happened' };
 const fmtDay = d => d ? new Date(d.slice(0, 10) + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '';
 
+function eventStatusLabel(e) {
+  const st = eventStatus(e);
+  if (st !== 'past') return EVENT_STATUS_LABEL[st];
+  const d = decisionOf('event', e.id)?.decision;
+  return `Happened · ${d === 'approve' ? 'went' : d === 'reject' ? 'skipped' : 'not decided'}`;
+}
+// The meeting plan: time is the limit, not the number of good names.
+function planFor(e) {
+  const p = e.plan || { days: 1, team_default: 1, meetings_per_person_per_day: 8, acceptance_rate: 0.25 };
+  const team = e.team || p.team_default, meetings = team * p.days * p.meetings_per_person_per_day;
+  return { ...p, team, meetings, invites: Math.ceil(meetings / Math.max(p.acceptance_rate, 0.01)) };
+}
+const travelText = t => !t ? '—' : t.mode === 'local' ? 'In Berlin' : `${t.hours} h ${t.mode}`;
+const EVENT_COLS = [
+  ['score', 'Score', e => e.score],
+  ['name', 'Event', e => e.name.toLowerCase()],
+  ['date', 'Date', e => e.start],
+  ['travel', 'Travel', e => e.travel?.hours ?? 99],
+  ['strong', 'Strong fit', e => e.counts.people ? e.counts.strong : e.counts.strong_companies],
+  ['meetings', 'Meetings', e => planFor(e).meetings],
+  ['approved', 'Approved', e => { const n = statusCounts([e.id]); return n.approved + n.hubspot; }],
+  ['status', 'Status', e => ({ going: 0, todo: 1, notgoing: 2, past: 3 })[eventStatus(e)]],
+  ['found', 'Found', e => e.added_at || ''],
+];
+
 function renderEventsList() {
-  const counts = {}, filter = S.evFilter || 'all';
+  const counts = {}, filter = S.evFilter || 'all', sort = S.evSort || { key: 'score', dir: -1 };
   S.data.events.forEach(e => { const st = eventStatus(e); counts[st] = (counts[st] || 0) + 1; });
   counts.all = S.data.events.length;
+  const col = EVENT_COLS.find(c => c[0] === sort.key) || EVENT_COLS[0];
   const events = S.data.events.filter(e => filter === 'all' || eventStatus(e) === filter)
-    .sort((a, b) => (a.past - b.past) || b.score - a.score || a.start.localeCompare(b.start));
+    .sort((a, b) => { const x = col[2](a), y = col[2](b); return (x < y ? -1 : x > y ? 1 : 0) * sort.dir || b.score - a.score; });
   $('eventsList').innerHTML = `
     <div class="panel step">
       <div><div class="stepno">Step 1</div><h3>Choose the events worth going to</h3>
-        <p class="lead" style="margin:0">Each event is scored on how many strong-fit people its lists name, how much of the list is worth a look, whether GeneralMind already has a stand, timing, travel, and whether this year's list is out. Open an event to see why, then mark it Going or Not going and choose who to meet there.</p></div>
+        <p class="lead" style="margin:0">Each event is scored on how many strong-fit people its lists name, how much of the list is worth a look, whether GeneralMind already has a stand, timing, travel, and whether this year's list is out. <b>Meetings</b> is what the people we'd send can realistically fit in (about ${S.data.events[0]?.plan?.meetings_per_person_per_day || 8} a day each). Click a column to sort; open an event to see why, then mark it Going or Not going.</p></div>
     </div>
     <div class="stabs">${EVENT_STATUS.map(([k, l]) => `<button class="stab ${filter === k ? 'on' : ''}" data-evf="${k}">${l} <span class="num">${counts[k] || 0}</span></button>`).join('')}</div>
-    <div class="list">${events.length ? `<div class="evtable head"><div>Score</div><div>Event</div><div>Status</div><div>People</div><div>Found</div><div></div></div>` + events.map(e => {
-      const st = eventStatus(e), lane = (EVENT_LANES[e.lane] || ['', 'filtered'])[1], n = statusCounts([e.id]);
+    <div class="list evlistwrap">${events.length ? `<div class="evtable head">${EVENT_COLS.map(([k, l]) => `<button class="sorth ${sort.key === k ? 'on' : ''}" data-sort="${k}" title="Sort by ${l.toLowerCase()}">${l}${sort.key === k ? (sort.dir < 0 ? ' ▼' : ' ▲') : ''}</button>`).join('')}</div>` + events.map(e => {
+      const st = eventStatus(e), lane = (EVENT_LANES[e.lane] || ['', 'filtered'])[1], n = statusCounts([e.id]), pl = planFor(e), appr = n.approved + n.hubspot;
       return `<div class="evtable lane-${lane} ${st}" data-ev="${esc(e.id)}">
         <div class="score num">${e.score}</div>
-        <div style="min-width:0"><div class="t1">${esc(e.name)}${e.generalmind_present ? ' <span class="badge">GeneralMind exhibiting</span>' : ''}</div>
-          <div class="t2">${fmtDate(e.start, e.end)} · ${esc(e.city)} · ${esc(e.format || '')} · <b>${until(e.start)}</b></div></div>
-        <div><span class="chip lane lane-${st === 'going' ? 'fast_track' : st === 'todo' ? 'review' : 'filtered'}">${EVENT_STATUS_LABEL[st]}</span></div>
-        <div class="t2">${e.not_sourced ? 'Not sourced yet' : e.counts.people ? `<b style="color:var(--ink)">${e.counts.strong}</b> strong fit of ${e.counts.people}${n.approved + n.hubspot ? ` · <b style="color:var(--fast)">${n.approved + n.hubspot}</b> to meet` : ''}` : `${e.counts.companies_without_contact} exhibitors, no named people`}</div>
-        <div class="t2">${fmtDay(e.added_at)}<br><small>${esc(e.found_by || '')}</small></div>
-        <div class="acts"><span style="color:var(--faint)">›</span></div>
+        <div style="min-width:0"><div class="t1">${esc(e.name)}${e.generalmind_present ? ' <span class="badge">stand</span>' : ''}</div><div class="t2">${esc(e.city)} · ${esc(e.format || '')}</div></div>
+        <div class="t2"><b style="color:var(--ink)">${fmtDay(e.start)}</b>${e.end && e.end !== e.start ? `–${fmtDay(e.end)}` : ''}<br>${until(e.start)}</div>
+        <div class="t2" title="Approximate door to door from Berlin">${travelText(e.travel)}${e.travel?.km ? `<br>${e.travel.km} km` : ''}</div>
+        <div class="t2">${e.not_sourced ? 'not sourced' : e.counts.people ? `<b style="color:var(--ink)">${e.counts.strong}</b> of ${e.counts.people}` : `<b style="color:var(--ink)">${e.counts.strong_companies}</b> exhibitors`}</div>
+        <div class="t2" title="${pl.team} ${pl.team === 1 ? 'person' : 'people'} × ${pl.days} days × ${pl.meetings_per_person_per_day} a day; invite about ${pl.invites}"><b style="color:var(--ink)">${pl.meetings}</b><br>invite ~${pl.invites}</div>
+        <div class="t2">${appr ? `<b style="color:var(--fast)">${appr}</b>` : '0'}<br>of ~${pl.invites}</div>
+        <div><span class="chip lane lane-${st === 'going' ? 'fast_track' : st === 'todo' ? 'review' : 'filtered'}">${eventStatusLabel(e)}</span></div>
+        <div class="t2">${fmtDay(e.added_at)}<br><small>${esc((e.found_by || '').replace(/ \(.*\)$/, ''))}</small></div>
       </div>`;
-    }).join('') : '<div class="empty">No events here.</div>'}</div>`;
+    }).join('') : '<div class="empty">No events here.</div>'}</div>
+    <div style="color:var(--faint);font-size:11.5px;margin-top:8px">Travel is approximate door to door from Berlin. Meetings: people we'd send × days × meetings a day each; "invite" assumes about ${Math.round(100 * (S.data.events[0]?.plan?.acceptance_rate || 0.25))}% accept. These assumptions are in <a href="#/criteria">Criteria</a> (Events section).</div>`;
   $('eventsList').querySelectorAll('[data-evf]').forEach(b => b.onclick = () => { S.evFilter = b.dataset.evf; renderEventsList(); });
+  $('eventsList').querySelectorAll('[data-sort]').forEach(b => b.onclick = e => {
+    e.stopPropagation();
+    const k = b.dataset.sort, cur = S.evSort || { key: 'score', dir: -1 };
+    S.evSort = cur.key === k ? { key: k, dir: -cur.dir } : { key: k, dir: ['name', 'date', 'travel', 'status'].includes(k) ? 1 : -1 };
+    renderEventsList();
+  });
   $('eventsList').querySelectorAll('[data-ev]').forEach(r => r.onclick = () => openEvent(r.dataset.ev));
 }
 
@@ -641,9 +681,9 @@ function renderEventPage() {
   $('eventTop').innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><a href="#/events" data-back>← All events</a><button class="btn" data-copy="${esc(`#/event/${encodeURIComponent(e.id)}`)}">Copy link</button></div>
     <div class="panel evhead">
-      <div style="min-width:0"><div class="stepno">${EVENT_STATUS_LABEL[st]}${e.found_by ? ` · added ${fmtDay(e.added_at)} by ${esc(e.found_by)}` : ''}</div>
+      <div style="min-width:0"><div class="stepno">${eventStatusLabel(e)}${e.found_by ? ` · added ${fmtDay(e.added_at)} by ${esc(e.found_by)}` : ''}</div>
         <h3>${esc(e.name)}${e.generalmind_present ? ' <span class="badge">GeneralMind exhibiting</span>' : ''}</h3>
-        <div class="meta">${fmtDate(e.start, e.end)} · ${esc(e.city)} · ${esc(e.format || '')} · ${esc(e.language || '')} · <b>${until(e.start)}</b>${safeUrl(e.url) ? ` · <a href="${esc(e.url)}" target="_blank" rel="noopener">official site ↗</a>` : ''}</div></div>
+        <div class="meta">${fmtDate(e.start, e.end)} · ${esc(e.city)} (${e.travel?.mode === 'local' ? 'no travel' : `${travelText(e.travel)} from Berlin`}) · ${esc(e.format || '')} · ${esc(e.language || '')} · <b>${until(e.start)}</b>${safeUrl(e.url) ? ` · <a href="${esc(e.url)}" target="_blank" rel="noopener">official site ↗</a>` : ''}</div></div>
       <div class="acts2">
         <button class="btn ok ${st === 'going' ? 'on' : ''}" data-going="approve" ${e.past ? 'disabled' : ''}>${st === 'going' ? '✓ Going' : 'Going'}</button>
         <button class="btn no ${st === 'notgoing' ? 'on' : ''}" data-going="reject">${st === 'notgoing' ? '✕ Not going' : 'Not going'}</button>
@@ -659,6 +699,7 @@ function renderEventPage() {
         <div style="color:var(--faint);font-size:11.5px;margin-top:8px">${e.score} of 100. The weights are in <a href="#/criteria">Criteria</a> (Events section).</div>
       </div>
     </div>
+    ${planBlock(e, n)}
     <div class="panel"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">About this event</h3><button class="kwbtn" data-more>${open ? 'Less' : 'More'}</button></div>
       <p style="margin:8px 0 0;font-size:13.5px">${esc(e.why || '')}</p>
       ${open ? `<div style="margin-top:8px;font-size:13px">${e.date_note ? `<div class="note">${esc(e.date_note)}</div>` : ''}
@@ -670,6 +711,12 @@ function renderEventPage() {
   const top = $('eventTop');
   top.querySelectorAll('[data-going]').forEach(b => b.onclick = () => decide('event', e.id, decisionOf('event', e.id)?.decision === b.dataset.going ? 'clear' : b.dataset.going));
   top.querySelector('[data-more]').onclick = () => { S.evOpen = open ? null : e.id; renderEventPage(); };
+  top.querySelector('[data-team]').onchange = async ev => {
+    const people = +ev.target.value;
+    const r = await fetch(`api/events/${encodeURIComponent(e.id)}/team`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ people }) });
+    if (!r.ok) return toast('Could not save');
+    e.team = people; toast(`Planning for ${people} ${people === 1 ? 'person' : 'people'}`); renderEventPage();
+  };
   top.querySelector('[data-back]').onclick = ev => { ev.preventDefault(); S.eventId = null; showView('events'); };
   top.querySelectorAll('[data-summ]').forEach(b => b.onclick = async () => {
     b.disabled = true; b.textContent = 'Writing…';
@@ -680,6 +727,21 @@ function renderEventPage() {
   });
   wireCopy(top);
   $('peopleBlock').style.display = e.not_sourced ? 'none' : '';
+}
+
+function planBlock(e, n) {
+  const pl = planFor(e), appr = n.approved + n.hubspot, strong = e.counts.people ? e.counts.strong : 0;
+  const pct = Math.min(100, Math.round(100 * appr / pl.invites));
+  const note = e.not_sourced ? 'People not sourced yet, so the plan has no names to fill it.'
+    : !e.counts.people ? 'No named people yet: the meetings would have to come from exhibitors, once the right person at each is found.'
+    : strong >= pl.invites ? `There are more strong-fit people (${strong}) than you'd invite: approve the best ${pl.invites} and stop.`
+    : `There are ${strong} strong-fit people, fewer than the ~${pl.invites} invites needed: look at the "possible" ones too, or plan fewer meetings.`;
+  return `<div class="panel"><h3>Meeting plan</h3>
+    <div class="plan">We'd send <select data-team>${[1, 2, 3, 4].map(k => `<option value="${k}" ${k === pl.team ? 'selected' : ''}>${k} ${k === 1 ? 'person' : 'people'}</option>`).join('')}</select>
+      × <b>${pl.days}</b> day${pl.days > 1 ? 's' : ''} × <b>${pl.meetings_per_person_per_day}</b> meetings a day = <b>${pl.meetings} meetings</b>.
+      About ${Math.round(100 * pl.acceptance_rate)}% of invites are accepted, so invite about <b>${pl.invites}</b>.</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:10px"><div class="meter" style="flex:1;height:10px"><span style="width:${pct}%"></span></div><span class="num" style="font-size:13px"><b>${appr}</b> approved of ~${pl.invites}</span></div>
+    <div class="note">${note}${e.generalmind_present ? ' GeneralMind has a stand here, so the plan starts with two people: one at the stand, one moving between sessions, both taking meetings.' : ''}</div></div>`;
 }
 
 function renderEvents() {
@@ -1164,6 +1226,7 @@ const CRIT_LABELS = {
   worth_a_look_share_points: 'Share of the list worth a look', in_window_points: 'Good timing (time to book meetings)', outside_window_points: 'Too soon or too far ahead',
   plan_min_days: 'Good timing starts (days ahead)', plan_max_days: 'Good timing ends (days ahead)', berlin_points: 'In Berlin', dach_trip_points: 'Elsewhere in DACH',
   abroad_points: 'Abroad', current_list_points: "This year's list is out", recommend: 'Recommended from', consider: 'Worth considering from',
+  meetings_per_person_per_day: 'Meetings per person per day', acceptance_rate_percent: 'Invites accepted (%)', team_size: 'People we send', team_size_with_stand: 'People we send when we have a stand',
 };
 const ORDER = ['event_choice', 'lanes', 'role', 'company', 'event', 'account'];
 const range = k => /days/.test(k) ? [0, 365, 1] : /multiplier/.test(k) ? [0, 3, 0.1] : /^(fast_track|review|target_contact_role_min|recommend|consider)$/.test(k) ? [0, 100, 1] : [0, 40, 1];

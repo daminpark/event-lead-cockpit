@@ -560,6 +560,11 @@ def score_events(events, contacts, account_rows, today, cfg):
         e["past"] = dt.date.fromisoformat(e.get("end") or e["start"]) < today
         e["lane"] = ("past" if e["past"] else "recommended" if e["score"] >= ec["recommend"]
                      else "consider" if e["score"] >= ec["consider"] else "skip")
+        # meeting plan: time, not names, is the limit (people sent can be changed per event in the cockpit)
+        days = (dt.date.fromisoformat(e.get("end") or e["start"]) - dt.date.fromisoformat(e["start"])).days + 1
+        team = ec.get("team_size_with_stand", 2) if e.get("generalmind_present") else ec.get("team_size", 1)
+        e["plan"] = {"days": days, "team_default": team, "meetings_per_person_per_day": ec.get("meetings_per_person_per_day", 8),
+                     "acceptance_rate": ec.get("acceptance_rate_percent", 25) / 100}
         e["counts"] = {"people": len(people), "strong": strong_people, "worth": worth if people else 0,
                        "companies_without_contact": len(companies), "strong_companies": strong_companies,
                        "worth_companies": 0 if people else worth}
