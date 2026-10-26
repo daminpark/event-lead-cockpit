@@ -35,7 +35,7 @@ Every weight and keyword is a slider or a list. As you change something, the pre
 The plain-language instructions the AI steps follow when finding events, sourcing leads from event pages and profiling companies. Edit, save with a note, and switch versions the same way. Changes apply the next time sourcing runs.
 
 ## The copilot
-Ask it anything about the leads, events, scores or playbooks ("who should we meet first at BME?", "why is this lead in review?"). It can propose changes to the criteria or playbooks; they're saved as inactive versions with an **Activate** button, so a person always decides. The owner chooses the model in Settings.
+Ask it anything about the leads, events, scores or playbooks ("who should we meet first at BME?", "why is this lead in review?"). It can propose changes to the criteria or playbooks; they're saved as inactive versions with an **Activate** button, so a person always decides. The owner chooses the model and its thinking effort in Settings.
 
 ## Insights
 The funnel from sourced to HubSpot, decisions over time, the change log, which events and industries give the best leads, how each scoring version compares on past decisions, the feedback inbox and recorded errors.
@@ -50,7 +50,7 @@ On any contact or account, **Do not contact** keeps that person (across every ev
 The light in the header shows whether the connection is healthy. Each push creates or updates companies and contacts, linked, and never duplicates: every record carries the cockpit's own id. Emails are left empty on purpose; they should come from an enrichment provider with a proper legal basis.
 
 ## Settings (owner)
-Paste the HubSpot private app token and the OpenRouter key, and choose the copilot's model. Keys are stored on the server and never shown again in full.
+Paste the HubSpot service key and the OpenRouter key, and choose the copilot's model and thinking effort. Keys are stored on the server and never shown again in full.
 
 ## Rules the cockpit follows
 Business information from public event pages only: name, title, company, talk. No emails or phone numbers are collected, no LinkedIn, and sites that block automated access are respected. In Germany cold email needs prior consent (UWG §7), so the first contact is best made at the event or through an introduction.

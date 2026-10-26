@@ -1301,17 +1301,24 @@ async function renderSettings() {
     <div class="panel"><h3>Copilot model</h3><p class="lead">Applies to everyone. Prices are per million tokens in / out. Only models that can use tools are listed, since the copilot looks things up.</p>
       <input type="search" id="modelFilter" placeholder="Filter models, e.g. kimi, claude, gemini" ${owner ? '' : 'disabled'} style="width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink);margin-bottom:8px">
       <select id="setModel" size="10" ${owner ? '' : 'disabled'} style="width:100%;font:inherit;padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)"><option>Loading…</option></select>
-      <div id="modelNow" style="color:var(--muted);font-size:12.5px;margin-top:6px"></div></div>
+      <div id="modelNow" style="color:var(--muted);font-size:12.5px;margin-top:6px"></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:12px"><b style="font-size:13px">Thinking effort</b>
+        <select id="setEffort" ${owner ? '' : 'disabled'} style="font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)">${['low', 'medium', 'high'].map(e => `<option ${e === st.copilot_effort ? 'selected' : ''}>${e}</option>`).join('')}</select>
+        <span style="color:var(--muted);font-size:12.5px">Higher is a little smarter but much slower and costlier. Medium suits the copilot.</span></div></div>
     <div class="panel"><h3>You</h3><p class="lead">Your name is saved with your decisions and notes.</p><button class="btn" id="setWho">Reviewer: ${esc(S.reviewer || 'not set')}</button> <a class="btn" href="logout">Sign out (to use another code)</a></div>`;
   const root = $('settingsView');
   root.querySelectorAll('[data-save-secret]').forEach(b => b.onclick = () => saveSecret(b.dataset.saveSecret, root.querySelector(`[data-secret="${b.dataset.saveSecret}"]`).value));
   root.querySelectorAll('[data-remove-secret]').forEach(b => b.onclick = () => { if (confirm('Remove this key?')) saveSecret(b.dataset.removeSecret, ''); });
+  $('setEffort').onchange = async e => {
+    const r = await fetch('api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: 'copilot_effort', value: e.target.value }) });
+    toast(r.ok ? `Thinking effort set to ${e.target.value}` : 'Only the owner can change this');
+  };
   $('setWho').onclick = async () => { store.set('reviewerAsked', ''); await askReviewer(); renderSettings(); };
   try {
     const m = await (await fetch('api/copilot/models')).json();
     const sel = $('setModel');
     if (!m.configured) { sel.innerHTML = '<option>Add an OpenRouter key first</option>'; sel.disabled = true; return; }
-    const SUGGESTED = ['anthropic/claude-sonnet-5.5', 'google/gemini-4-argon', 'moonshotai/kimi-k3.1-pro', 'openai/gpt-6.1-terra', 'anthropic/claude-haiku-5.5'];
+    const SUGGESTED = ['openai/gpt-6.1-sol', 'deepseek/deepseek-v4.1-flash', 'anthropic/claude-sonnet-5.5', 'google/gemini-4-argon', 'moonshotai/kimi-k3.1-pro'];
     const opt = x => `<option value="${esc(x.id)}" ${x.id === m.current ? 'selected' : ''}>${esc(x.name)} · ${esc(x.price)}</option>`;
     const draw = (q = '') => {
       const match = x => !q || `${x.id} ${x.name}`.toLowerCase().includes(q.toLowerCase());

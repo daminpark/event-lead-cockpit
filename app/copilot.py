@@ -265,6 +265,7 @@ def chat(con, messages, context, latest_decisions, validate_scoring, author=None
     RATE["calls"].append(now)
 
     model = setting(con, "copilot_model") or default_model()
+    effort = setting(con, "copilot_effort") or "medium"  # thinking effort: the main lever on speed and cost
     tools = Tools(con, latest_decisions, validate_scoring, author)
     with open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "docs", "guide.md"), encoding="utf-8") as f:
         guide = f.read()  # the same guide the page shows, so "how do I…" answers match the app
@@ -273,7 +274,8 @@ def chat(con, messages, context, latest_decisions, validate_scoring, author=None
     with httpx.Client(timeout=httpx.Timeout(90.0)) as http:
         for _ in range(MAX_ROUNDS):
             r = http.post(f"{API}/chat/completions", headers={"Authorization": f"Bearer {key()}", "X-Title": "Event lead cockpit"},
-                          json={"model": model, "messages": convo, "tools": TOOLS, "tool_choice": "auto", "max_tokens": 1500})
+                          json={"model": model, "messages": convo, "tools": TOOLS, "tool_choice": "auto", "max_tokens": 4000,
+                                "reasoning": {"effort": effort}})
             if r.status_code >= 400:
                 raise RuntimeError(f"OpenRouter {r.status_code}: {r.text[:200]}")
             msg = r.json()["choices"][0]["message"]
@@ -282,7 +284,7 @@ def chat(con, messages, context, latest_decisions, validate_scoring, author=None
             convo.append({k: v for k, v in msg.items() if k in ("role", "content", "tool_calls", "reasoning", "reasoning_details") and v is not None}
                          | {"content": msg.get("content") or ""})
             if not calls:
-                return {"reply": msg.get("content") or "", "actions": tools.actions, "model": model}
+                return {"reply": msg.get("content") or "", "actions": tools.actions, "model": model, "effort": effort}
             for call in calls:
                 name = call["function"]["name"]
                 try:
@@ -291,4 +293,4 @@ def chat(con, messages, context, latest_decisions, validate_scoring, author=None
                 except Exception as e:  # a bad tool call goes back to the model, not to the user
                     result = {"error": str(e)[:300]}
                 convo.append({"role": "tool", "tool_call_id": call["id"], "content": json.dumps(result, ensure_ascii=False, default=str)[:24000]})
-    return {"reply": "I ran out of steps on that one. Could you narrow the question?", "actions": tools.actions, "model": model}
+    return {"reply": "I ran out of steps on that one. Could you narrow the question?", "actions": tools.actions, "model": model, "effort": effort}

@@ -565,15 +565,17 @@ def copilot_models():
 
 
 class Setting(BaseModel):
-    key: Literal["copilot_model"]
+    key: Literal["copilot_model", "copilot_effort"]
     value: str = Field(max_length=200)
 
 
 @app.post("/api/settings", dependencies=[Depends(owner_only)])
 def save_setting(s: Setting):
+    if s.key == "copilot_effort" and s.value not in ("low", "medium", "high"):
+        raise HTTPException(400, "Effort is low, medium or high")
     with db() as con:
         con.execute("INSERT OR REPLACE INTO settings VALUES (?, ?)", (s.key, s.value))
-        log(con, "config", f"Copilot model set to {s.value}")
+        log(con, "config", f"Copilot {'model' if s.key == 'copilot_model' else 'thinking effort'} set to {s.value}")
         con.commit()
     return {"ok": True}
 
@@ -611,8 +613,9 @@ def copilot_chat(c: Chat):
 def settings(request: Request):
     with db() as con:
         model = copilot.setting(con, "copilot_model")
+        effort = copilot.setting(con, "copilot_effort") or "medium"
     return {"role": request.state.role, "hubspot": secrets_store.status("hubspot"),
-            "openrouter": secrets_store.status("openrouter"), "copilot_model": model}
+            "openrouter": secrets_store.status("openrouter"), "copilot_model": model, "copilot_effort": effort}
 
 
 class Secret(BaseModel):
