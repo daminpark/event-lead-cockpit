@@ -31,8 +31,9 @@ e.g. [approved people at BME](#/event/bme-symposium-2026/approved).
 to check it and click Activate.
 5. Write down feedback about the cockpit with add_feedback_note.
 
-What you don't do: approve, reject or unapprove people, mark events as going, send to HubSpot, edit playbooks, or search \
-the web. If asked, say in one sentence where in the cockpit they can do it themselves, with a link.
+What you don't do: approve, reject or unapprove people, mark events as going, send to HubSpot, or search the web. If asked, \
+say in one sentence where in the cockpit they can do it themselves, with a link. Playbooks are discussed and edited in the \
+playbook editor: [Finding events](#/playbooks/events), [Sourcing leads](#/playbooks/sourcing), [Profiling companies](#/playbooks/profiling).
 
 Keep answers short: a sentence or a short list, with names and links. Plain language, no hype, no em dashes."""
 
@@ -279,3 +280,70 @@ def chat(con, messages, context, latest_decisions, validate_scoring, author=None
                     result = {"error": str(e)[:300]}
                 convo.append({"role": "tool", "tool_call_id": call["id"], "content": json.dumps(result, ensure_ascii=False, default=str)[:24000]})
     return {"reply": "I ran out of steps on that one. Could you narrow the question?", "actions": tools.actions, "model": model, "effort": effort}
+
+
+# ---------- playbook editor: discuss a playbook with the model, which can edit the draft ----------
+
+PLAYBOOK_NAMES = {"events": "Finding events", "sourcing": "Sourcing leads from an event", "profiling": "Profiling companies"}
+
+PLAYBOOK_SYSTEM = """You help the GeneralMind team improve one playbook: plain-language instructions that AI agents follow \
+when building the event lead cockpit. This one is "{name}". GeneralMind sells "Autopilot": AI that processes purchase orders, \
+order confirmations and supplier invoices against the ERP; its buyers are heads of procurement, supply chain, logistics, \
+order management and finance at mid-to-large DACH manufacturers, wholesalers, retailers and logistics firms.
+
+Talk it through: answer questions, explain why a rule matters, suggest improvements. When the person asks you to change the \
+playbook (or agrees to a change you suggested), call edit_playbook with the COMPLETE new text and a one-sentence summary. \
+Change only what was asked; keep everything else word for word, including the markdown headings and list style. Keep the \
+rules on legality and data (public business information only, no emails or phone numbers, no LinkedIn, respect sites that \
+block automated access) unless explicitly asked, and even then say why they matter. Plain language, short answers, no em dashes.
+
+The current draft (what the person sees in the editor, possibly with unsaved edits):
+---
+{draft}
+---
+The active version that the agents use today:
+---
+{active}
+---"""
+
+PLAYBOOK_TOOL = [{"type": "function", "function": {
+    "name": "edit_playbook",
+    "description": "Replace the draft with a new complete text. The person sees the changes as a diff and decides whether to save.",
+    "parameters": {"type": "object", "properties": {
+        "text": {"type": "string", "description": "The complete new playbook text in markdown"},
+        "summary": {"type": "string", "description": "One sentence: what changed"},
+    }, "required": ["text", "summary"]}}}]
+
+
+def playbook_chat(con, kind, messages, draft, author=None):
+    if not key():
+        raise RuntimeError("No OpenRouter key configured (Settings)")
+    now = time.time()
+    RATE["calls"] = [t for t in RATE["calls"] if now - t < RATE["window"]]
+    if len(RATE["calls"]) >= RATE["max"]:
+        raise RuntimeError("The assistant has reached its hourly limit. Try again later.")
+    RATE["calls"].append(now)
+    active = con.execute("SELECT body FROM config_versions WHERE kind = ? AND active = 1", (f"playbook:{kind}",)).fetchone()["body"]
+    model = setting(con, "copilot_model") or default_model()
+    effort = setting(con, "copilot_effort") or "medium"
+    convo = [{"role": "system", "content": PLAYBOOK_SYSTEM.format(name=PLAYBOOK_NAMES[kind], draft=draft[:20000], active=active[:20000])}]
+    convo += [{"role": m["role"], "content": m["content"]} for m in messages[-16:] if m.get("role") in ("user", "assistant")]
+    r = httpx.post("https://openrouter.ai/api/v1/chat/completions", timeout=httpx.Timeout(180.0),
+                   headers={"Authorization": f"Bearer {key()}", "X-Title": "Event lead cockpit"},
+                   json={"model": model, "messages": convo, "tools": PLAYBOOK_TOOL, "tool_choice": "auto",
+                         "max_tokens": 8000, "reasoning": {"effort": effort}})
+    if r.status_code >= 400:
+        raise RuntimeError(f"OpenRouter {r.status_code}: {r.text[:200]}")
+    msg = r.json()["choices"][0]["message"]
+    out = {"reply": (msg.get("content") or "").strip(), "draft": None, "summary": None, "model": model}
+    for call in msg.get("tool_calls") or []:
+        if call["function"]["name"] == "edit_playbook":
+            try:
+                args = json.loads(call["function"].get("arguments") or "{}")
+            except json.JSONDecodeError:
+                continue
+            if isinstance(args.get("text"), str) and args["text"].strip():
+                out["draft"], out["summary"] = args["text"].strip() + "\n", args.get("summary") or "Edited the draft"
+    if not out["reply"]:
+        out["reply"] = out["summary"] or "I couldn't do that. Could you rephrase?"
+    return out

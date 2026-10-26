@@ -234,6 +234,16 @@ dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid 
 .bkbar span { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
 .bk b { text-align: right; }
 .sechead { font-size: 16px; margin: 22px 0 10px; }
+.pbgrid { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; align-items: start; }
+.pbtext { width: 100%; min-height: 560px; font: 13px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); color: var(--ink); resize: vertical; }
+.pbchat { position: sticky; top: 76px; display: flex; flex-direction: column; max-height: calc(100vh - 96px); margin: 0; }
+.pbchat .cp-msgs { padding: 0; min-height: 200px; }
+.diffview { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px 0; font: 12.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-x: auto; }
+.dl { padding: 0 14px 0 34px; position: relative; white-space: pre-wrap; }
+.dl span { position: absolute; left: 14px; color: var(--faint); }
+.dl.add { background: var(--fast-soft); color: var(--fast); }
+.dl.del { background: var(--competitor-soft); color: var(--competitor); text-decoration: line-through; text-decoration-thickness: 1px; }
+.dl.skip { color: var(--faint); font-style: italic; padding-left: 14px; }
 .sechead span { color: var(--muted); font-weight: 500; font-size: 13px; margin-left: 8px; }
 .fitcell .sug { font-size: 10.5px; color: var(--lc, var(--muted)); font-weight: 600; white-space: nowrap; }
 .cp-open { background: var(--accent) !important; color: #fff !important; border-color: var(--accent) !important; font-weight: 600; }
@@ -309,6 +319,8 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
   .rail { display: none; }
   .mobile-only { display: inline-block; }
   .crit { grid-template-columns: 1fr; }
+  .pbgrid { grid-template-columns: 1fr; }
+  .pbchat { position: static; }
   .crit .side { position: static; }
   .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   header { flex-wrap: wrap; row-gap: 8px; }
@@ -807,6 +819,7 @@ function hashFor(view = S.view) {
   const tail = () => `/${S.status}` + (S.sel ? `/${encodeURIComponent(S.sel)}` : '');
   if (view === 'events') return S.eventId ? `#/event/${encodeURIComponent(S.eventId)}` + tail() : '#/events';
   if (view === 'people') { const scope = S.data ? currentScope() : (S.peopleScope ?? 'going'); return `#/people/${scope === '' ? 'all' : encodeURIComponent(scope)}` + tail(); }
+  if (view === 'playbooks') return S.pbKind ? `#/playbooks/${S.pbKind}` : '#/playbooks';
   return `#/${view}`;
 }
 function personHash(c) { return `#/event/${encodeURIComponent(c.event_id)}/${statusOf(c)}/${encodeURIComponent(c.id)}`; }
@@ -823,6 +836,7 @@ function applyHash() {
   if (view === 'event') { S.eventId = a || null; S.status = status(b); S.sel = c || null; return 'events'; }
   if (view === 'events') { S.eventId = null; return 'events'; }
   if (view === 'people') { S.peopleScope = a === 'all' ? '' : 'going'; S.status = status(b); S.sel = c || null; return 'people'; }
+  if (view === 'playbooks') { S.pbKind = a || null; return 'playbooks'; }
   return VIEWS.includes(view) ? view : null;
 }
 function copyLink(hash) {
@@ -1318,11 +1332,11 @@ async function activateVersion(id) {
   S.draft = null; S.preview = null; await load();
 }
 
-// ---------- playbooks ----------
+// ---------- playbooks: list, editor with diff and history, and a chat with the model ----------
 const PLAYBOOKS = [
-  ['playbook:events', 'Finding events', 'What the event-finding agent looks for and how it judges an event.'],
-  ['playbook:sourcing', 'Sourcing leads from an event', 'How the extraction agent and its checker pull people and companies from event pages.'],
-  ['playbook:profiling', 'Profiling companies', 'How each company is classified (buyer, partner, competitor…) and profiled.'],
+  ['events', 'Finding events', 'What the event-finding agent looks for, and how it judges an event.'],
+  ['sourcing', 'Sourcing leads from an event', 'How the extraction agent and its checker pull people and companies from event pages.'],
+  ['profiling', 'Profiling companies', 'How each company is classified (buyer, partner, competitor…) and profiled.'],
 ];
 function md(src) {
   const lines = esc(src).split('\n'), out = []; let list = null;
@@ -1339,35 +1353,149 @@ function md(src) {
   if (list) out.push(`</${list}>`);
   return out.join('');
 }
+
+// Line diff (longest common subsequence): ' ' same, '-' removed, '+' added.
+function lineDiff(a, b) {
+  const A = a.replace(/\n$/, '').split('\n'), B = b.replace(/\n$/, '').split('\n'), n = A.length, m = B.length;
+  const dp = Array.from({ length: n + 1 }, () => new Int32Array(m + 1));
+  for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) dp[i][j] = A[i] === B[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+  const out = []; let i = 0, j = 0;
+  while (i < n && j < m) { if (A[i] === B[j]) { out.push([' ', A[i]]); i++; j++; } else if (dp[i + 1][j] >= dp[i][j + 1]) out.push(['-', A[i++]]); else out.push(['+', B[j++]]); }
+  while (i < n) out.push(['-', A[i++]]);
+  while (j < m) out.push(['+', B[j++]]);
+  return out;
+}
+function diffHtml(d) {
+  if (!d.some(([t]) => t !== ' ')) return '<div class="note">No differences.</div>';
+  const keep = new Set();  // show changed lines with two lines of context around them
+  d.forEach(([t], i) => { if (t !== ' ') for (let k = i - 2; k <= i + 2; k++) keep.add(k); });
+  let html = '', skipped = 0;
+  d.forEach(([t, l], i) => {
+    if (!keep.has(i)) { skipped++; return; }
+    if (skipped) { html += `<div class="dl skip">⋯ ${skipped} unchanged line${skipped > 1 ? 's' : ''}</div>`; skipped = 0; }
+    html += `<div class="dl ${t === '+' ? 'add' : t === '-' ? 'del' : ''}"><span>${t === ' ' ? '' : t}</span>${esc(l) || '&nbsp;'}</div>`;
+  });
+  if (skipped) html += `<div class="dl skip">⋯ ${skipped} unchanged line${skipped > 1 ? 's' : ''}</div>`;
+  return `<div class="diffview">${html}</div>`;
+}
+const changeCount = d => d.filter(([t]) => t !== ' ').length;
+
+function pbState(kind) {
+  S.pbs = S.pbs || {};
+  if (!S.pbs[kind]) {
+    const active = S.config[`playbook:${kind}`].find(v => v.active);
+    const saved = store.get(`pbdraft:${kind}`);
+    S.pbs[kind] = { draft: saved || active.body, restored: !!(saved && saved !== active.body), tab: 'edit', compareId: null, chat: [], undo: [] };
+  }
+  return S.pbs[kind];
+}
+function setDraft(kind, text, undoable = true) {
+  const st = pbState(kind);
+  if (undoable && text !== st.draft) st.undo.push(st.draft);
+  st.draft = text; store.set(`pbdraft:${kind}`, text);
+}
+
 function renderPlaybooks() {
   if (!S.config) return;
-  S.pbEdit = S.pbEdit || {};
-  $('playbooks').innerHTML = `<div class="panel"><h3>Playbooks: the instructions the engine follows</h3><p class="lead">The pipeline's AI steps follow these instructions, in plain language. They're versioned like the scoring: edit, save with a note, and switch back any time. A change takes effect the next time sourcing runs (in v1 that's a manual run; next step is a daily scheduled run that also picks up new speaker lists).</p></div>
-    <div class="grid2">${PLAYBOOKS.map(([kind, title, sub]) => {
-      const vs = S.config[kind], act = vs.find(v => v.active), editing = S.pbEdit[kind];
-      return `<div class="panel pb" data-kind="${kind}">
-        <div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><div><h3>${esc(title)}</h3><p class="lead" style="margin:0 0 10px">${esc(sub)}</p></div>
-        <select data-ver>${vs.map(v => `<option value="${v.id}" ${v.id === (S.pbView?.[kind] || act.id) ? 'selected' : ''}>v${v.version}${v.active ? ' (active)' : ''} · ${esc((v.note || '').slice(0, 30))}</option>`).join('')}</select></div>
-        ${editing ? `<textarea data-body>${esc(editing.body)}</textarea><input data-note placeholder="What changed and why" style="width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)">
-          <div style="display:flex;gap:8px;margin-top:10px"><button class="btn primary" data-save>Save and activate</button><button class="btn" data-cancel>Cancel</button></div>`
-        : `<div class="md">${md((vs.find(v => v.id === (S.pbView?.[kind] || act.id)) || act).body)}</div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn" data-edit>Edit</button>${S.pbView?.[kind] && S.pbView[kind] !== act.id ? '<button class="btn" data-act>Make this version active</button>' : ''}</div>`}
-      </div>`;
-    }).join('')}</div>`;
-  $('playbooks').querySelectorAll('.pb').forEach(card => {
-    const kind = card.dataset.kind, vs = S.config[kind];
-    card.querySelector('[data-ver]').onchange = e => { S.pbView = { ...(S.pbView || {}), [kind]: +e.target.value }; renderPlaybooks(); };
-    card.querySelector('[data-edit]')?.addEventListener('click', () => { const v = vs.find(x => x.id === (S.pbView?.[kind])) || vs.find(x => x.active); S.pbEdit[kind] = { body: v.body }; renderPlaybooks(); });
-    card.querySelector('[data-act]')?.addEventListener('click', () => activateVersion(S.pbView[kind]));
-    card.querySelector('[data-body]')?.addEventListener('input', e => { S.pbEdit[kind].body = e.target.value; });
-    card.querySelector('[data-cancel]')?.addEventListener('click', () => { delete S.pbEdit[kind]; renderPlaybooks(); });
-    card.querySelector('[data-save]')?.addEventListener('click', async () => {
-      const body = card.querySelector('[data-body]').value, note = card.querySelector('[data-note]').value.trim();
-      if (!note) return toast('Add a short note first');
-      const res = await fetch('api/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kind, body, note, author: S.reviewer || null, activate: true }) });
-      if (!res.ok) return toast('Could not save');
-      delete S.pbEdit[kind]; S.pbView = { ...(S.pbView || {}), [kind]: null }; toast('Saved'); await load();
-    });
+  if (S.pbKind && !PLAYBOOKS.some(([k]) => k === S.pbKind)) S.pbKind = null;
+  if (!S.pbKind) {
+    $('playbooks').innerHTML = `<div class="panel"><h3>Playbooks: the instructions the engine follows</h3><p class="lead">The AI steps that find events, source people from event pages and profile companies follow these instructions, written in plain language. Open one to edit it, compare versions, or talk it through with the model, which can also make the edits for you. Nothing changes until you save.</p></div>
+      <div class="list">${PLAYBOOKS.map(([k, title, sub]) => {
+        const vs = S.config[`playbook:${k}`], act = vs.find(v => v.active), st = S.pbs?.[k], unsaved = (st?.draft ?? store.get(`pbdraft:${k}`)) && (st?.draft ?? store.get(`pbdraft:${k}`)) !== act.body;
+        return `<div class="evtable pbrow" data-pb="${k}" style="grid-template-columns:minmax(0,1fr) auto 24px"><div><div class="t1">${esc(title)}</div><div class="t2">${esc(sub)}</div></div>
+          <div class="t2" style="text-align:right">active v${act.version} · ${esc(act.note || '')}<br><small>${vs.length} version${vs.length > 1 ? 's' : ''}${unsaved ? ' · <b style="color:var(--review)">unsaved draft</b>' : ''}</small></div><div class="acts"><span style="color:var(--faint)">›</span></div></div>`;
+      }).join('')}</div>`;
+    $('playbooks').querySelectorAll('[data-pb]').forEach(r => r.onclick = () => { S.pbKind = r.dataset.pb; showView('playbooks'); window.scrollTo(0, 0); });
+    if (S.view === 'playbooks') syncHash();
+    return;
+  }
+  const kind = S.pbKind, [, title, sub] = PLAYBOOKS.find(([k]) => k === kind), vs = S.config[`playbook:${kind}`], act = vs.find(v => v.active);
+  const st = pbState(kind), base = (st.compareId && vs.find(v => v.id === st.compareId)) || act, d = lineDiff(base.body, st.draft), dirty = st.draft !== act.body;
+  $('playbooks').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><a href="#/playbooks" data-back>← All playbooks</a><button class="btn" data-copy="#/playbooks/${kind}">Copy link</button></div>
+    <div class="panel evhead">
+      <div style="min-width:0"><div class="stepno">Playbook · active v${act.version} · ${esc(act.source === 'repo' ? 'from the repository' : `by ${act.author || 'someone'}`)}, ${esc(act.created_at.slice(0, 10))}</div>
+        <h3>${esc(title)}</h3><div class="meta">${esc(sub)} · <span id="pbDirty">${dirtyText(act.body, st.draft)}</span></div>
+        ${st.restored ? '<div class="note">Your unsaved draft from last time was restored.</div>' : ''}</div>
+      <div class="acts2" style="flex-direction:column;align-items:stretch;min-width:260px">
+        <input id="pbNote" placeholder="What changed and why (needed to save)" style="font:inherit;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)">
+        <div style="display:flex;gap:6px;justify-content:flex-end"><button class="btn" id="pbUndo" ${st.undo.length ? '' : 'disabled'}>Undo</button><button class="btn" id="pbSave" ${dirty ? '' : 'disabled'}>Save as version</button><button class="btn primary" id="pbSaveAct" ${dirty ? '' : 'disabled'}>Save and activate</button></div>
+      </div>
+    </div>
+    <div class="pbgrid">
+      <div style="min-width:0">
+        <div class="stabs">${[['edit', 'Edit'], ['changes', `Changes <span class="num" id="pbChanges">${changeCount(d)}</span>`], ['history', `History <span class="num">${vs.length}</span>`]].map(([k, l]) => `<button class="stab ${st.tab === k ? 'on' : ''}" data-pbtab="${k}">${l}</button>`).join('')}</div>
+        ${st.tab === 'edit' ? `<textarea id="pbText" class="pbtext" spellcheck="true">${esc(st.draft)}</textarea>`
+        : st.tab === 'changes' ? `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;font-size:13px">Compare the draft with <select id="pbCompare">${vs.map(v => `<option value="${v.id}" ${v.id === base.id ? 'selected' : ''}>v${v.version}${v.active ? ' (active)' : ''} · ${esc((v.note || '').slice(0, 40))}</option>`).join('')}</select></div>${diffHtml(d)}`
+        : `<div class="list">${vs.map(v => `<div class="evtable" style="grid-template-columns:70px minmax(0,1fr) auto;cursor:default"><div><b>v${v.version}</b>${v.active ? '<br><span class="tag-active">active</span>' : ''}</div>
+            <div><div style="font-size:13px">${esc(v.note || '')}</div><div class="t2">${esc(v.source === 'repo' ? 'repository' : v.author || 'someone')} · ${esc(v.created_at.slice(0, 16).replace('T', ' '))} UTC</div></div>
+            <div class="acts" style="gap:6px"><button class="btn" data-cmp="${v.id}" style="font-size:12px;padding:3px 9px">Compare</button><button class="btn" data-load="${v.id}" style="font-size:12px;padding:3px 9px">Load into editor</button>${v.active ? '' : `<button class="btn" data-act="${v.id}" style="font-size:12px;padding:3px 9px">Activate</button>`}</div></div>`).join('')}</div>`}
+      </div>
+      <aside class="panel pbchat">
+        <h3>Discuss with the model</h3>
+        <p class="lead" style="margin-bottom:8px">Ask about the playbook or ask for a change. When it edits, the draft updates and <b>Changes</b> shows exactly what changed. Nothing is saved until you save.</p>
+        <div class="cp-msgs" id="pbMsgs">${st.chat.map(m => `<div class="cp-msg ${m.role}">${m.role === 'user' ? esc(m.content) : md(m.content)}${m.edited ? `<div class="acts-note">✎ ${esc(m.edited)} <button class="btn" data-see style="padding:2px 8px;font-size:12px">See changes</button></div>` : ''}</div>`).join('') || `<div class="cp-sugg">${['What would you improve here?', 'Make it look harder for order-management and customer-service people', 'Add Austrian and Swiss events explicitly', 'Explain the rule about previous editions'].map(q => `<button data-pq="${esc(q)}">${esc(q)}</button>`).join('')}</div>`}${S.pbBusy ? '<div class="cp-msg assistant" style="color:var(--muted)">Thinking…</div>' : ''}</div>
+        <form id="pbForm" class="cp-form" style="padding:10px 0 0;border:0"><textarea id="pbIn" rows="2" placeholder="Ask or request a change… (Enter to send)"></textarea><button class="btn primary" ${S.pbBusy ? 'disabled' : ''}>Send</button></form>
+      </aside>
+    </div>`;
+  const root = $('playbooks');
+  root.querySelector('[data-back]').onclick = e => { e.preventDefault(); S.pbKind = null; showView('playbooks'); };
+  wireCopy(root);
+  root.querySelectorAll('[data-pbtab]').forEach(b => b.onclick = () => { st.tab = b.dataset.pbtab; st.restored = false; renderPlaybooks(); });
+  // typing updates the counts in place, so clicking Save right after typing isn't lost to a re-render
+  $('pbText')?.addEventListener('input', e => {
+    setDraft(kind, e.target.value, false);
+    $('pbDirty').innerHTML = dirtyText(act.body, st.draft);
+    $('pbChanges').textContent = changeCount(lineDiff(base.body, st.draft));
+    $('pbSave').disabled = $('pbSaveAct').disabled = st.draft === act.body;
   });
+  $('pbText')?.addEventListener('focus', () => { if (!st.typing) { st.undo.push(st.draft); st.typing = true; } });
+  $('pbText')?.addEventListener('blur', () => { st.typing = false; if (st.undo.at(-1) === st.draft) st.undo.pop(); $('pbUndo').disabled = !st.undo.length; });
+  $('pbCompare')?.addEventListener('change', e => { st.compareId = +e.target.value; renderPlaybooks(); });
+  root.querySelectorAll('[data-cmp]').forEach(b => b.onclick = () => { st.compareId = +b.dataset.cmp; st.tab = 'changes'; renderPlaybooks(); });
+  root.querySelectorAll('[data-load]').forEach(b => b.onclick = () => { setDraft(kind, vs.find(v => v.id === +b.dataset.load).body); st.tab = 'changes'; toast('Loaded into the editor: Changes shows how it differs'); renderPlaybooks(); });
+  root.querySelectorAll('[data-act]').forEach(b => b.onclick = () => activateVersion(+b.dataset.act));
+  $('pbUndo').onclick = () => { if (st.undo.length) { st.draft = st.undo.pop(); store.set(`pbdraft:${kind}`, st.draft); toast('Undone'); renderPlaybooks(); } };
+  $('pbSave').onclick = () => savePlaybook(kind, false);
+  $('pbSaveAct').onclick = () => savePlaybook(kind, true);
+  root.querySelectorAll('[data-pq]').forEach(b => b.onclick = () => { $('pbIn').value = b.dataset.pq; $('pbForm').requestSubmit(); });
+  root.querySelectorAll('[data-see]').forEach(b => b.onclick = () => { st.tab = 'changes'; st.compareId = null; renderPlaybooks(); });
+  $('pbForm').onsubmit = e => { e.preventDefault(); playbookAsk(kind); };
+  $('pbIn').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('pbForm').requestSubmit(); } });
+  $('pbMsgs').scrollTop = $('pbMsgs').scrollHeight;
+  if (S.view === 'playbooks') syncHash();
+}
+function dirtyText(active, draft) {
+  const n = changeCount(lineDiff(active, draft));
+  return draft === active ? 'No unsaved changes' : `<b style="color:var(--review)">Unsaved changes: ${n} line${n === 1 ? '' : 's'} differ${n === 1 ? 's' : ''} from the active version</b>`;
+}
+
+async function playbookAsk(kind) {
+  const st = pbState(kind), q = $('pbIn').value.trim();
+  if (!q || S.pbBusy) return;
+  st.chat.push({ role: 'user', content: q }); S.pbBusy = true; renderPlaybooks();
+  const res = await fetch(`api/playbooks/${kind}/chat`, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages: st.chat.map(({ role, content }) => ({ role, content })).slice(-16), draft: st.draft, author: S.reviewer || null }) });
+  const out = await res.json().catch(() => ({}));
+  S.pbBusy = false;
+  if (!res.ok) { st.chat.push({ role: 'assistant', content: `Sorry, that didn't work: ${out.detail || 'server error'}` }); return renderPlaybooks(); }
+  st.chat.push({ role: 'assistant', content: out.reply, edited: out.draft ? out.summary : null });
+  if (out.draft) { setDraft(kind, out.draft); st.compareId = null; toast('The model edited the draft: see Changes'); }
+  renderPlaybooks();
+}
+
+async function savePlaybook(kind, activate) {
+  const note = $('pbNote').value.trim();
+  if (!note) { $('pbNote').focus(); return toast('Add a short note first: what changed and why'); }
+  const st = pbState(kind);
+  const res = await fetch('api/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kind: `playbook:${kind}`, body: st.draft, note, author: S.reviewer || null, activate }) });
+  if (!res.ok) return toast('Could not save');
+  const out = await res.json();
+  store.set(`pbdraft:${kind}`, '');
+  S.config = await (await fetch('api/config')).json();
+  st.undo = []; st.compareId = null; st.restored = false;
+  toast(activate ? `Saved and active` : `Saved as v${out.version} (not active yet)`);
+  renderPlaybooks();
 }
 
 // ---------- insights ----------
@@ -1643,7 +1771,7 @@ function renderCp(pending = false) {
   box.querySelectorAll('[data-review-v]').forEach(b => b.onclick = () => {
     const kind = b.dataset.reviewV;
     if (kind === 'scoring') { const v = S.config.scoring.find(x => x.id === +b.previousElementSibling.dataset.activateV); if (v) { S.draft = JSON.parse(v.body); S.draftBase = v.version; } document.querySelector('#tabs [data-view="criteria"]').click(); renderCriteria(); schedulePreview(); }
-    else { S.pbView = { ...(S.pbView || {}), [kind]: +b.previousElementSibling.dataset.activateV }; document.querySelector('#tabs [data-view="playbooks"]').click(); renderPlaybooks(); }
+    else { S.pbKind = kind.split(':')[1]; const st = pbState(S.pbKind); st.compareId = +b.previousElementSibling.dataset.activateV; st.tab = 'changes'; showView('playbooks'); }
   });
   box.scrollTop = box.scrollHeight;
 }
@@ -1690,10 +1818,11 @@ function showView(name, push = true) {
   if (S.view === 'events') renderEvents();
   if (S.view === 'people') renderPeople();
   if (S.view === 'feedback') renderFeedbackTab();
+  if (S.view === 'playbooks') renderPlaybooks();
   store.set('view', S.view);
 }
 window.addEventListener('popstate', () => { const v = applyHash(); if (v && S.data) showView(v, false); });
-$('tabs').querySelectorAll('button').forEach(b => b.onclick = () => { if (b.dataset.view === 'events') S.eventId = null; showView(b.dataset.view); });
+$('tabs').querySelectorAll('button').forEach(b => b.onclick = () => { if (b.dataset.view === 'events') S.eventId = null; if (b.dataset.view === 'playbooks') S.pbKind = null; showView(b.dataset.view); });
 ['q', 'fFunction', 'fSort', 'fSuggest', 'fOther'].forEach(id => $(id).addEventListener('input', renderPeople));
 $('whoBtn').onclick = () => { store.set('reviewerAsked', ''); askReviewer(); };
 const initialView = applyHash();

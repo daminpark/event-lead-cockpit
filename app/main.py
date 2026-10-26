@@ -748,3 +748,27 @@ def event_summary(event_id: str):
             return summaries.summarize(con, event_id)
         except RuntimeError as e:
             raise HTTPException(400, str(e))
+
+
+
+# ---------- playbook editor ----------
+
+class PlaybookChat(BaseModel):
+    messages: list[ChatMessage] = Field(max_length=40)
+    draft: str = Field(max_length=40000)
+    author: str | None = Field(default=None, max_length=60)
+
+
+@app.post("/api/playbooks/{kind}/chat")
+def playbook_chat(kind: Literal["events", "sourcing", "profiling"], c: PlaybookChat):
+    with db() as con:
+        try:
+            out = copilot.playbook_chat(con, kind, [m.model_dump() for m in c.messages], c.draft, c.author)
+        except RuntimeError as e:
+            raise HTTPException(503, str(e))
+        question = next((m.content for m in reversed(c.messages) if m.role == "user"), "")
+        con.execute("INSERT INTO copilot_log (author, question, reply, actions, model, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+                    (c.author, f"[playbook:{kind}] {question}"[:4000], out["reply"][:8000],
+                     json.dumps([out["summary"]] if out["draft"] else []), out["model"], pipeline.now()))
+        con.commit()
+    return out
