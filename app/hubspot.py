@@ -1,8 +1,9 @@
 """Push approved leads to HubSpot: companies and contacts, linked, without duplicates.
 
 Every record carries our own stable id (gm_account_id / gm_lead_id), so a lead pushed twice
-updates the same HubSpot record, even if the local sync table were lost. Records HubSpot had before the cockpit
-(a company by domain or name, a person by name at the same company) are used rather than duplicated.
+updates the same HubSpot record, even if the local sync table were lost. A record HubSpot had before the cockpit is used
+only when it's surely the same (a company by its domain, a person by name at the same company); when it only might be, nothing
+is linked or created until a person confirms it.
 """
 
 import json
@@ -33,6 +34,30 @@ CONTACT_PROPS = [
 
 class HubSpotError(Exception):
     pass
+
+
+class NotSent(Exception):
+    """A record the send leaves for later, with the reason: it can't be sure what HubSpot already has."""
+
+
+UNCHECKED = "Not sent, couldn't check HubSpot for an existing record (send again later)"
+POSSIBLE = "Not sent, possible match in HubSpot (someone needs to confirm it)"
+NAMESAKE = "Not sent, same name as a contact HubSpot already had at another company (someone needs to confirm it's the same person)"
+CPROPS = ["name", "domain", "lifecyclestage", "hubspot_owner_id", "gm_account_id"]
+low = lambda s: (s or "").strip().lower()  # HubSpot's IN filter wants lowercase values
+domain_of = lambda a: low((a.get("profile") or {}).get("domain"))
+
+
+def company_match(account, hits, field):
+    """Of the HubSpot companies with this account's domain (or name), the one that is surely ours, else one that only might be.
+    Surely ours: it carries our id, or it has our domain and no other cockpit account's id. Anything else (the same name with
+    another or no domain, or another account's record) is a possible match: never linked silently, a person confirms it
+    (an AI will later suggest whether they're the same)."""
+    value = domain_of(account) if field == "domain" else low(account.get("name"))
+    gm = lambda r: r["properties"].get("gm_account_id")
+    same = sorted((r for r in hits if low(r["properties"].get(field)) == value), key=lambda r: (gm(r) != account["id"], int(r["id"])))
+    sure = [r for r in same if gm(r) == account["id"] or (field == "domain" and not gm(r))]
+    return (sure[0], None) if sure else (None, same[0] if same else None)
 
 
 def token():
@@ -90,7 +115,8 @@ class Client:
         return results[0]["id"] if results else None
 
     def search(self, obj, filters, props):
-        """Every record matching all `filters` (up to 1,000), with only the properties we read."""
+        """Every record matching all `filters`, with only the properties we read. Never a partial list: past 1,000 matches
+        it raises, so nothing is decided on half an answer."""
         out, after = [], None
         for _ in range(5):
             r = self.request("POST", f"/crm/v3/objects/{obj}/search", json={
@@ -99,8 +125,8 @@ class Client:
             out += page.get("results", [])
             after = ((page.get("paging") or {}).get("next") or {}).get("after")
             if not after:
-                break
-        return out
+                return out
+        raise HubSpotError(f"too many {obj} with these names to check")
 
     def owners(self):
         """Owner names by id, or nothing if the key may not read owners (the page then shows the id)."""
@@ -112,67 +138,64 @@ class Client:
         return {str(o["id"]): " ".join(filter(None, (o.get("firstName"), o.get("lastName")))) or o.get("email") for o in rows}
 
     def lookup(self, accounts, people):
-        """Read-only: what HubSpot already has, whoever created it. A company is found by its domain, else by its exact name;
-        a person by first and last name, kept only if their company in HubSpot is ours (the same record, or the same name).
-        Returns {"companies": {account id: record}, "contacts": {person key: record}}; a record is its HubSpot id, lifecycle
-        stage, owner, the company it's linked to and whether it carries our id. A few requests for a whole event."""
-        low = lambda s: (s or "").strip().lower()  # HubSpot's IN filter wants lowercase values
-        chunks = lambda xs: [xs[i:i + 50] for i in range(0, len(xs), 50)]
-        best = lambda hits, prop, ours: min(hits, key=lambda r: (r["properties"].get(prop) != ours, int(r["id"])), default=None)
-
-        cprops = ["name", "domain", "lifecyclestage", "hubspot_owner_id", "gm_account_id"]
-        found = {}
-        for field, key in (("domain", lambda a: low((a.get("profile") or {}).get("domain"))), ("name", lambda a: low(a.get("name")))):
-            todo = [a for a in accounts if a["id"] not in found and key(a)]  # by name only where the domain found nothing
+        """Read-only: what HubSpot already has, whoever created it. Companies by domain, then by exact name (see company_match).
+        A person by first and last name, kept only at one of the companies of their approved listings: the same HubSpot company,
+        or its name. `accounts` must include all those companies. Raises HubSpotError rather than answer in part.
+        Returns {"companies": {account id: record}, "possible": {account id: record}, "contacts": {person key: record}};
+        a record is the HubSpot id, lifecycle stage and owner (a possible company also its name and domain)."""
+        chunks = lambda xs, n: [xs[i:i + n] for i in range(0, len(xs), n)]
+        sure, possible = {}, {}
+        for field, key in (("domain", domain_of), ("name", lambda a: low(a.get("name")))):
+            seen = sure | possible
+            todo = [a for a in accounts if a["id"] not in seen and key(a)]  # by name only where the domain found nothing
             values = sorted({key(a) for a in todo})
-            hits = [r for chunk in chunks(values) for r in self.search("companies", [{"propertyName": field, "operator": "IN", "values": chunk}], cprops)]
+            hits = [r for chunk in chunks(values, 50) for r in self.search("companies", [{"propertyName": field, "operator": "IN", "values": chunk}], CPROPS)]
             for a in todo:
-                match = best([r for r in hits if low(r["properties"].get(field)) == key(a)], "gm_account_id", a["id"])
+                match, maybe = company_match(a, hits, field)
                 if match:
-                    found[a["id"]] = match
+                    sure[a["id"]] = match
+                elif maybe:
+                    possible[a["id"]] = maybe
 
         pprops = ["firstname", "lastname", "company", "associatedcompanyid", "lifecyclestage", "hubspot_owner_id", "gm_lead_id"]
         named = [p for p in people if p.get("first_name") and p.get("last_name")]
-        hits = [r for chunk in chunks(named) for r in self.search("contacts", [
+        hits = [r for chunk in chunks(named, 10) for r in self.search("contacts", [  # small chunks, so first names x last names stays small
             {"propertyName": "firstname", "operator": "IN", "values": sorted({low(p["first_name"]) for p in chunk})},
             {"propertyName": "lastname", "operator": "IN", "values": sorted({low(p["last_name"]) for p in chunk})}], pprops)]
         by_id = {a["id"]: a for a in accounts}
         contacts = {}
         for p in named:
-            acct = by_id.get(p.get("account_id")) or {}
-            ours = {low(acct.get("name")), low(p.get("company"))} - {""}
-            company_id = found.get(acct.get("id"), {}).get("id")
-            same = lambda q: (company_id and q.get("associatedcompanyid") == company_id) or low(q.get("company")) in ours
-            match = best([r for r in hits if low(r["properties"].get("firstname")) == low(p["first_name"])
-                          and low(r["properties"].get("lastname")) == low(p["last_name"]) and same(r["properties"])], "gm_lead_id", p["person_key"])
-            if match:
-                contacts[p["person_key"]] = match
+            listings = p.get("approved_companies") or [(p.get("account_id"), p.get("company"))]
+            ids = {sure[a]["id"] for a, _ in listings if a in sure}
+            names = ({low((by_id.get(a) or {}).get("name")) for a, _ in listings} | {low(t) for _, t in listings}) - {""}
+            same = [r for r in hits if (low(r["properties"].get("firstname")), low(r["properties"].get("lastname"))) == (low(p["first_name"]), low(p["last_name"]))
+                    and (r["properties"].get("associatedcompanyid") in ids or low(r["properties"].get("company")) in names)]
+            if same:
+                contacts[p["person_key"]] = min(same, key=lambda r: (r["properties"].get("gm_lead_id") != p["person_key"], int(r["id"])))
 
-        records = list(found.values()) + list(contacts.values())
-        names = self.owners() if any(r["properties"].get("hubspot_owner_id") for r in records) else {}
-        record = lambda r, prop, ours: {
-            "id": r["id"], "stage": r["properties"].get("lifecyclestage"), "ours": r["properties"].get(prop) == ours,
-            "owner": names.get(r["properties"].get("hubspot_owner_id")) or r["properties"].get("hubspot_owner_id"),
-            "company_id": r["properties"].get("associatedcompanyid")}
-        return {"companies": {a: record(r, "gm_account_id", a) for a, r in found.items()},
-                "contacts": {k: record(r, "gm_lead_id", k) for k, r in contacts.items()}}
+        records = [*sure.values(), *possible.values(), *contacts.values()]
+        owners = self.owners() if any(r["properties"].get("hubspot_owner_id") for r in records) else {}
 
-    def upsert(self, obj, known_id, id_prop, id_value, props, existing=None, on_create=None):
-        """Update the record we know, else the one carrying our id, else one HubSpot already had (`existing`, from the
-        lookup), else create it. Returns the id and "updated", "linked" (HubSpot had it before the cockpit) or "created".
-        An existing record only gets `props` (our GM fields); `on_create` (name, title, lifecycle stage) is sent only when
-        we create it, so what sales has corrected, a customer's own record, its owner and its stage are never overwritten."""
-        hid = known_id
-        if hid and self.request("GET", f"/crm/v3/objects/{obj}/{hid}").status_code == 404:
-            hid = None
-        hid = hid or self.find(obj, id_prop, id_value)
-        how = "updated" if hid else "linked" if existing else "created"
-        hid = hid or existing
+        def record(r, **more):
+            p = r["properties"]
+            return {"id": r["id"], "stage": p.get("lifecyclestage"), "owner": owners.get(p.get("hubspot_owner_id")) or p.get("hubspot_owner_id")} | {k: p.get(v) for k, v in more.items()}
+        return {"companies": {a: record(r) for a, r in sure.items()},
+                "possible": {a: record(r, name="name", domain="domain") for a, r in possible.items()},
+                "contacts": {k: record(r, company_id="associatedcompanyid") for k, r in contacts.items()}}
+
+    def ours(self, obj, known_id, id_prop, id_value):
+        """The record we sent before, if it's still there, else the one carrying our id."""
+        if known_id and self.request("GET", f"/crm/v3/objects/{obj}/{known_id}").status_code != 404:
+            return known_id
+        return self.find(obj, id_prop, id_value)
+
+    def write(self, obj, hid, props, on_create):
+        """Only our GM fields onto a record HubSpot has; a new record also gets `on_create` (name, title, lifecycle stage).
+        So what sales has corrected, a customer's own record, its owner and its stage are never overwritten."""
         if hid:
             self.request("PATCH", f"/crm/v3/objects/{obj}/{hid}", json={"properties": props})
-            return hid, how
-        r = self.request("POST", f"/crm/v3/objects/{obj}", json={"properties": props | (on_create or {})})
-        return r.json()["id"], how
+            return hid
+        return self.request("POST", f"/crm/v3/objects/{obj}", json={"properties": props | on_create}).json()["id"]
 
     def archive(self, obj, hid, id_prop, expected):
         """Move a record to HubSpot's recycle bin (restorable for 90 days), but only if it carries our id."""
@@ -239,61 +262,89 @@ def contact_props(contact, account, events):
 
 
 def push(con, approved_accounts, approved_contacts, accounts_by_id, events, synced_at):
-    """Push everything approved. Returns a summary; raises HubSpotError if HubSpot can't be reached."""
+    """Push everything approved. Returns a summary; raises HubSpotError if HubSpot can't be reached.
+    What the cockpit sent before is updated. A record HubSpot already had is used only when the lookup is sure it's the same;
+    a new one is created only when the lookup could look. Anything else stays unsent, with the reason, for a later send."""
     hs = Client()
     created_props = hs.ensure_properties()
     known = {(r["object_type"], r["object_id"]): r["hubspot_id"] for r in con.execute("SELECT * FROM hubspot_sync")}
     summary = {"companies_created": 0, "companies_updated": 0, "contacts_created": 0, "contacts_updated": 0,
-               "properties_created": created_props, "errors": []}
-    try:  # records HubSpot already had are used, not duplicated; if it can't be asked, the send carries on without
-        found = hs.lookup(approved_accounts, approved_contacts)
+               "properties_created": created_props, "not_sent": {}, "errors": []}
+    listed = {a for c in approved_contacts for a, _ in c.get("approved_companies") or []} - {a["id"] for a in approved_accounts}
+    try:  # a person is recognised at the companies of all their listings, so those are looked up too
+        found = hs.lookup(approved_accounts + [accounts_by_id[a] for a in listed if a in accounts_by_id], approved_contacts)
     except (HubSpotError, httpx.HTTPError) as e:
         found, summary["lookup_error"] = None, str(e)[:200]
-    existing = lambda kind, oid: (found[kind].get(oid) or {}) if found else {}
 
     def save(kind, oid, hid):
         con.execute("INSERT OR REPLACE INTO hubspot_sync VALUES (?, ?, ?, ?)", (kind, oid, hid, synced_at))
         con.commit()  # short write locks, so reviewers can keep deciding while a push runs
         known[(kind, oid)] = hid
 
-    def push_account(acct):
-        if ("account", acct["id"]) in pushed:
-            return known.get(("account", acct["id"]))
-        domain = (acct.get("profile") or {}).get("domain")
+    def send_account(acct):
+        aid, domain = acct["id"], (acct.get("profile") or {}).get("domain")
+        hid, how = hs.ours("companies", known.get(("account", aid)), "gm_account_id", aid), "updated"
+        if not hid:
+            match, maybe = (found["companies"].get(aid), found["possible"].get(aid)) if found else (None, None)
+            if not match and domain:  # the lookup missed it or couldn't run: ask for the domain exactly, as before
+                match, also = company_match(acct, hs.search("companies", [{"propertyName": "domain", "operator": "EQ", "value": domain}], CPROPS), "domain")
+                maybe = maybe or also
+            if not match and (maybe or found is None):
+                raise NotSent(POSSIBLE if maybe else UNCHECKED)
+            hid, how = (match["id"], "linked") if match else (None, "created")
         gm, std = split("companies", company_props(acct, events))
-        had = existing("companies", acct["id"]).get("id")
-        if found is None and not known.get(("account", acct["id"])):  # HubSpot couldn't be asked: at least match the domain
-            had = hs.find("companies", "domain", domain)
-        hid, how = hs.upsert("companies", known.get(("account", acct["id"])), "gm_account_id", acct["id"], gm, existing=had, on_create=std)
-        save("account", acct["id"], hid)
+        hid = hs.write("companies", hid, gm, std)
+        save("account", aid, hid)
         if how == "created":  # remember which companies the cockpit created, so only those can ever be removed again
-            save("account_created", acct["id"], hid)
-        pushed.add(("account", acct["id"]))
+            save("account_created", aid, hid)
         summary["companies_created" if how == "created" else "companies_updated"] += 1
         return hid
 
-    pushed = set()
+    done = {}  # account id -> its HubSpot id, or why it isn't sent
+
+    def push_account(acct):
+        if acct["id"] not in done:
+            try:
+                done[acct["id"]] = send_account(acct)
+            except NotSent as e:
+                done[acct["id"]] = e
+        if isinstance(done[acct["id"]], NotSent):
+            raise done[acct["id"]]  # its people wait with it
+        return done[acct["id"]]
+
+    def not_sent(why, name):
+        summary["not_sent"].setdefault(why, []).append(name)
+
     for acct in approved_accounts:
         try:
             push_account(acct)
+        except NotSent as e:
+            not_sent(str(e), acct["name"])
         except HubSpotError as e:
             summary["errors"].append(f"{acct['name']}: {e}")
     for c in approved_contacts:
         try:
-            acct = accounts_by_id.get(c["account_id"])
+            acct, key = accounts_by_id.get(c["account_id"]), c["person_key"]
             company_id = push_account(acct) if acct else None
+            had = (found["contacts"].get(key) if found else None) or {}
+            hid = hs.ours("contacts", known.get(("contact", key)), "gm_lead_id", key)
+            if hid and hid == known.get(("contact_linked", key)) and had.get("id") != hid:  # HubSpot's own record, not at their companies this time
+                raise NotSent(UNCHECKED if found is None else NAMESAKE)
+            if not hid and not had and found is None:
+                raise NotSent(UNCHECKED)
+            how = "updated" if hid else "linked" if had else "created"
             gm, std = split("contacts", contact_props(c, acct, events))
-            had = existing("contacts", c["person_key"])
-            hid, how = hs.upsert("contacts", known.get(("contact", c["person_key"])), "gm_lead_id", c["person_key"], gm,
-                                 existing=had.get("id"), on_create=std | {"lifecyclestage": "lead"})
-            save("contact", c["person_key"], hid)
+            hid = hs.write("contacts", hid or had.get("id"), gm, std | {"lifecyclestage": "lead"})
+            save("contact", key, hid)
             if how == "linked":  # HubSpot had them before the cockpit: Remove from HubSpot must never delete them
-                save("contact_linked", c["person_key"], hid)
+                save("contact_linked", key, hid)
             for listing in c.get("approved_ids") or [c["id"]]:  # each event listing sent, so the cockpit can show it as "In HubSpot"
                 save("listing", listing, hid)
             summary["contacts_created" if how == "created" else "contacts_updated"] += 1
-            if company_id and not (how == "linked" and had.get("company_id")):  # a contact HubSpot had keeps its own company
+            if company_id and (how == "created" or (how == "linked" and not had.get("company_id"))):  # a contact HubSpot had keeps its own company
                 hs.associate(hid, company_id)
+        except NotSent as e:
+            not_sent(str(e), c["name"])
         except HubSpotError as e:
             summary["errors"].append(f"{c['name']}: {e}")
     summary["errors"] = summary["errors"][:20]
