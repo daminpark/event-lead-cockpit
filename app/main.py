@@ -582,6 +582,8 @@ def hubspot_lookup(q: Lookup):
         possible = company and company | {"kind": "account"}
         if not possible and linked and (contact or {}).get("id") != linked:  # HubSpot's own record of that name, at another company now
             possible = {"id": linked, "kind": "contact"}
+        if not possible and not contact and k in found.get("ambiguous", {}) and ("contact", k) not in known:
+            possible = found["ambiguous"][k] | {"kind": "contact"}
         out[k] = {"account_id": a, "contact": contact, "company": found["companies"].get(a), "possible": possible}
     return out
 

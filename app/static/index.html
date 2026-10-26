@@ -1158,7 +1158,7 @@ function hsLine(c) {
   const about = rec => [STAGES[rec.stage] || rec.stage, rec.owner && `owner ${rec.owner}`].filter(Boolean).map(esc).join(' · ');
   const open = (kind, id) => { const u = hubspotUrl(kind, id); return u ? ` · <a href="${esc(u)}" target="_blank" rel="noopener">Open ↗</a>` : ''; };
   if (f.possible) {  // not linked: a person confirms whether it's the same (the AI's suggestion and a confirm button go here)
-    const p = f.possible, what = p.kind === 'account' ? `company ${esc(p.name || '')} (${p.domain ? esc(p.domain) : 'no domain'})${about(p) ? `, ${about(p)}` : ''}` : `${esc(c.name)} at another company`;
+    const p = f.possible, what = p.kind === 'account' ? `company ${esc(p.name || '')} (${p.domain ? esc(p.domain) : 'no domain'})${about(p) ? `, ${about(p)}` : ''}` : p.count ? `${p.count} people called ${esc(c.name)} at the company` : `${esc(c.name)} at another company`;
     return `<div class="hs-line">Possible match in HubSpot: ${what}${open(p.kind, p.id)} · Not sent until someone confirms it's the same</div>`;
   }
   const rec = f.contact || f.company;
