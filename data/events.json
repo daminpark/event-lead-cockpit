@@ -1,25 +1,5 @@
 [
   {
-    "id": "bme-symposium-2026",
-    "name": "BME-Symposium Einkauf und Logistik 2026",
-    "start": "2026-11-18",
-    "end": "2026-11-19",
-    "city": "Berlin",
-    "country": "DE",
-    "venue": "STATION Berlin",
-    "format": "Congress + exhibition",
-    "language": "German",
-    "url": "https://www.bme.de/symposium",
-    "why": "The largest procurement congress in DACH. CPOs and heads of supply chain and logistics from corporates and large Mittelstand. GeneralMind is a Start-up Partner this year, so meetings can be booked for the stand.",
-    "personas": ["procurement", "supply_chain", "logistics"],
-    "generalmind_present": true,
-    "sources": [
-      {"type": "speakers", "edition": "2026", "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/BME-symposium-einkauf-und-logistik-folder/referierende/"},
-      {"type": "programme", "edition": "2026", "url": "https://a.storyblok.com/f/104752/x/addaf3da0f/bme-symposium-2026-hm_v23-10-2026.pdf"},
-      {"type": "partners", "edition": "2026", "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/BME-symposium-einkauf-und-logistik-folder/partner-or-aussteller/"}
-    ]
-  },
-  {
     "id": "ems-scms-2026",
     "name": "European Manufacturing & Supply Chain Strategies Summit 2026",
     "start": "2026-11-03",
@@ -31,48 +11,90 @@
     "language": "English",
     "url": "https://ems-scms.com/live/en/page/home",
     "why": "Heads of supply chain, planning and operations at European manufacturers. Speaker list is mostly practitioners.",
-    "personas": ["supply_chain", "operations"],
+    "personas": [
+      "supply_chain",
+      "operations"
+    ],
     "generalmind_present": false,
     "date_note": "Start date confirmed on the organiser's site; end date from a participating consultancy's page.",
     "sources": [
-      {"type": "speakers", "edition": "2026", "url": "https://ems-scms.com/live/en/page/speakers"},
-      {"type": "partners", "edition": "2026", "url": "https://ems-scms.com/live/en/page/commercial-partners"}
+      {
+        "type": "speakers",
+        "edition": "2026",
+        "url": "https://ems-scms.com/live/en/page/speakers"
+      },
+      {
+        "type": "partners",
+        "edition": "2026",
+        "url": "https://ems-scms.com/live/en/page/commercial-partners"
+      }
     ]
   },
   {
-    "id": "ep-sce-2027",
-    "name": "European Procurement & Supply Chain Excellence Summit 2027 (BME)",
-    "start": "2027-04-19",
-    "end": "2027-04-20",
+    "id": "bme-symposium-2026",
+    "name": "BME-Symposium Einkauf und Logistik 2026",
+    "start": "2026-11-18",
+    "end": "2026-11-19",
     "city": "Berlin",
     "country": "DE",
-    "venue": "Berlin Marriott Hotel",
-    "format": "Invitation-only summit",
-    "language": "English",
-    "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/european-procurement-supply-chain-excellence-summit/facts",
-    "why": "Small, senior and vetted: CPOs and chief supply chain officers of European industrial groups.",
-    "personas": ["procurement", "supply_chain"],
-    "generalmind_present": false,
+    "venue": "STATION Berlin",
+    "format": "Congress + exhibition",
+    "language": "German",
+    "url": "https://www.bme.de/symposium",
+    "why": "The largest procurement congress in DACH. CPOs and heads of supply chain and logistics from corporates and large Mittelstand. GeneralMind is a Start-up Partner this year, so meetings can be booked for the stand.",
+    "personas": [
+      "procurement",
+      "supply_chain",
+      "logistics"
+    ],
+    "generalmind_present": true,
     "sources": [
-      {"type": "speakers", "edition": "2026 (previous)", "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/european-procurement-supply-chain-excellence-summit/summit-speakers/"}
+      {
+        "type": "speakers",
+        "edition": "2026",
+        "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/BME-symposium-einkauf-und-logistik-folder/referierende/"
+      },
+      {
+        "type": "programme",
+        "edition": "2026",
+        "url": "https://a.storyblok.com/f/104752/x/addaf3da0f/bme-symposium-2026-hm_v23-10-2026.pdf"
+      },
+      {
+        "type": "partners",
+        "edition": "2026",
+        "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/BME-symposium-einkauf-und-logistik-folder/partner-or-aussteller/"
+      }
     ]
   },
   {
-    "id": "handelsblatt-cpo-2027",
-    "name": "Handelsblatt CPO-Summit 2027",
-    "start": "2027-04-06",
-    "end": "2027-04-07",
-    "city": "Düsseldorf",
+    "id": "hamburger-logistiktage-2027",
+    "name": "Hamburger Logistiktage 2027",
+    "start": "2027-02-24",
+    "end": "2027-02-25",
+    "city": "Hamburg",
     "country": "DE",
-    "venue": "Handelsblatt Media Group",
-    "format": "Conference",
+    "venue": "Volksparkstadion (VIP area)",
+    "format": "Invitation-only congress + exhibition",
     "language": "German",
-    "url": "https://live.handelsblatt.com/event/handelsblatt-cpo-summit/",
-    "why": "CPOs of large DACH corporates. A short list, but very senior.",
-    "personas": ["procurement"],
+    "url": "https://hamburger-logistiktage.de/",
+    "why": "About 300 invited logistics decision-makers from retail, consumer goods and logistics services. 2027 speakers include REWE, ALDI Nord, Rossmann, Bauhaus and Lufthansa; partners include Nagel-Group, pfenning and DACH manufacturers with their own order desks.",
+    "personas": [
+      "logistics",
+      "supply_chain"
+    ],
     "generalmind_present": false,
+    "date_note": "Confirmed on the organiser's homepage. Guests attend by invitation, so GeneralMind would need an invitation or a partner slot.",
     "sources": [
-      {"type": "speakers", "edition": "2026 (previous)", "url": "https://live.handelsblatt.com/event/handelsblatt-cpo-summit/"}
+      {
+        "type": "speakers",
+        "edition": "2027",
+        "url": "https://hamburger-logistiktage.de/programm/"
+      },
+      {
+        "type": "partners",
+        "edition": "2027",
+        "url": "https://hamburger-logistiktage.de/partner/"
+      }
     ]
   },
   {
@@ -87,28 +109,66 @@
     "language": "German / English",
     "url": "https://www.hannovermesse.de/en/",
     "why": "Here the exhibitors are the prospects: industrial manufacturers whose order desks receive purchase orders by email and PDF (the order-to-cash use case).",
-    "personas": ["order_management", "operations"],
+    "personas": [
+      "order_management",
+      "operations"
+    ],
     "generalmind_present": false,
     "sources": [
-      {"type": "exhibitors", "edition": "2026 (previous)", "url": "https://www.hannovermesse.de/en/expo/exhibitors-products/"}
+      {
+        "type": "exhibitors",
+        "edition": "2026 (previous)",
+        "url": "https://www.hannovermesse.de/en/expo/exhibitors-products/"
+      }
     ]
   },
   {
-    "id": "transport-logistic-2027",
-    "name": "transport logistic 2027",
-    "start": "2027-04-26",
-    "end": "2027-04-29",
-    "city": "Munich",
+    "id": "handelsblatt-cpo-2027",
+    "name": "Handelsblatt CPO-Summit 2027",
+    "start": "2027-04-06",
+    "end": "2027-04-07",
+    "city": "Düsseldorf",
     "country": "DE",
-    "venue": "Messe München",
-    "format": "Trade fair",
-    "language": "German / English",
-    "url": "https://transportlogistic.de/en/",
-    "why": "The exhibitors are logistics service providers, forwarders and carriers, the Müller lila Logistik type, which receive transport orders and freight invoices by email and PDF.",
-    "personas": ["logistics", "order_management"],
+    "venue": "Handelsblatt Media Group",
+    "format": "Conference",
+    "language": "German",
+    "url": "https://live.handelsblatt.com/event/handelsblatt-cpo-summit/",
+    "why": "CPOs of large DACH corporates. A short list, but very senior.",
+    "personas": [
+      "procurement"
+    ],
     "generalmind_present": false,
     "sources": [
-      {"type": "exhibitors", "edition": "2025 (previous)", "url": "https://exhibitors.transportlogistic.de/en/"}
+      {
+        "type": "speakers",
+        "edition": "2026 (previous)",
+        "url": "https://live.handelsblatt.com/event/handelsblatt-cpo-summit/"
+      }
+    ]
+  },
+  {
+    "id": "ep-sce-2027",
+    "name": "European Procurement & Supply Chain Excellence Summit 2027 (BME)",
+    "start": "2027-04-19",
+    "end": "2027-04-20",
+    "city": "Berlin",
+    "country": "DE",
+    "venue": "Berlin Marriott Hotel",
+    "format": "Invitation-only summit",
+    "language": "English",
+    "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/european-procurement-supply-chain-excellence-summit/facts",
+    "why": "Small, senior and vetted: CPOs and chief supply chain officers of European industrial groups.",
+    "personas": [
+      "procurement",
+      "supply_chain"
+    ],
+    "generalmind_present": false,
+    "sources": [
+      {
+        "type": "speakers",
+        "edition": "2026 (previous)",
+        "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/european-procurement-supply-chain-excellence-summit/summit-speakers/"
+      }
     ]
   },
   {
@@ -123,10 +183,17 @@
     "language": "English",
     "url": "https://www.ssonetwork.com/events-ssoweek",
     "why": "Heads of shared services, procure-to-pay and order-to-cash at large corporates, many of them headquartered in DACH. The finance and accounts-payable buyer.",
-    "personas": ["finance_ap", "order_management"],
+    "personas": [
+      "finance_ap",
+      "order_management"
+    ],
     "generalmind_present": false,
     "sources": [
-      {"type": "speakers", "edition": "2026 (previous)", "url": "https://www.ssonetwork.com/events-ssoweek"}
+      {
+        "type": "speakers",
+        "edition": "2026 (previous)",
+        "url": "https://www.ssonetwork.com/events-ssoweek"
+      }
     ]
   },
   {
@@ -141,10 +208,17 @@
     "language": "German",
     "url": "https://www.bme.de/veranstaltungen/grossveranstaltungen/eloesungstage/",
     "why": "The closest topical fit: digital procurement, procure-to-pay and S/4HANA. The 2026 programme had Swarovski on supplier invoice automation with AI.",
-    "personas": ["procurement", "finance_ap"],
+    "personas": [
+      "procurement",
+      "finance_ap"
+    ],
     "generalmind_present": false,
     "sources": [
-      {"type": "programme", "edition": "2026 (previous)", "url": "https://a.storyblok.com/f/104752/x/56701cd5a7/kongressguide_eloesungstage_2026.pdf"}
+      {
+        "type": "programme",
+        "edition": "2026 (previous)",
+        "url": "https://a.storyblok.com/f/104752/x/56701cd5a7/kongressguide_eloesungstage_2026.pdf"
+      }
     ]
   },
   {
@@ -159,10 +233,17 @@
     "language": "German",
     "url": "https://www.handelslogistik.de/",
     "why": "Heads of logistics and supply chain at retailers and consumer brands, plus logistics providers. The bofrost*, Oatly and Müller lila Logistik types.",
-    "personas": ["logistics", "supply_chain"],
+    "personas": [
+      "logistics",
+      "supply_chain"
+    ],
     "generalmind_present": false,
     "sources": [
-      {"type": "programme", "edition": "2026 (previous)", "url": "https://www.handelslogistik.de/programm"}
+      {
+        "type": "programme",
+        "edition": "2026 (previous)",
+        "url": "https://www.handelslogistik.de/programm"
+      }
     ]
   },
   {
@@ -177,11 +258,21 @@
     "language": "German",
     "url": "https://procurementsummit.de/",
     "why": "In-house procurement teams from DACH companies, including order-heavy wholesalers and distributors (Würth, Berner, Heinemann).",
-    "personas": ["procurement"],
+    "personas": [
+      "procurement"
+    ],
     "generalmind_present": false,
     "sources": [
-      {"type": "speakers", "edition": "2027", "url": "https://procurementsummit.de/speaker"},
-      {"type": "participants", "edition": "2027", "url": "https://procurementsummit.de/teilnehmende"}
+      {
+        "type": "speakers",
+        "edition": "2027",
+        "url": "https://procurementsummit.de/speaker"
+      },
+      {
+        "type": "participants",
+        "edition": "2027",
+        "url": "https://procurementsummit.de/teilnehmende"
+      }
     ]
   }
 ]
