@@ -536,11 +536,11 @@ def export_contacts(event: str | None = None):
 
 
 @app.get("/api/hubspot/status")
-def hubspot_status():
+def hubspot_status(fresh: bool = False):
     with db() as con:
         last = con.execute("SELECT message, created_at FROM events_log WHERE kind = 'hubspot' ORDER BY id DESC LIMIT 1").fetchone()
         synced = con.execute("SELECT object_type, COUNT(*) n FROM hubspot_sync GROUP BY object_type").fetchall()
-    return hubspot.status() | {"last_sync": dict(last) if last else None, "synced": {r["object_type"]: r["n"] for r in synced}}
+    return hubspot.status(fresh) | {"checked_at": pipeline.now(), "last_sync": dict(last) if last else None, "synced": {r["object_type"]: r["n"] for r in synced}}
 
 
 class Push(BaseModel):

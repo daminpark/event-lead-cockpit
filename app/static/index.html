@@ -246,11 +246,14 @@ dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid 
 .pbchat { position: sticky; top: 76px; display: flex; flex-direction: column; max-height: calc(100vh - 96px); margin: 0; }
 .pbchat .cp-msgs { padding: 0; min-height: 200px; }
 .diffview { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px 0; font: 12.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-x: auto; }
-.dl { padding: 0 14px 0 34px; position: relative; white-space: pre-wrap; }
-.dl span { position: absolute; left: 14px; color: var(--faint); }
-.dl.add { background: var(--fast-soft); color: var(--fast); }
-.dl.del { background: var(--competitor-soft); color: var(--competitor); text-decoration: line-through; text-decoration-thickness: 1px; }
-.dl.skip { color: var(--faint); font-style: italic; padding-left: 14px; }
+.sbs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 0 0 6px; }
+.sbs .sh { padding: 8px 14px; font: 600 12px/1.4 Inter, -apple-system, sans-serif; color: var(--muted); border-bottom: 1px solid var(--line); margin-bottom: 6px; }
+.sl { padding: 0 14px; white-space: pre-wrap; overflow-wrap: anywhere; min-width: 0; }
+.sl.l, .sbs .sh.l { border-right: 1px solid var(--line); }
+.sl.add { background: var(--fast-soft); color: var(--fast); }
+.sl.del { background: var(--competitor-soft); color: var(--competitor); }
+.sl.empty { background: var(--panel-2); }
+.sl.skip { grid-column: 1 / -1; color: var(--faint); font-style: italic; border-top: 1px dashed var(--line); border-bottom: 1px dashed var(--line); margin: 2px 0; }
 .sechead span { color: var(--muted); font-weight: 500; font-size: 13px; margin-left: 8px; }
 .fitcell .sug { font-size: 10.5px; color: var(--lc, var(--muted)); font-weight: 600; white-space: nowrap; }
 .cp-open { background: var(--accent) !important; color: #fff !important; border-color: var(--accent) !important; font-weight: 600; }
@@ -271,7 +274,8 @@ dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid 
 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--faint); display: inline-block; }
 .dot.ok { background: var(--fast); box-shadow: 0 0 0 3px var(--fast-soft); }
 .dot.bad { background: var(--competitor); box-shadow: 0 0 0 3px var(--competitor-soft); }
-.fb-btn { position: fixed; right: 18px; bottom: 18px; z-index: 30; border: 0; border-radius: 999px; padding: 9px 16px; background: var(--ink); color: var(--bg); font-weight: 600; box-shadow: var(--shadow); }
+.fb-btn { position: fixed; right: 18px; bottom: 18px; z-index: 30; border: 0; border-radius: 999px; padding: 9px 16px; background: var(--ink); color: var(--bg); font-weight: 600; box-shadow: var(--shadow); transition: opacity .3s, transform .3s; }
+.fb-btn.away { opacity: 0; transform: translateY(16px); pointer-events: none; }
 body.picking * { cursor: crosshair !important; }
 .fb-hover { outline: 2px solid var(--accent) !important; outline-offset: 2px; }
 dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter, sans-serif; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-2); color: var(--ink); margin: 10px 0 12px; resize: vertical; }
@@ -1109,8 +1113,8 @@ document.addEventListener('keydown', e => {
 function scrollSel() { document.querySelector('.view.on .row.sel')?.scrollIntoView({ block: 'nearest' }); }
 
 // ---------- HubSpot and export ----------
-async function refreshHubspot() {
-  try { S.hsStatus = await (await fetch('api/hubspot/status')).json(); } catch { S.hsStatus = { ok: false, configured: false, message: 'Could not reach the server' }; }
+async function refreshHubspot(fresh = false) {
+  try { S.hsStatus = await (await fetch(`api/hubspot/status${fresh ? '?fresh=1' : ''}`)).json(); } catch { S.hsStatus = { ok: false, configured: false, message: 'Could not reach the server' }; }
   const st = S.hsStatus, dot = $('hsPill').querySelector('.dot');
   dot.className = 'dot ' + (st.ok ? 'ok' : st.configured ? 'bad' : '');
   $('hsPill').title = st.message || '';
@@ -1123,11 +1127,16 @@ function renderExport() {
   $('exportView').innerHTML = `
     <div class="panel">
       <h3>HubSpot records</h3>
-      <dl class="kv"><dt>In HubSpot</dt><dd>${n('account')} companies · ${n('contact')} contacts</dd>
+      <dl class="kv"><dt>Connection</dt><dd>${st.ok ? `<b style="color:var(--fast)">Working</b> · portal ${esc(st.portal_id || '')}` : st.configured ? `<b style="color:var(--competitor)">Not working</b> · ${esc(st.message || '')}` : 'No key yet'}${st.checked_at ? ` · checked ${esc(new Date(st.checked_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }))}` : ''}</dd>
+      <dt>In HubSpot</dt><dd>${n('account')} companies · ${n('contact')} contacts</dd>
       <dt>Last push</dt><dd>${st.last_sync ? `${esc(st.last_sync.created_at.replace('T', ' ').slice(0, 16))} UTC · ${esc(st.last_sync.message)}` : 'None yet'}</dd></dl>
       <button class="btn" id="hsRefresh" style="margin-top:12px">Check connection</button>
     </div>`;
-  $('hsRefresh').onclick = () => { toast('Checking…'); refreshHubspot(); };
+  $('hsRefresh').onclick = async () => {
+    $('hsRefresh').disabled = true; $('hsRefresh').textContent = 'Checking…';
+    await refreshHubspot(true);
+    toast(S.hsStatus.ok ? 'HubSpot connection works' : `HubSpot isn't connected: ${S.hsStatus.message || 'no answer'}`);
+  };
 }
 
 // ---------- criteria: the main levers, then every other setting folded away ----------
@@ -1316,18 +1325,28 @@ function lineDiff(a, b) {
   while (j < m) out.push(['+', B[j++]]);
   return out;
 }
-function diffHtml(d) {
+// Side by side: the old version on the left, the new one on the right, changed lines paired up.
+function diffHtml(d, oldLabel = 'Before', newLabel = 'After') {
   if (!d.some(([t]) => t !== ' ')) return '<div class="note">No differences.</div>';
-  const keep = new Set();  // show changed lines with two lines of context around them
-  d.forEach(([t], i) => { if (t !== ' ') for (let k = i - 2; k <= i + 2; k++) keep.add(k); });
-  let html = '', skipped = 0;
-  d.forEach(([t, l], i) => {
+  const rows = [];
+  for (let i = 0; i < d.length;) {
+    if (d[i][0] === ' ') { rows.push([d[i][1], d[i][1], false]); i++; continue; }
+    const del = [], add = [];
+    while (i < d.length && d[i][0] !== ' ') (d[i][0] === '-' ? del : add).push(d[i++][1]);
+    for (let k = 0; k < Math.max(del.length, add.length); k++) rows.push([del[k] ?? null, add[k] ?? null, true]);
+  }
+  const keep = new Set();  // changed lines with two lines of context around them
+  rows.forEach(([, , chg], i) => { if (chg) for (let k = i - 2; k <= i + 2; k++) keep.add(k); });
+  const cell = (l, side, cls) => `<div class="sl ${side} ${l === null ? 'empty' : cls}">${l === null ? '' : esc(l) || '&nbsp;'}</div>`;
+  let html = `<div class="sh l">${esc(oldLabel)}</div><div class="sh r">${esc(newLabel)}</div>`, skipped = 0;
+  const skip = () => { if (skipped) html += `<div class="sl skip">⋯ ${skipped} unchanged line${skipped > 1 ? 's' : ''}</div>`; skipped = 0; };
+  rows.forEach(([a, b, chg], i) => {
     if (!keep.has(i)) { skipped++; return; }
-    if (skipped) { html += `<div class="dl skip">⋯ ${skipped} unchanged line${skipped > 1 ? 's' : ''}</div>`; skipped = 0; }
-    html += `<div class="dl ${t === '+' ? 'add' : t === '-' ? 'del' : ''}"><span>${t === ' ' ? '' : t}</span>${esc(l) || '&nbsp;'}</div>`;
+    skip();
+    html += cell(a, 'l', chg ? 'del' : '') + cell(b, 'r', chg ? 'add' : '');
   });
-  if (skipped) html += `<div class="dl skip">⋯ ${skipped} unchanged line${skipped > 1 ? 's' : ''}</div>`;
-  return `<div class="diffview">${html}</div>`;
+  skip();
+  return `<div class="diffview sbs">${html}</div>`;
 }
 const changeCount = d => d.filter(([t]) => t !== ' ').length;
 
@@ -1377,7 +1396,7 @@ function renderPlaybooks() {
       <div style="min-width:0">
         <div class="stabs">${[['edit', 'Edit'], ['changes', `Changes <span class="num" id="pbChanges">${changeCount(d)}</span>`], ['history', `History <span class="num">${vs.length}</span>`]].map(([k, l]) => `<button class="stab ${st.tab === k ? 'on' : ''}" data-pbtab="${k}">${l}</button>`).join('')}</div>
         ${st.tab === 'edit' ? `<textarea id="pbText" class="pbtext" spellcheck="true">${esc(st.draft)}</textarea>`
-        : st.tab === 'changes' ? `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;font-size:13px">Compare the draft with <select id="pbCompare">${vs.map(v => `<option value="${v.id}" ${v.id === base.id ? 'selected' : ''}>v${v.version}${v.active ? ' (active)' : ''} · ${esc((v.note || '').slice(0, 40))}</option>`).join('')}</select></div>${diffHtml(d)}`
+        : st.tab === 'changes' ? `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;font-size:13px">Compare the draft with <select id="pbCompare">${vs.map(v => `<option value="${v.id}" ${v.id === base.id ? 'selected' : ''}>v${v.version}${v.active ? ' (active)' : ''} · ${esc((v.note || '').slice(0, 40))}</option>`).join('')}</select></div>${diffHtml(d, `v${base.version}${base.active ? ' (active)' : ''}`, 'Draft')}`
         : `<div class="list">${vs.map(v => `<div class="evtable" style="grid-template-columns:70px minmax(0,1fr) auto;cursor:default"><div><b>v${v.version}</b>${v.active ? '<br><span class="tag-active">active</span>' : ''}</div>
             <div><div style="font-size:13px">${esc(v.note || '')}</div><div class="t2">${esc(v.source === 'repo' ? 'repository' : v.author || 'someone')} · ${esc(v.created_at.slice(0, 16).replace('T', ' '))} UTC</div></div>
             <div class="acts" style="gap:6px"><button class="btn" data-cmp="${v.id}" style="font-size:12px;padding:3px 9px">Compare</button><button class="btn" data-load="${v.id}" style="font-size:12px;padding:3px 9px">Load into editor</button>${v.active ? '' : `<button class="btn" data-act="${v.id}" style="font-size:12px;padding:3px 9px">Activate</button>`}</div></div>`).join('')}</div>`}
@@ -1544,6 +1563,14 @@ function openFeedback() {
   };
   dlg.showModal(); $('fbText').focus();
 }
+let fbTimer;
+function fbShow() {
+  $('fbBtn').classList.remove('away'); clearTimeout(fbTimer);
+  fbTimer = setTimeout(() => { if (!picking && !$('fbBtn').matches(':hover')) $('fbBtn').classList.add('away'); }, 3500);
+}
+['mousemove', 'touchstart', 'keydown'].forEach(ev => window.addEventListener(ev, fbShow, { passive: true }));
+window.addEventListener('scroll', () => { if (picking) return; $('fbBtn').classList.add('away'); clearTimeout(fbTimer); fbTimer = setTimeout(fbShow, 600); }, { passive: true });
+fbShow();
 $('fbBtn').onclick = e => { e.stopPropagation(); picking ? (stopPick(), picked = null, openFeedback()) : startPick(); };
 $('hsPill').onclick = () => showView('settings');
 

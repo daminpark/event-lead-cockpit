@@ -201,11 +201,11 @@ def reset_status():
     _status_cache.update(at=0, value=None)
 
 
-def status():
+def status(fresh=False):
     """Connection health, cached for a minute so the page can show a live light without hammering the API."""
     if not token():
         return {"configured": False, "ok": False, "message": "No HubSpot token configured"}
-    if time.time() - _status_cache["at"] < 60 and _status_cache["value"]:
+    if not fresh and time.time() - _status_cache["at"] < 60 and _status_cache["value"]:
         return _status_cache["value"]
     try:
         hs = Client()

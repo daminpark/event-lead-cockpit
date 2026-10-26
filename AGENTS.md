@@ -21,9 +21,7 @@ COCKPIT_ALLOW_OPEN=1 uv run uvicorn app.main:app --port 8765
 4. `./deploy/publish.sh` updates the public copy (it removes every file that names people and refuses to publish if a name is left).
 
 ## Commits
-Subject: what changed, in plain words. Body: one line saying why, with its source in brackets, for example
-`Why: the panel repeated what the guide says and nobody acted on it (feedback note 1).`
-Sources: Pierre's request (with the time), a feedback note, a code review, or a bug.
+Subject: what changed, in plain words. Body: at most one short line starting `Why:`, saying what Pierre wanted and the idea or logic behind it, in his voice ("I wanted ..."), with no technical detail. Purely technical fixes need no Why line.
 
 ## Rules
 - Minimal and useful over complete. Remove what nobody acts on.
