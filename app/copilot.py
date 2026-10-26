@@ -235,21 +235,21 @@ class Tools:
         vid = pipeline.save_version(self.con, "scoring", json.dumps(cfg, ensure_ascii=False, indent=1), f"Copilot: {note}", self.author or "copilot", "ui")
         version = self.con.execute("SELECT version FROM config_versions WHERE id = ?", (vid,)).fetchone()["version"]
         self.con.commit()
-        self.actions.append(f"Saved scoring v{version} (not active): {note}")
+        self.actions.append({"text": f"Saved scoring v{version} (not active): {note}", "version_id": vid, "kind": "scoring", "version": version})
         return {"saved_version": version, "active": False, "lanes_now": before, "lanes_with_change": after}
 
     def propose_playbook_change(self, kind, text, note):
         vid = pipeline.save_version(self.con, kind, text, f"Copilot: {note}", self.author or "copilot", "ui")
         version = self.con.execute("SELECT version FROM config_versions WHERE id = ?", (vid,)).fetchone()["version"]
         self.con.commit()
-        self.actions.append(f"Saved {kind.split(':')[1]} playbook v{version} (not active): {note}")
+        self.actions.append({"text": f"Saved {kind.split(':')[1]} playbook v{version} (not active): {note}", "version_id": vid, "kind": kind, "version": version})
         return {"saved_version": version, "active": False}
 
     def add_feedback_note(self, comment):
         self.con.execute("INSERT INTO feedback (comment, view, author, created_at) VALUES (?, 'copilot', ?, ?)",
                          (comment[:4000], self.author, pipeline.now()))
         self.con.commit()
-        self.actions.append("Filed a feedback note")
+        self.actions.append({"text": "Filed a feedback note"})
         return {"ok": True}
 
 

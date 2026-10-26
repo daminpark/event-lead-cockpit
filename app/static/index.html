@@ -1144,7 +1144,32 @@ function renderInsights() {
       <div class="panel"><h3>By industry</h3><p class="lead">Which segments the events give us the most good contacts in.</p>
         <table class="t"><thead><tr><th>Industry</th><th>Contacts</th><th>Fast</th><th>Approved</th><th>Avg</th></tr></thead><tbody>${Object.entries(groups).sort((a, b) => b[1].fast - a[1].fast || b[1].n - a[1].n).slice(0, 12).map(([k, g]) => `<tr><td>${esc(k)}</td><td>${g.n}</td><td><b>${g.fast}</b></td><td>${g.ok}</td><td>${Math.round(g.score / g.n)}</td></tr>`).join('')}</tbody></table></div>
     </div>`;
+  $('insights').insertAdjacentHTML('beforeend', `<div class="grid2"><div class="panel" id="versionsCompared"><h3>Scoring versions compared</h3><div class="note">Loading…</div></div><div class="panel" id="fbInbox"><h3>Feedback inbox</h3><div class="note">Loading…</div></div></div>`);
+  renderVersionsCompared(); renderFeedbackInbox();
   renderLearning();
+}
+
+async function renderVersionsCompared() {
+  const rows = await (await fetch('api/scoring/compare')).json().catch(() => []);
+  if (!$('versionsCompared')) return;
+  $('versionsCompared').innerHTML = `<h3>Scoring versions compared</h3><p class="lead">Every version replayed against every reviewer decision so far: the regression test for settings. "Agreement" counts clear-cut calls (fast track approved, filtered or competitor rejected). Once HubSpot syncs outcomes back, the same table compares meetings and pilots per version.</p>
+    <table class="t"><thead><tr><th>Version</th><th>Fast track</th><th>Replay agreement</th><th>Decided while live</th></tr></thead><tbody>${rows.map(r => `<tr><td><b>v${r.version}</b> ${r.active ? '<span class="tag-active">active</span>' : ''}<br><small style="color:var(--muted)">${esc(r.note || '')} · ${esc(r.author || r.source)}</small></td>
+      ${r.error ? `<td colspan="3" style="color:var(--muted)">${esc(r.error)}</td>` : `<td>${r.fast_track}</td><td>${r.replay_agreement === null ? '—' : `<b>${r.replay_agreement}%</b> <small style="color:var(--muted)">of ${r.replay_n}</small>`}</td><td>${r.decided_while_active} <small style="color:var(--muted)">(${r.approved_while_active} approved)</small></td>`}</tr>`).join('')}</tbody></table>`;
+}
+
+async function renderFeedbackInbox() {
+  const notes = await (await fetch('api/feedback?all=true')).json().catch(() => []);
+  if (!$('fbInbox')) return;
+  $('fbInbox').innerHTML = `<h3>Feedback inbox</h3><p class="lead">Notes left with the Feedback button or the copilot. Each one shows what happened to it, so the person who wrote it can see it was acted on.</p>
+    ${notes.length ? `<ul class="logl">${notes.slice(0, 30).map(n => { const t = n.target ? JSON.parse(n.target) : null; return `<li style="display:block"><div style="display:flex;justify-content:space-between;gap:8px"><b>#${n.id} ${esc(n.author || 'Someone')}</b><time>${esc(n.created_at.slice(5, 16).replace('T', ' '))}</time></div>
+      <div>${esc(n.comment)}</div>${t?.text ? `<small style="color:var(--muted)">About: ${esc(t.text.slice(0, 90))}</small>` : ''}
+      <div style="margin-top:4px">${n.handled_at ? `<span class="chip lane lane-fast_track">Handled</span> <small>${esc(n.handled_note || '')}</small>` : `<span class="chip lane lane-review">Open</span> <button class="btn" data-handle="${n.id}" style="padding:1px 8px;font-size:12px">Mark handled</button>`}</div></li>`; }).join('')}</ul>` : '<div class="note">No feedback yet.</div>'}`;
+  $('fbInbox').querySelectorAll('[data-handle]').forEach(b => b.onclick = async () => {
+    const note = prompt('What was done? (e.g. "Fixed in a1b2c3d: wider name column")');
+    if (!note) return;
+    await fetch(`api/feedback/${b.dataset.handle}/handled`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ note }) });
+    renderFeedbackInbox();
+  });
 }
 
 // ---------- feedback with element picking ----------
@@ -1236,9 +1261,15 @@ S.cp = (() => { try { return JSON.parse(store.get('cp') || '[]') } catch { retur
 function renderCp(pending = false) {
   const box = $('cpMsgs');
   box.innerHTML = (S.cp.length ? '' : `<div class="note" style="margin:0">Ask about the leads, events, scoring or playbooks. The copilot can look things up and <b>propose</b> changes as new versions; it never changes what's live. A person reviews and activates them.</div><div class="cp-sugg">${CP_SUGGEST.map(q => `<button data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`)
-    + S.cp.map(m => `<div class="cp-msg ${m.role}">${m.role === 'user' ? esc(m.content) : md(m.content)}${m.actions?.length ? `<div class="acts-note">${m.actions.map(a => '✓ ' + esc(a)).join('<br>')}</div>` : ''}</div>`).join('')
+    + S.cp.map(m => `<div class="cp-msg ${m.role}">${m.role === 'user' ? esc(m.content) : md(m.content)}${m.actions?.length ? `<div class="acts-note">${m.actions.map(a => typeof a === 'string' ? '✓ ' + esc(a) : `✓ ${esc(a.text)}${a.version_id ? ` <button class="btn" data-activate-v="${a.version_id}" style="padding:2px 8px;font-size:12px;margin-left:4px">Activate v${a.version}</button> <button class="btn" data-review-v="${esc(a.kind)}" style="padding:2px 8px;font-size:12px">Review</button>` : ''}`).join('<br>')}</div>` : ''}</div>`).join('')
     + (pending ? '<div class="cp-msg assistant" style="color:var(--muted)">Thinking…</div>' : '');
   box.querySelectorAll('[data-q]').forEach(b => b.onclick = () => { $('cpIn').value = b.dataset.q; $('cpForm').requestSubmit(); });
+  box.querySelectorAll('[data-activate-v]').forEach(b => b.onclick = () => activateVersion(+b.dataset.activateV));
+  box.querySelectorAll('[data-review-v]').forEach(b => b.onclick = () => {
+    const kind = b.dataset.reviewV;
+    if (kind === 'scoring') { const v = S.config.scoring.find(x => x.id === +b.previousElementSibling.dataset.activateV); if (v) { S.draft = JSON.parse(v.body); S.draftBase = v.version; } document.querySelector('#tabs [data-view="criteria"]').click(); renderCriteria(); schedulePreview(); }
+    else { S.pbView = { ...(S.pbView || {}), [kind]: +b.previousElementSibling.dataset.activateV }; document.querySelector('#tabs [data-view="playbooks"]').click(); renderPlaybooks(); }
+  });
   box.scrollTop = box.scrollHeight;
 }
 async function loadModels() {

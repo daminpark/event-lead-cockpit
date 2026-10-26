@@ -151,9 +151,10 @@ def decide(d: Decision):
         if not row:
             raise HTTPException(404, "Unknown lead")
         cur = con.execute(
-            "INSERT INTO decisions (object_type, object_id, decision, reason, reviewer, suggested_lane, score, decided_at)"
-            " VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (d.object_type, d.object_id, d.decision, d.reason, d.reviewer, row["lane"], row["score"], pipeline.now()),
+            "INSERT INTO decisions (object_type, object_id, decision, reason, reviewer, suggested_lane, score, decided_at, scoring_version)"
+            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (d.object_type, d.object_id, d.decision, d.reason, d.reviewer, row["lane"], row["score"], pipeline.now(),
+             json.loads(con.execute("SELECT value FROM meta WHERE key = 'scoring_version'").fetchone()["value"])),
         )
         saved = dict(con.execute("SELECT * FROM decisions WHERE id = ?", (cur.lastrowid,)).fetchone())
         con.commit()
@@ -332,8 +333,67 @@ def feedback(f: Feedback):
 @app.get("/api/feedback")
 def feedback_list(all: bool = False):
     with db() as con:
-        sql = "SELECT * FROM feedback" + ("" if all else " WHERE handled_at IS NULL") + " ORDER BY id"
+        sql = "SELECT * FROM feedback" + ("" if all else " WHERE handled_at IS NULL") + " ORDER BY id DESC"
         return [dict(r) for r in con.execute(sql)]
+
+
+class Handled(BaseModel):
+    note: str = Field(min_length=1, max_length=1000)
+
+
+@app.post("/api/feedback/{note_id}/handled")
+def feedback_handled(note_id: int, h: Handled):
+    with db() as con:
+        con.execute("UPDATE feedback SET handled_at = ?, handled_note = ? WHERE id = ?", (pipeline.now(), h.note, note_id))
+        log(con, "feedback", f"Feedback #{note_id} handled: {h.note[:120]}")
+        con.commit()
+    return {"ok": True}
+
+
+_compare_cache = {}
+
+
+@app.get("/api/scoring/compare")
+def compare_versions():
+    """Replay every scoring version against every reviewer decision: the regression test for settings."""
+    with db() as con:
+        versions = [dict(r) for r in con.execute(
+            "SELECT id, version, note, author, source, created_at, active, body FROM config_versions WHERE kind = 'scoring' ORDER BY version DESC LIMIT 12")]
+        decisions = latest_decisions(con)
+        made_under = {}
+        for (kind, _), d in decisions.items():
+            if kind == "contact" and d.get("scoring_version") is not None:
+                made_under.setdefault(d["scoring_version"], []).append(d)
+    contact_decisions = {oid: d["decision"] for (kind, oid), d in decisions.items() if kind == "contact"}
+    today = dt.date.today()
+    out = []
+    for v in versions:
+        key = (v["id"], today.isoformat())
+        if key not in _compare_cache:
+            try:
+                _, contacts, _, _ = pipeline.compute(json.loads(v["body"]), today)
+                _compare_cache[key] = {c["id"]: c["lane"] for c in contacts}
+            except (KeyError, TypeError):
+                _compare_cache[key] = None
+        lanes = _compare_cache[key]
+        row = {k: v[k] for k in ("version", "note", "author", "source", "created_at", "active")}
+        if lanes is None:
+            out.append(row | {"error": "doesn't fit the current settings"})
+            continue
+        agree = n = 0
+        for oid, dec in contact_decisions.items():
+            lane = lanes.get(oid)
+            if lane == "fast_track":
+                n += 1; agree += dec == "approve"
+            elif lane in ("filtered", "competitor"):
+                n += 1; agree += dec == "reject"
+        live = made_under.get(v["version"], [])
+        row |= {"fast_track": sum(1 for l in lanes.values() if l == "fast_track"),
+                "replay_agreement": round(100 * agree / n) if n else None, "replay_n": n,
+                "decided_while_active": len(live),
+                "approved_while_active": sum(1 for d in live if d["decision"] == "approve")}
+        out.append(row)
+    return out
 
 
 # ---------- export and HubSpot ----------
@@ -490,6 +550,6 @@ def copilot_chat(c: Chat):
         con.execute("INSERT INTO copilot_log (author, question, reply, actions, model, created_at) VALUES (?, ?, ?, ?, ?, ?)",
                     (c.author, question[:4000], out["reply"][:8000], json.dumps(out["actions"]), out["model"], pipeline.now()))
         for a in out["actions"]:
-            log(con, "copilot", a)
+            log(con, "copilot", a["text"])
         con.commit()
     return out

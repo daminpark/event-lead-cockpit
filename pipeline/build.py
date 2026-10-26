@@ -224,7 +224,8 @@ CREATE TABLE IF NOT EXISTS decisions (
   reviewer TEXT,
   suggested_lane TEXT,                -- what the scoring suggested at the time
   score INTEGER,
-  decided_at TEXT NOT NULL
+  decided_at TEXT NOT NULL,
+  scoring_version INTEGER             -- which settings version made that suggestion
 );
 -- Scoring settings and playbooks are versioned data: every save is a new row, one row per kind is active.
 CREATE TABLE IF NOT EXISTS config_versions (
@@ -304,6 +305,8 @@ def connect(path=DB):
     con = sqlite3.connect(path)
     con.row_factory = sqlite3.Row
     con.executescript(SCHEMA)
+    if "scoring_version" not in {r["name"] for r in con.execute("PRAGMA table_info(decisions)")}:
+        con.execute("ALTER TABLE decisions ADD COLUMN scoring_version INTEGER")
     return con
 
 
