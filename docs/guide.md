@@ -31,7 +31,13 @@ Each person's card shows their company: type (potential buyer, partner, competit
 Every weight and keyword is a slider or a list. As you change something, the preview shows how many leads would move between lanes, who would enter or leave fast track, and how well the change agrees with past decisions. Nothing changes until you **Save and activate**. Every save is a numbered version with a note; any older version can be activated again. Settings that would break the scoring are refused.
 
 ## Changing how leads are found (Playbooks)
-The plain-language instructions the AI steps follow when finding events, sourcing leads from event pages and profiling companies. Edit, save with a note, and switch versions the same way. Changes apply the next time sourcing runs.
+The plain-language instructions the AI steps follow when finding events, sourcing people from event pages and profiling companies. Open a playbook to edit it:
+- **Edit**: the text itself.
+- **Changes**: exactly what differs from the active version (or any older one), line by line: added in green, removed in red.
+- **History**: every version, to compare, load into the editor, or activate.
+- **Discuss with the model** (on the right): ask about the playbook, or ask for a change. When it edits, the draft updates and Changes shows what it did; **Undo** takes it back.
+
+Nothing changes until you save with a short note, as a version or straight into use. Changes apply the next time sourcing runs.
 
 ## The copilot
 A help assistant. Ask it about what's in the cockpit ("who should we meet first at BME?", "why is this person scored 95?", "how many people are approved at the events we're going to?") or how the cockpit works. It answers from the cockpit's data and links you straight to the right page. It can also propose a small scoring change (saved as a version you check and activate) and write down feedback. Choosing events, approving people and sending to HubSpot stay with you. The owner chooses the model and its thinking effort in Settings.
