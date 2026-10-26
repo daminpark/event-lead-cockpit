@@ -14,7 +14,7 @@ Cockpit: https://leads.193vbr.com (access code in the email) · Code and how it 
 ## The cockpit
 
 - **10 events**, November 2026 to June 2027, nine in Germany. Each is scored on the best people we could actually meet there, what a meeting costs (tickets, travel, hotel and people's days), timing, whether GeneralMind is a partner, and whether this year's list is out.
-- **699 listings** (680 people, mostly speakers) and **786 companies** from public speaker, programme, partner and exhibitor pages. A second AI pass removed any name it couldn't find on the saved page.
+- **699 listings** (680 people, mostly speakers) and **782 companies** from public speaker, programme, partner and exhibitor pages. A second AI pass removed any name it couldn't find on the saved page.
 - **Every person and company has a score with its reasons**: role, company fit and the event. 241 are suggested as a strong fit, 159 as possible.
 - **A meeting plan per event.** Where the timetable is out (BME, Procurement Summit), the cockpit places the best people at the moment they come off stage, up to eight conversations a day per colleague, and scores the event on that plan. Elsewhere it's an estimate until the agenda appears.
 - **Review per event**: To review → Approved → In HubSpot, or Rejected. Undecided means no.

@@ -1,44 +1,38 @@
 # Event lead cockpit
 
-A case study for GeneralMind (Growth Associate, CEO Office), built on 26 October 2026: find upcoming events where GeneralMind's buyers go, source the people and companies named on their public pages, and review them in a cockpit before they go to HubSpot.
+A case study for GeneralMind: which events to go to, who to meet there, and a review before HubSpot.
 
-The task: *"Find 10 relevant upcoming events for GeneralMind and set up a system that sources leads attending these events into a cockpit/interface for review. Then conceptualize how you would expand this into a full lead generation system, where leads are sourced into the interface based on defined criteria, reviewed, and pushed to HubSpot."*
+## Read more
 
-- **Write-up** (what I built and how I'd grow it): [WRITEUP.md](WRITEUP.md)
-- **Live cockpit**: https://leads.193vbr.com (behind an access code)
-- **How it evolved**: [EVOLUTION.md](EVOLUTION.md), the ideas behind each step. Commits that carry an idea have a one-line "Why"; for the earlier ones it was added afterwards from the build conversation.
+- [The write-up](WRITEUP.md): what I built, and the plan for full lead generation.
+- [How it evolved](EVOLUTION.md): the idea behind each step.
+- [The live cockpit](https://leads.193vbr.com) (access code needed).
+
+## The idea
+
+- Event leads are for meeting people face to face, and time at the event is the limit.
+- So choose the events first, then the people and companies worth meeting there.
+- A person decides at every step. Nothing is approved or sent on its own.
 
 ## What it does
 
-1. **Events.** Ten events (procurement and supply-chain congresses, trade fairs where the exhibitors are the prospects, a shared-services week), each judged on the best people we could actually meet there (from the timetable where it's out: who we can catch as they come off stage), then what a meeting costs (ticket, travel, hotel and people's days), whether GeneralMind is a partner there, timing and whether this year's list is out. Each event has an AI summary, its score broken down, and a meeting plan (who to catch, and when). There are no invitations: cold email isn't allowed in Germany. You mark events Going or Not going.
-2. **People.** About 700 people named on the events' speaker, agenda and partner pages, each with a fit score and its reasons, a five-second brief and an opener for the event. Everyone starts in *To review*; a person approves or rejects. Nothing is approved automatically.
-3. **HubSpot.** Approved people are sent with their companies, linked, with the fit score, reasons, source event and source page as properties. The cockpit checks HubSpot first: records it already has keep their own details, and an unsure match waits for a person. Or download per event as a CSV.
+- **Events**: 10, from November 2026 to June 2027, scored on the best people we could meet, cost per meeting, timing and whether GeneralMind is a partner.
+- **People and companies**: 680 people and 782 companies from public event pages, each scored with its reasons.
+- **Meeting plan**: who to catch as they come off stage, and when.
+- **No cold email**: in Germany it needs prior consent, so first contact happens at the event.
+- **Review**: approve or reject each person. Undecided means no.
+- **HubSpot**: approved people go across with their company, without overwriting what sales already has.
+- **Playbooks**: the AI's steps and the scoring, in plain language and versioned.
 
-Around that: playbooks and scoring that are versioned (a change shows its effect before it's saved), a playbook editor with old and new side by side and a model that discusses and edits the draft, a help assistant that answers from the cockpit's data and links to the right page, a feedback button that records what the person was doing, error logging, owner and team roles, and a do-not-contact list.
+## Privacy
 
-## How it's built
+- This public copy leaves out everything that names a person, in earlier versions too. The live cockpit has it, behind an access code.
+- Only public business information is used: name, title, company and talk. No emails, phone numbers or LinkedIn.
 
-- `pipeline/build.py`: turns the extracted event data and company profiles into scored events, people and companies (SQLite). Re-runnable; reviewer decisions and settings versions are kept.
-- `scoring.toml`: every weight, keyword and threshold, in one readable file. Editable in the cockpit, where each save is a version.
-- `playbooks/`: the plain-language instructions the AI agents follow to find events, source people and profile companies.
-- `app/main.py`: FastAPI app. `app/hubspot.py` (push and removal), `app/copilot.py` (help assistant and playbook chat via OpenRouter), `app/summaries.py` (event summaries).
-- `app/static/index.html`: the whole interface, one page of vanilla JavaScript.
-- `deploy/`: a Proxmox container behind a Cloudflare Tunnel, deployed automatically from `main` with a health check and rollback.
-
-The sourcing itself (fetching the event pages, extracting people, checking every name against the saved page, profiling companies, writing the briefs) was run by AI agents in a harness, each step checked by a second agent. Making that a standalone, scheduled agent is part of the plan in the write-up.
-
-## Data and privacy
-
-This public copy leaves out the files that name people: the extracted speaker lists (`data/extracted/`), the briefs (`data/briefs/`) and the source checks. They were removed from every commit, so the history shows how the code evolved without republishing anyone's details. The event list and the company profiles are included. The live cockpit uses the full data behind an access code.
-
-Only business information from public event pages is used (name, title, company, talk). No emails or phone numbers are collected, LinkedIn isn't used, and sites that block automated access are respected.
-
-## Running it locally
+## For developers
 
 ```bash
 uv sync
 uv run python pipeline/build.py
 COCKPIT_ALLOW_OPEN=1 uv run uvicorn app.main:app --port 8765
 ```
-
-Without the people data (left out of this copy) the cockpit shows the events, but no people or companies.

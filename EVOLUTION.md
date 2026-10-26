@@ -1,46 +1,64 @@
 # How this evolved
 
-I built this on 26 October 2026 with Claude Code, which wrote most of the code. The direction and most of the ideas below are mine, with the reasons; where an idea came from the first plan, the commit says so. Each commit that carries an idea has a one-line "Why". For the earlier commits I added those lines afterwards, from the conversation we had while building.
+I built this on 26 October 2026 with Claude Code, which wrote most of the code. The ideas are mine unless a note says otherwise, and each linked change has a one-line "Why".
 
 ## Start: the whole loop once (17:51)
-Ten events, the people on their public pages, a score with reasons, a review screen and HubSpot ([08d5125]). Then the principles I kept to:
-- **A person decides.** Nothing is approved automatically, and decisions don't change the scoring on their own. Every decision is recorded with the scoring version it was made under, so a change can be checked against them ([d756e96]).
-- **Visible and versioned.** The rules and the agents' instructions can be read, changed and rolled back ([bb356d6]).
-- **Quick to improve.** Feedback by pointing at the page, and a chat that answers questions ([90dbe76]).
-- **Legal.** Public business information only; when an event's site blocked automated access, we replaced the event rather than work around it ([ef52986]).
+- Ten events, their people, scores with reasons, a review screen and HubSpot ([c6974de]).
+- **A person decides.** Nothing is approved automatically; each decision records its scoring version ([c39d8aa]).
+- **Visible and versioned.** Rules and AI instructions can be read, changed and rolled back ([879088e]).
+- **Quick to improve.** Feedback from any page, and a chat for questions ([34a9baf]).
+- **Legal.** Public business information only. A site that blocked automated access was replaced, not worked around ([9f9ac39]).
 
-## Who it's for
-The person who goes to the event and meets these people face to face. So each lead got a five-second brief and an opener ([352f2d8]).
+## Who it's for (18:54)
+- The colleague who meets these people face to face, so every lead has a five-second brief and an opener ([8c6c391]).
 
-## What's the core?
-The review happens in the cockpit; HubSpot gets only the people someone approved, when they choose to send them. Time at an event is the real limit, so the first decision is which events to go to, then who to meet there ([7386c4d], [5849e38]).
+## Events first (19:58)
+- Time at the event is the limit: choose the events first, then who to meet ([c8d1e2b], [27d08cc]).
+- Events are judged on the best people we could actually meet: at about eight meetings a day, 32 excellent names beat 200 mediocre ones ([0150f56]).
 
-## Choosing events
-Each event got a page with why it scored as it did, and the list became sortable by date, travel and fit ([21bca4b], [7253fc5]). Then the score changed: one person can meet about eight people a day, so 32 excellent names beat 200 mediocre ones. Events are judged on the best people we could actually meet ([b5de7a3]).
+## Cutting back (20:33)
+- The event-finding button went: a strong model finds events for now, an agent later ([43b63ca]).
+- The chat became a help assistant: the model isn't reliable enough to change things itself ([48ffa46]).
+- A setting is on the page or not used. Insights and the tutorial tab went ([0150f56], [6481672], [782fa8b]).
+- Criteria became Scoring, the last step of Playbooks: playbooks decide what we collect, scoring what it's worth ([ef8e594]).
 
-## Cutting back
-- The event-finding button went: either it becomes a proper agent that runs on its own, or a strong model finds the events ([b42042b]).
-- The chat became a help assistant, because the model isn't reliable enough to change things on its own ([a274926]).
-- Playbook changes got their own editor, where you see exactly what changes ([cfd10bf]).
-- Insights and most settings went: too much on screen that nobody would act on ([b5de7a3]). A setting is either on the page or not used ([b2f2f92]).
-- No tutorial tab: the screens should explain themselves, and the assistant answers questions ([bc1ef55]).
+## HubSpot fits in (22:21)
+- Check HubSpot before sending; nothing it already has is overwritten ([e091c77], [bba7ead]).
+- Only sure matches are linked; otherwise a person decides ([4009bf6], [8c49cec]).
+- One company per website, one current title per person ([8e831c0]).
 
-## Why the repo is public
-So the steps can be followed, not just the result. Everything that names a person is removed from the whole history; the live cockpit keeps the full data behind an access code.
+## Meeting people (23:16)
+- No cold email: in Germany it needs prior consent, even between businesses. So no invitations; speakers are caught as they come off stage ([41e0cbc]).
+- With a timetable, an event is scored on who we can actually catch ([f325ab0]).
+- Cost per meeting replaced travel points: ticket, travel, hotel and people's days, per conversation ([8ac79c8]).
+- The playbooks now follow this, so the next run judges events as I would ([46978c6]).
 
-[08d5125]: https://github.com/daminpark/event-lead-cockpit/commit/08d5125
-[d756e96]: https://github.com/daminpark/event-lead-cockpit/commit/d756e96
-[bb356d6]: https://github.com/daminpark/event-lead-cockpit/commit/bb356d6
-[90dbe76]: https://github.com/daminpark/event-lead-cockpit/commit/90dbe76
-[ef52986]: https://github.com/daminpark/event-lead-cockpit/commit/ef52986
-[352f2d8]: https://github.com/daminpark/event-lead-cockpit/commit/352f2d8
-[7386c4d]: https://github.com/daminpark/event-lead-cockpit/commit/7386c4d
-[5849e38]: https://github.com/daminpark/event-lead-cockpit/commit/5849e38
-[21bca4b]: https://github.com/daminpark/event-lead-cockpit/commit/21bca4b
-[7253fc5]: https://github.com/daminpark/event-lead-cockpit/commit/7253fc5
-[b5de7a3]: https://github.com/daminpark/event-lead-cockpit/commit/b5de7a3
-[b42042b]: https://github.com/daminpark/event-lead-cockpit/commit/b42042b
-[a274926]: https://github.com/daminpark/event-lead-cockpit/commit/a274926
-[cfd10bf]: https://github.com/daminpark/event-lead-cockpit/commit/cfd10bf
-[b2f2f92]: https://github.com/daminpark/event-lead-cockpit/commit/b2f2f92
-[bc1ef55]: https://github.com/daminpark/event-lead-cockpit/commit/bc1ef55
+## Why it's public
+- So the steps can be followed, not just the result ([8ef8c6f], [6072851]).
+- People's names are removed from the whole history.
+
+[c6974de]: https://github.com/daminpark/event-lead-cockpit/commit/c6974de
+[c39d8aa]: https://github.com/daminpark/event-lead-cockpit/commit/c39d8aa
+[879088e]: https://github.com/daminpark/event-lead-cockpit/commit/879088e
+[34a9baf]: https://github.com/daminpark/event-lead-cockpit/commit/34a9baf
+[9f9ac39]: https://github.com/daminpark/event-lead-cockpit/commit/9f9ac39
+[8c6c391]: https://github.com/daminpark/event-lead-cockpit/commit/8c6c391
+[c8d1e2b]: https://github.com/daminpark/event-lead-cockpit/commit/c8d1e2b
+[27d08cc]: https://github.com/daminpark/event-lead-cockpit/commit/27d08cc
+[0150f56]: https://github.com/daminpark/event-lead-cockpit/commit/0150f56
+[43b63ca]: https://github.com/daminpark/event-lead-cockpit/commit/43b63ca
+[48ffa46]: https://github.com/daminpark/event-lead-cockpit/commit/48ffa46
+[6481672]: https://github.com/daminpark/event-lead-cockpit/commit/6481672
+[782fa8b]: https://github.com/daminpark/event-lead-cockpit/commit/782fa8b
+[ef8e594]: https://github.com/daminpark/event-lead-cockpit/commit/ef8e594
+[e091c77]: https://github.com/daminpark/event-lead-cockpit/commit/e091c77
+[bba7ead]: https://github.com/daminpark/event-lead-cockpit/commit/bba7ead
+[4009bf6]: https://github.com/daminpark/event-lead-cockpit/commit/4009bf6
+[8c49cec]: https://github.com/daminpark/event-lead-cockpit/commit/8c49cec
+[8e831c0]: https://github.com/daminpark/event-lead-cockpit/commit/8e831c0
+[41e0cbc]: https://github.com/daminpark/event-lead-cockpit/commit/41e0cbc
+[f325ab0]: https://github.com/daminpark/event-lead-cockpit/commit/f325ab0
+[8ac79c8]: https://github.com/daminpark/event-lead-cockpit/commit/8ac79c8
+[46978c6]: https://github.com/daminpark/event-lead-cockpit/commit/46978c6
+[8ef8c6f]: https://github.com/daminpark/event-lead-cockpit/commit/8ef8c6f
+[6072851]: https://github.com/daminpark/event-lead-cockpit/commit/6072851

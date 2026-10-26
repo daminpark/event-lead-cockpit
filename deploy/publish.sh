@@ -2,13 +2,14 @@
 # Refresh the public copy (github.com/daminpark/event-lead-cockpit): the same commits and dates, minus the files
 # that name people, and with any name that slipped into another file replaced. Commits listed in
 # deploy/commit-notes.json get that short "Why:" line instead of their own (written afterwards from the build
-# conversation); an empty entry means no line.
+# conversation); an empty entry means no line. deploy/commit-titles.json gives commits a plain, non-technical title.
 # Refuses to publish if any person's name is still found anywhere in the history.
 #   ./deploy/publish.sh            # build, check and push
 #   ./deploy/publish.sh --dry-run  # build and check only, and print the public history
 set -euo pipefail
 cd "$(dirname "$0")/.."
 NOTES="$PWD/deploy/commit-notes.json"
+TITLES="$PWD/deploy/commit-titles.json"
 PUBLIC="${PUBLIC_REPO:-https://github.com/daminpark/event-lead-cockpit.git}"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
@@ -30,15 +31,18 @@ print(f"{len(names)} names to keep out")
 PY
 git clone --quiet --no-local . "$tmp/repo"
 cd "$tmp/repo"
-NOTES="$NOTES" uvx --quiet git-filter-repo --quiet --force --invert-paths \
+NOTES="$NOTES" TITLES="$TITLES" uvx --quiet git-filter-repo --quiet --force --invert-paths \
   --path data/extracted --path data/briefs --path data/source_checks.json --path data/timetables \
   --commit-callback '
 import json, os
-why = json.load(open(os.environ["NOTES"], encoding="utf-8")).get(commit.original_id.decode())
-if why is not None:  # "" drops the line
+sha = commit.original_id.decode()
+why = json.load(open(os.environ["NOTES"], encoding="utf-8")).get(sha)
+title = json.load(open(os.environ["TITLES"], encoding="utf-8")).get(sha)
+if why is not None or title:  # a plain title replaces the subject; "" drops the why line
     subject, _, rest = commit.message.decode().partition("\n")
     body = "\n".join(l for l in rest.split("\n") if not l.startswith("Why:")).strip("\n")
-    commit.message = ("\n\n".join(x for x in (subject, why, body) if x) + "\n").encode()
+    own = next((l for l in rest.split("\n") if l.startswith("Why:")), "")
+    commit.message = ("\n\n".join(x for x in (title or subject, own if why is None else why, body) if x) + "\n").encode()
 '
 uvx --quiet git-filter-repo --quiet --force --replace-text "$tmp/replace.txt"
 python3 - "$tmp/names.txt" <<'PY'
