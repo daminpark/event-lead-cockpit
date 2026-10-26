@@ -600,7 +600,7 @@ function decideBlock(type, id) {
 
 function extrasBlock(type, id, label, domain) {
   const k = type === 'account' ? domain : id, dnc = k && S.suppressed.has(k);
-  const hid = S.hs.get(key(type, id)), url = hid && S.hsStatus?.portal_id ? `https://app.hubspot.com/contacts/${S.hsStatus.portal_id}/record/${type === 'account' ? '0-2' : '0-1'}/${hid}` : null;
+  const hid = S.hs.get(key(type, id)), url = hid && S.hsStatus?.portal_id ? `https://${S.hsStatus.ui_domain || 'app.hubspot.com'}/contacts/${S.hsStatus.portal_id}/record/${type === 'account' ? '0-2' : '0-1'}/${hid}` : null;
   return `<div class="chips" style="margin-top:10px">
     ${k ? `<button class="btn" data-dnc="${esc(k)}" data-label="${esc(label)}" data-on="${dnc ? 1 : 0}" style="font-size:12px;padding:3px 9px">${dnc ? 'Remove from do-not-contact' : 'Do not contact'}</button>` : ''}
     ${hid ? (url ? `<a class="chip hs" href="${esc(url)}" target="_blank" rel="noopener">Open in HubSpot ↗</a>` : '<span class="chip hs">In HubSpot</span>') : ''}

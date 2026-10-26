@@ -56,9 +56,11 @@ class Client:
             return r
         raise HubSpotError(f"{method} {path}: rate limited")
 
-    def portal_id(self):
+    def account(self):
+        """Portal id and the UI domain (EU accounts live on app-eu1.hubspot.com)."""
         r = self.request("GET", "/account-info/v3/details")
-        return r.json().get("portalId") if r.status_code == 200 else None
+        d = r.json() if r.status_code == 200 else {}
+        return d.get("portalId"), d.get("uiDomain") or "app.hubspot.com"
 
     def health(self):
         r = self.request("GET", "/crm/v3/objects/companies", params={"limit": 1})
@@ -192,17 +194,19 @@ def status():
         return _status_cache["value"]
     try:
         hs = Client()
-        value = {"configured": True, "ok": hs.health(), "portal_id": hs.portal_id(), "message": "Connected"}
+        ok = hs.health()
+        portal, ui = hs.account()
+        value = {"configured": True, "ok": ok, "portal_id": portal, "ui_domain": ui, "message": "Connected" if ok else "HubSpot refused the key"}
     except (HubSpotError, httpx.HTTPError) as e:
         value = {"configured": True, "ok": False, "message": str(e)[:200]}
     _status_cache.update(at=time.time(), value=value)
     return value
 
 
-def record_url(portal_id, kind, hid):
+def record_url(portal_id, kind, hid, ui_domain="app.hubspot.com"):
     if not portal_id or not hid:
         return None
-    return f"https://app.hubspot.com/contacts/{portal_id}/record/{'0-2' if kind == 'account' else '0-1'}/{hid}"
+    return f"https://{ui_domain}/contacts/{portal_id}/record/{'0-2' if kind == 'account' else '0-1'}/{hid}"
 
 
 def dumps(v):
