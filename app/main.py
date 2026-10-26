@@ -479,7 +479,7 @@ def compare_versions():
 
 def approved(con, only=None):
     """Approved, not suppressed: accounts, and contacts merged to one row per person (best-scoring appearance,
-    with all their approved events)."""
+    with all their approved events, listings and the companies they're listed with)."""
     decisions = latest_decisions(con)
     suppressed = {r["key"] for r in con.execute("SELECT key FROM suppression")}
     events = {e["id"]: e for e in (json.loads(r["data"]) for r in con.execute("SELECT data FROM events"))}
@@ -500,9 +500,10 @@ def approved(con, only=None):
         best = people.get(c["person_key"])
         events_seen = (best or {}).get("approved_events", []) + [c["event_id"]]
         listing_ids = (best or {}).get("approved_ids", []) + [c["id"]]
+        companies = (best or {}).get("approved_companies", []) + [(c["account_id"], c.get("company"))]
         if not best or c["score"] > best["score"]:
             best = c
-        people[c["person_key"]] = best | {"approved_events": events_seen, "approved_ids": listing_ids}
+        people[c["person_key"]] = best | {"approved_events": events_seen, "approved_ids": listing_ids, "approved_companies": companies}
     approved_contacts = list(people.values())
     # Companies go to HubSpot with their approved people; company-only approvals only in a full push.
     account_ids = ({a for a in accounts if ok("account", a) and domain_ok(accounts[a])} if only is None else set()) | \
@@ -546,6 +547,34 @@ def hubspot_status(fresh: bool = False):
     return hubspot.status(fresh) | {"checked_at": pipeline.now(), "last_sync": dict(last) if last else None, "synced": {r["object_type"]: r["n"] for r in synced}}
 
 
+class Lookup(BaseModel):
+    contact_ids: list[str] = Field(max_length=200)  # one event's approved people
+
+
+@app.post("/api/hubspot/lookup")
+def hubspot_lookup(q: Lookup):
+    """What HubSpot already has for each approved person and the company they'd be sent with, before anything is sent.
+    One answer per person, for all their approved listings, merged as the send merges them. Read-only."""
+    with db() as con:
+        _, _, people, accounts = approved(con, set(q.contact_ids))
+        known = {(r["object_type"], r["object_id"]): r["hubspot_id"] for r in con.execute("SELECT * FROM hubspot_sync")}
+    listed = {a for p in people for a, _ in p["approved_companies"] if a in accounts}
+    try:
+        found = hubspot.Client().lookup([accounts[a] for a in listed], people)
+    except (hubspot.HubSpotError, hubspot.httpx.HTTPError) as e:
+        raise HTTPException(502, f"HubSpot: {e}")
+    out = {}
+    for p in people:  # what the send will do: a company sent before is updated; a possible match holds the person back
+        k, a = p["person_key"], p["account_id"]
+        contact, linked = found["contacts"].get(k), known.get(("contact_linked", k))
+        company = None if ("account", a) in known else found["possible"].get(a)
+        possible = company and company | {"kind": "account"}
+        if not possible and linked and (contact or {}).get("id") != linked:  # HubSpot's own record of that name, at another company now
+            possible = {"id": linked, "kind": "contact"}
+        out[k] = {"account_id": a, "contact": contact, "company": found["companies"].get(a), "possible": possible}
+    return out
+
+
 class Push(BaseModel):
     contact_ids: list[str] | None = Field(default=None, max_length=2000)  # None: everything approved
 
@@ -563,9 +592,10 @@ def hubspot_push(p: Push | None = None):
                 log(con, "hubspot", f"Push failed: {e}")
                 con.commit()
                 raise HTTPException(502, f"HubSpot: {e}")
+            held = sum(len(names) for names in summary["not_sent"].values())
             msg = (f"Pushed {summary['companies_created']} new and {summary['companies_updated']} updated companies, "
                    f"{summary['contacts_created']} new and {summary['contacts_updated']} updated contacts"
-                   + (f"; {len(summary['errors'])} errors" if summary["errors"] else ""))
+                   + (f"; {held} not sent" if held else "") + (f"; {len(summary['errors'])} errors" if summary["errors"] else ""))
             log(con, "hubspot", msg, summary)
             con.commit()
         return summary | {"message": msg}
