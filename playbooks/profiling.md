@@ -14,5 +14,8 @@ Display name, website domain, segment (with a one-line reason), industry, HQ cou
 
 Existing customers (Klöckner & Co, Oatly, bofrost*, Sennheiser, Müller – Die lila Logistik) stay "buyer" and are flagged, so they go to their account owner rather than into prospecting.
 
+## Exhibitors
+Classify each exhibitor on its own merits. At trade fairs most exhibitors are buyers (manufacturers, distributors, logistics firms); at procurement congresses most are vendors. An exhibitor becomes a lead only if it's a buyer and its fit is at least "possible": then it's a stand visit.
+
 ## Rules
-Prefer "unknown" over a guess. A sceptical second pass checks segment assignments across all companies and merges duplicates.
+Prefer "unknown" over a guess. One website domain is one company: merge duplicates, but if their profiles disagree on segment or customer status, don't merge; flag them for a person to check. A sceptical second pass checks segment assignments across all companies.

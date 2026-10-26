@@ -5,6 +5,8 @@
 2. Extract people: name, job title, company, role at the event (keynote, speaker, panelist, moderator, chair) and session title.
 3. Extract companies listed in their own right: exhibitors, sponsors, partners, participants, with tier and directory category when given.
 4. Check: a second pass looks for every person on the saved copy, fixes mismatches, removes anyone it can't find, removes test entries and duplicates, and adds anyone the first pass missed.
+5. Timetable, where this year's is out: for each person, the date, start, end and room of their session; each day's breaks (start, end: coffee, lunch, evening) and the exhibition hours. Check times against the rendered page when the layout is ambiguous: PDF text can put a session under the wrong heading.
+6. For exhibitors, record hall and stand number when published.
 
 ## Rules
 - Business information from public event pages only: name, title, company, session, source URL.
