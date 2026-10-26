@@ -1,0 +1,2585 @@
+[
+ {
+  "aliases": [
+   "Deutsche Welle TV"
+  ],
+  "name": "Deutsche Welle",
+  "domain": "dw.com",
+  "segment": "other",
+  "segment_reason": "Public international broadcaster; appears through a journalist or moderator.",
+  "industry": "Media",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "AKL-tec GmbH"
+  ],
+  "name": "AKL-tec",
+  "domain": "akl-tec.de",
+  "segment": "vendor",
+  "segment_reason": "Sells AI-based freight dimensioning and optical cargo inspection systems to logistics teams; does not automate shipping documents.",
+  "industry": "Logistics technology",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Kinder-Hospiz Sternenbrücke"
+  ],
+  "name": "Kinder-Hospiz Sternenbrücke",
+  "domain": "sternenbruecke.de",
+  "segment": "other",
+  "segment_reason": "Hamburg children's hospice charity; most likely the event's charity partner.",
+  "industry": "NGO",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "LMS Logistik Management Service GmbH"
+  ],
+  "name": "LMS Logistik Management Service",
+  "domain": null,
+  "segment": "partner",
+  "segment_reason": "Hamburg logistics planning and consulting firm (warehouse processes, incentive wage systems) whose founders also run the event company behind HLT; referral source at most.",
+  "industry": "Consulting",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Johanniter Luftrettung"
+  ],
+  "name": "Johanniter Luftrettung",
+  "domain": "johanniter.de",
+  "segment": "other",
+  "segment_reason": "Air rescue service of the non-profit Johanniter-Unfall-Hilfe (Giessen); most likely the event's charity partner.",
+  "industry": "NGO",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "HLT Hamburger Logistiktage"
+  ],
+  "name": "HLT Hamburger Logistiktage",
+  "domain": "hlt.hamburg",
+  "segment": "other",
+  "segment_reason": "Event company organising the Hamburger Logistiktage congress (the event itself).",
+  "industry": "Media",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Fraunhofer-Institut für Materialfluss und Logistik"
+  ],
+  "name": "Fraunhofer IML",
+  "domain": "iml.fraunhofer.de",
+  "segment": "other",
+  "segment_reason": "Applied research institute for logistics (Dortmund).",
+  "industry": "Research institute",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Rossmann"
+  ],
+  "name": "Rossmann",
+  "domain": "rossmann.de",
+  "segment": "buyer",
+  "segment_reason": "Drugstore retail chain with very large supplier order, delivery and invoice volume.",
+  "industry": "Retail",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Bauhaus"
+  ],
+  "name": "Bauhaus",
+  "domain": "bauhaus.info",
+  "segment": "buyer",
+  "segment_reason": "DIY and home-improvement retail chain (Mannheim head office) with large supplier order and invoice volume.",
+  "industry": "Retail",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "BITO-Lagertechnik Bittmann GmbH"
+  ],
+  "name": "BITO-Lagertechnik",
+  "domain": "bito.com",
+  "segment": "buyer",
+  "segment_reason": "Manufacturer of shelving, bins and containers that sells on customer orders; exhibits as a supplier to logistics.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Capp-Plast S.r.l."
+  ],
+  "name": "Capp-Plast",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Family-owned Italian manufacturer of plastic pallets, pallet boxes and containers selling on customer orders.",
+  "industry": "Packaging manufacturing",
+  "hq_country": "IT",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Cartonplast Group"
+  ],
+  "name": "Cartonplast",
+  "domain": "cartonplast.com",
+  "segment": "buyer",
+  "segment_reason": "Pool operator renting reusable plastic layer pads to food and beverage packaging makers (Dietzenbach); load-carrier service with order and invoice flow, like PAKi.",
+  "industry": "Logistics & transport",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "DataIdent GmbH"
+  ],
+  "name": "DataIdent",
+  "domain": "dataident.de",
+  "segment": "vendor",
+  "segment_reason": "Small Seevetal systems house selling and repairing barcode, mobile-data and RFID equipment for logistics.",
+  "industry": "Logistics technology",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Euro Pool System Deutschland GmbH"
+  ],
+  "name": "Euro Pool System",
+  "domain": "europoolsystem.com",
+  "segment": "buyer",
+  "segment_reason": "Reusable crate and tray pooling provider for the fresh-produce chain (Euro Pool Group); load-carrier logistics service with high order and invoice volume.",
+  "industry": "Logistics & transport",
+  "hq_country": "NL",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Gebhardt Fördertechnik GmbH"
+  ],
+  "name": "Gebhardt Fördertechnik",
+  "domain": "gebhardt-foerdertechnik.de",
+  "segment": "buyer",
+  "segment_reason": "Sinsheim manufacturer of conveyor and intralogistics systems with own production and supplier volume (same call as Vanderlande); also sells to logistics teams.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Georg Utz GmbH"
+  ],
+  "name": "Georg Utz",
+  "domain": "utzgroup.com",
+  "segment": "buyer",
+  "segment_reason": "Manufacturer of plastic containers, pallets and bins (Utz Group, Bremgarten) selling on customer orders.",
+  "industry": "Packaging manufacturing",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "identpro Systems GmbH"
+  ],
+  "name": "IdentPro",
+  "domain": "identpro.de",
+  "segment": "vendor",
+  "segment_reason": "RFID and forklift-localisation (RTLS) systems sold to warehouse operators.",
+  "industry": "Logistics technology",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "INTERROLL Fördertechnik GmbH"
+  ],
+  "name": "Interroll",
+  "domain": "interroll.com",
+  "segment": "buyer",
+  "segment_reason": "Swiss manufacturer of conveyor rollers, drives and modules sold in volume to integrators and OEMs; German unit in Wermelskirchen.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Kardex Mlog Division"
+  ],
+  "name": "Kardex",
+  "domain": "kardex.com",
+  "segment": "buyer",
+  "segment_reason": "Swiss manufacturer of automated storage systems (Mlog: AS/RS and conveyors) with production and supplier volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "KTPconTeyor"
+  ],
+  "name": "KTPconTeyor",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Bous-based maker of reusable packaging and storage systems (merger of KTP Kunststoff Palettentechnik and conTeyor) selling on customer orders.",
+  "industry": "Packaging manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Logistik-Initiative Hamburg Management GmbH"
+  ],
+  "name": "Logistik-Initiative Hamburg",
+  "domain": "hamburg-logistik.net",
+  "segment": "other",
+  "segment_reason": "Hamburg logistics cluster and network organisation.",
+  "industry": "Association",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "LPR La Palette Rouge Deutschland GmbH"
+  ],
+  "name": "LPR (La Palette Rouge)",
+  "domain": "lpr.eu",
+  "segment": "buyer",
+  "segment_reason": "Red-pallet pooling provider (Toulouse), a division of Euro Pool Group; load-carrier logistics service with order and invoice flow.",
+  "industry": "Logistics & transport",
+  "hq_country": "FR",
+  "dach": false,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "mainblick – Agentur für Strategie und Kommunikation GmbH"
+  ],
+  "name": "mainblick",
+  "domain": null,
+  "segment": "other",
+  "segment_reason": "Frankfurt PR and communications agency for logistics (co-coordinates Tag der Logistik); press side of the event.",
+  "industry": "Media",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "MTrack by ITBinder GmbH"
+  ],
+  "name": "ITBinder (MTrack)",
+  "domain": null,
+  "segment": "vendor",
+  "segment_reason": "Austrian fleet-management telematics software (tachograph download, GPS, driving times) for transport companies.",
+  "industry": "Logistics technology",
+  "hq_country": "AT",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "NEURA Mobile Robots GmbH"
+  ],
+  "name": "NEURA Mobile Robots",
+  "domain": "neura-robotics.com",
+  "segment": "vendor",
+  "segment_reason": "Mobile-robot subsidiary of NEURA Robotics selling AMRs to logistics and production teams.",
+  "industry": "Warehouse robotics",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "pfenning logistics GmbH"
+  ],
+  "name": "pfenning logistics",
+  "domain": "pfenning-logistics.com",
+  "segment": "buyer",
+  "segment_reason": "Heddesheim contract logistics and transport provider with high order and invoice volume.",
+  "industry": "Logistics & transport",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Sit SteuerungsTechnik GmbH"
+  ],
+  "name": "SIT Steuerungstechnik",
+  "domain": null,
+  "segment": "vendor",
+  "segment_reason": "Ettlingen controls-engineering firm building control systems for baggage handling and parcel sorting; project supplier to logistics.",
+  "industry": "Industrial automation components",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "51-200",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "SLAPStack GmbH"
+  ],
+  "name": "SLAPStack",
+  "domain": null,
+  "segment": "vendor",
+  "segment_reason": "Dortmund start-up (Fraunhofer IML / TU Dortmund) with digital-twin and computer-vision software for forklift fleets and inventory.",
+  "industry": "Software",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Smart Retur Danmark A/S"
+  ],
+  "name": "SmartRetur",
+  "domain": "smartretur.no",
+  "segment": "buyer",
+  "segment_reason": "Danish unit of Norwegian load-carrier pooling provider SmartRetur (pallets, crate washing); logistics service with order and invoice flow.",
+  "industry": "Logistics & transport",
+  "hq_country": "NO",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "SSI Schäfer Fritz Schäfer GmbH"
+  ],
+  "name": "SSI Schäfer",
+  "domain": "ssi-schaefer.com",
+  "segment": "buyer",
+  "segment_reason": "Neunkirchen intralogistics manufacturer that also sells bins, containers and shelving on customer orders; large supplier base.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Swisslog GmbH"
+  ],
+  "name": "Swisslog",
+  "domain": "swisslog.com",
+  "segment": "buyer",
+  "segment_reason": "Warehouse and healthcare automation systems maker (KUKA group) with production and supplier volume (same call as Vanderlande); also sells to logistics teams.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "sykell GmbH"
+  ],
+  "name": "sykell",
+  "domain": "sykell.com",
+  "segment": "vendor",
+  "segment_reason": "Berlin start-up running reusable takeaway packaging systems (cleaning, logistics, deposit) with its own reuse software; service vendor, like dotch.",
+  "industry": "Packaging / circular logistics",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Tosca Germany GmbH"
+  ],
+  "name": "Tosca",
+  "domain": "toscaltd.com",
+  "segment": "buyer",
+  "segment_reason": "Reusable plastic container and pallet pooling provider for food supply chains (Atlanta); load-carrier logistics service with order and invoice flow.",
+  "industry": "Logistics & transport",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Toyota Automated Logistics Systems GmbH"
+  ],
+  "name": "Toyota Automated Logistics Systems (viastore)",
+  "domain": "viastore.com",
+  "segment": "buyer",
+  "segment_reason": "Stuttgart AS/RS and intralogistics systems maker (former viastore, Toyota Industries group) with production and supplier volume; same call as Vanderlande.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "WBG-Pooling GmbH & Co. KG"
+  ],
+  "name": "WBG-Pooling",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Pan-European pallet, crate and big-box pooling provider (rent, delivery, collection, washing); logistics service with order and invoice flow.",
+  "industry": "Logistics & transport",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "KNAPP Systemintegration GmbH"
+  ],
+  "name": "KNAPP",
+  "domain": "knapp.com",
+  "segment": "buyer",
+  "segment_reason": "Austrian warehouse automation group with own production and large supplier base (same call as Vanderlande); also sells to logistics teams.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "AT",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "dhf Intralogistik"
+  ],
+  "name": "dhf Intralogistik",
+  "domain": null,
+  "segment": "other",
+  "segment_reason": "Trade magazine for intralogistics; media partner.",
+  "industry": "Media",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "f+h"
+  ],
+  "name": "f+h (fördern und heben)",
+  "domain": null,
+  "segment": "other",
+  "segment_reason": "Trade magazine for intralogistics and materials handling; media partner.",
+  "industry": "Media",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "GMP GESELLSCHAFT für MARKETING und PUBLIC RELATIONS"
+  ],
+  "name": "GMP Gesellschaft für Marketing und Public Relations",
+  "domain": null,
+  "segment": "other",
+  "segment_reason": "Small Essen marketing and PR agency working with intralogistics clients; press/agency side of the event.",
+  "industry": "Media",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "Logistik & Recht"
+  ],
+  "name": "Logistik & Recht (LogR)",
+  "domain": "ruw.de",
+  "segment": "other",
+  "segment_reason": "Quarterly legal journal on trade, transport and logistics (Fachmedien Recht und Wirtschaft); media partner.",
+  "industry": "Media",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "LogistikNachrichten"
+  ],
+  "name": "LogistikNachrichten",
+  "domain": null,
+  "segment": "other",
+  "segment_reason": "Online logistics news portal; media partner.",
+  "industry": "Media",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "MM LOGISTIK"
+  ],
+  "name": "MM Logistik",
+  "domain": "mm-logistik.vogel.de",
+  "segment": "other",
+  "segment_reason": "Logistics trade magazine of the Vogel Communications Group; media partner.",
+  "industry": "Media",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "PalettenReport"
+  ],
+  "name": "PalettenReport",
+  "domain": null,
+  "segment": "other",
+  "segment_reason": "Trade magazine for the pallet and load-carrier industry; media partner.",
+  "industry": "Media",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Bayer Global",
+   "Bayer Shared Services Global"
+  ],
+  "name": "Bayer",
+  "domain": "bayer.com",
+  "segment": "buyer",
+  "segment_reason": "Global pharma and crop-science group with very large procure-to-pay and order-to-cash volume; here via its shared services organisation.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "SAP Innovation Awards 2026 entry on Bayer's ERP transformation to S/4HANA Cloud (RISE with SAP) with TCS",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Novo Nordisk"
+  ],
+  "name": "Novo Nordisk",
+  "domain": "novonordisk.com",
+  "segment": "buyer",
+  "segment_reason": "Global pharma manufacturer with very large procurement and invoice volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DK",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Widely referenced SAP customer",
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Mars",
+   "Mars Global Services"
+  ],
+  "name": "Mars",
+  "domain": "mars.com",
+  "segment": "buyer",
+  "segment_reason": "Global food and pet-care manufacturer with large order-to-cash and procure-to-pay volume; here via its global services (GBS) unit.",
+  "industry": "Food & beverage",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Genpact"
+  ],
+  "name": "Genpact",
+  "domain": "genpact.com",
+  "segment": "partner",
+  "segment_reason": "Large BPO provider running F&A, procurement and order management for enterprises.",
+  "industry": "Consulting",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Wipro"
+  ],
+  "name": "Wipro",
+  "domain": "wipro.com",
+  "segment": "partner",
+  "segment_reason": "IT services, SAP integrator and BPO provider (F&A, procurement operations).",
+  "industry": "Consulting",
+  "hq_country": "IN",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "SCOTTMADDEN",
+   "ScottMadden"
+  ],
+  "name": "ScottMadden",
+  "domain": "scottmadden.com",
+  "segment": "partner",
+  "segment_reason": "Management consultancy with a shared services and GBS practice; referral source.",
+  "industry": "Consulting",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Lloyds Banking Group"
+  ],
+  "name": "Lloyds Banking Group",
+  "domain": "lloydsbankinggroup.com",
+  "segment": "buyer",
+  "segment_reason": "UK bank; large enterprise with supplier-invoice volume but low fit for order processing.",
+  "industry": "Banking & financial services",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "MAN Truck & Bus Portugal",
+   "Man Truck & Bus"
+  ],
+  "name": "MAN Truck & Bus",
+  "domain": "man.eu",
+  "segment": "buyer",
+  "segment_reason": "Munich truck and bus maker (TRATON) with very large supplier order and invoice volume; one contact at its Portuguese unit.",
+  "industry": "Automotive",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Rolls-Royce"
+  ],
+  "name": "Rolls-Royce",
+  "domain": "rolls-royce.com",
+  "segment": "buyer",
+  "segment_reason": "Aero-engine and power-systems manufacturer with very large supplier base.",
+  "industry": "Aerospace & defense",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Widely referenced SAP customer",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "PepsiCo"
+  ],
+  "name": "PepsiCo",
+  "domain": "pepsico.com",
+  "segment": "buyer",
+  "segment_reason": "Global food and beverage manufacturer with very high order and invoice volume.",
+  "industry": "Food & beverage",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Widely referenced SAP customer",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Adidas"
+  ],
+  "name": "adidas",
+  "domain": "adidas.com",
+  "segment": "buyer",
+  "segment_reason": "Sportswear brand with large sourcing, wholesale order and invoice volume.",
+  "industry": "Consumer goods",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Widely referenced SAP customer",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Sanofi"
+  ],
+  "name": "Sanofi",
+  "domain": "sanofi.com",
+  "segment": "buyer",
+  "segment_reason": "Global pharma manufacturer with very large procurement and invoice volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "FR",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Widely referenced SAP customer",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Louis Dreyfus Company"
+  ],
+  "name": "Louis Dreyfus Company",
+  "domain": "ldc.com",
+  "segment": "buyer",
+  "segment_reason": "Agricultural commodities merchant and processor with high trade, order and invoice volume.",
+  "industry": "Agriculture",
+  "hq_country": "NL",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Convatec Ltd"
+  ],
+  "name": "Convatec",
+  "domain": "convatecgroup.com",
+  "segment": "buyer",
+  "segment_reason": "Medical-products manufacturer (wound, ostomy, continence care) with order and supplier volume.",
+  "industry": "Medical technology",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Societe Generale Global Solution Centre",
+   "Societe Generale Global Solution Centre India & Romania"
+  ],
+  "name": "Societe Generale",
+  "domain": "societegenerale.com",
+  "segment": "buyer",
+  "segment_reason": "French bank's global solution centres; large enterprise with supplier-invoice volume but low fit for order processing.",
+  "industry": "Banking & financial services",
+  "hq_country": "FR",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Hyatt Hotels Corporation"
+  ],
+  "name": "Hyatt",
+  "domain": "hyatt.com",
+  "segment": "buyer",
+  "segment_reason": "Global hotel group with procurement and supplier-invoice volume; weaker fit than goods-flow businesses.",
+  "industry": "Hospitality",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Redwood Software",
+   "Redwood"
+  ],
+  "name": "Redwood Software",
+  "domain": "redwood.com",
+  "segment": "vendor",
+  "segment_reason": "Workload and finance-process automation software (job scheduling for SAP, close automation); adjacent, not order or invoice capture.",
+  "industry": "Software",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "SLB"
+  ],
+  "name": "SLB",
+  "domain": "slb.com",
+  "segment": "buyer",
+  "segment_reason": "Oilfield services and technology group with very large procurement and invoice volume.",
+  "industry": "Energy & utilities",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Samuel, Son & Co."
+  ],
+  "name": "Samuel, Son & Co.",
+  "domain": "samuel.com",
+  "segment": "buyer",
+  "segment_reason": "North American metals service centre and processor, a close analogue to customer Kloeckner Metals.",
+  "industry": "Wholesale & distribution",
+  "hq_country": "CA",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "HAVI"
+  ],
+  "name": "HAVI",
+  "domain": "havi.com",
+  "segment": "buyer",
+  "segment_reason": "Supply-chain and logistics services company (McDonald's distribution partner) with high order and invoice volume.",
+  "industry": "Logistics & transport",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Smith & Nephew",
+   "Smith+Nephew"
+  ],
+  "name": "Smith+Nephew",
+  "domain": "smith-nephew.com",
+  "segment": "buyer",
+  "segment_reason": "Medical-device manufacturer (orthopaedics, wound care) with order and supplier volume.",
+  "industry": "Medical technology",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Trintech"
+  ],
+  "name": "Trintech",
+  "domain": "trintech.com",
+  "segment": "vendor",
+  "segment_reason": "Financial close and reconciliation software; finance automation adjacent to, not overlapping, order or invoice processing.",
+  "industry": "Software",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "PRGX"
+  ],
+  "name": "PRGX",
+  "domain": "prgx.com",
+  "segment": "competitor",
+  "segment_reason": "Recovery audit and AP payment-controls provider; overlaps AP automation like apexanalytix.",
+  "industry": "Software",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Avalara"
+  ],
+  "name": "Avalara",
+  "domain": "avalara.com",
+  "segment": "vendor",
+  "segment_reason": "Tax compliance and e-invoicing compliance software; adjacent, possible integration partner.",
+  "industry": "Software",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Emagia"
+  ],
+  "name": "Emagia",
+  "domain": "emagia.com",
+  "segment": "competitor",
+  "segment_reason": "AI order-to-cash and accounts-receivable automation software, like HighRadius.",
+  "industry": "Software",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "SoftCo"
+  ],
+  "name": "SoftCo",
+  "domain": "softco.com",
+  "segment": "competitor",
+  "segment_reason": "Dublin AP automation and procure-to-pay software including invoice capture and matching.",
+  "industry": "Software",
+  "hq_country": "IE",
+  "dach": false,
+  "employees_band": "51-200",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Sodexo",
+   "Sodexo Business Services"
+  ],
+  "name": "Sodexo",
+  "domain": "sodexo.com",
+  "segment": "buyer",
+  "segment_reason": "Food and facility services group with very large procurement and supplier-invoice volume; here via its business services (GBS) unit.",
+  "industry": "Facility services",
+  "hq_country": "FR",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "The Adecco Group",
+   "Adecco Group Ag"
+  ],
+  "name": "The Adecco Group",
+  "domain": "adeccogroup.com",
+  "segment": "buyer",
+  "segment_reason": "Zurich staffing group; large enterprise with AR/AP volume through its shared services, weak fit for goods orders.",
+  "industry": "Staffing",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "KPMG LLP"
+  ],
+  "name": "KPMG LLP",
+  "domain": "kpmg.com",
+  "segment": "partner",
+  "segment_reason": "Big Four member firm (LLP entity, UK or US) with finance, GBS and SAP transformation practices; implementer or referrer.",
+  "industry": "Consulting",
+  "hq_country": null,
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Carrier",
+   "Carrier Global"
+  ],
+  "name": "Carrier",
+  "domain": "carrier.com",
+  "segment": "buyer",
+  "segment_reason": "HVAC and refrigeration manufacturer with large order and supplier volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Pacera"
+  ],
+  "name": "Pacera",
+  "domain": null,
+  "segment": "vendor",
+  "segment_reason": "Finance software company formed from Nordic close, consolidation and FP&A products (Aico, AARO, Mercur); adjacent finance automation.",
+  "industry": "Software",
+  "hq_country": null,
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "ARIS"
+  ],
+  "name": "ARIS",
+  "domain": "aris.com",
+  "segment": "vendor",
+  "segment_reason": "Process modelling and process-mining software (ex-Software AG, Saarbrücken); analytics, not order or invoice automation.",
+  "industry": "Software",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Moody’s Analytics"
+  ],
+  "name": "Moody's",
+  "domain": "moodys.com",
+  "segment": "vendor",
+  "segment_reason": "Risk data, analytics and KYC software provider; not order or invoice automation.",
+  "industry": "Financial services",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Archer Daniels Midland Company"
+  ],
+  "name": "ADM (Archer Daniels Midland)",
+  "domain": "adm.com",
+  "segment": "buyer",
+  "segment_reason": "Agricultural processing and food-ingredients group with very high trade, order and invoice volume.",
+  "industry": "Food & beverage",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "1ADM business transformation programme reported as an SAP S/4HANA rollout",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Warner Bros. Discovery"
+  ],
+  "name": "Warner Bros. Discovery",
+  "domain": "wbd.com",
+  "segment": "buyer",
+  "segment_reason": "Media group attending for its shared services; supplier-invoice volume but weak fit for goods orders.",
+  "industry": "Media",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Iron Mountain"
+  ],
+  "name": "Iron Mountain",
+  "domain": "ironmountain.com",
+  "segment": "partner",
+  "segment_reason": "Records and document-management services provider offering mailroom digitisation and AP document capture; BPO-style partner with some overlap.",
+  "industry": "Business services",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "AstraZeneca",
+   "AstraZenca"
+  ],
+  "name": "AstraZeneca",
+  "domain": "astrazeneca.com",
+  "segment": "buyer",
+  "segment_reason": "Global pharma manufacturer with very large procurement and invoice volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Axial programme publicly reported as its SAP S/4HANA ERP transformation",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "SEG Automotive"
+  ],
+  "name": "SEG Automotive",
+  "domain": "seg-automotive.com",
+  "segment": "buyer",
+  "segment_reason": "Stuttgart maker of starters and alternators (former Bosch unit) with high supplier and customer order volume.",
+  "industry": "Automotive",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Tesco Business Solutions"
+  ],
+  "name": "Tesco",
+  "domain": "tescoplc.com",
+  "segment": "buyer",
+  "segment_reason": "UK grocery retailer, here via its shared services arm (Tesco Business Solutions); very high supplier invoice volume.",
+  "industry": "Retail",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Swissport International AG"
+  ],
+  "name": "Swissport",
+  "domain": "swissport.com",
+  "segment": "buyer",
+  "segment_reason": "Zurich-based aviation ground-handling and air-cargo services group with large procurement and invoice volume.",
+  "industry": "Logistics & transport",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "EPTA Group"
+  ],
+  "name": "Epta",
+  "domain": "eptarefrigeration.com",
+  "segment": "buyer",
+  "segment_reason": "Milan commercial-refrigeration manufacturer for retail with order and supplier volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "IT",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Copeland"
+  ],
+  "name": "Copeland",
+  "domain": "copeland.com",
+  "segment": "buyer",
+  "segment_reason": "Compressor and climate-technology manufacturer (ex-Emerson Climate Technologies) with large order and supplier volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "CMA-CGM GBS"
+  ],
+  "name": "CMA CGM",
+  "domain": "cma-cgm.com",
+  "segment": "buyer",
+  "segment_reason": "Container shipping and logistics group (Marseille), here via its GBS; very high order and invoice volume.",
+  "industry": "Logistics & transport",
+  "hq_country": "FR",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Webasto Group"
+  ],
+  "name": "Webasto",
+  "domain": "webasto.com",
+  "segment": "buyer",
+  "segment_reason": "Automotive supplier (roofs, heaters, batteries) near Munich with high supplier and customer order volume.",
+  "industry": "Automotive",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Repsol S.A."
+  ],
+  "name": "Repsol",
+  "domain": "repsol.com",
+  "segment": "buyer",
+  "segment_reason": "Spanish energy group with large procurement and invoice volume.",
+  "industry": "Energy & utilities",
+  "hq_country": "ES",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "McDonald’s"
+  ],
+  "name": "McDonald's",
+  "domain": "mcdonalds.com",
+  "segment": "buyer",
+  "segment_reason": "Global restaurant company attending for its shared services; procurement and invoice volume, weaker fit for order desks.",
+  "industry": "Hospitality",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Organon USA, Inc"
+  ],
+  "name": "Organon",
+  "domain": "organon.com",
+  "segment": "buyer",
+  "segment_reason": "Pharma manufacturer (women's health, biosimilars) spun off from Merck with large procurement and order volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "SAP",
+  "erp_evidence": "Publicly reported go-live on SAP S/4HANA at its 2021 spin-off from Merck",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Citco Fund Services Lithuania"
+  ],
+  "name": "Citco",
+  "domain": "citco.com",
+  "segment": "buyer",
+  "segment_reason": "Fund administration group (Lithuanian service centre); supplier-invoice volume but low fit for order processing.",
+  "industry": "Financial services",
+  "hq_country": null,
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Solvay"
+  ],
+  "name": "Solvay",
+  "domain": "solvay.com",
+  "segment": "buyer",
+  "segment_reason": "Brussels chemicals manufacturer with large procurement and order volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "BE",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Ministry of Defence"
+  ],
+  "name": "Ministry of Defence (UK)",
+  "domain": null,
+  "segment": "other",
+  "segment_reason": "UK government department; public body.",
+  "industry": "Public sector",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Primark"
+  ],
+  "name": "Primark",
+  "domain": "primark.com",
+  "segment": "buyer",
+  "segment_reason": "Dublin-based fashion retailer with large sourcing, supplier order and invoice volume.",
+  "industry": "Retail",
+  "hq_country": "IE",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Hitachi, Ltd."
+  ],
+  "name": "Hitachi",
+  "domain": "hitachi.com",
+  "segment": "buyer",
+  "segment_reason": "Japanese industrial and technology conglomerate with very large procurement volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "JP",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Springtime"
+  ],
+  "name": "Springtime Technologies",
+  "domain": "go-springtime.com",
+  "segment": "competitor",
+  "segment_reason": "Vienna-based AI accounts payable automation (Invoicetrack) for high-volume enterprise invoice processing; bare name matched in an SSOW context.",
+  "industry": "Software",
+  "hq_country": "AT",
+  "dach": true,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Infosys"
+  ],
+  "name": "Infosys",
+  "domain": "infosys.com",
+  "segment": "partner",
+  "segment_reason": "IT services, SAP integrator and BPO provider (Infosys BPM) running F&A and procurement operations.",
+  "industry": "Consulting",
+  "hq_country": "IN",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Fresenius Kabi"
+  ],
+  "name": "Fresenius Kabi",
+  "domain": "fresenius-kabi.com",
+  "segment": "buyer",
+  "segment_reason": "Bad Homburg maker of generic injectables, infusions and clinical nutrition with high order and supplier volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Fiskars Corporation"
+  ],
+  "name": "Fiskars Group",
+  "domain": "fiskarsgroup.com",
+  "segment": "buyer",
+  "segment_reason": "Finnish consumer-goods brand group (Fiskars, Iittala, Gerber) with wholesale order and supplier volume.",
+  "industry": "Consumer goods",
+  "hq_country": "FI",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Thought Leader"
+  ],
+  "name": "Unidentified (role label 'Thought Leader')",
+  "domain": null,
+  "segment": "other",
+  "segment_reason": "Role label captured as a company name; no organisation identifiable.",
+  "industry": "unknown",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "TE Connectivity",
+   "TE Connectivity Ltd"
+  ],
+  "name": "TE Connectivity",
+  "domain": "te.com",
+  "segment": "buyer",
+  "segment_reason": "Connector and sensor manufacturer (Irish-domiciled) with very high order and supplier volume.",
+  "industry": "Cables & connectors",
+  "hq_country": "IE",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "J&J Global Services",
+   "Johnson & Johnson"
+  ],
+  "name": "Johnson & Johnson",
+  "domain": "jnj.com",
+  "segment": "buyer",
+  "segment_reason": "Healthcare products and pharma group, here also via its global services organisation; very large procurement and invoice volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Widely referenced SAP customer",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Bekaert"
+  ],
+  "name": "Bekaert",
+  "domain": "bekaert.com",
+  "segment": "buyer",
+  "segment_reason": "Belgian steel-wire and wire-products manufacturer with high order and supplier volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "BE",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Ecolab"
+  ],
+  "name": "Ecolab",
+  "domain": "ecolab.com",
+  "segment": "buyer",
+  "segment_reason": "Water, hygiene and infection-prevention chemicals and services group with high order and invoice volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Agrolimen"
+  ],
+  "name": "Agrolimen",
+  "domain": "agrolimen.com",
+  "segment": "buyer",
+  "segment_reason": "Barcelona food group (Gallina Blanca, Affinity Petcare) with order and supplier volume.",
+  "industry": "Food & beverage",
+  "hq_country": "ES",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "One Danone Business Services"
+  ],
+  "name": "Danone",
+  "domain": "danone.com",
+  "segment": "buyer",
+  "segment_reason": "Global dairy, water and nutrition manufacturer, here via its business services (GBS); very high order and invoice volume.",
+  "industry": "Food & beverage",
+  "hq_country": "FR",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "DHL Global Forwarding and Freight"
+  ],
+  "name": "DHL Global Forwarding",
+  "domain": "dhl.com",
+  "segment": "buyer",
+  "segment_reason": "Freight forwarding and road freight divisions of Bonn-based DHL Group with very high order and invoice volume.",
+  "industry": "Logistics & transport",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "DHL Group is a publicly referenced SAP customer; DGF's SAP-based forwarding system programme (NFE) was widely reported",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Greencore"
+  ],
+  "name": "Greencore",
+  "domain": "greencore.com",
+  "segment": "buyer",
+  "segment_reason": "Convenience-food manufacturer supplying UK grocers, with high order and supplier volume.",
+  "industry": "Food & beverage",
+  "hq_country": "IE",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "JTI"
+  ],
+  "name": "JTI (Japan Tobacco International)",
+  "domain": "jti.com",
+  "segment": "buyer",
+  "segment_reason": "Geneva-headquartered international tobacco business of Japan Tobacco with large order and supplier volume.",
+  "industry": "Consumer goods",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "ING"
+  ],
+  "name": "ING",
+  "domain": "ing.com",
+  "segment": "buyer",
+  "segment_reason": "Dutch bank; large enterprise with supplier-invoice volume but low fit for order processing.",
+  "industry": "Banking & financial services",
+  "hq_country": "NL",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Cabot Corporation"
+  ],
+  "name": "Cabot",
+  "domain": "cabotcorp.com",
+  "segment": "buyer",
+  "segment_reason": "Specialty chemicals and carbon-black manufacturer with order and supplier volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Bosch Portugal"
+  ],
+  "name": "Bosch",
+  "domain": "bosch.com",
+  "segment": "buyer",
+  "segment_reason": "Automotive supplier and industrial manufacturer with very high order and invoice volume; contact at its Portuguese unit.",
+  "industry": "Automotive",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Long-standing, widely referenced SAP customer",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Wolt"
+  ],
+  "name": "Wolt",
+  "domain": "wolt.com",
+  "segment": "buyer",
+  "segment_reason": "Helsinki delivery platform (DoorDash) that also runs grocery retail (Wolt Market); supplier-invoice volume, weak fit.",
+  "industry": "Retail",
+  "hq_country": "FI",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Bose Corporation"
+  ],
+  "name": "Bose",
+  "domain": "bose.com",
+  "segment": "buyer",
+  "segment_reason": "Consumer audio electronics maker with retail and wholesale order and supplier volume.",
+  "industry": "Consumer goods",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Kimberly-Clark"
+  ],
+  "name": "Kimberly-Clark",
+  "domain": "kimberly-clark.com",
+  "segment": "buyer",
+  "segment_reason": "Personal-care and tissue manufacturer with very high order and invoice volume.",
+  "industry": "Consumer goods",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Widely referenced SAP customer",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Kerry"
+  ],
+  "name": "Kerry Group",
+  "domain": "kerry.com",
+  "segment": "buyer",
+  "segment_reason": "Irish taste and nutrition ingredients manufacturer with high B2B order and supplier volume.",
+  "industry": "Food & beverage",
+  "hq_country": "IE",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Clariant",
+   "Clariant Services"
+  ],
+  "name": "Clariant",
+  "domain": "clariant.com",
+  "segment": "buyer",
+  "segment_reason": "Muttenz specialty chemicals manufacturer with high order and supplier volume; here also via its services (GBS) unit.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "SAP",
+  "erp_evidence": "Widely referenced SAP customer",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "PPG"
+  ],
+  "name": "PPG",
+  "domain": "ppg.com",
+  "segment": "buyer",
+  "segment_reason": "Paints and coatings manufacturer with very high order and invoice volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Takeda Business Solutions"
+  ],
+  "name": "Takeda",
+  "domain": "takeda.com",
+  "segment": "buyer",
+  "segment_reason": "Japanese pharma group, here via its shared services unit; very large procurement and invoice volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "JP",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "The Kraft Heinz Company"
+  ],
+  "name": "Kraft Heinz",
+  "domain": "kraftheinzcompany.com",
+  "segment": "buyer",
+  "segment_reason": "Packaged-food manufacturer with very high order and invoice volume.",
+  "industry": "Food & beverage",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "AtkinsRéalis"
+  ],
+  "name": "AtkinsRéalis",
+  "domain": "atkinsrealis.com",
+  "segment": "buyer",
+  "segment_reason": "Engineering and project-management group (ex-SNC-Lavalin) with subcontractor procurement and invoice volume; weak fit.",
+  "industry": "Engineering services",
+  "hq_country": "CA",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "AkzoNobel Nederland B.V.",
+   "Akzo Nobel Nederland B.V."
+  ],
+  "name": "AkzoNobel",
+  "domain": "akzonobel.com",
+  "segment": "buyer",
+  "segment_reason": "Paints and coatings manufacturer with very high order and supplier volume; Dutch entity.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "NL",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Widely referenced SAP customer",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "BSI"
+  ],
+  "name": "BSI (likely BSI Group)",
+  "domain": "bsigroup.com",
+  "segment": "other",
+  "segment_reason": "Ambiguous abbreviation; most likely the British Standards Institution (standards and certification body), not confirmed.",
+  "industry": "Standards organisation",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "Veolia Water Technologies & Solutions"
+  ],
+  "name": "Veolia Water Technologies & Solutions",
+  "domain": "veoliawatertech.com",
+  "segment": "buyer",
+  "segment_reason": "Veolia's water-treatment equipment and chemicals business (ex-SUEZ WTS) with order and supplier volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "FR",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Adient"
+  ],
+  "name": "Adient",
+  "domain": "adient.com",
+  "segment": "buyer",
+  "segment_reason": "Automotive seating supplier (Irish-domiciled) with very high supplier and customer order volume.",
+  "industry": "Automotive",
+  "hq_country": "IE",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Ammega"
+  ],
+  "name": "Ammega",
+  "domain": "ammega.com",
+  "segment": "buyer",
+  "segment_reason": "Industrial belting manufacturer (Ammeraal Beltech and Megadyne) with order and supplier volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "NL",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "MOL Group",
+   "MOL GBS"
+  ],
+  "name": "MOL Group",
+  "domain": "molgroup.info",
+  "segment": "buyer",
+  "segment_reason": "Hungarian oil, gas and petrochemicals group, here also via its GBS; large procurement and invoice volume.",
+  "industry": "Energy & utilities",
+  "hq_country": "HU",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Widely referenced SAP customer",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Criteo"
+  ],
+  "name": "Criteo",
+  "domain": "criteo.com",
+  "segment": "buyer",
+  "segment_reason": "Paris ad-tech company attending for its finance operations; invoice volume but weak fit.",
+  "industry": "Software",
+  "hq_country": "FR",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Reckitt"
+  ],
+  "name": "Reckitt",
+  "domain": "reckitt.com",
+  "segment": "buyer",
+  "segment_reason": "Health and hygiene consumer-goods manufacturer with very high order and invoice volume.",
+  "industry": "Consumer goods",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Digital Realty"
+  ],
+  "name": "Digital Realty",
+  "domain": "digitalrealty.com",
+  "segment": "buyer",
+  "segment_reason": "Data-centre owner and operator with construction and supplier-invoice volume; weak fit.",
+  "industry": "Real estate",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "ISS World Services"
+  ],
+  "name": "ISS",
+  "domain": "issworld.com",
+  "segment": "buyer",
+  "segment_reason": "Copenhagen facility-services group with very large procurement and supplier-invoice volume.",
+  "industry": "Facility services",
+  "hq_country": "DK",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Rockwell Automation"
+  ],
+  "name": "Rockwell Automation",
+  "domain": "rockwellautomation.com",
+  "segment": "buyer",
+  "segment_reason": "Industrial automation manufacturer with high order and supplier volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Bruker"
+  ],
+  "name": "Bruker",
+  "domain": "bruker.com",
+  "segment": "buyer",
+  "segment_reason": "Scientific-instruments manufacturer with large German operations and order and supplier volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "SMS Concast"
+  ],
+  "name": "SMS Concast",
+  "domain": "sms-group.com",
+  "segment": "buyer",
+  "segment_reason": "Zurich continuous-casting plant builder in the SMS group; project procurement buyer.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "CH",
+  "dach": true,
+  "employees_band": "201-1000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Teva Pharmaceutical"
+  ],
+  "name": "Teva",
+  "domain": "tevapharm.com",
+  "segment": "buyer",
+  "segment_reason": "Generic-pharma manufacturer with very large order and supplier volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "IL",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Mercer Europe"
+  ],
+  "name": "Mercer",
+  "domain": "mercer.com",
+  "segment": "vendor",
+  "segment_reason": "HR, benefits and pensions consultancy (Marsh McLennan); not a procurement or ERP channel.",
+  "industry": "Consulting",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "PIB Group"
+  ],
+  "name": "PIB Group",
+  "domain": "pib-insurance.com",
+  "segment": "buyer",
+  "segment_reason": "UK insurance broking group attending for its finance operations; invoice volume but weak fit.",
+  "industry": "Insurance",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Previously at Goodyear"
+  ],
+  "name": "Individual (former Goodyear)",
+  "domain": null,
+  "segment": "other",
+  "segment_reason": "Individual whose listed affiliation is a former employer; current company unknown.",
+  "industry": "unknown",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "Randstad Enterprise"
+  ],
+  "name": "Randstad Enterprise",
+  "domain": "randstadenterprise.com",
+  "segment": "vendor",
+  "segment_reason": "Workforce solutions unit of Randstad (RPO, MSP, contingent labour) selling to HR and procurement.",
+  "industry": "Staffing",
+  "hq_country": "NL",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Allianz Services Romania"
+  ],
+  "name": "Allianz",
+  "domain": "allianz.com",
+  "segment": "buyer",
+  "segment_reason": "Munich insurance group, here via its Romanian shared services; supplier-invoice volume but weak fit for order processing.",
+  "industry": "Insurance",
+  "hq_country": "DE",
+  "dach": true,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Opella Commercial Healthcare"
+  ],
+  "name": "Opella",
+  "domain": null,
+  "segment": "buyer",
+  "segment_reason": "Consumer-health maker spun out of Sanofi, with retail and wholesale order and supplier volume.",
+  "industry": "Consumer goods",
+  "hq_country": "FR",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Astellas Pharma"
+  ],
+  "name": "Astellas",
+  "domain": "astellas.com",
+  "segment": "buyer",
+  "segment_reason": "Japanese pharma manufacturer with large procurement and invoice volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "JP",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "RHI Magnesita"
+  ],
+  "name": "RHI Magnesita",
+  "domain": "rhimagnesita.com",
+  "segment": "buyer",
+  "segment_reason": "Vienna-run refractories manufacturer (raw materials, mining, production) with high order and supplier volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "AT",
+  "dach": true,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Marriott Group"
+  ],
+  "name": "Marriott International",
+  "domain": "marriott.com",
+  "segment": "buyer",
+  "segment_reason": "Global hotel group with procurement and supplier-invoice volume; weaker fit than goods-flow businesses.",
+  "industry": "Hospitality",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "Syensqo"
+  ],
+  "name": "Syensqo",
+  "domain": "syensqo.com",
+  "segment": "buyer",
+  "segment_reason": "Brussels specialty-materials and chemicals manufacturer (spun off from Solvay) with order and supplier volume.",
+  "industry": "Chemicals & pharma",
+  "hq_country": "BE",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "SPECTRIX"
+  ],
+  "name": "SPECTRIX",
+  "domain": null,
+  "segment": "other",
+  "segment_reason": "Could not be identified (only a Swiss shell listing found); business unknown.",
+  "industry": "unknown",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "Sourcing Change"
+  ],
+  "name": "Sourcing Change",
+  "domain": "sourcingchange.com",
+  "segment": "partner",
+  "segment_reason": "Small US GBS and shared services consultancy and executive search firm; referral source at most.",
+  "industry": "Consulting",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "1-50",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "KONE"
+  ],
+  "name": "KONE",
+  "domain": "kone.com",
+  "segment": "buyer",
+  "segment_reason": "Finnish elevator and escalator manufacturer and service group with very high order and supplier volume.",
+  "industry": "Industrial manufacturing",
+  "hq_country": "FI",
+  "dach": false,
+  "employees_band": "20000+",
+  "erp": "SAP",
+  "erp_evidence": "Widely referenced SAP customer",
+  "existing_customer": false,
+  "confidence": "high"
+ },
+ {
+  "aliases": [
+   "CRH – Tarmac"
+  ],
+  "name": "Tarmac (CRH)",
+  "domain": "tarmac.com",
+  "segment": "buyer",
+  "segment_reason": "UK building-materials producer owned by CRH, with high delivery order and supplier volume.",
+  "industry": "Building materials",
+  "hq_country": "GB",
+  "dach": false,
+  "employees_band": "5001-20000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "medium"
+ },
+ {
+  "aliases": [
+   "Inixia"
+  ],
+  "name": "Inixia",
+  "domain": null,
+  "segment": "other",
+  "segment_reason": "Could not be identified from public sources.",
+  "industry": "unknown",
+  "hq_country": null,
+  "dach": null,
+  "employees_band": "unknown",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "low"
+ },
+ {
+  "aliases": [
+   "Insulet Corporation"
+  ],
+  "name": "Insulet",
+  "domain": "insulet.com",
+  "segment": "buyer",
+  "segment_reason": "Insulin-pump (Omnipod) medical-device manufacturer with order and supplier volume.",
+  "industry": "Medical technology",
+  "hq_country": "US",
+  "dach": false,
+  "employees_band": "1001-5000",
+  "erp": "unknown",
+  "erp_evidence": null,
+  "existing_customer": false,
+  "confidence": "high"
+ }
+]

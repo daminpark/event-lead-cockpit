@@ -28,6 +28,8 @@ container() {
 packages() {
   say "packages"
   in_ct "apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq git python3 python3-venv curl ca-certificates openssh-client >/dev/null && echo installed"
+  # The router's DNS mangles Cloudflare's tunnel lookups; keep the container on 1.1.1.1 even after DHCP renews.
+  in_ct "grep -q '^supersede domain-name-servers' /etc/dhcp/dhclient.conf || echo 'supersede domain-name-servers 1.1.1.1, 1.0.0.1;' >> /etc/dhcp/dhclient.conf; printf 'nameserver 1.1.1.1\\nnameserver 1.0.0.1\\n' > /etc/resolv.conf"
   in_ct "command -v cloudflared >/dev/null || (curl -fsSL -o /tmp/cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb && dpkg -i /tmp/cloudflared.deb >/dev/null && rm /tmp/cloudflared.deb); cloudflared --version"
 }
 
