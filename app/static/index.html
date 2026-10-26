@@ -227,6 +227,10 @@ dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid 
 .evtable .sorth { border: 0; background: none; padding: 0; text-align: left; font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; cursor: pointer; white-space: nowrap; }
 .evtable .sorth:hover, .evtable .sorth.on { color: var(--ink); }
 .plan { font-size: 14px; line-height: 1.8; }
+.whenbar { display: inline-flex; gap: 4px; background: var(--line-2); border-radius: 10px; padding: 3px; margin-bottom: 10px; }
+.whenbar button { border: 0; background: none; padding: 6px 16px; border-radius: 8px; font-weight: 600; color: var(--muted); }
+.whenbar button.on { background: var(--panel); color: var(--ink); box-shadow: var(--shadow); }
+.whenbar .num { font-weight: 500; color: var(--faint); margin-left: 2px; }
 .plan select { font: inherit; padding: 2px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel-2); color: var(--ink); }
 .evlistwrap { overflow-x: auto; }
 .evtable.head { cursor: default; background: var(--panel-2); color: var(--faint); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; padding-top: 8px; padding-bottom: 8px; }
@@ -597,7 +601,10 @@ function topReasons(reasons, n = 3) {
 }
 
 // ---------- events: the list ----------
-const EVENT_STATUS = [['all', 'All'], ['todo', 'To decide'], ['going', 'Going'], ['notgoing', 'Not going'], ['past', 'Already happened']];
+// Upcoming events are about where to go; past ones about what going gave us.
+const EVENT_TABS = { upcoming: [['all', 'All'], ['todo', 'To decide'], ['going', 'Going'], ['notgoing', 'Not going']],
+                     past: [['all', 'All'], ['went', 'Went'], ['skipped', 'Skipped'], ['undecided', 'Not decided']] };
+const pastStatus = e => ({ approve: 'went', reject: 'skipped' })[decisionOf('event', e.id)?.decision] || 'undecided';
 function eventStatus(e) {
   if (e.past) return 'past';
   const d = decisionOf('event', e.id)?.decision;
@@ -632,34 +639,42 @@ const EVENT_COLS = [
 ];
 
 function renderEventsList() {
-  const counts = {}, filter = S.evFilter || 'all', sort = S.evSort || { key: 'score', dir: -1 };
-  S.data.events.forEach(e => { const st = eventStatus(e); counts[st] = (counts[st] || 0) + 1; });
-  counts.all = S.data.events.length;
+  const when = S.evWhen || 'upcoming', filter = S.evFilter || 'all', theme = S.evTheme || '', sort = S.evSort || { key: 'score', dir: -1 };
+  const inWhen = S.data.events.filter(e => (when === 'past') === !!e.past);
+  const sub = e => when === 'past' ? pastStatus(e) : eventStatus(e);
+  const themed = inWhen.filter(e => !theme || e.theme === theme);
+  const counts = { all: themed.length };
+  themed.forEach(e => { counts[sub(e)] = (counts[sub(e)] || 0) + 1; });
+  const themes = [...new Set(S.data.events.map(e => e.theme).filter(Boolean))].sort();
   const col = EVENT_COLS.find(c => c[0] === sort.key) || EVENT_COLS[0];
-  const events = S.data.events.filter(e => filter === 'all' || eventStatus(e) === filter)
+  const events = themed.filter(e => filter === 'all' || sub(e) === filter)
     .sort((a, b) => { const x = col[2](a), y = col[2](b); return (x < y ? -1 : x > y ? 1 : 0) * sort.dir || b.score - a.score; });
   $('eventsList').innerHTML = `
     <div class="panel step">
       <div><div class="stepno">Step 1</div><h3>Choose the events worth going to</h3>
         <p class="lead" style="margin:0">Each event is scored on how many strong-fit people its lists name, how much of the list is worth a look, whether GeneralMind already has a stand, timing, travel, and whether this year's list is out. <b>Meetings</b> is what the people we'd send can realistically fit in (about ${S.data.events[0]?.plan?.meetings_per_person_per_day || 8} a day each). Click a column to sort; open an event to see why, then mark it Going or Not going.</p></div>
     </div>
-    <div class="stabs">${EVENT_STATUS.map(([k, l]) => `<button class="stab ${filter === k ? 'on' : ''}" data-evf="${k}">${l} <span class="num">${counts[k] || 0}</span></button>`).join('')}</div>
+    <div class="whenbar">${[['upcoming', 'Upcoming'], ['past', 'Past']].map(([k, l]) => `<button class="${when === k ? 'on' : ''}" data-when="${k}">${l} <span class="num">${S.data.events.filter(e => (k === 'past') === !!e.past).length}</span></button>`).join('')}</div>
+    <div class="stabs" style="align-items:center">${EVENT_TABS[when].map(([k, l]) => `<button class="stab ${filter === k ? 'on' : ''}" data-evf="${k}">${l} <span class="num">${counts[k] || 0}</span></button>`).join('')}
+      <select id="evTheme" style="margin-left:auto;font:inherit;font-size:13px;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink)"><option value="">All themes</option>${themes.map(t => `<option ${t === theme ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select></div>
     <div class="list evlistwrap">${events.length ? `<div class="evtable head">${EVENT_COLS.map(([k, l]) => `<button class="sorth ${sort.key === k ? 'on' : ''}" data-sort="${k}" title="Sort by ${l.toLowerCase()}">${l}${sort.key === k ? (sort.dir < 0 ? ' ▼' : ' ▲') : ''}</button>`).join('')}</div>` + events.map(e => {
       const st = eventStatus(e), lane = (EVENT_LANES[e.lane] || ['', 'filtered'])[1], n = statusCounts([e.id]), pl = planFor(e), appr = n.approved + n.hubspot;
       return `<div class="evtable lane-${lane} ${st}" data-ev="${esc(e.id)}">
         <div class="score num">${e.score}</div>
-        <div style="min-width:0"><div class="t1">${esc(e.name)}${e.generalmind_present ? ' <span class="badge">stand</span>' : ''}</div><div class="t2">${esc(e.city)} · ${esc(e.format || '')}</div></div>
+        <div style="min-width:0"><div class="t1" title="${esc(e.name)}">${esc(e.name)}${e.generalmind_present ? ' <span class="badge">stand</span>' : ''}</div><div class="t2">${esc(e.theme || '')} · ${esc(e.format || '')}</div></div>
         <div class="t2"><b style="color:var(--ink)">${fmtDay(e.start)}</b>${e.end && e.end !== e.start ? `–${fmtDay(e.end)}` : ''}<br>${until(e.start)}</div>
-        <div class="t2" title="Approximate door to door from Berlin">${travelText(e.travel)}${e.travel?.km ? `<br>${e.travel.km} km` : ''}</div>
+        <div class="t2" title="Approximate door to door from Berlin"><b style="color:var(--ink)">${esc(e.city)}</b><br>${travelText(e.travel)}</div>
         <div class="t2">${e.not_sourced ? 'not sourced' : e.counts.people ? `<b style="color:var(--ink)">${e.counts.strong}</b> of ${e.counts.people}` : `<b style="color:var(--ink)">${e.counts.strong_companies}</b> exhibitors`}</div>
         <div class="t2" title="${pl.team} ${pl.team === 1 ? 'person' : 'people'} × ${pl.days} days × ${pl.meetings_per_person_per_day} a day; invite about ${pl.invites}"><b style="color:var(--ink)">${pl.meetings}</b><br>invite ~${pl.invites}</div>
         <div class="t2">${appr ? `<b style="color:var(--fast)">${appr}</b>` : '0'}<br>of ~${pl.invites}</div>
         <div><span class="chip lane lane-${st === 'going' ? 'fast_track' : st === 'todo' ? 'review' : 'filtered'}">${eventStatusLabel(e)}</span></div>
         <div class="t2">${fmtDay(e.added_at)}<br><small>${esc((e.found_by || '').replace(/ \(.*\)$/, ''))}</small></div>
       </div>`;
-    }).join('') : '<div class="empty">No events here.</div>'}</div>
+    }).join('') : `<div class="empty">${when === 'past' && !inWhen.length ? "No past events yet. Events move here once they've happened, showing whether we went. Once HubSpot syncs outcomes back, this is where to see what each event produced." : 'No events here.'}</div>`}</div>
     <div style="color:var(--faint);font-size:11.5px;margin-top:8px">Travel is approximate door to door from Berlin. Meetings: people we'd send × days × meetings a day each; "invite" assumes about ${Math.round(100 * (S.data.events[0]?.plan?.acceptance_rate || 0.25))}% accept. These assumptions are in <a href="#/criteria">Criteria</a> (Events section).</div>`;
   $('eventsList').querySelectorAll('[data-evf]').forEach(b => b.onclick = () => { S.evFilter = b.dataset.evf; renderEventsList(); });
+  $('eventsList').querySelectorAll('[data-when]').forEach(b => b.onclick = () => { S.evWhen = b.dataset.when; S.evFilter = 'all'; renderEventsList(); });
+  $('evTheme').onchange = e => { S.evTheme = e.target.value; renderEventsList(); };
   $('eventsList').querySelectorAll('[data-sort]').forEach(b => b.onclick = e => {
     e.stopPropagation();
     const k = b.dataset.sort, cur = S.evSort || { key: 'score', dir: -1 };

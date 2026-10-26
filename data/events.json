@@ -35,7 +35,8 @@
       "mode": "train",
       "hours": 5.0,
       "km": 505
-    }
+    },
+    "theme": "Supply chain & logistics"
   },
   {
     "id": "bme-symposium-2026",
@@ -78,7 +79,8 @@
       "mode": "local",
       "hours": 0.5,
       "km": 0
-    }
+    },
+    "theme": "Procurement"
   },
   {
     "id": "hamburger-logistiktage-2027",
@@ -116,7 +118,8 @@
       "mode": "train",
       "hours": 2.5,
       "km": 255
-    }
+    },
+    "theme": "Supply chain & logistics"
   },
   {
     "id": "hannover-messe-2027",
@@ -148,7 +151,8 @@
       "mode": "train",
       "hours": 2.5,
       "km": 250
-    }
+    },
+    "theme": "Manufacturing"
   },
   {
     "id": "handelsblatt-cpo-2027",
@@ -179,7 +183,8 @@
       "mode": "train",
       "hours": 5.0,
       "km": 475
-    }
+    },
+    "theme": "Procurement"
   },
   {
     "id": "ep-sce-2027",
@@ -211,7 +216,8 @@
       "mode": "local",
       "hours": 0.5,
       "km": 0
-    }
+    },
+    "theme": "Procurement"
   },
   {
     "id": "ssow-europe-2027",
@@ -243,7 +249,8 @@
       "mode": "flight",
       "hours": 6.5,
       "km": 2320
-    }
+    },
+    "theme": "Finance & shared services"
   },
   {
     "id": "bme-eloesungstage-2027",
@@ -275,7 +282,8 @@
       "mode": "train",
       "hours": 5.0,
       "km": 475
-    }
+    },
+    "theme": "Procurement"
   },
   {
     "id": "handelslogistik-2027",
@@ -307,7 +315,8 @@
       "mode": "train",
       "hours": 5.0,
       "km": 475
-    }
+    },
+    "theme": "Supply chain & logistics"
   },
   {
     "id": "procurement-summit-2027",
@@ -343,6 +352,7 @@
       "mode": "train",
       "hours": 2.5,
       "km": 255
-    }
+    },
+    "theme": "Procurement"
   }
 ]
