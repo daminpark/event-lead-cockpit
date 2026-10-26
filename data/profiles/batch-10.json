@@ -273,23 +273,6 @@
  },
  {
   "aliases": [
-   "Bosch"
-  ],
-  "name": "Bosch",
-  "domain": "bosch.com",
-  "segment": "buyer",
-  "segment_reason": "Global engineering and automotive supplier with very large procurement and order volume.",
-  "industry": "Industrial manufacturing",
-  "hq_country": "DE",
-  "dach": true,
-  "employees_band": "20000+",
-  "erp": "SAP",
-  "erp_evidence": "Long-standing, widely reported SAP customer (S/4HANA programmes)",
-  "existing_customer": false,
-  "confidence": "high"
- },
- {
-  "aliases": [
    "TKMS"
   ],
   "name": "TKMS (thyssenkrupp Marine Systems)",
@@ -321,23 +304,6 @@
   "erp_evidence": null,
   "existing_customer": false,
   "confidence": "high"
- },
- {
-  "aliases": [
-   "Raiffeisen Bank International"
-  ],
-  "name": "Raiffeisen Bank International",
-  "domain": "rbinternational.com",
-  "segment": "buyer",
-  "segment_reason": "Large Austrian banking group with indirect procurement and invoice volume; no order-to-cash use case, so a weaker fit.",
-  "industry": "Financial services",
-  "hq_country": "AT",
-  "dach": true,
-  "employees_band": "20000+",
-  "erp": "unknown",
-  "erp_evidence": null,
-  "existing_customer": false,
-  "confidence": "medium"
  },
  {
   "aliases": [
@@ -596,57 +562,6 @@
  },
  {
   "aliases": [
-   "Einmalbedarfe"
-  ],
-  "name": "Einmalbedarfe (KKSC)",
-  "domain": "einmalbedarfe.de",
-  "segment": "vendor",
-  "segment_reason": "KKSC's managed one-creditor service for one-off and C-part purchases; a procurement service, not software.",
-  "industry": "Procurement services",
-  "hq_country": null,
-  "dach": null,
-  "employees_band": "unknown",
-  "erp": "unknown",
-  "erp_evidence": null,
-  "existing_customer": false,
-  "confidence": "medium"
- },
- {
-  "aliases": [
-   "F. REYHER"
-  ],
-  "name": "F. REYHER",
-  "domain": "reyher.de",
-  "segment": "buyer",
-  "segment_reason": "Hamburg wholesaler of fasteners and fixing technology serving about 12,000 customers; order-heavy distributor.",
-  "industry": "Wholesale & distribution",
-  "hq_country": "DE",
-  "dach": true,
-  "employees_band": "201-1000",
-  "erp": "unknown",
-  "erp_evidence": null,
-  "existing_customer": false,
-  "confidence": "high"
- },
- {
-  "aliases": [
-   "FIS"
-  ],
-  "name": "FIS Informationssysteme und Consulting",
-  "domain": "fis-gmbh.de",
-  "segment": "partner",
-  "segment_reason": "SAP Gold Partner offering consulting, development, implementation and support.",
-  "industry": "Consulting",
-  "hq_country": "DE",
-  "dach": true,
-  "employees_band": "unknown",
-  "erp": "unknown",
-  "erp_evidence": null,
-  "existing_customer": false,
-  "confidence": "high"
- },
- {
-  "aliases": [
    "Foxit"
   ],
   "name": "Foxit",
@@ -732,28 +647,11 @@
  },
  {
   "aliases": [
-   "Horváth"
-  ],
-  "name": "Horváth",
-  "domain": "horvath-partners.com",
-  "segment": "partner",
-  "segment_reason": "Independent management consultancy (transformation, performance management, digitalisation) with procurement practice.",
-  "industry": "Consulting",
-  "hq_country": "DE",
-  "dach": true,
-  "employees_band": "1001-5000",
-  "erp": "unknown",
-  "erp_evidence": null,
-  "existing_customer": false,
-  "confidence": "high"
- },
- {
-  "aliases": [
    "Icertis"
   ],
   "name": "Icertis",
   "domain": "icertis.com",
-  "segment": "competitor",
+  "segment": "vendor",
   "segment_reason": "AI contract-lifecycle-management platform for procurement; adjacent to rather than overlapping with order or invoice automation.",
   "industry": "Software",
   "hq_country": "US",
@@ -851,23 +749,6 @@
  },
  {
   "aliases": [
-   "Markit"
-  ],
-  "name": "Markit",
-  "domain": "markit.eu",
-  "segment": "vendor",
-  "segment_reason": "B2B marketplace specialised in IT procurement.",
-  "industry": "Marketplace",
-  "hq_country": "EE",
-  "dach": false,
-  "employees_band": "unknown",
-  "erp": "unknown",
-  "erp_evidence": null,
-  "existing_customer": false,
-  "confidence": "medium"
- },
- {
-  "aliases": [
    "Metroplan"
   ],
   "name": "Metroplan",
@@ -894,23 +775,6 @@
   "industry": "Marketplace",
   "hq_country": "FR",
   "dach": false,
-  "employees_band": "unknown",
-  "erp": "unknown",
-  "erp_evidence": null,
-  "existing_customer": false,
-  "confidence": "medium"
- },
- {
-  "aliases": [
-   "Nasher"
-  ],
-  "name": "NASHER Negotiation Institute",
-  "domain": "nasher.com",
-  "segment": "vendor",
-  "segment_reason": "Negotiation training and consulting; neither competitor nor a likely implementation partner.",
-  "industry": "Training",
-  "hq_country": null,
-  "dach": null,
   "employees_band": "unknown",
   "erp": "unknown",
   "erp_evidence": null,
@@ -950,23 +814,6 @@
   "erp_evidence": null,
   "existing_customer": false,
   "confidence": "medium"
- },
- {
-  "aliases": [
-   "OPUS"
-  ],
-  "name": "opus Technologies",
-  "domain": "opus-tech.ai",
-  "segment": "competitor",
-  "segment_reason": "Berlin AI-agent start-up (founded 2024) automating manual coordination in operational procurement along the order process; direct overlap.",
-  "industry": "Software",
-  "hq_country": "DE",
-  "dach": true,
-  "employees_band": "1-50",
-  "erp": "unknown",
-  "erp_evidence": null,
-  "existing_customer": false,
-  "confidence": "high"
  },
  {
   "aliases": [
@@ -1106,23 +953,6 @@
  },
  {
   "aliases": [
-   "TESISQUARE"
-  ],
-  "name": "TESISQUARE",
-  "domain": "tesisquare.com",
-  "segment": "competitor",
-  "segment_reason": "Italian supply-chain collaboration platform covering supplier order collaboration and logistics; partial overlap.",
-  "industry": "Software",
-  "hq_country": "IT",
-  "dach": false,
-  "employees_band": "201-1000",
-  "erp": "unknown",
-  "erp_evidence": null,
-  "existing_customer": false,
-  "confidence": "medium"
- },
- {
-  "aliases": [
    "valantic"
   ],
   "name": "valantic",
@@ -1171,22 +1001,5 @@
   "erp_evidence": null,
   "existing_customer": false,
   "confidence": "medium"
- },
- {
-  "aliases": [
-   "ZIP HQ"
-  ],
-  "name": "Zip",
-  "domain": "ziphq.com",
-  "segment": "competitor",
-  "segment_reason": "AI intake-to-procure orchestration platform for enterprise procurement.",
-  "industry": "Software",
-  "hq_country": "US",
-  "dach": false,
-  "employees_band": "unknown",
-  "erp": "unknown",
-  "erp_evidence": null,
-  "existing_customer": false,
-  "confidence": "high"
  }
 ]

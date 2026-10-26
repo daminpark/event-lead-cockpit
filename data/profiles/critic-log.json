@@ -1,0 +1,1143 @@
+[
+ {
+  "company": "Lio",
+  "field": "employees_band",
+  "from": "unknown",
+  "to": "51-200",
+  "why": "taken from the duplicate profile, which had a band"
+ },
+ {
+  "company": "Lio",
+  "field": "duplicate_removed",
+  "from": "Lio (batch-02, segment competitor)",
+  "to": "merged into Lio (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Lio",
+  "field": "aliases",
+  "from": "Lio Technologies GmbH",
+  "to": "Lio Technologies GmbH; Lio",
+  "why": "union of aliases from merged duplicate(s): Lio"
+ },
+ {
+  "company": "Tacto",
+  "field": "duplicate_removed",
+  "from": "Tacto (batch-03, segment competitor)",
+  "to": "merged into Tacto (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Tacto",
+  "field": "aliases",
+  "from": "Tacto Technology GmbH",
+  "to": "Tacto Technology GmbH; Tacto",
+  "why": "union of aliases from merged duplicate(s): Tacto"
+ },
+ {
+  "company": "American Express",
+  "field": "duplicate_removed",
+  "from": "American Express (batch-02, segment vendor)",
+  "to": "merged into American Express (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "American Express",
+  "field": "aliases",
+  "from": "American Express Europe S.A. (Germany branch)",
+  "to": "American Express Europe S.A. (Germany branch); American Express Deutschland",
+  "why": "union of aliases from merged duplicate(s): American Express"
+ },
+ {
+  "company": "JAGGAER",
+  "field": "duplicate_removed",
+  "from": "JAGGAER (batch-02, segment competitor)",
+  "to": "merged into JAGGAER (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "JAGGAER",
+  "field": "aliases",
+  "from": "JAGGAER Austria GmbH",
+  "to": "JAGGAER Austria GmbH; JAGGAER; Jaggaer",
+  "why": "union of aliases from merged duplicate(s): JAGGAER"
+ },
+ {
+  "company": "Mercanis",
+  "field": "duplicate_removed",
+  "from": "Mercanis (batch-02, segment competitor)",
+  "to": "merged into Mercanis (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Mercanis",
+  "field": "aliases",
+  "from": "Mercanis (CdC3 GmbH)",
+  "to": "Mercanis (CdC3 GmbH); Mercanis",
+  "why": "union of aliases from merged duplicate(s): Mercanis"
+ },
+ {
+  "company": "REYHER",
+  "field": "duplicate_removed",
+  "from": "F. REYHER (batch-10, segment buyer)",
+  "to": "merged into REYHER (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "REYHER",
+  "field": "aliases",
+  "from": "F. REYHER Nchfg. GmbH & Co. KG",
+  "to": "F. REYHER Nchfg. GmbH & Co. KG; F. REYHER",
+  "why": "union of aliases from merged duplicate(s): F. REYHER"
+ },
+ {
+  "company": "Samsung SDS",
+  "field": "segment_reason",
+  "from": "Presents Caidentia, a design-to-source-to-pay procurement SaaS; also a large IT services and logistics provider that could act as a partner.",
+  "to": "Presents Caidentia, its own design-to-source-to-pay procurement SaaS, at BME events (Head of SRM Business speaks); also a large IT services, SI and logistics provider, so partner potential too.",
+  "why": "rewritten to cover both duplicate profiles"
+ },
+ {
+  "company": "Samsung SDS",
+  "field": "duplicate_removed",
+  "from": "Samsung SDS (batch-04, segment partner)",
+  "to": "merged into Samsung SDS (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Samsung SDS",
+  "field": "aliases",
+  "from": "Samsung SDS Europe Ltd.; Samsung SDS Europe Ltd",
+  "to": "Samsung SDS Europe Ltd.; Samsung SDS Europe Ltd; Samsung SDS",
+  "why": "union of aliases from merged duplicate(s): Samsung SDS"
+ },
+ {
+  "company": "Delvo",
+  "field": "hq_country",
+  "from": null,
+  "to": "DE",
+  "why": "filled from duplicate 'Delvo'"
+ },
+ {
+  "company": "Delvo",
+  "field": "dach",
+  "from": null,
+  "to": "true",
+  "why": "filled from duplicate 'Delvo'"
+ },
+ {
+  "company": "Delvo",
+  "field": "employees_band",
+  "from": "unknown",
+  "to": "1-50",
+  "why": "taken from the duplicate profile"
+ },
+ {
+  "company": "Delvo",
+  "field": "duplicate_removed",
+  "from": "Delvo (batch-03, segment competitor)",
+  "to": "merged into Delvo (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Delvo",
+  "field": "aliases",
+  "from": "Delvo",
+  "to": "Delvo; Delvo Technology GmbH",
+  "why": "union of aliases from merged duplicate(s): Delvo"
+ },
+ {
+  "company": "Dexter",
+  "field": "employees_band",
+  "from": "unknown",
+  "to": "1-50",
+  "why": "taken from the duplicate profile"
+ },
+ {
+  "company": "Dexter",
+  "field": "duplicate_removed",
+  "from": "Dexter (batch-02, segment competitor)",
+  "to": "merged into Dexter (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Dexter",
+  "field": "aliases",
+  "from": "Dexter Technologies GmbH",
+  "to": "Dexter Technologies GmbH; Dexter; dexter",
+  "why": "union of aliases from merged duplicate(s): Dexter"
+ },
+ {
+  "company": "GEP",
+  "field": "duplicate_removed",
+  "from": "GEP (batch-02, segment competitor)",
+  "to": "merged into GEP (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "GEP",
+  "field": "aliases",
+  "from": "GEP",
+  "to": "GEP; GEP Worldwide",
+  "why": "union of aliases from merged duplicate(s): GEP"
+ },
+ {
+  "company": "H&Z Unternehmensberatung",
+  "field": "name",
+  "from": "H&Z Unternehmensberatung",
+  "to": "H&Z",
+  "why": "three profiles of the same Munich consultancy (H&Z Unternehmensberatung / H&Z Management Consulting); one display name"
+ },
+ {
+  "company": "H&Z",
+  "field": "employees_band",
+  "from": "unknown",
+  "to": "201-1000",
+  "why": "taken from the duplicate profile"
+ },
+ {
+  "company": "H&Z",
+  "field": "duplicate_removed",
+  "from": "H&Z (batch-02, segment partner)",
+  "to": "merged into H&Z (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "H&Z",
+  "field": "duplicate_removed",
+  "from": "H&Z Management Consulting (batch-05, segment partner)",
+  "to": "merged into H&Z (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "H&Z",
+  "field": "aliases",
+  "from": "H&Z Unternehmensberatung",
+  "to": "H&Z Unternehmensberatung; H&Z Management Consulting; H&Z; H&Z Group",
+  "why": "union of aliases from merged duplicate(s): H&Z, H&Z Management Consulting"
+ },
+ {
+  "company": "Ivalua",
+  "field": "duplicate_removed",
+  "from": "Ivalua (batch-07, segment competitor)",
+  "to": "merged into Ivalua (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Ivalua",
+  "field": "aliases",
+  "from": "Ivalua",
+  "to": "Ivalua; Ivalua SAS",
+  "why": "union of aliases from merged duplicate(s): Ivalua"
+ },
+ {
+  "company": "Kodiak Hub",
+  "field": "duplicate_removed",
+  "from": "Kodiak Hub (batch-07, segment competitor)",
+  "to": "merged into Kodiak Hub (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Kodiak Hub",
+  "field": "aliases",
+  "from": "Kodiak Hub",
+  "to": "Kodiak Hub; KodiakHub",
+  "why": "union of aliases from merged duplicate(s): Kodiak Hub"
+ },
+ {
+  "company": "OPUS-Technologies",
+  "field": "employees_band",
+  "from": "unknown",
+  "to": "1-50",
+  "why": "taken from the duplicate profile (founded 2024)"
+ },
+ {
+  "company": "OPUS-Technologies",
+  "field": "duplicate_removed",
+  "from": "opus Technologies (batch-10, segment competitor)",
+  "to": "merged into OPUS-Technologies (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "OPUS-Technologies",
+  "field": "aliases",
+  "from": "OPUS-Technologies GmbH",
+  "to": "OPUS-Technologies GmbH; OPUS",
+  "why": "union of aliases from merged duplicate(s): opus Technologies"
+ },
+ {
+  "company": "Procure Ai",
+  "field": "duplicate_removed",
+  "from": "Procure Ai (batch-07, segment competitor)",
+  "to": "merged into Procure Ai (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Procure Ai",
+  "field": "aliases",
+  "from": "ProcureAi GmbH",
+  "to": "ProcureAi GmbH; Procure Ai; procure.ai",
+  "why": "union of aliases from merged duplicate(s): Procure Ai"
+ },
+ {
+  "company": "Schweitzer Fachinformationen",
+  "field": "segment",
+  "from": "vendor",
+  "to": "buyer",
+  "why": "duplicates disagreed (vendor vs buyer); a specialist book and information distributor to businesses has B2B order and supplier-invoice volume, so buyer like Lehmanns Media"
+ },
+ {
+  "company": "Schweitzer Fachinformationen",
+  "field": "segment_reason",
+  "from": "Supplier of professional information, literature and information software to companies.",
+  "to": "Specialist distributor of professional books, journals and information services to businesses (also via e-procurement); B2B order and supplier-invoice volume, although it exhibits as a supplier to procurement.",
+  "why": "rewritten to cover both duplicate profiles"
+ },
+ {
+  "company": "Schweitzer Fachinformationen",
+  "field": "industry",
+  "from": "Media",
+  "to": "Wholesale & distribution",
+  "why": "distributor rather than media publisher; matches the duplicate profile"
+ },
+ {
+  "company": "Schweitzer Fachinformationen",
+  "field": "duplicate_removed",
+  "from": "Schweitzer Fachinformationen (batch-07, segment buyer)",
+  "to": "merged into Schweitzer Fachinformationen (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Schweitzer Fachinformationen",
+  "field": "aliases",
+  "from": "Schweitzer",
+  "to": "Schweitzer; Schweitzer Fachinformationen",
+  "why": "union of aliases from merged duplicate(s): Schweitzer Fachinformationen"
+ },
+ {
+  "company": "SoftconCIS",
+  "field": "duplicate_removed",
+  "from": "SoftconCIS (batch-08, segment competitor)",
+  "to": "merged into SoftconCIS (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "SoftconCIS",
+  "field": "aliases",
+  "from": "SoftconCIS GmbH; SoftconCIS",
+  "to": "SoftconCIS GmbH; SoftconCIS; SOFTCON CIS GmbH",
+  "why": "union of aliases from merged duplicate(s): SoftconCIS"
+ },
+ {
+  "company": "Chase Prime",
+  "field": "duplicate_removed",
+  "from": "Chase Prime AI (batch-02, segment competitor)",
+  "to": "merged into Chase Prime (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Chase Prime",
+  "field": "aliases",
+  "from": "Chase Prime GmbH",
+  "to": "Chase Prime GmbH; Chase Prime AI",
+  "why": "union of aliases from merged duplicate(s): Chase Prime AI"
+ },
+ {
+  "company": "Guided Buying AI",
+  "field": "duplicate_removed",
+  "from": "GuidedBuying (Guided Buying AI GmbH) (batch-08, segment competitor)",
+  "to": "merged into Guided Buying AI (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Guided Buying AI",
+  "field": "aliases",
+  "from": "Guided Buying AI; Guided Buying AI GmbH",
+  "to": "Guided Buying AI; Guided Buying AI GmbH; GuidedBuying.com",
+  "why": "union of aliases from merged duplicate(s): GuidedBuying (Guided Buying AI GmbH)"
+ },
+ {
+  "company": "EcoVadis",
+  "field": "duplicate_removed",
+  "from": "EcoVadis (batch-04, segment vendor)",
+  "to": "merged into EcoVadis (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "EcoVadis",
+  "field": "aliases",
+  "from": "EcoVadis Germany GmbH; EcoVadis",
+  "to": "EcoVadis Germany GmbH; EcoVadis; Ecovadis. SAS",
+  "why": "union of aliases from merged duplicate(s): EcoVadis"
+ },
+ {
+  "company": "einmalbedarfe.de",
+  "field": "segment",
+  "from": "vendor",
+  "to": "buyer",
+  "why": "duplicates disagreed (vendor/buyer/vendor); single-creditor intermediaries buy and re-invoice clients' one-off and C-part items, so their core operation is supplier orders and invoices (same call as PSG Procurement Services)"
+ },
+ {
+  "company": "einmalbedarfe.de",
+  "field": "segment_reason",
+  "from": "Procurement intermediary handling one-off and C-part purchases under a single-creditor model; service vendor to procurement.",
+  "to": "Single-creditor intermediary (KKSC) that buys one-off and C-part items for client companies and re-invoices them; supplier order and invoice volume is its core operation, with some referral potential.",
+  "why": "rewritten to cover all three duplicate profiles"
+ },
+ {
+  "company": "einmalbedarfe.de",
+  "field": "industry",
+  "from": "Procurement services",
+  "to": "Wholesale & distribution",
+  "why": "acts as a reseller of one-off items; consistent with PSG Procurement Services"
+ },
+ {
+  "company": "einmalbedarfe.de",
+  "field": "duplicate_removed",
+  "from": "einmalbedarfe.de (batch-07, segment buyer)",
+  "to": "merged into einmalbedarfe.de (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "einmalbedarfe.de",
+  "field": "duplicate_removed",
+  "from": "Einmalbedarfe (KKSC) (batch-10, segment vendor)",
+  "to": "merged into einmalbedarfe.de (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "einmalbedarfe.de",
+  "field": "aliases",
+  "from": "einmalbedarfe.de",
+  "to": "einmalbedarfe.de; Einmalbedarf.de; Einmalbedarfe",
+  "why": "union of aliases from merged duplicate(s): einmalbedarfe.de, Einmalbedarfe (KKSC)"
+ },
+ {
+  "company": "Horváth",
+  "field": "duplicate_removed",
+  "from": "Horváth (batch-10, segment partner)",
+  "to": "merged into Horváth (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Horváth",
+  "field": "aliases",
+  "from": "Horváth & Partner GmbH",
+  "to": "Horváth & Partner GmbH; Horváth",
+  "why": "union of aliases from merged duplicate(s): Horváth"
+ },
+ {
+  "company": "NASHER Negotiation Institute",
+  "field": "segment",
+  "from": "vendor",
+  "to": "partner",
+  "why": "negotiation consultancy and trainer for procurement teams; other procurement and negotiation consultancies (Schoen, Negotiation Advisory Group) are partner (referral source)"
+ },
+ {
+  "company": "NASHER Negotiation Institute",
+  "field": "segment_reason",
+  "from": "Negotiation consulting and training for procurement teams; a service vendor, unlikely to implement automation.",
+  "to": "Negotiation consulting and training for procurement teams; like other procurement consultancies a referral source at most, unlikely to implement.",
+  "why": "rewritten for the partner call"
+ },
+ {
+  "company": "NASHER Negotiation Institute",
+  "field": "duplicate_removed",
+  "from": "NASHER Negotiation Institute (batch-10, segment vendor)",
+  "to": "merged into NASHER Negotiation Institute (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "NASHER Negotiation Institute",
+  "field": "aliases",
+  "from": "NASHER Negotiation Institute",
+  "to": "NASHER Negotiation Institute; Nasher",
+  "why": "union of aliases from merged duplicate(s): NASHER Negotiation Institute"
+ },
+ {
+  "company": "Piemonte Agency (Regione Piemonte)",
+  "field": "duplicate_removed",
+  "from": "Piemonte Agency (Ceipiemonte) (batch-02, segment other)",
+  "to": "merged into Piemonte Agency (Regione Piemonte) (batch-01)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Piemonte Agency (Regione Piemonte)",
+  "field": "aliases",
+  "from": "PIEMONTE - ITALY",
+  "to": "PIEMONTE - ITALY; PIEMONTE AGENCY FOR INVESTMENT AND EXPORT",
+  "why": "union of aliases from merged duplicate(s): Piemonte Agency (Ceipiemonte)"
+ },
+ {
+  "company": "Semigator (Haufe Group)",
+  "field": "duplicate_removed",
+  "from": "Semigator (Haufe Group) (batch-07, segment vendor)",
+  "to": "merged into Semigator (Haufe Group) (batch-02)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Semigator (Haufe Group)",
+  "field": "aliases",
+  "from": "Semigator Enterprise",
+  "to": "Semigator Enterprise; Semigator – eine Marke der Haufe Group",
+  "why": "union of aliases from merged duplicate(s): Semigator (Haufe Group)"
+ },
+ {
+  "company": "TESISQUARE",
+  "field": "duplicate_removed",
+  "from": "TESISQUARE (batch-10, segment competitor)",
+  "to": "merged into TESISQUARE (batch-02)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "TESISQUARE",
+  "field": "aliases",
+  "from": "Tesi Deutschland GmbH",
+  "to": "Tesi Deutschland GmbH; TESISQUARE",
+  "why": "union of aliases from merged duplicate(s): TESISQUARE"
+ },
+ {
+  "company": "BME (Bundesverband Materialwirtschaft, Einkauf und Logistik)",
+  "field": "segment_reason",
+  "from": "German procurement and logistics association; event organiser.",
+  "to": "German procurement and logistics association (BME e.V.) and organiser of several target events; includes its regional chapters and events subsidiary BME Marketing GmbH.",
+  "why": "BME Region Thüringen and BME Marketing GmbH merged in"
+ },
+ {
+  "company": "BME (Bundesverband Materialwirtschaft, Einkauf und Logistik)",
+  "field": "duplicate_removed",
+  "from": "BME (Bundesverband Materialwirtschaft, Einkauf und Logistik) (batch-04, segment other)",
+  "to": "merged into BME (Bundesverband Materialwirtschaft, Einkauf und Logistik) (batch-02)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "BME (Bundesverband Materialwirtschaft, Einkauf und Logistik)",
+  "field": "duplicate_removed",
+  "from": "BME Region Thüringen (batch-02, segment other)",
+  "to": "merged into BME (Bundesverband Materialwirtschaft, Einkauf und Logistik) (batch-02)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "BME (Bundesverband Materialwirtschaft, Einkauf und Logistik)",
+  "field": "duplicate_removed",
+  "from": "BME Marketing GmbH (batch-03, segment other)",
+  "to": "merged into BME (Bundesverband Materialwirtschaft, Einkauf und Logistik) (batch-02)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "BME (Bundesverband Materialwirtschaft, Einkauf und Logistik)",
+  "field": "aliases",
+  "from": "BME e.V.",
+  "to": "BME e.V.; Association for Supply Chain Management, Procurement and Logistics, (BME); BME-Region Thüringen; BME Marketing GmbH",
+  "why": "union of aliases from merged duplicate(s): BME (Bundesverband Materialwirtschaft, Einkauf und Logistik), BME Region Thüringen, BME Marketing GmbH"
+ },
+ {
+  "company": "University of Mannheim",
+  "field": "duplicate_removed",
+  "from": "Universität Mannheim (batch-03, segment other)",
+  "to": "merged into University of Mannheim (batch-02)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "University of Mannheim",
+  "field": "aliases",
+  "from": "University of Mannheim",
+  "to": "University of Mannheim; Universität Mannheim",
+  "why": "union of aliases from merged duplicate(s): Universität Mannheim"
+ },
+ {
+  "company": "Brose",
+  "field": "duplicate_removed",
+  "from": "Brose (batch-02, segment buyer)",
+  "to": "merged into Brose (batch-02)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Brose",
+  "field": "aliases",
+  "from": "Brose Fahrzeugteile SE & Co. Kommanditgesellschaft",
+  "to": "Brose Fahrzeugteile SE & Co. Kommanditgesellschaft; Brose Fahrzeugteile SE & Co.",
+  "why": "union of aliases from merged duplicate(s): Brose"
+ },
+ {
+  "company": "European Council on Foreign Relations (ECFR)",
+  "field": "duplicate_removed",
+  "from": "European Council on Foreign Relations (ECFR) (batch-04, segment other)",
+  "to": "merged into European Council on Foreign Relations (ECFR) (batch-02)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "European Council on Foreign Relations (ECFR)",
+  "field": "aliases",
+  "from": "European Council on Foreign Relations (ECFR)",
+  "to": "European Council on Foreign Relations (ECFR); European Council on Foreign Relations",
+  "why": "union of aliases from merged duplicate(s): European Council on Foreign Relations (ECFR)"
+ },
+ {
+  "company": "Bayer",
+  "field": "duplicate_removed",
+  "from": "Bayer (batch-04, segment buyer)",
+  "to": "merged into Bayer (batch-02)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Bayer",
+  "field": "aliases",
+  "from": "Bayer; Bayer AG",
+  "to": "Bayer; Bayer AG; Bayer Pharmaceuticals",
+  "why": "union of aliases from merged duplicate(s): Bayer"
+ },
+ {
+  "company": "Hochschule München (Munich University of Applied Sciences)",
+  "field": "duplicate_removed",
+  "from": "Hochschule München (Munich University of Applied Sciences) (batch-02, segment other)",
+  "to": "merged into Hochschule München (Munich University of Applied Sciences) (batch-02)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Hochschule München (Munich University of Applied Sciences)",
+  "field": "aliases",
+  "from": "University of Applied Sciences Munich",
+  "to": "University of Applied Sciences Munich; Hochschule München",
+  "why": "union of aliases from merged duplicate(s): Hochschule München (Munich University of Applied Sciences)"
+ },
+ {
+  "company": "EnBW",
+  "field": "duplicate_removed",
+  "from": "EnBW (batch-02, segment buyer)",
+  "to": "merged into EnBW (batch-02)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "EnBW",
+  "field": "aliases",
+  "from": "EnBW",
+  "to": "EnBW; EnBW Energie Baden-Württemberg AG",
+  "why": "union of aliases from merged duplicate(s): EnBW"
+ },
+ {
+  "company": "Danfoss",
+  "field": "duplicate_removed",
+  "from": "Danfoss Power Solutions (Danfoss Group) (batch-02, segment buyer)",
+  "to": "merged into Danfoss (batch-04)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Danfoss",
+  "field": "aliases",
+  "from": "Danfoss",
+  "to": "Danfoss; Danfoss Power Solutions GmbH & Co. OHG",
+  "why": "union of aliases from merged duplicate(s): Danfoss Power Solutions (Danfoss Group)"
+ },
+ {
+  "company": "B. Braun",
+  "field": "duplicate_removed",
+  "from": "B. Braun (batch-09, segment buyer)",
+  "to": "merged into B. Braun (batch-03)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "B. Braun",
+  "field": "aliases",
+  "from": "B. Braun Melsungen AG",
+  "to": "B. Braun Melsungen AG; B. Braun Familienholding SE & Co. KG",
+  "why": "union of aliases from merged duplicate(s): B. Braun"
+ },
+ {
+  "company": "L'Oréal",
+  "field": "duplicate_removed",
+  "from": "L'Oréal (batch-04, segment buyer)",
+  "to": "merged into L'Oréal (batch-04)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "L'Oréal",
+  "field": "aliases",
+  "from": "VP Corporate Responsibility, L'Oréal",
+  "to": "VP Corporate Responsibility, L'Oréal; L'Oreal",
+  "why": "union of aliases from merged duplicate(s): L'Oréal"
+ },
+ {
+  "company": "Bosch",
+  "field": "duplicate_removed",
+  "from": "Bosch (batch-10, segment buyer)",
+  "to": "merged into Bosch (batch-04)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Bosch",
+  "field": "aliases",
+  "from": "Robert Bosch GmbH",
+  "to": "Robert Bosch GmbH; Bosch",
+  "why": "union of aliases from merged duplicate(s): Bosch"
+ },
+ {
+  "company": "Raben Group",
+  "field": "duplicate_removed",
+  "from": "Raben Group (Germany) (batch-09, segment buyer)",
+  "to": "merged into Raben Group (batch-04)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Raben Group",
+  "field": "aliases",
+  "from": "Raben Group",
+  "to": "Raben Group; Raben Trans European Germany GmbH",
+  "why": "union of aliases from merged duplicate(s): Raben Group (Germany)"
+ },
+ {
+  "company": "BASF",
+  "field": "duplicate_removed",
+  "from": "BASF Coatings (batch-05, segment buyer)",
+  "to": "merged into BASF (batch-05)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "BASF",
+  "field": "aliases",
+  "from": "BASF",
+  "to": "BASF; BASF Coatings",
+  "why": "union of aliases from merged duplicate(s): BASF Coatings"
+ },
+ {
+  "company": "EY",
+  "field": "duplicate_removed",
+  "from": "EY-Parthenon (batch-09, segment partner)",
+  "to": "merged into EY (batch-07)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "EY",
+  "field": "aliases",
+  "from": "Ernst & Young",
+  "to": "Ernst & Young; EY-Parthenon",
+  "why": "union of aliases from merged duplicate(s): EY-Parthenon"
+ },
+ {
+  "company": "Capgemini",
+  "field": "duplicate_removed",
+  "from": "Capgemini Invent (batch-08, segment partner)",
+  "to": "merged into Capgemini (batch-07)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Capgemini",
+  "field": "aliases",
+  "from": "Capgemini",
+  "to": "Capgemini; Capgemini Invent",
+  "why": "union of aliases from merged duplicate(s): Capgemini Invent"
+ },
+ {
+  "company": "FIS Informationssysteme und Consulting",
+  "field": "duplicate_removed",
+  "from": "FIS Informationssysteme und Consulting (batch-10, segment partner)",
+  "to": "merged into FIS Informationssysteme und Consulting (batch-07)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "FIS Informationssysteme und Consulting",
+  "field": "aliases",
+  "from": "FIS Informationssysteme und Consulting GmbH",
+  "to": "FIS Informationssysteme und Consulting GmbH; FIS",
+  "why": "union of aliases from merged duplicate(s): FIS Informationssysteme und Consulting"
+ },
+ {
+  "company": "Fullstep",
+  "field": "duplicate_removed",
+  "from": "Fullstep (batch-08, segment competitor)",
+  "to": "merged into Fullstep (batch-07)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Fullstep",
+  "field": "aliases",
+  "from": "Fullstep Networks S.A.",
+  "to": "Fullstep Networks S.A.; Fullstep",
+  "why": "union of aliases from merged duplicate(s): Fullstep"
+ },
+ {
+  "company": "MarkIT",
+  "field": "duplicate_removed",
+  "from": "Markit (batch-10, segment vendor)",
+  "to": "merged into MarkIT (batch-07)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "MarkIT",
+  "field": "aliases",
+  "from": "MarkIT B2B GmbH",
+  "to": "MarkIT B2B GmbH; Markit",
+  "why": "union of aliases from merged duplicate(s): Markit"
+ },
+ {
+  "company": "RENNET",
+  "field": "duplicate_removed",
+  "from": "RENNET (batch-08, segment partner)",
+  "to": "merged into RENNET (batch-07)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "RENNET",
+  "field": "aliases",
+  "from": "RENNET Technologie- und Innovationsberatung GmbH",
+  "to": "RENNET Technologie- und Innovationsberatung GmbH; RENNET GmbH",
+  "why": "union of aliases from merged duplicate(s): RENNET"
+ },
+ {
+  "company": "Zip",
+  "field": "confidence",
+  "from": "medium",
+  "to": "high",
+  "why": "domain checked: ziphq.com now redirects to zip.com, so both duplicates are the procurement platform Zip"
+ },
+ {
+  "company": "Zip",
+  "field": "duplicate_removed",
+  "from": "Zip (batch-10, segment competitor)",
+  "to": "merged into Zip (batch-08)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Zip",
+  "field": "aliases",
+  "from": "Zip",
+  "to": "Zip; ZIP HQ",
+  "why": "union of aliases from merged duplicate(s): Zip"
+ },
+ {
+  "company": "Hawle Group (Hawle Beteiligungsgesellschaft)",
+  "field": "duplicate_removed",
+  "from": "E. Hawle Armaturenwerke (batch-08, segment buyer)",
+  "to": "merged into Hawle Group (Hawle Beteiligungsgesellschaft) (batch-08)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Hawle Group (Hawle Beteiligungsgesellschaft)",
+  "field": "aliases",
+  "from": "Hawle Beteiligungsgesellschaft GmbH (Österreich)",
+  "to": "Hawle Beteiligungsgesellschaft GmbH (Österreich); Hawle Armaturenwerke GmbH (Österreich)",
+  "why": "union of aliases from merged duplicate(s): E. Hawle Armaturenwerke"
+ },
+ {
+  "company": "EHI Retail Institute",
+  "field": "duplicate_removed",
+  "from": "EHI Retail Institute (batch-08, segment other)",
+  "to": "merged into EHI Retail Institute (batch-08)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "EHI Retail Institute",
+  "field": "aliases",
+  "from": "EHI Retail Institute",
+  "to": "EHI Retail Institute; EHI",
+  "why": "union of aliases from merged duplicate(s): EHI Retail Institute"
+ },
+ {
+  "company": "Flexeno",
+  "field": "duplicate_removed",
+  "from": "Flexeno (batch-09, segment vendor)",
+  "to": "merged into Flexeno (batch-08)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Flexeno",
+  "field": "aliases",
+  "from": "Flexeno Energie GmbH",
+  "to": "Flexeno Energie GmbH; Flexeno",
+  "why": "union of aliases from merged duplicate(s): Flexeno"
+ },
+ {
+  "company": "Locus Robotics",
+  "field": "duplicate_removed",
+  "from": "Locus Robotics (batch-09, segment vendor)",
+  "to": "merged into Locus Robotics (batch-08)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Locus Robotics",
+  "field": "aliases",
+  "from": "Locus Robotics",
+  "to": "Locus Robotics; Locus Robotics Corporation",
+  "why": "union of aliases from merged duplicate(s): Locus Robotics"
+ },
+ {
+  "company": "A.P. Moller-Maersk",
+  "field": "duplicate_removed",
+  "from": "Maersk Deutschland (batch-09, segment buyer)",
+  "to": "merged into A.P. Moller-Maersk (batch-09)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "A.P. Moller-Maersk",
+  "field": "aliases",
+  "from": "Maersk",
+  "to": "Maersk; Maersk Deutschland A/S & Co. KG",
+  "why": "union of aliases from merged duplicate(s): Maersk Deutschland"
+ },
+ {
+  "company": "BLG Logistics",
+  "field": "duplicate_removed",
+  "from": "BLG Handelslogistik (batch-09, segment buyer)",
+  "to": "merged into BLG Logistics (batch-09)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "BLG Logistics",
+  "field": "aliases",
+  "from": "BLG Logistics",
+  "to": "BLG Logistics; BLG Handelslogistik GmbH & Co.KG",
+  "why": "union of aliases from merged duplicate(s): BLG Handelslogistik"
+ },
+ {
+  "company": "Raiffeisen Bank International",
+  "field": "duplicate_removed",
+  "from": "Raiffeisen Bank International (batch-10, segment buyer)",
+  "to": "merged into Raiffeisen Bank International (batch-09)",
+  "why": "same company profiled twice; aliases unioned so its leads still map to one account"
+ },
+ {
+  "company": "Raiffeisen Bank International",
+  "field": "aliases",
+  "from": "Raiffeisenbank International",
+  "to": "Raiffeisenbank International; Raiffeisen Bank International",
+  "why": "union of aliases from merged duplicate(s): Raiffeisen Bank International"
+ },
+ {
+  "company": "Orbit Logistics",
+  "field": "segment",
+  "from": "vendor",
+  "to": "competitor",
+  "why": "EDI supplier integration and VMI/order collaboration platform; automates the same purchase-order and order-confirmation exchange as SupplyOn and TESISQUARE, which are competitor"
+ },
+ {
+  "company": "kiresult",
+  "field": "segment",
+  "from": "competitor",
+  "to": "vendor",
+  "why": "procurement spend analytics; it does not automate order, invoice or procurement workflows (consistent with Mithra, Lytica, SoftconCIS)"
+ },
+ {
+  "company": "ivoflow",
+  "field": "segment",
+  "from": "competitor",
+  "to": "vendor",
+  "why": "spend and price-intelligence analytics, not order, invoice or procurement workflow automation (consistent with Mithra, Lytica, SoftconCIS)"
+ },
+ {
+  "company": "PartSpace",
+  "field": "segment",
+  "from": "competitor",
+  "to": "vendor",
+  "why": "should-cost analytics for drawing parts; its own profile says low overlap, and analytics vendors are vendor, not competitor"
+ },
+ {
+  "company": "Luminarity",
+  "field": "segment",
+  "from": "competitor",
+  "to": "vendor",
+  "why": "product-data and cost-reduction analytics, not workflow automation; consistent with other procurement analytics vendors"
+ },
+ {
+  "company": "Icertis",
+  "field": "segment",
+  "from": "competitor",
+  "to": "vendor",
+  "why": "contract lifecycle management, adjacent rather than overlapping (its own profile says so); consistent with Sirion, which is vendor"
+ },
+ {
+  "company": "Pedlar",
+  "field": "segment",
+  "from": "vendor",
+  "to": "buyer",
+  "why": "single-creditor intermediary that buys and re-invoices one-off items for clients; same model as PSG Procurement Services and einmalbedarfe.de (buyer)"
+ },
+ {
+  "company": "PAKi Logistics",
+  "field": "segment",
+  "from": "vendor",
+  "to": "buyer",
+  "why": "load-carrier (pallet) management and clearing is a logistics service; logistics service providers are buyers"
+ },
+ {
+  "company": "AutoScout24",
+  "field": "segment",
+  "from": "vendor",
+  "to": "buyer",
+  "why": "operating company speaking in a procurement session at BME; a consumer car marketplace does not sell to procurement, so its P2P volume makes it a (weak) buyer, not a vendor"
+ },
+ {
+  "company": "1. FC Union Berlin",
+  "field": "segment",
+  "from": "other",
+  "to": "buyer",
+  "why": "professional football club operating company, same call as RB Leipzig (buyer); the keynote speaker's role is handled by role scoring"
+ },
+ {
+  "company": "verhandlungssache.",
+  "field": "segment",
+  "from": "other",
+  "to": "partner",
+  "why": "identified as a small negotiation consultancy for buyers, not an unclear entry; procurement consultancies are partner (referral at most)"
+ },
+ {
+  "company": "Orbit Logistics",
+  "field": "segment_reason",
+  "from": "EDI supplier integration, VMI and replenishment platform for the process industry; adjacent to order automation.",
+  "to": "EDI supplier integration, VMI and order-collaboration platform for the process industry; automates purchase-order and order-confirmation exchange, overlapping Autopilot like SupplyOn.",
+  "why": "updated to match the segment change"
+ },
+ {
+  "company": "kiresult",
+  "field": "segment_reason",
+  "from": "Bonn procurement analytics SaaS (AI spend classification and savings insights).",
+  "to": "Bonn procurement analytics SaaS (AI spend classification and savings insights); analytics, not order or invoice automation.",
+  "why": "updated to match the segment change"
+ },
+ {
+  "company": "ivoflow",
+  "field": "segment_reason",
+  "from": "Koblenz AI spend and price intelligence platform for manufacturers; acquired by JAGGAER.",
+  "to": "Koblenz AI spend and price intelligence platform for manufacturers (acquired by JAGGAER); analytics, not order or invoice automation.",
+  "why": "updated to match the segment change"
+ },
+ {
+  "company": "PartSpace",
+  "field": "segment_reason",
+  "from": "AI analytics for purchasing drawing-based parts (should-cost from CAD); procurement-tech, low overlap.",
+  "to": "AI analytics for purchasing drawing-based parts (should-cost from CAD); procurement analytics with low overlap.",
+  "why": "updated to match the segment change"
+ },
+ {
+  "company": "Luminarity",
+  "field": "segment_reason",
+  "from": "Product-data intelligence software (CAD, drawings, ERP data) for material cost reduction in procurement.",
+  "to": "Product-data intelligence software (CAD, drawings, ERP data) for material cost reduction in procurement; analytics, not workflow automation.",
+  "why": "updated to match the segment change"
+ },
+ {
+  "company": "Pedlar",
+  "field": "segment_reason",
+  "from": "Procurement intermediary taking over one-off purchases under a single-creditor model; service vendor to operational procurement.",
+  "to": "Single-creditor intermediary that buys one-off purchases for client companies and re-invoices them; supplier order and invoice volume is its core operation.",
+  "why": "updated to match the segment change"
+ },
+ {
+  "company": "PAKi Logistics",
+  "field": "segment_reason",
+  "from": "Load-carrier (pallet) management and clearing service provider selling to retail and logistics.",
+  "to": "Load-carrier (pallet) management and clearing service provider for retail and logistics; a logistics service provider with document-heavy clearing.",
+  "why": "updated to match the segment change"
+ },
+ {
+  "company": "AutoScout24",
+  "field": "segment_reason",
+  "from": "Online car marketplace (tech platform) rather than a goods-flow business.",
+  "to": "Online car marketplace operator; speaks in a procurement session at BME, so a (weak-fit) buyer through its indirect procure-to-pay volume.",
+  "why": "updated to match the segment change"
+ },
+ {
+  "company": "1. FC Union Berlin",
+  "field": "segment_reason",
+  "from": "Football club; appears through a keynote by its women's head coach.",
+  "to": "Professional football club operating company with procurement and supplier invoices; weak fit (same call as RB Leipzig). Appears through a keynote by its women's head coach.",
+  "why": "updated to match the segment change"
+ },
+ {
+  "company": "verhandlungssache.",
+  "field": "segment_reason",
+  "from": "Small negotiation consultancy and training practice for buyers; not a buyer or scaled channel.",
+  "to": "Small negotiation consultancy and training practice for buyers; referral source at most.",
+  "why": "updated to match the segment change"
+ },
+ {
+  "company": "Pedlar",
+  "field": "industry",
+  "from": "Procurement services",
+  "to": "Wholesale & distribution",
+  "why": "reseller of one-off items; consistent with PSG Procurement Services"
+ },
+ {
+  "company": "PAKi Logistics",
+  "field": "industry",
+  "from": "Logistics services",
+  "to": "Logistics & transport",
+  "why": "logistics service provider; aligned with other logistics buyers"
+ },
+ {
+  "company": "REMIRA",
+  "field": "domain",
+  "from": "remira.de",
+  "to": "remira.com",
+  "why": "remira.de redirects to remira.com"
+ },
+ {
+  "company": "Manhattan Associates",
+  "field": "hq_country",
+  "from": "DE",
+  "to": "US",
+  "why": "Manhattan Associates is headquartered in Atlanta; DE was its German subsidiary"
+ },
+ {
+  "company": "Manhattan Associates",
+  "field": "dach",
+  "from": "true",
+  "to": "false",
+  "why": "follows hq_country US"
+ },
+ {
+  "company": "Vanderlande",
+  "field": "hq_country",
+  "from": "DE",
+  "to": "NL",
+  "why": "Vanderlande is headquartered in Veghel (Netherlands); DE was its German subsidiary"
+ },
+ {
+  "company": "Vanderlande",
+  "field": "dach",
+  "from": "true",
+  "to": "false",
+  "why": "follows hq_country NL"
+ },
+ {
+  "company": "Airbus",
+  "field": "dach",
+  "from": "true",
+  "to": "false",
+  "why": "dach contradicted hq_country FR; the group is headquartered outside DACH (the contact sits at a DACH subsidiary)"
+ },
+ {
+  "company": "Pirelli",
+  "field": "dach",
+  "from": "true",
+  "to": "false",
+  "why": "dach contradicted hq_country IT; the group is headquartered outside DACH (the contact sits at a DACH subsidiary)"
+ },
+ {
+  "company": "Intel",
+  "field": "dach",
+  "from": "true",
+  "to": "false",
+  "why": "dach contradicted hq_country US; the group is headquartered outside DACH (the contact sits at a DACH subsidiary)"
+ },
+ {
+  "company": "JOST",
+  "field": "name",
+  "from": "JOST",
+  "to": "JOST Werke",
+  "why": "display name 'JOST' normalises to the same account key as 'Jost Group' (a different, Benelux logistics company), so the two would merge into one cockpit account"
+ },
+ {
+  "company": "Samsung SDS",
+  "field": "segment",
+  "from": "partner (duplicate in batch-04)",
+  "to": "competitor",
+  "why": "duplicates disagreed; it presents its own design-to-source-to-pay SaaS (Caidentia) at BME events, so competitor, with SI-partner potential noted in the reason"
+ },
+ {
+  "company": "SoftconCIS",
+  "field": "segment",
+  "from": "competitor (duplicate in batch-08)",
+  "to": "vendor",
+  "why": "duplicates disagreed; procurement controlling and analytics software (WebCIS) does not automate order, invoice or procurement workflows"
+ }
+]

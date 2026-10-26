@@ -1,7 +1,7 @@
 [
-  {"aliases": ["Lio Technologies GmbH"], "name": "Lio", "domain": "lio.ai",
+  {"aliases": ["Lio Technologies GmbH", "Lio"], "name": "Lio", "domain": "lio.ai",
    "segment": "competitor", "segment_reason": "Multi-agent AI that runs procurement end to end (requisitions, document extraction, approvals, P2P); on the seed competitor list.",
-   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "51-200",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
   {"aliases": ["osapiens"], "name": "osapiens", "domain": "osapiens.com",
@@ -9,12 +9,12 @@
    "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
-  {"aliases": ["Tacto Technology GmbH"], "name": "Tacto", "domain": "tacto.ai",
+  {"aliases": ["Tacto Technology GmbH", "Tacto"], "name": "Tacto", "domain": "tacto.ai",
    "segment": "competitor", "segment_reason": "AI-based SRM and procurement automation platform for the DACH industrial Mittelstand; on the seed competitor list.",
    "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "51-200",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
-  {"aliases": ["American Express Europe S.A. (Germany branch)"], "name": "American Express", "domain": "americanexpress.com",
+  {"aliases": ["American Express Europe S.A. (Germany branch)", "American Express Deutschland"], "name": "American Express", "domain": "americanexpress.com",
    "segment": "vendor", "segment_reason": "Corporate cards and B2B payment solutions; a payments provider, not a buyer or automation competitor.",
    "industry": "Financial services", "hq_country": "US", "dach": false, "employees_band": "20000+",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
@@ -29,12 +29,12 @@
    "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
-  {"aliases": ["JAGGAER Austria GmbH"], "name": "JAGGAER", "domain": "jaggaer.com",
+  {"aliases": ["JAGGAER Austria GmbH", "JAGGAER", "Jaggaer"], "name": "JAGGAER", "domain": "jaggaer.com",
    "segment": "competitor", "segment_reason": "Source-to-pay and supplier collaboration suite for direct and indirect procurement; on the seed competitor list.",
    "industry": "Software", "hq_country": "US", "dach": false, "employees_band": "1001-5000",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
-  {"aliases": ["Mercanis (CdC3 GmbH)"], "name": "Mercanis", "domain": "mercanis.com",
+  {"aliases": ["Mercanis (CdC3 GmbH)", "Mercanis"], "name": "Mercanis", "domain": "mercanis.com",
    "segment": "competitor", "segment_reason": "Berlin AI procurement platform (SRM, sourcing, intake, contracts) with AI agents across source-to-pay; on the seed competitor list.",
    "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "51-200",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
@@ -44,13 +44,13 @@
    "industry": "Software", "hq_country": "US", "dach": false, "employees_band": "201-1000",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
-  {"aliases": ["F. REYHER Nchfg. GmbH & Co. KG"], "name": "REYHER", "domain": "reyher.de",
+  {"aliases": ["F. REYHER Nchfg. GmbH & Co. KG", "F. REYHER"], "name": "REYHER", "domain": "reyher.de",
    "segment": "buyer", "segment_reason": "Hamburg fastener and C-parts wholesaler handling about 24,000 order lines a day; strong order-to-cash fit.",
    "industry": "Wholesale & distribution", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
-  {"aliases": ["Samsung SDS Europe Ltd.", "Samsung SDS Europe Ltd"], "name": "Samsung SDS", "domain": "samsungsds.com",
-   "segment": "competitor", "segment_reason": "Presents Caidentia, a design-to-source-to-pay procurement SaaS; also a large IT services and logistics provider that could act as a partner.",
+  {"aliases": ["Samsung SDS Europe Ltd.", "Samsung SDS Europe Ltd", "Samsung SDS"], "name": "Samsung SDS", "domain": "samsungsds.com",
+   "segment": "competitor", "segment_reason": "Presents Caidentia, its own design-to-source-to-pay procurement SaaS, at BME events (Head of SRM Business speaks); also a large IT services, SI and logistics provider, so partner potential too.",
    "industry": "Software & IT services", "hq_country": "KR", "dach": false, "employees_band": "20000+",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
@@ -79,14 +79,14 @@
    "industry": "Software", "hq_country": null, "dach": null, "employees_band": "1-50",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
-  {"aliases": ["Delvo"], "name": "Delvo", "domain": "delvo.ai",
+  {"aliases": ["Delvo", "Delvo Technology GmbH"], "name": "Delvo", "domain": "delvo.ai",
    "segment": "competitor", "segment_reason": "AI agents for strategic procurement linking spend, contract and market data for negotiations; adjacent procurement AI.",
-   "industry": "Software", "hq_country": null, "dach": null, "employees_band": "unknown",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "1-50",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
-  {"aliases": ["Dexter Technologies GmbH"], "name": "Dexter", "domain": "getdexter.co",
+  {"aliases": ["Dexter Technologies GmbH", "Dexter", "dexter"], "name": "Dexter", "domain": "getdexter.co",
    "segment": "competitor", "segment_reason": "AI that extracts invoices, contracts and purchase orders into a spend and contract intelligence layer; adjacent document AI for procurement.",
-   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "1-50",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
   {"aliases": ["ERA Group"], "name": "ERA Group", "domain": "eragroup.com",
@@ -94,7 +94,7 @@
    "industry": "Consulting", "hq_country": "GB", "dach": false, "employees_band": "unknown",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
-  {"aliases": ["GEP"], "name": "GEP", "domain": "gep.com",
+  {"aliases": ["GEP", "GEP Worldwide"], "name": "GEP", "domain": "gep.com",
    "segment": "competitor", "segment_reason": "AI-native source-to-pay software (GEP SMART) plus procurement managed services; competes on procurement and P2P automation.",
    "industry": "Software", "hq_country": "US", "dach": false, "employees_band": "5001-20000",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
@@ -109,32 +109,32 @@
    "industry": "Software", "hq_country": null, "dach": null, "employees_band": "unknown",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
-  {"aliases": ["H&Z Unternehmensberatung"], "name": "H&Z Unternehmensberatung", "domain": "hz.group",
+  {"aliases": ["H&Z Unternehmensberatung", "H&Z Management Consulting", "H&Z", "H&Z Group"], "name": "H&Z", "domain": "hz.group",
    "segment": "partner", "segment_reason": "Munich consultancy focused on procurement and supply chain management with digital and AI projects; referral and implementation partner.",
-   "industry": "Consulting", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "industry": "Consulting", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
-  {"aliases": ["Ivalua"], "name": "Ivalua", "domain": "ivalua.com",
+  {"aliases": ["Ivalua", "Ivalua SAS"], "name": "Ivalua", "domain": "ivalua.com",
    "segment": "competitor", "segment_reason": "Integrated source-to-pay and supplier management platform for large enterprises; on the seed competitor list.",
    "industry": "Software", "hq_country": "FR", "dach": false, "employees_band": "1001-5000",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
-  {"aliases": ["Kodiak Hub"], "name": "Kodiak Hub", "domain": "kodiakhub.com",
+  {"aliases": ["Kodiak Hub", "KodiakHub"], "name": "Kodiak Hub", "domain": "kodiakhub.com",
    "segment": "competitor", "segment_reason": "Swedish AI-enabled SRM suite (supplier onboarding, audits, scorecards); adjacent procurement software rather than order or invoice automation.",
    "industry": "Software", "hq_country": "SE", "dach": false, "employees_band": "51-200",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
-  {"aliases": ["OPUS-Technologies GmbH"], "name": "OPUS-Technologies", "domain": "opus-tech.ai",
+  {"aliases": ["OPUS-Technologies GmbH", "OPUS"], "name": "OPUS-Technologies", "domain": "opus-tech.ai",
    "segment": "competitor", "segment_reason": "AI agents that extract data from supplier communication and sync it with the ERP to automate procure-to-pay for industrial Mittelstand; direct overlap.",
-   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "1-50",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
-  {"aliases": ["ProcureAi GmbH"], "name": "Procure Ai", "domain": "procure.ai",
+  {"aliases": ["ProcureAi GmbH", "Procure Ai", "procure.ai"], "name": "Procure Ai", "domain": "procure.ai",
    "segment": "competitor", "segment_reason": "AI-native procurement automation platform with 40+ agents from intake to purchasing; on the seed competitor list.",
    "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "51-200",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
-  {"aliases": ["REMIRA GmbH", "Remira"], "name": "REMIRA", "domain": "remira.de",
+  {"aliases": ["REMIRA GmbH", "Remira"], "name": "REMIRA", "domain": "remira.com",
    "segment": "vendor", "segment_reason": "Dortmund supply chain planning and omnichannel commerce software; adjacent tech vendor, not order or invoice document automation.",
    "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
@@ -144,9 +144,9 @@
    "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
-  {"aliases": ["Schweitzer"], "name": "Schweitzer Fachinformationen", "domain": "schweitzer-online.de",
-   "segment": "vendor", "segment_reason": "Supplier of professional information, literature and information software to companies.",
-   "industry": "Media", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
+  {"aliases": ["Schweitzer", "Schweitzer Fachinformationen"], "name": "Schweitzer Fachinformationen", "domain": "schweitzer-online.de",
+   "segment": "buyer", "segment_reason": "Specialist distributor of professional books, journals and information services to businesses (also via e-procurement); B2B order and supplier-invoice volume, although it exhibits as a supplier to procurement.",
+   "industry": "Wholesale & distribution", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
   {"aliases": ["Sirion"], "name": "Sirion", "domain": "sirion.ai",
@@ -154,7 +154,7 @@
    "industry": "Software", "hq_country": "US", "dach": false, "employees_band": "201-1000",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
-  {"aliases": ["SoftconCIS GmbH", "SoftconCIS"], "name": "SoftconCIS", "domain": "softconcis.de",
+  {"aliases": ["SoftconCIS GmbH", "SoftconCIS", "SOFTCON CIS GmbH"], "name": "SoftconCIS", "domain": "softconcis.de",
    "segment": "vendor", "segment_reason": "Procurement controlling and reporting software (WebCIS 4.0); analytics rather than transactional automation.",
    "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
@@ -164,7 +164,7 @@
    "industry": "Software & IT services", "hq_country": "DE", "dach": true, "employees_band": "1-50",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "low"},
 
-  {"aliases": ["Chase Prime GmbH"], "name": "Chase Prime", "domain": "chaseprime.ai",
+  {"aliases": ["Chase Prime GmbH", "Chase Prime AI"], "name": "Chase Prime", "domain": "chaseprime.ai",
    "segment": "competitor", "segment_reason": "AI supplier management layer on top of the ERP for manufacturing Mittelstand, including AI agents that check order confirmations; direct overlap on order confirmations.",
    "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "1-50",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
@@ -174,7 +174,7 @@
    "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "1-50",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
-  {"aliases": ["Guided Buying AI", "Guided Buying AI GmbH"], "name": "Guided Buying AI", "domain": "guidedbuying.com",
+  {"aliases": ["Guided Buying AI", "Guided Buying AI GmbH", "GuidedBuying.com"], "name": "Guided Buying AI", "domain": "guidedbuying.com",
    "segment": "competitor", "segment_reason": "AI guided-buying layer over punchouts and catalogues that launches automated RFQs for B/C spend; procurement workflow automation.",
    "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "1-50",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
@@ -214,14 +214,14 @@
    "industry": "Logistics & transport", "hq_country": "DE", "dach": true, "employees_band": "201-1000",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
-  {"aliases": ["EcoVadis Germany GmbH", "EcoVadis"], "name": "EcoVadis", "domain": "ecovadis.com",
+  {"aliases": ["EcoVadis Germany GmbH", "EcoVadis", "Ecovadis. SAS"], "name": "EcoVadis", "domain": "ecovadis.com",
    "segment": "vendor", "segment_reason": "Sustainability ratings and supplier ESG risk platform; procurement-adjacent vendor.",
    "industry": "Software", "hq_country": "FR", "dach": false, "employees_band": "1001-5000",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
-  {"aliases": ["einmalbedarfe.de"], "name": "einmalbedarfe.de", "domain": "einmalbedarfe.de",
-   "segment": "vendor", "segment_reason": "Procurement intermediary handling one-off and C-part purchases under a single-creditor model; service vendor to procurement.",
-   "industry": "Procurement services", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+  {"aliases": ["einmalbedarfe.de", "Einmalbedarf.de", "Einmalbedarfe"], "name": "einmalbedarfe.de", "domain": "einmalbedarfe.de",
+   "segment": "buyer", "segment_reason": "Single-creditor intermediary (KKSC) that buys one-off and C-part items for client companies and re-invoices them; supplier order and invoice volume is its core operation, with some referral potential.",
+   "industry": "Wholesale & distribution", "hq_country": "DE", "dach": true, "employees_band": "unknown",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
   {"aliases": ["enPORTAL GmbH"], "name": "enPORTAL", "domain": "enportal.de",
@@ -249,7 +249,7 @@
    "industry": "Business services", "hq_country": "SI", "dach": false, "employees_band": "unknown",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
-  {"aliases": ["Horváth & Partner GmbH"], "name": "Horváth", "domain": "horvath-partners.com",
+  {"aliases": ["Horváth & Partner GmbH", "Horváth"], "name": "Horváth", "domain": "horvath-partners.com",
    "segment": "partner", "segment_reason": "Stuttgart management consultancy (about 1,400 staff) for transformation, performance management and digitalisation; referral and implementation partner.",
    "industry": "Consulting", "hq_country": "DE", "dach": true, "employees_band": "1001-5000",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
@@ -284,8 +284,8 @@
    "industry": "Software", "hq_country": "DE", "dach": true, "employees_band": "unknown",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
-  {"aliases": ["NASHER Negotiation Institute"], "name": "NASHER Negotiation Institute", "domain": "nasher.com",
-   "segment": "vendor", "segment_reason": "Negotiation consulting and training for procurement teams; a service vendor, unlikely to implement automation.",
+  {"aliases": ["NASHER Negotiation Institute", "Nasher"], "name": "NASHER Negotiation Institute", "domain": "nasher.com",
+   "segment": "partner", "segment_reason": "Negotiation consulting and training for procurement teams; like other procurement consultancies a referral source at most, unlikely to implement.",
    "industry": "Consulting", "hq_country": "DE", "dach": true, "employees_band": "unknown",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
@@ -315,11 +315,11 @@
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},
 
   {"aliases": ["Pedlar GmbH"], "name": "Pedlar", "domain": "pedlar.de",
-   "segment": "vendor", "segment_reason": "Procurement intermediary taking over one-off purchases under a single-creditor model; service vendor to operational procurement.",
-   "industry": "Procurement services", "hq_country": "DE", "dach": true, "employees_band": "unknown",
+   "segment": "buyer", "segment_reason": "Single-creditor intermediary that buys one-off purchases for client companies and re-invoices them; supplier order and invoice volume is its core operation.",
+   "industry": "Wholesale & distribution", "hq_country": "DE", "dach": true, "employees_band": "unknown",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "medium"},
 
-  {"aliases": ["PIEMONTE - ITALY"], "name": "Piemonte Agency (Regione Piemonte)", "domain": "centroestero.org",
+  {"aliases": ["PIEMONTE - ITALY", "PIEMONTE AGENCY FOR INVESTMENT AND EXPORT"], "name": "Piemonte Agency (Regione Piemonte)", "domain": "centroestero.org",
    "segment": "other", "segment_reason": "Regional government investment and export agency promoting Piedmont suppliers.",
    "industry": "Public sector", "hq_country": "IT", "dach": false, "employees_band": "unknown",
    "erp": "unknown", "erp_evidence": null, "existing_customer": false, "confidence": "high"},

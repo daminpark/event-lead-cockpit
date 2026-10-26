@@ -54,24 +54,6 @@
  },
  {
   "aliases": [
-   "H&Z",
-   "H&Z Group"
-  ],
-  "name": "H&Z Management Consulting",
-  "domain": "h-z.com",
-  "segment": "partner",
-  "segment_reason": "Munich management consultancy with procurement and operations practice.",
-  "industry": "Consulting",
-  "hq_country": "DE",
-  "dach": true,
-  "employees_band": "201-1000",
-  "erp": "unknown",
-  "erp_evidence": null,
-  "existing_customer": false,
-  "confidence": "medium"
- },
- {
-  "aliases": [
    "Savify AG"
   ],
   "name": "Savify",
@@ -315,7 +297,8 @@
  },
  {
   "aliases": [
-   "BASF"
+   "BASF",
+   "BASF Coatings"
   ],
   "name": "BASF",
   "domain": "basf.com",
@@ -584,23 +567,6 @@
   "erp_evidence": null,
   "existing_customer": false,
   "confidence": "high"
- },
- {
-  "aliases": [
-   "BASF Coatings"
-  ],
-  "name": "BASF Coatings",
-  "domain": "basf.com",
-  "segment": "buyer",
-  "segment_reason": "Coatings division of BASF.",
-  "industry": "Chemicals & pharma",
-  "hq_country": "DE",
-  "dach": true,
-  "employees_band": "5001-20000",
-  "erp": "SAP",
-  "erp_evidence": "Part of BASF, which runs a publicly reported SAP S/4HANA programme",
-  "existing_customer": false,
-  "confidence": "medium"
  },
  {
   "aliases": [
