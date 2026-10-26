@@ -50,6 +50,9 @@ def check(name, value):
             if r.status_code != 200:
                 return False, f"OpenRouter refused this key ({r.status_code}): {r.text[:120]}"
             d = r.json().get("data", {})
+            if d.get("is_management_key") or d.get("is_provisioning_key"):
+                # Management keys can manage keys and read credits, but can't run models.
+                return False, "This is an OpenRouter management key, which can't run models. Create a normal key at openrouter.ai → Keys → Create Key."
             limit = d.get("limit")
             return True, f"Valid · ${float(d.get('usage') or 0):.2f} used" + (f" of ${float(limit):.2f} limit" if limit else " · no spending limit set")
         r = httpx.get("https://api.hubapi.com/crm/v3/objects/companies", params={"limit": 1},
