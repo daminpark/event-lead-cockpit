@@ -274,7 +274,9 @@ def chat(con, messages, context, latest_decisions, validate_scoring, author=None
                 raise RuntimeError(f"OpenRouter {r.status_code}: {r.text[:200]}")
             msg = r.json()["choices"][0]["message"]
             calls = msg.get("tool_calls") or []
-            convo.append({k: v for k, v in msg.items() if k in ("role", "content", "tool_calls")} | {"content": msg.get("content") or ""})
+            # keep reasoning fields: some models need them back on the next round
+            convo.append({k: v for k, v in msg.items() if k in ("role", "content", "tool_calls", "reasoning", "reasoning_details") and v is not None}
+                         | {"content": msg.get("content") or ""})
             if not calls:
                 return {"reply": msg.get("content") or "", "actions": tools.actions, "model": model}
             for call in calls:

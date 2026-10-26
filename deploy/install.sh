@@ -15,7 +15,7 @@ cp -R "$SRC/app" "$SRC/pipeline" "$SRC/data" "$SRC/playbooks" "$SRC/scoring.toml
 echo "$SHA" > "$APP.new/VERSION"
 chmod -R a+rX,go-w "$APP.new"
 [ -d /opt/gm-cockpit-venv ] || python3 -m venv /opt/gm-cockpit-venv
-/opt/gm-cockpit-venv/bin/pip install --quiet --disable-pip-version-check "fastapi>=0.115" "uvicorn>=0.30" "httpx>=0.27"
+/opt/gm-cockpit-venv/bin/pip install --quiet --disable-pip-version-check "fastapi>=0.115" "uvicorn>=0.30" "httpx>=0.27" "python-multipart>=0.0.9"
 
 # 2. rebuild leads and scores from the new data before switching; a failed build leaves the old version running.
 #    Reviewer decisions and settings versions in the same database are kept.

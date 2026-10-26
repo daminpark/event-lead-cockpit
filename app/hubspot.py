@@ -120,12 +120,12 @@ def company_props(account, events):
 
 
 def contact_props(contact, account, events):
-    ev = events.get(contact["event_id"], {})
+    evs = [events[e] for e in contact.get("approved_events") or [contact["event_id"]] if e in events]
     props = {
         "firstname": contact["first_name"], "lastname": contact["last_name"], "jobtitle": contact.get("title") or "",
-        "company": (account or {}).get("name") or contact.get("company") or "", "gm_lead_id": contact["id"],
+        "company": (account or {}).get("name") or contact.get("company") or "", "gm_lead_id": contact["person_key"],
         "gm_fit_score": contact["score"], "gm_fit_reasons": reasons_text(contact["reasons"]),
-        "gm_source_event": f"{ev.get('name', '')} ({ev.get('start', '')})", "gm_source_url": contact.get("source_url") or "",
+        "gm_source_event": " | ".join(f"{e['name']} ({e['start']})" for e in evs), "gm_source_url": contact.get("source_url") or "",
         "gm_session": contact.get("session") or "",
     }
     return props
@@ -165,8 +165,8 @@ def push(con, approved_accounts, approved_contacts, accounts_by_id, events, sync
         try:
             acct = accounts_by_id.get(c["account_id"])
             company_id = push_account(acct) if acct else None
-            hid, new = hs.upsert("contacts", known.get(("contact", c["id"])), "gm_lead_id", c["id"], contact_props(c, acct, events))
-            save("contact", c["id"], hid)
+            hid, new = hs.upsert("contacts", known.get(("contact", c["person_key"])), "gm_lead_id", c["person_key"], contact_props(c, acct, events))
+            save("contact", c["person_key"], hid)
             summary["contacts_created" if new else "contacts_updated"] += 1
             if company_id:
                 hs.associate(hid, company_id)

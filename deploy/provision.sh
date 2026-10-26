@@ -2,7 +2,7 @@
 # One-time setup of the app container on Proxmox, run from this Mac. Safe to re-run: each step
 # checks what is already there. Needs deploy/local.env, ~/.cloudflared/cert.pem and gh signed in.
 #   ./deploy/provision.sh           # everything
-#   ./deploy/provision.sh secrets   # re-copy HUBSPOT_TOKEN / OPENROUTER_API_KEY from deploy/local.env
+#   ./deploy/provision.sh secrets   # re-copy HUBSPOT_TOKEN / OPENROUTER_API_KEY / COCKPIT_CODE from deploy/local.env
 #   ./deploy/provision.sh <step>    # one step: container, packages, tunnel, deploy_key, secrets, first_deploy
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -62,8 +62,8 @@ deploy_key() {
 
 secrets() {
   say "secrets"
-  # Only these two keys leave the Mac, and they are never printed.
-  grep -E '^(HUBSPOT_TOKEN|OPENROUTER_API_KEY)=' deploy/local.env \
+  # Only these keys leave the Mac, and they are never printed.
+  grep -E '^(HUBSPOT_TOKEN|OPENROUTER_API_KEY|COCKPIT_CODE)=' deploy/local.env \
     | ssh "$HOST" "pct exec $CT -- sh -c 'umask 077; cat > /etc/default/gm-cockpit'"
   in_ct "systemctl restart gm-cockpit.service 2>/dev/null || true; echo saved"
 }

@@ -152,7 +152,7 @@ main { padding: 20px 24px 60px; max-width: 1440px; margin: 0 auto; }
 .card ul { margin: 0; padding-left: 16px; font-size: 12.5px; color: var(--muted); }
 .badge { display: inline-block; background: var(--accent); color: #fff; font-size: 11px; font-weight: 600; border-radius: 5px; padding: 1px 7px; margin-left: 6px; vertical-align: 2px; }
 
-.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; overflow-x: auto; }
 .panel h3 { margin: 0 0 4px; font-size: 15px; }
 .panel .lead { color: var(--muted); margin: 0 0 14px; font-size: 13px; max-width: 760px; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -260,6 +260,8 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
 }
 @media (max-width: 760px) {
   header { flex-wrap: wrap; padding: 12px 16px; gap: 8px; }
+  .who { margin-left: 0; flex-wrap: wrap; white-space: normal; }
+  #built { display: none; }
   nav { order: 3; width: 100%; margin-left: 0; }
   main { padding: 14px 16px 60px; }
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -352,7 +354,7 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
     <b>Who's reviewing?</b>
     <div style="color:var(--muted);font-size:13px;margin-top:4px">Your first name is saved with each decision, so the team can see who decided what.</div>
     <input id="whoInput" maxlength="40" placeholder="e.g. Tom" autocomplete="given-name">
-    <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" value="cancel">Skip</button><button class="btn primary" value="ok">Save</button></div>
+    <div style="display:flex;gap:8px;flex-direction:row-reverse"><button class="btn primary" value="ok">Save</button><button class="btn" value="cancel">Skip</button></div>
   </form>
 </dialog>
 <dialog id="fbDlg">
@@ -360,7 +362,7 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
     <b>Feedback</b>
     <div id="fbTarget" class="note" style="margin:8px 0 0"></div>
     <textarea id="fbText" rows="4" placeholder="What should change?"></textarea>
-    <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" value="cancel">Cancel</button><button class="btn primary" value="ok">Send</button></div>
+    <div style="display:flex;gap:8px;flex-direction:row-reverse"><button class="btn primary" value="ok">Send</button><button class="btn" value="cancel">Cancel</button></div>
   </form>
 </dialog>
 <div class="toast" id="toast"></div>
@@ -403,6 +405,7 @@ function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add
 
 async function load() {
   const [res, cfg] = await Promise.all([fetch('api/data'), fetch('api/config')]);
+  if (res.status === 401) { location.reload(); return; }
   const d = await res.json();
   S.data = d; S.config = await cfg.json();
   S.events = {}; S.accounts = {}; S.decisions = new Map();
@@ -436,7 +439,8 @@ function fillFilters() {
 }
 
 function renderAll() { renderQueue(); renderAccounts(); renderEvents(); renderCriteria(); renderPlaybooks(); renderInsights(); renderExport(); renderAbout(); }
-const isSuppressed = c => S.suppressed.has(c.id) || (c.account_id && S.suppressed.has(S.accounts[c.account_id]?.profile?.domain));
+const isSuppressed = c => S.suppressed.has(c.person_key) || S.suppressed.has(c.id) || (c.account_id && S.suppressed.has(S.accounts[c.account_id]?.profile?.domain));
+const hsKey = c => key('contact', c.person_key);
 
 // ---------- lane stat tiles ----------
 function laneTiles(el, items, type, active, onToggle) {
@@ -499,13 +503,13 @@ function renderQueue() {
       <div><div class="t1">${esc(c.name)}</div><div class="t2">${esc(c.title || 'No title listed')}</div></div>
       <div class="c-company"><div class="t1">${esc(a?.name || c.company || '—')}</div><div class="chips">${p.industry ? `<span class="chip">${esc(p.industry)}</span>` : ''}${p.hq_country ? `<span class="chip">${esc(p.hq_country)}</span>` : ''}${c.confidence === 'low' ? '<span class="chip warn">check data</span>' : ''}</div></div>
       <div class="c-event"><div class="t1" style="font-weight:500">${esc(ev.short)}</div><div class="t2">${esc(c.role_at_event || '')} · ${until(ev.start)}</div></div>
-      <div class="c-reasons">${isSuppressed(c) ? '<span class="chip dnc">Do not contact</span> ' : ''}${S.hs.has(key('contact', c.id)) ? '<span class="chip hs">In HubSpot</span> ' : ''}${c.brief ? `<div class="brief-line">${esc(c.brief)}</div>` : `<div class="chips">${topReasons(c.reasons)}</div>`}</div>
+      <div class="c-reasons">${isSuppressed(c) ? '<span class="chip dnc">Do not contact</span> ' : ''}${S.hs.has(hsKey(c)) ? '<span class="chip hs">In HubSpot</span> ' : ''}${c.brief ? `<div class="brief-line">${esc(c.brief)}</div>` : `<div class="chips">${topReasons(c.reasons)}</div>`}</div>
       ${statusCell('contact', c.id)}
     </div>`;
   }).join('') : `<div class="empty">Nothing here. Try another lane or filter.</div>`;
   $('qList').querySelectorAll('.row[data-id]').forEach(r => r.onclick = e => {
     const act = e.target.closest('[data-act]')?.dataset.act;
-    S.sel = r.dataset.id;
+    S.sel = r.dataset.id; rejectOpenFor = null;
     if (act === 'approve') decide('contact', S.sel, 'approve');
     else if (act === 'reject') { $('drawer').classList.add('open'); renderQueue(); openReject(); }
     else { $('drawer').classList.add('open'); renderQueue(); }
@@ -586,7 +590,8 @@ function renderDrawer() {
     <div class="sub">${esc(c.title || 'No title listed')}<br><b style="color:var(--ink)">${esc(a?.name || c.company || '')}</b></div>
     ${c.brief ? `<div class="brief">${esc(c.brief)}${c.opener ? `<div class="op"><b>Opener:</b> ${esc(c.opener)}</div>` : ''}</div>` : ''}
     ${decideBlock('contact', c.id)}
-    ${extrasBlock('contact', c.id, c.name)}
+    ${extrasBlock('contact', c.person_key, c.name)}
+    ${c.also_at?.length ? `<div class="note">Also listed at ${c.also_at.map(e => esc(S.events[e]?.short || e)).join(', ')}. Do-not-contact and HubSpot treat these as one person.</div>` : ''}
     <h3>Why this score</h3>${breakdown(c)}<div style="height:8px"></div>${reasonList(c.reasons)}
     <h3>At the event</h3>
     <dl class="kv"><dt>Event</dt><dd>${esc(ev.name)}</dd><dt>When</dt><dd>${fmtDate(ev.start, ev.end)} · ${until(ev.start)}</dd><dt>Role</dt><dd>${esc(c.role_at_event || '—')}</dd>${c.session ? `<dt>Session</dt><dd>${esc(c.session)}</dd>` : ''}<dt>Source</dt><dd>${src ? `<a href="${esc(src)}" target="_blank" rel="noopener">Open source page ↗</a>` : '—'} <span style="color:var(--muted)">(${c.source_check === 'exact' ? 'name found on saved copy' : c.source_check === 'partial' ? 'name partly matched' : 'not found on saved copy'})</span></dd><dt>Edition</dt><dd>${esc(c.edition || '—')}</dd></dl>
@@ -668,18 +673,22 @@ function openReject(type = 'contact') {
   el.scrollIntoView({ block: 'nearest' });
 }
 
-async function decide(type, id, decision, reason = null) {
+async function decide(type, id, decision, reason = null, fromUndo = false) {
   if (!S.reviewer && !store.get('reviewerAsked')) await askReviewer();
   const prev = decisionOf(type, id);
   rejectOpenFor = null;
+  // pick the next lead before this one drops out of the filtered list
+  const rows = type === 'contact' ? contactRows() : accountRows(), at = rows.findIndex(r => r.id === id);
+  const next = (rows[at + 1] || rows[at - 1])?.id;
   const res = await fetch('api/decisions', { method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ object_type: type, object_id: id, decision, reason, reviewer: S.reviewer || null }) });
   if (!res.ok) { toast('Could not save. Try again.'); return; }
   const saved = await res.json();
   S.history.push(saved); applyDecision(saved);
-  if (decision !== 'clear') S.undo.push({ type, id, prev });
+  if (decision !== 'clear' && !fromUndo) S.undo.push({ type, id, prev });
   toast(decision === 'approve' ? 'Approved' : decision === 'reject' ? `Rejected${reason ? ': ' + reason : ''}` : 'Decision cleared');
-  if (type === 'contact') { if (decision !== 'clear') moveSel(1, true); renderQueue(); } else { if (decision !== 'clear') moveSelA(1, true); renderAccounts(); }
+  if (decision !== 'clear' && !fromUndo && next) { if (type === 'contact') S.sel = next; else S.aSel = next; }
+  if (type === 'contact') renderQueue(); else renderAccounts();
   renderInsights(); renderExport();
 }
 
@@ -687,16 +696,17 @@ async function undo() {
   const last = S.undo.pop();
   if (!last) return toast('Nothing to undo');
   if (last.type === 'contact') S.sel = last.id; else S.aSel = last.id;
-  await decide(last.type, last.id, last.prev ? last.prev.decision : 'clear', last.prev?.reason);
-  S.undo.pop();
+  await decide(last.type, last.id, last.prev ? last.prev.decision : 'clear', last.prev?.reason, true);
 }
 
 function moveSel(step, afterDecision = false) {
+  rejectOpenFor = null;
   const rows = contactRows(), i = rows.findIndex(r => r.id === S.sel);
   const next = rows[afterDecision ? i + 1 : Math.max(0, Math.min(rows.length - 1, i + step))];
   if (next) S.sel = next.id;
 }
 function moveSelA(step, afterDecision = false) {
+  rejectOpenFor = null;
   const rows = accountRows(), i = rows.findIndex(r => r.id === S.aSel);
   const next = rows[afterDecision ? i + 1 : Math.max(0, Math.min(rows.length - 1, i + step))];
   if (next) S.aSel = next.id;
@@ -791,14 +801,16 @@ function renderLearning() {
   renderSim();
 }
 
-function renderSim(th = +(store.get('simTh') || S.data.meta.lanes.fast_track)) {
+function renderSim(th = +(store.get('simTh') || S.data.meta.lanes.fast_track), textOnly = false) {
   const buyers = S.contacts.filter(c => ['fast_track', 'review', 'filtered'].includes(c.lane));
   const over = buyers.filter(c => c.score >= th && c.confidence !== 'low');
   const reviewed = over.map(c => decisionOf('contact', c.id)).filter(Boolean), ok = reviewed.filter(d => d.decision === 'approve').length;
-  $('sim').innerHTML = `<div style="display:flex;justify-content:space-between"><b>Skip-review threshold</b><b class="num">${th}</b></div>
+  const text = `At ${th}, <b style="color:var(--ink)">${over.length}</b> of ${buyers.length} buyer contacts would go straight to HubSpot. ${reviewed.length ? `Of those you've reviewed, you approved <b style="color:var(--ink)">${Math.round(100 * ok / reviewed.length)}%</b> (${ok}/${reviewed.length}).` : 'Review some of them to see how often you would have agreed.'}`;
+  if (textOnly) { $('simVal').textContent = th; $('simText').innerHTML = text; return; }
+  $('sim').innerHTML = `<div style="display:flex;justify-content:space-between"><b>Skip-review threshold</b><b class="num" id="simVal">${th}</b></div>
     <input type="range" min="40" max="95" step="1" value="${th}" id="simRange">
-    <div style="color:var(--muted);font-size:13px">At ${th}, <b style="color:var(--ink)">${over.length}</b> of ${buyers.length} buyer contacts would go straight to HubSpot. ${reviewed.length ? `Of those you've reviewed, you approved <b style="color:var(--ink)">${Math.round(100 * ok / reviewed.length)}%</b> (${ok}/${reviewed.length}).` : 'Review some of them to see how often you would have agreed.'}</div>`;
-  $('simRange').oninput = e => { store.set('simTh', e.target.value); renderSim(+e.target.value); };
+    <div style="color:var(--muted);font-size:13px" id="simText">${text}</div>`;
+  $('simRange').oninput = e => { store.set('simTh', e.target.value); renderSim(+e.target.value, true); };
 }
 
 // ---------- HubSpot and export ----------
@@ -811,7 +823,7 @@ async function refreshHubspot() {
 }
 
 function approvedSets() {
-  const okC = S.contacts.filter(c => decisionOf('contact', c.id)?.decision === 'approve' && !isSuppressed(c));
+  const okC = [...new Map(S.contacts.filter(c => decisionOf('contact', c.id)?.decision === 'approve' && !isSuppressed(c)).map(c => [c.person_key, c])).values()];
   const okA = new Set([...S.data.accounts.filter(a => decisionOf('account', a.id)?.decision === 'approve' && !S.suppressed.has(a.profile?.domain)).map(a => a.id), ...okC.map(c => c.account_id).filter(Boolean)]);
   return { okC, okA };
 }
@@ -820,7 +832,7 @@ function renderExport() {
   if (!S.data) return;
   const { okC, okA } = approvedSets(), st = S.hsStatus || {};
   const noDomain = [...okA].filter(id => !S.accounts[id]?.profile?.domain).length;
-  const inHs = { contact: okC.filter(c => S.hs.has(key('contact', c.id))).length, account: [...okA].filter(id => S.hs.has(key('account', id))).length };
+  const inHs = { contact: new Set(okC.filter(c => S.hs.has(hsKey(c))).map(c => c.person_key)).size, account: [...okA].filter(id => S.hs.has(key('account', id))).length };
   $('exportView').innerHTML = `
     <div class="grid2">
       <div class="panel">
@@ -832,7 +844,7 @@ function renderExport() {
           <button class="btn primary" id="pushBtn" ${st.ok ? '' : 'disabled'}>Push ${okC.length} contacts and ${okA.size} companies</button>
           <button class="btn" id="hsRefresh">Check connection</button>
         </div>
-        <div id="pushResult"></div>
+        <div id="pushResult">${S.pushResult || ''}</div>
       </div>
       <div class="panel">
         <h3>Approved and ready</h3>
@@ -860,12 +872,14 @@ function renderExport() {
 
 async function pushHubspot() {
   $('pushBtn').disabled = true; $('pushBtn').textContent = 'Pushing…';
-  const res = await fetch('api/hubspot/push', { method: 'POST' });
-  const out = await res.json();
-  if (!res.ok) { $('pushResult').innerHTML = `<div class="err">${esc(out.detail || 'Push failed')}</div>`; $('pushBtn').disabled = false; return; }
-  toast(out.message);
+  let res, out;
+  try { res = await fetch('api/hubspot/push', { method: 'POST' }); out = await res.json(); }
+  catch { out = { detail: 'The push took too long to answer. It may still be running: check again in a minute.' }; }
+  S.pushResult = res?.ok
+    ? `<div class="note">${esc(out.message)}${out.errors?.length ? '<br>' + out.errors.map(esc).join('<br>') : ''}</div>`
+    : `<div class="err">${esc(out.detail || 'Push failed')}</div>`;
+  if (res?.ok) toast(out.message);
   await load();
-  $('pushResult').innerHTML = `<div class="note">${esc(out.message)}${out.errors?.length ? '<br>' + out.errors.map(esc).join('<br>') : ''}</div>`;
 }
 
 // ---------- criteria ----------
@@ -1076,7 +1090,7 @@ function renderPlaybooks() {
       const vs = S.config[kind], act = vs.find(v => v.active), editing = S.pbEdit[kind];
       return `<div class="panel pb" data-kind="${kind}">
         <div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><div><h3>${esc(title)}</h3><p class="lead" style="margin:0 0 10px">${esc(sub)}</p></div>
-        <select data-ver>${vs.map(v => `<option value="${v.id}" ${v.active ? 'selected' : ''}>v${v.version}${v.active ? ' (active)' : ''} · ${esc((v.note || '').slice(0, 30))}</option>`).join('')}</select></div>
+        <select data-ver>${vs.map(v => `<option value="${v.id}" ${v.id === (S.pbView?.[kind] || act.id) ? 'selected' : ''}>v${v.version}${v.active ? ' (active)' : ''} · ${esc((v.note || '').slice(0, 30))}</option>`).join('')}</select></div>
         ${editing ? `<textarea data-body>${esc(editing.body)}</textarea><input data-note placeholder="What changed and why" style="width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)">
           <div style="display:flex;gap:8px;margin-top:10px"><button class="btn primary" data-save>Save and activate</button><button class="btn" data-cancel>Cancel</button></div>`
         : `<div class="md">${md((vs.find(v => v.id === (S.pbView?.[kind] || act.id)) || act).body)}</div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn" data-edit>Edit</button>${S.pbView?.[kind] && S.pbView[kind] !== act.id ? '<button class="btn" data-act>Make this version active</button>' : ''}</div>`}
@@ -1087,6 +1101,7 @@ function renderPlaybooks() {
     card.querySelector('[data-ver]').onchange = e => { S.pbView = { ...(S.pbView || {}), [kind]: +e.target.value }; renderPlaybooks(); };
     card.querySelector('[data-edit]')?.addEventListener('click', () => { const v = vs.find(x => x.id === (S.pbView?.[kind])) || vs.find(x => x.active); S.pbEdit[kind] = { body: v.body }; renderPlaybooks(); });
     card.querySelector('[data-act]')?.addEventListener('click', () => activateVersion(S.pbView[kind]));
+    card.querySelector('[data-body]')?.addEventListener('input', e => { S.pbEdit[kind].body = e.target.value; });
     card.querySelector('[data-cancel]')?.addEventListener('click', () => { delete S.pbEdit[kind]; renderPlaybooks(); });
     card.querySelector('[data-save]')?.addEventListener('click', async () => {
       const body = card.querySelector('[data-body]').value, note = card.querySelector('[data-note]').value.trim();
@@ -1155,7 +1170,7 @@ document.addEventListener('click', e => {
   picked = { selector: cssPath(el), text: (el.innerText || el.value || '').trim().slice(0, 200), row: el.closest('[data-id]')?.dataset.id || null, viewport: `${innerWidth}x${innerHeight}` };
   openFeedback();
 }, true);
-document.addEventListener('keydown', e => { if (picking && e.key === 'Escape') { stopPick(); picked = null; openFeedback(); } }, true);
+document.addEventListener('keydown', e => { if (picking && e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); stopPick(); picked = null; setTimeout(openFeedback, 0); } }, true);
 function openFeedback() {
   $('fbTarget').innerHTML = picked ? `<b>About:</b> ${esc(picked.text.slice(0, 120) || picked.selector)}` : 'A general note (nothing selected)';
   $('fbText').value = '';

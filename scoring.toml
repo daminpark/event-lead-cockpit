@@ -42,7 +42,7 @@ points = 10
 keywords = ["\\bceo\\b", "geschäftsführ", "managing director", "founder", "gründer", "owner", "inhaber", "vorstand", "president", "general manager"]
 
 [role.seniority]
-c_level = { label = "C-level / board", points = 15, keywords = ["chief", "\\bc[pfoeisd]o\\b", "\\bcsco\\b", "vorstand", "geschäftsführ", "managing director", "executive vice president", "senior vice president", "\\bevp\\b", "\\bsvp\\b", "president", "founder", "gründer", "owner", "inhaber"] }
+c_level = { label = "C-level / board", points = 15, keywords = ["chief", "\\bcpo\\b", "\\bcfo\\b", "\\bcoo\\b", "\\bceo\\b", "\\bcio\\b", "\\bcso\\b", "\\bcdo\\b", "\\bcsco\\b", "vorstand", "geschäftsführ", "managing director", "executive vice president", "senior vice president", "\\bevp\\b", "\\bsvp\\b", "president", "founder", "gründer", "owner", "inhaber"] }
 head = { label = "Head / director / VP", points = 12, keywords = ["vice president", "\\bvp\\b", "head", "director", "direktor", "leiter", "leiterin", "bereichsleit", "abteilungsleit", "global"] }
 manager = { label = "Manager / lead", points = 7, keywords = ["manager", "\\blead\\b", "teamleit", "gruppenleit", "projektleit"] }
 other_points = 2   # a title, but not a decision-maker title

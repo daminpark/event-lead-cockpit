@@ -56,7 +56,7 @@ def split_name(name: str):
 
 def matches(text: str, keywords) -> list:
     hits = []
-    for kw in keywords:
+    for kw in (k.lower() for k in keywords):
         if kw.startswith("\\b"):
             if re.search(kw, text):
                 hits.append(kw.replace("\\b", ""))
@@ -181,7 +181,9 @@ def score_event(role_at_event: str, event, today, cfg):
         total += e["moderator_points"]
         reasons.append({"label": f"{role_at_event.capitalize()} at {event['short']}", "points": e["moderator_points"], "kind": "event"})
     days = (dt.date.fromisoformat(event["start"]) - today).days
-    if days <= e["soon_days"]:
+    if days < 0:
+        pts, label = 0, "Event has passed"
+    elif days <= e["soon_days"]:
         pts, label = e["soon_points"], f"Event in {days} days"
     elif days <= e["later_days"]:
         pts, label = e["later_points"], f"Event in {days} days"
@@ -416,7 +418,7 @@ def compute(cfg, today):
                 conf_notes.append("Name not found in the saved source page")
             first, last = split_name(p["name"])
             contact = {
-                "id": cid, "name": p["name"], "first_name": first, "last_name": last,
+                "id": cid, "person_key": slug(first, last), "name": p["name"], "first_name": first, "last_name": last,
                 "title": p.get("title"), "company": company, "account_id": acct["id"] if acct else None,
                 "event_id": event["id"], "role_at_event": p.get("role_at_event"), "session": p.get("session"),
                 "source_url": p.get("source_url"), "edition": p.get("edition"), "source_check": check,
@@ -440,6 +442,14 @@ def compute(cfg, today):
             appearances.append({"account_id": acct["id"], "event_id": event["id"], "role": c.get("role_at_event"),
                                 "tier": c.get("tier"), "category": c.get("category"), "source_url": c.get("source_url"),
                                 "edition": c.get("edition")})
+
+    # The same person can speak at several events: one key across events, so do-not-contact and
+    # HubSpot treat them as one person, and the reviewer sees where else they appear.
+    by_person = {}
+    for c in contacts:
+        by_person.setdefault(c["person_key"], []).append(c)
+    for c in contacts:
+        c["also_at"] = [o["event_id"] for o in by_person[c["person_key"]] if o["id"] != c["id"]]
 
     a_cfg = cfg["account"]
     account_rows = []
@@ -479,7 +489,16 @@ def build(today=None, con=None):
     con = con or connect()
     sync_repo_configs(con)
     cfg, version = active_scoring(con)
-    events, contacts, account_rows, appearances = compute(cfg, today)
+    try:
+        events, contacts, account_rows, appearances = compute(cfg, today)
+    except (KeyError, TypeError) as e:
+        # An older version picked in the cockpit may lack a setting added since; score with the repo's latest instead.
+        row = con.execute("SELECT id, version, body FROM config_versions WHERE kind = 'scoring' AND source = 'repo' ORDER BY version DESC LIMIT 1").fetchone()
+        activate_version(con, row["id"])
+        con.execute("INSERT INTO events_log (kind, message, created_at) VALUES ('config', ?, ?)",
+                    (f"Scoring v{version} no longer fits ({e}); switched to v{row['version']} from the repository", now()))
+        cfg, version = json.loads(row["body"]), row["version"]
+        events, contacts, account_rows, appearances = compute(cfg, today)
     con.executescript(LEAD_TABLES)
     con.executemany("INSERT INTO events VALUES (?, ?)", [(e["id"], json.dumps(e, ensure_ascii=False)) for e in events.values()])
     con.executemany("INSERT INTO contacts VALUES (?, ?, ?, ?, ?, ?)",

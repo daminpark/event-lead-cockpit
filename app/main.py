@@ -2,6 +2,7 @@
 
 import csv
 import datetime as dt
+import hmac
 import io
 import json
 import os
@@ -10,8 +11,8 @@ import threading
 from contextlib import closing
 from typing import Literal
 
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi import FastAPI, Form, HTTPException, Request
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
 from app import copilot, hubspot
@@ -23,6 +24,47 @@ VERSION = open(os.path.join(ROOT, "VERSION")).read().strip()[:7] if os.path.exis
 
 app = FastAPI(title="Event lead cockpit", docs_url=None, redoc_url=None)
 write_lock = threading.Lock()  # one writer at a time for rebuilds and pushes
+
+# The leads are real people, and the page can push to HubSpot and spend on the copilot,
+# so everything sits behind a shared access code (sent with the link).
+CODE = os.environ.get("COCKPIT_CODE", "").strip()
+OPEN_PATHS = {"/healthz", "/login"}
+
+LOGIN_PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event Lead Cockpit</title><style>
+:root{--bg:#f6f6f4;--panel:#fff;--ink:#1b1c1f;--muted:#6a6e76;--line:#e5e5e1;--accent:#2f4fd8}
+@media (prefers-color-scheme:dark){:root{--bg:#131416;--panel:#1b1c1f;--ink:#ececee;--muted:#a0a4ab;--line:#2c2e33;--accent:#7d95ff}}
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+form{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px;width:min(360px,calc(100vw - 32px))}
+h1{font-size:18px;margin:0 0 4px}p{color:var(--muted);margin:0 0 18px;font-size:14px}
+input{width:100%;box-sizing:border-box;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);margin-bottom:12px}
+button{width:100%;font:inherit;font-weight:600;padding:10px;border:0;border-radius:9px;background:var(--accent);color:#fff;cursor:pointer}
+.err{color:#bf2f2f;font-size:13px;margin:-4px 0 12px}</style></head><body>
+<form method="post" action="login"><h1>Event Lead Cockpit</h1><p>Case study for GeneralMind. Please enter the access code from the email.</p>
+ERROR<input name="code" type="password" autocomplete="current-password" autofocus placeholder="Access code"><button>Open</button></form></body></html>"""
+
+
+def code_ok(value):
+    return not CODE or (value is not None and hmac.compare_digest(value.encode(), CODE.encode()))
+
+
+@app.middleware("http")
+async def require_code(request: Request, call_next):
+    if request.url.path in OPEN_PATHS or code_ok(request.cookies.get("gm_code")):
+        return await call_next(request)
+    if request.url.path.startswith("/api/"):
+        return JSONResponse({"detail": "Access code needed"}, status_code=401)
+    return HTMLResponse(LOGIN_PAGE.replace("ERROR", ""), status_code=401)
+
+
+@app.post("/login")
+def login(code: str = Form(max_length=200)):
+    if not code_ok(code.strip()):
+        threading.Event().wait(1.5)  # slow down guessing
+        return HTMLResponse(LOGIN_PAGE.replace("ERROR", '<div class="err">That code didn\'t work.</div>'), status_code=401)
+    resp = RedirectResponse("./", status_code=303)
+    resp.set_cookie("gm_code", code.strip(), max_age=60 * 60 * 24 * 30, httponly=True, secure=True, samesite="lax")
+    return resp
 
 
 def db():
@@ -58,9 +100,19 @@ def healthz():
     return {"ok": True, "version": VERSION}
 
 
+def rebuild_if_stale(con):
+    meta = con.execute("SELECT value FROM meta WHERE key = 'today'").fetchone()
+    if meta and json.loads(meta["value"]) != dt.date.today().isoformat() and write_lock.acquire(blocking=False):
+        try:
+            pipeline.build(con=con)
+        finally:
+            write_lock.release()
+
+
 @app.get("/api/data")
 def data():
     with db() as con:
+        rebuild_if_stale(con)
         rows = lambda sql: [json.loads(r["data"]) for r in con.execute(sql)]
         return {
             "events": rows("SELECT data FROM events"),
@@ -140,6 +192,9 @@ def config_versions():
         return out
 
 
+KEYWORD = re.compile(r"(\\b)?[^\\\[\](){}*+?|^$.]{1,60}(\\b)?")
+
+
 def validate_scoring(cfg):
     """Same structure as the repo's scoring.toml, numbers in range, keyword patterns that compile."""
     with db() as con:
@@ -151,6 +206,7 @@ def validate_scoring(cfg):
         if isinstance(ref, dict):
             if not isinstance(val, dict):
                 return errors.append(f"{path} should be a group")
+            errors.extend(f"{path}.{k} isn't a known setting" for k in val if k not in ref)
             for k in ref:
                 if k not in val:
                     errors.append(f"{path}.{k} is missing")
@@ -159,14 +215,12 @@ def validate_scoring(cfg):
         elif isinstance(ref, list):
             if not isinstance(val, list) or not all(isinstance(x, str) and x.strip() for x in val):
                 return errors.append(f"{path} should be a list of words")
-            for kw in val:
-                try:
-                    re.compile(kw)
-                except re.error:
-                    errors.append(f"{path}: '{kw}' isn't a valid pattern")
+            # Plain words only, optionally wrapped in \\b for whole words: no patterns that could hang the server.
+            errors.extend(f"{path}: '{kw}' should be a plain word or phrase" for kw in val if not KEYWORD.fullmatch(kw))
         elif isinstance(ref, (int, float)) and not isinstance(ref, bool):
-            if not isinstance(val, (int, float)) or isinstance(val, bool) or not 0 <= val <= 120:
-                errors.append(f"{path} should be a number between 0 and 120")
+            top = 365 if "days" in path else 3 if "multiplier" in path else 100
+            if not isinstance(val, (int, float)) or isinstance(val, bool) or not 0 <= val <= top:
+                errors.append(f"{path} should be a number between 0 and {top}")
         elif isinstance(ref, str) and not isinstance(val, str):
             errors.append(f"{path} should be text")
 
@@ -210,13 +264,25 @@ def new_version(v: NewVersion):
 @app.post("/api/config/{version_id}/activate")
 def activate(version_id: int):
     with write_lock, db() as con:
-        row = con.execute("SELECT kind, version FROM config_versions WHERE id = ?", (version_id,)).fetchone()
+        row = con.execute("SELECT kind, version, body FROM config_versions WHERE id = ?", (version_id,)).fetchone()
         if not row:
             raise HTTPException(404, "Unknown version")
+        if row["kind"] == "scoring":
+            errors = validate_scoring(json.loads(row["body"]))
+            if errors:
+                raise HTTPException(400, "This version doesn't fit the current settings: " + "; ".join(errors[:5]))
+        previous = con.execute("SELECT id FROM config_versions WHERE kind = ? AND active = 1", (row["kind"],)).fetchone()
         pipeline.activate_version(con, version_id)
+        try:
+            summary = pipeline.build(con=con) if row["kind"] == "scoring" else None
+        except Exception as e:  # keep the previous version live if the new one can't score
+            con.rollback()
+            if previous:
+                pipeline.activate_version(con, previous["id"])
+                con.commit()
+            raise HTTPException(400, f"Couldn't rescore with this version, so it wasn't activated: {e}")
         log(con, "config", f"Activated {row['kind']} v{row['version']}")
         con.commit()
-        summary = pipeline.build(con=con) if row["kind"] == "scoring" else None
     return {"ok": True, "kind": row["kind"], "version": row["version"], "rebuild": summary}
 
 
@@ -268,15 +334,27 @@ def feedback_list(all: bool = False):
 # ---------- export and HubSpot ----------
 
 def approved(con):
+    """Approved, not suppressed: accounts, and contacts merged to one row per person (best-scoring appearance,
+    with all their approved events)."""
     decisions = latest_decisions(con)
     suppressed = {r["key"] for r in con.execute("SELECT key FROM suppression")}
     events = {e["id"]: e for e in (json.loads(r["data"]) for r in con.execute("SELECT data FROM events"))}
     accounts = {r["id"]: json.loads(r["data"]) for r in con.execute("SELECT id, data FROM accounts")}
     contacts = [json.loads(r["data"]) for r in con.execute("SELECT data FROM contacts")]
-    ok = lambda kind, oid: decisions.get((kind, oid), {}).get("decision") == "approve" and oid not in suppressed
+    ok = lambda kind, oid: decisions.get((kind, oid), {}).get("decision") == "approve"
     domain_ok = lambda a: (a.get("profile") or {}).get("domain") not in suppressed
-    approved_contacts = [c for c in contacts if ok("contact", c["id"])
-                         and (not c["account_id"] or domain_ok(accounts.get(c["account_id"], {})))]
+    people = {}
+    for c in contacts:
+        if not ok("contact", c["id"]) or c["person_key"] in suppressed or c["id"] in suppressed:
+            continue
+        if c["account_id"] and not domain_ok(accounts.get(c["account_id"], {})):
+            continue
+        best = people.get(c["person_key"])
+        events_seen = (best or {}).get("approved_events", []) + [c["event_id"]]
+        if not best or c["score"] > best["score"]:
+            best = c
+        people[c["person_key"]] = best | {"approved_events": events_seen}
+    approved_contacts = list(people.values())
     account_ids = {a for a in accounts if ok("account", a) and domain_ok(accounts[a])} | \
                   {c["account_id"] for c in approved_contacts if c["account_id"] in accounts}
     return events, [accounts[a] for a in account_ids], approved_contacts, accounts
@@ -320,7 +398,7 @@ def export_contacts():
         acct = accounts.get(c["account_id"]) or {}
         props = hubspot.contact_props(c, acct, events)
         rows.append([c["first_name"], c["last_name"], c.get("title") or "", props["company"],
-                     (acct.get("profile") or {}).get("domain") or "", "", "lead", c["id"], c["score"],
+                     (acct.get("profile") or {}).get("domain") or "", "", "lead", c["person_key"], c["score"],
                      props["gm_fit_reasons"], props["gm_source_event"], props["gm_source_url"], props["gm_session"]])
     return csv_response("hubspot-contacts.csv", header, rows)
 
