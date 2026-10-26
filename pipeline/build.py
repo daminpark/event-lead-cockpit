@@ -527,8 +527,9 @@ def minutes(hhmm):
 
 
 def catch_plan(leads, team, length, ec, tt):
-    """Who we could actually meet. No invitations (cold email isn't allowed), so a speaker can only be caught in the
-    break after their session: a few conversations per colleague per break, and no more than the daily limit each.
+    """Who we could actually meet. No invitations (cold email isn't allowed), so a speaker is caught as they come off
+    stage: in the break that's running or about to start (a few conversations per colleague per break), otherwise at
+    the stage exit (one per colleague at that moment), and no more than the daily limit each.
     Without a timetable it's an estimate: the best of team x days x the daily limit."""
     per_day = ec.get("meetings_per_person_per_day", 8)
     slots = team * length * per_day
@@ -546,21 +547,29 @@ def catch_plan(leads, team, length, ec, tt):
             breaks.append({"date": d["date"], "start": b["start"], "end": b.get("end") or "", "kind": b["kind"],
                            "s": start, "e": end, "left": team * max(1, (end - start) // per_talk), "ids": []})
     on_stage = {cid: s for s in tt["sessions"] for cid in s["contact_ids"]}
-    picked, scores, clashes, no_break = [], [], 0, 0
+    exits = {}
+
+    def stage_exit(date, hhmm):
+        if (date, hhmm) not in exits:
+            exits[(date, hhmm)] = {"date": date, "start": hhmm, "end": "", "kind": "stage exit", "s": minutes(hhmm),
+                                   "e": minutes(hhmm) + per_talk, "left": team, "ids": []}
+            breaks.append(exits[(date, hhmm)])
+        return exits[(date, hhmm)]
+
+    picked, scores, clashes = [], [], 0
     for c in ranked:
         s = on_stage.get(c["id"])
-        if s:  # the first break that starts as their session ends
+        if s:
             end = minutes(s["end"])
-            fits = [b for b in breaks if b["date"] == s["date"] and b["e"] > end and b["s"] >= end - 15]
-            if not fits:
-                no_break += 1
+            fits = [b for b in breaks if b["date"] == s["date"] and b["kind"] != "stage exit" and b["s"] <= end + 10 and end < b["e"]]
+            b = min(fits, key=lambda b: b["s"]) if fits else stage_exit(s["date"], s["end"])
+            if not day_left[b["date"]]:  # the day is already full with better people
                 continue
-            b = min(fits, key=lambda b: b["s"])
-            if not (b["left"] and day_left[b["date"]]):
+            if not b["left"]:  # someone better comes off stage at the same moment
                 clashes += c["lane"] == "fast_track"
                 continue
-        else:  # time on stage unknown: any break with room
-            free = [b for b in breaks if b["left"] and day_left[b["date"]]]
+        else:  # time on stage unknown: any proper break with room
+            free = [b for b in breaks if b["kind"] in ("break", "lunch", "evening") and b["left"] and day_left[b["date"]]]
             if not free:
                 continue
             b = max(free, key=lambda b: b["left"])
@@ -569,8 +578,8 @@ def catch_plan(leads, team, length, ec, tt):
         b["ids"].append(c["id"])
         picked.append(c["id"])
         scores.append(c["score"])
-    schedule = [{k: b[k] for k in ("date", "start", "end", "kind", "ids")} for b in breaks if b["ids"]]
-    return {"slots": slots, "ids": picked, "scores": scores, "schedule": schedule, "clashes": clashes, "no_break": no_break}
+    schedule = [{k: b[k] for k in ("date", "start", "end", "kind", "ids")} for b in sorted(breaks, key=lambda b: (b["date"], b["s"])) if b["ids"]]
+    return {"slots": slots, "ids": picked, "scores": scores, "schedule": schedule, "clashes": clashes}
 
 
 def score_events(events, contacts, account_rows, today, cfg):
@@ -604,7 +613,7 @@ def score_events(events, contacts, account_rows, today, cfg):
         avg = round(sum(best) / len(best)) if best else 0
         if tt:
             label = f"Best {len(best)} people we can catch after their talks average fit {avg}" + (
-                f" ({plan['clashes']} strong fits clash in the same break)" if plan["clashes"] else "")
+                f" ({plan['clashes']} strong fits clash with someone better at the same moment)" if plan["clashes"] else "")
         else:
             label = f"Best {slots} {unit} average fit {avg}" + (f" (only {len(best)} for {slots} meetings)" if len(best) < slots else "") + (
                 " (estimate: the timetable isn't out yet)" if unit == "people" else "")

@@ -757,17 +757,17 @@ function planBlock(e, n) {
   const pct = pl.meetings ? Math.min(100, Math.round(100 * appr / pl.meetings)) : 0, days = `<b>${pl.days}</b> day${pl.days > 1 ? 's' : ''}`;
   const team = `<select data-team>${[1, 2, 3, 4].map(k => `<option value="${k}" ${k === pl.team ? 'selected' : ''}>${k} ${k === 1 ? 'person' : 'people'}</option>`).join('')}</select>`;
   const what = pl.timetable
-    ? `We'd send ${team} for ${days}. From the timetable, <b>${pl.meetings}</b> of the best ${unit} can be caught in the break after their talk (up to ${pl.per_day} conversations a day each). They average a fit of <b>${pl.bestAvg}</b>.${pl.clashes ? ` ${pl.clashes} strong fit${pl.clashes > 1 ? 's' : ''} clash with someone better in the same break.` : ''}`
+    ? `We'd send ${team} for ${days}. From the timetable, <b>${pl.meetings}</b> of the best ${unit} can be caught as they come off stage (up to ${pl.per_day} conversations a day each). They average a fit of <b>${pl.bestAvg}</b>.${pl.clashes ? ` ${pl.clashes} strong fit${pl.clashes > 1 ? 's' : ''} come off stage at the same moment as someone better.` : ''}`
     : `We'd send ${team} × ${days} × up to <b>${pl.per_day}</b> conversations a day = <b>${pl.slots} meetings</b>. The best ${pl.meetings} ${unit} here average a fit of <b>${pl.bestAvg}</b>.${pl.meetings < pl.slots ? ` Only ${pl.meetings} ${unit} for ${pl.slots} meetings, so some time stays free.` : ''}${unit === 'people' ? ` <span style="color:var(--muted)">An estimate until the timetable is out.</span>` : ''}`;
   const more = !pl.nextCount ? `Nobody left for another person: ${pl.team === 1 ? 'one person is enough' : `${pl.team} is already more than the list fills`}.`
     : pl.nextAvg >= strongFrom ? `Another person would add ${pl.nextCount} meetings with ${unit} averaging ${pl.nextAvg}: <b>worth it</b>.`
     : `Another person would add meetings with ${unit} averaging only ${pl.nextAvg}: <b>probably not worth it</b>.`;
   const who = id => { const c = S.contacts.find(x => x.id === id); return c ? `<a href="${personHash(c)}">${esc(c.name)}</a>${c.company ? ` <span style="color:var(--muted)">${esc(c.company)}</span>` : ''}` : ''; };
-  const schedule = pl.schedule.length ? `<details style="margin-top:10px"><summary style="cursor:pointer;font-weight:600">Who to catch, break by break</summary>
-      ${pl.schedule.map(b => `<div style="margin-top:8px"><div class="t2"><b style="color:var(--ink)">${fmtDay(b.date)} · ${esc(b.start)}${b.end ? `–${esc(b.end)}` : ''}</b> ${esc(b.kind)}</div><div style="font-size:13px">${b.ids.map(who).filter(Boolean).join(' · ')}</div></div>`).join('')}</details>` : '';
+  const schedule = pl.schedule.length ? `<details style="margin-top:10px"><summary style="cursor:pointer;font-weight:600">Who to catch, and when</summary>
+      ${pl.schedule.map(b => `<div style="margin-top:8px"><div class="t2"><b style="color:var(--ink)">${fmtDay(b.date)} · ${b.end && b.end !== '23:59' ? `${esc(b.start)}–${esc(b.end)}` : `from ${esc(b.start)}`}</b> ${esc({ other: 'changeover', evening: 'evening event', 'stage exit': 'at the stage exit' }[b.kind] || b.kind)}</div><div style="font-size:13px">${b.ids.map(who).filter(Boolean).join(' · ')}</div></div>`).join('')}</details>` : '';
   return `<div class="panel"><h3>Meeting plan</h3>
     <div class="plan">${what}</div>
-    <div class="note">${unit === 'exhibitors' ? 'Exhibitors are met at their stands; no booking needed.' : "No invitations: cold email isn't allowed, so speakers are met in the break after their talk."} ${more}${e.generalmind_present ? ' GeneralMind is a partner here, so the default is two people.' : ''}</div>
+    <div class="note">${unit === 'exhibitors' ? 'Exhibitors are met at their stands; no booking needed.' : "No invitations: cold email isn't allowed, so speakers are met as they come off stage, in the break or at the stage exit."} ${more}${e.generalmind_present ? ' GeneralMind is a partner here, so the default is two people.' : ''}</div>
     ${schedule}
     ${pl.meetings ? `<div style="display:flex;align-items:center;gap:10px;margin-top:10px"><div class="meter" style="flex:1;height:10px"><span style="width:${pct}%"></span></div><span class="num" style="font-size:13px"><b>${appr}</b> approved of ${pl.meetings}</span></div>` : ''}</div>`;
 }
