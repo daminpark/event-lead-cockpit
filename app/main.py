@@ -693,3 +693,25 @@ def error_resolved(error_id: int):
 def guide():
     with open(os.path.join(ROOT, "docs", "guide.md"), encoding="utf-8") as f:
         return {"text": f.read()}
+
+
+
+class Remove(BaseModel):
+    contact_id: str = Field(max_length=200)
+
+
+@app.post("/api/hubspot/remove", dependencies=[Depends(owner_only)])
+def hubspot_remove(r: Remove):
+    """Undo a send: the person goes back to Approved here, and to HubSpot's recycle bin there."""
+    with write_lock, db() as con:
+        row = con.execute("SELECT data FROM contacts WHERE id = ?", (r.contact_id,)).fetchone()
+        if not row:
+            raise HTTPException(404, "Unknown person")
+        c = json.loads(row["data"])
+        try:
+            out = hubspot.remove_person(con, c["person_key"], c.get("account_id"))
+        except (hubspot.HubSpotError, hubspot.httpx.HTTPError) as e:
+            raise HTTPException(502, f"HubSpot: {e}")
+        log(con, "hubspot", f"Removed {c['name']} from HubSpot ({', '.join(f'{k} {v}' for k, v in out.items()) or 'nothing to remove'})", out)
+        con.commit()
+    return {"ok": True, "removed": out, "name": c["name"]}

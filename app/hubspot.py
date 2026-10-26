@@ -100,6 +100,17 @@ class Client:
         r = self.request("POST", f"/crm/v3/objects/{obj}", json={"properties": props})
         return r.json()["id"], True
 
+    def archive(self, obj, hid, id_prop, expected):
+        """Move a record to HubSpot's recycle bin (restorable for 90 days), but only if it carries our id."""
+        r = self.request("GET", f"/crm/v3/objects/{obj}/{hid}", params={"properties": id_prop})
+        if r.status_code == 404:
+            return "already gone"
+        found = (r.json().get("properties") or {}).get(id_prop)
+        if found != expected:
+            raise HubSpotError(f"{obj} {hid} carries {id_prop}={found!r}, not {expected!r}: left untouched")
+        self.request("DELETE", f"/crm/v3/objects/{obj}/{hid}")
+        return "moved to recycle bin"
+
     def associate(self, contact_id, company_id):
         self.request("PUT", f"/crm/v4/objects/contacts/{contact_id}/associations/default/companies/{company_id}")
 
@@ -213,3 +224,26 @@ def record_url(portal_id, kind, hid, ui_domain="app.hubspot.com"):
 
 def dumps(v):
     return json.dumps(v, ensure_ascii=False)
+
+
+def remove_person(con, person_key, account_id):
+    """Take one person (all their event listings) out of HubSpot, and their company if nobody else from it is there."""
+    hs = Client()
+    known = {(r["object_type"], r["object_id"]): r["hubspot_id"] for r in con.execute("SELECT * FROM hubspot_sync")}
+    out = {}
+    hid = known.get(("contact", person_key))
+    if hid:
+        out["contact"] = hs.archive("contacts", hid, "gm_lead_id", person_key)
+    con.execute("DELETE FROM hubspot_sync WHERE object_type = 'contact' AND object_id = ?", (person_key,))
+    listings = [r["id"] for r in con.execute("SELECT id FROM contacts WHERE json_extract(data, '$.person_key') = ?", (person_key,))]
+    con.executemany("DELETE FROM hubspot_sync WHERE object_type = 'listing' AND object_id = ?", [(i,) for i in listings])
+    if account_id and ("account", account_id) in known:
+        # keep the company if another person from it is still in HubSpot
+        others = con.execute(
+            "SELECT 1 FROM hubspot_sync s JOIN contacts c ON s.object_type = 'listing' AND s.object_id = c.id WHERE c.account_id = ? LIMIT 1",
+            (account_id,)).fetchone()
+        if not others:
+            out["company"] = hs.archive("companies", known[("account", account_id)], "gm_account_id", account_id)
+            con.execute("DELETE FROM hubspot_sync WHERE object_type = 'account' AND object_id = ?", (account_id,))
+    con.commit()
+    return out
