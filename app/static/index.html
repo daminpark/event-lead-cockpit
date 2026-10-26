@@ -168,10 +168,6 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
 .prose h2 { font-size: 20px; letter-spacing: -.01em; margin: 26px 0 8px; }
 .prose h2:first-child { margin-top: 0; }
 .prose p, .prose li { font-size: 14px; line-height: 1.6; }
-.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 4px; }
-.flow div { background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; font-size: 13px; }
-.flow div small { display: block; color: var(--muted); font-size: 11.5px; }
-.flow span { color: var(--faint); }
 .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 14px; border-radius: 8px; font-size: 13px; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 50; }
 .toast.on { opacity: 1; }
 dialog { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); color: var(--ink); padding: 20px; width: min(380px, calc(100vw - 32px)); box-shadow: var(--shadow); }
@@ -380,7 +376,7 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
 </head>
 <body>
 <header>
-  <div class="brand"><b>Event Lead Cockpit</b><span>Case study for GeneralMind · Pierre Park</span></div>
+  <div class="brand"><b>Event Lead Cockpit</b><span>Case study for GeneralMind · Pierre Park · <a href="writeup" target="_blank" rel="noopener">Write-up ↗</a></span></div>
   <nav id="tabs">
     <button data-view="events" class="on">Events</button>
     <button data-view="people">People</button>
@@ -388,7 +384,6 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
     <button data-view="playbooks">Playbooks</button>
     <button data-view="feedback">Feedback</button>
     <button data-view="settings">Settings</button>
-    <button data-view="about">How it works</button>
   </nav>
   <div class="who">
     <button id="cpBtn" class="pill cp-open" title="Ask questions, propose changes">✦ Copilot</button>
@@ -447,7 +442,6 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
   <section class="view" id="v-criteria"><div id="criteria"></div></section>
   <section class="view" id="v-playbooks"><div id="playbooks"></div></section>
   <section class="view" id="v-settings"><div id="settingsView"></div></section>
-  <section class="view" id="v-about"><div class="panel prose" id="about"></div></section>
 </main>
 
 <dialog id="whoDlg">
@@ -581,7 +575,7 @@ function fillFilters() {
   $('fFunction').value = keep;
 }
 
-function renderAll() { if (S.view === 'people') renderPeople(); else renderEvents(); renderCriteria(); renderPlaybooks(); renderExport(); if (S.view === 'settings') renderSettings(); renderAbout(); }
+function renderAll() { if (S.view === 'people') renderPeople(); else renderEvents(); renderCriteria(); renderPlaybooks(); renderExport(); if (S.view === 'settings') renderSettings(); }
 const isSuppressed = c => S.suppressed.has(c.person_key) || S.suppressed.has(c.id) || (c.account_id && S.suppressed.has(S.accounts[c.account_id]?.profile?.domain));
 const hsKey = c => key('contact', c.person_key);
 
@@ -678,7 +672,7 @@ function renderEventsList() {
         <div class="t2">${fmtDay(e.added_at)}<br><small>${esc((e.found_by || '').replace(/ \(.*\)$/, ''))}</small></div>
       </div>`;
     }).join('') : `<div class="empty">${when === 'past' && !inWhen.length ? "No past events yet. Events move here once they've happened, showing whether we went. Once HubSpot syncs outcomes back, this is where to see what each event produced." : 'No events here.'}</div>`}</div>
-    <div style="color:var(--faint);font-size:11.5px;margin-top:8px">Travel is approximate door to door from Berlin. Meetings: people we'd send × days × meetings a day each; "invite" assumes about ${Math.round(100 * (S.data.events[0]?.plan?.acceptance_rate || 0.25))}% accept. These assumptions are in <a href="#/criteria">Criteria</a> (Events section).</div>`;
+    <div style="color:var(--faint);font-size:11.5px;margin-top:8px">Travel is approximate door to door from Berlin. Meetings: people we'd send × days × meetings a day each; "invite" assumes about ${Math.round(100 * (S.data.events[0]?.plan?.acceptance_rate || 0.25))}% accept. These assumptions are in <a href="#/criteria">Criteria</a> (Meeting plan).</div>`;
   $('eventsList').querySelectorAll('[data-evf]').forEach(b => b.onclick = () => { S.evFilter = b.dataset.evf; renderEventsList(); });
   $('eventsList').querySelectorAll('[data-when]').forEach(b => b.onclick = () => { S.evWhen = b.dataset.when; S.evFilter = 'all'; renderEventsList(); });
   $('eventsList').querySelectorAll('[data-sort]').forEach(b => b.onclick = e => {
@@ -768,7 +762,7 @@ function planBlock(e, n) {
       × <b>${pl.days}</b> day${pl.days > 1 ? 's' : ''} × <b>${pl.meetings_per_person_per_day}</b> meetings a day = <b>${pl.meetings} meetings</b>.
       The best ${pl.meetings} ${unit} here average a fit of <b>${pl.bestAvg}</b>.${fill}</div>
     <div class="note">${more}${e.generalmind_present ? ' GeneralMind has a stand here: two people means one at the stand and one moving between sessions, both taking meetings.' : ''}</div>
-    ${e.counts.people ? `<div style="font-size:13.5px;margin-top:10px">About ${Math.round(100 * pl.acceptance_rate)}% accept, so invite the best <b>~${pl.invites}</b>, best first, and let the replies do the narrowing.</div>
+    ${e.counts.people ? `<div style="font-size:13.5px;margin-top:10px">About ${Math.round(100 * pl.acceptance_rate)}% accept (set in <a href="#/criteria">Criteria</a>), so invite the best <b>~${pl.invites}</b>, best first, and let the replies do the narrowing.</div>
     <div style="display:flex;align-items:center;gap:10px;margin-top:8px"><div class="meter" style="flex:1;height:10px"><span style="width:${pct}%"></span></div><span class="num" style="font-size:13px"><b>${appr}</b> approved of ~${pl.invites}</span></div>` : ''}</div>`;
 }
 
@@ -901,7 +895,7 @@ function renderPeople() {
 }
 
 // ---------- shareable links ----------
-const VIEWS = ['events', 'people', 'criteria', 'playbooks', 'feedback', 'settings', 'about'];
+const VIEWS = ['events', 'people', 'criteria', 'playbooks', 'feedback', 'settings'];
 // #/events                                 the list of events
 // #/event/<id>[/<status>[/<person>]]       one event and its people
 // #/people/<going|all>/<status>[/<person>] people across events
@@ -1123,64 +1117,17 @@ async function refreshHubspot() {
   renderExport();
 }
 
-function approvedSets() {
-  const okC = [...new Map(S.contacts.filter(c => decisionOf('contact', c.id)?.decision === 'approve' && !isSuppressed(c)).map(c => [c.person_key, c])).values()];
-  const okA = new Set([...S.data.accounts.filter(a => decisionOf('account', a.id)?.decision === 'approve' && !S.suppressed.has(a.profile?.domain)).map(a => a.id), ...okC.map(c => c.account_id).filter(Boolean)]);
-  return { okC, okA };
-}
-
 function renderExport() {
   if (!S.data || !$('exportView')) return;
-  const { okC, okA } = approvedSets(), st = S.hsStatus || {};
-  const noDomain = [...okA].filter(id => !S.accounts[id]?.profile?.domain).length;
-  const inHs = { contact: new Set(okC.filter(c => S.hs.has(hsKey(c))).map(c => c.person_key)).size, account: [...okA].filter(id => S.hs.has(key('account', id))).length };
+  const st = S.hsStatus || {}, n = type => S.data.hubspot.filter(h => h.object_type === type).length;
   $('exportView').innerHTML = `
-    <div class="grid2">
-      <div class="panel">
-        <h3><i class="dot ${st.ok ? 'ok' : st.configured ? 'bad' : ''}"></i>&nbsp; HubSpot connection</h3>
-        <p class="lead">${st.ok ? `Connected to portal ${esc(st.portal_id || '')}. The light in the header turns red if the token expires or HubSpot stops answering.` : st.configured ? `Not healthy: ${esc(st.message)}` : 'No token configured yet. Export the CSVs below in the meantime.'}</p>
-        <dl class="kv"><dt>Last push</dt><dd>${st.last_sync ? `${esc(st.last_sync.created_at.replace('T', ' ').slice(0, 16))} UTC · ${esc(st.last_sync.message)}` : '—'}</dd>
-        <dt>In HubSpot</dt><dd>${S.data.hubspot.filter(h => h.object_type === 'account').length} companies · ${S.data.hubspot.filter(h => h.object_type === 'contact').length} contacts</dd></dl>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
-          <button class="btn" id="pushBtn" ${st.ok ? '' : 'disabled'} title="Usually you send per event from People → Approved">Send everyone approved, all events (${okC.length})</button>
-          <button class="btn" id="hsRefresh">Check connection</button>
-        </div>
-        <div id="pushResult">${S.pushResult || ''}</div>
-      </div>
-      <div class="panel">
-        <h3>Approved and ready</h3>
-        <div class="nums" style="display:flex;gap:28px;margin:6px 0 12px"><div><div class="big num">${okC.length}</div><div style="color:var(--muted)">contacts · ${inHs.contact} already in HubSpot</div></div><div><div class="big num">${okA.size}</div><div style="color:var(--muted)">companies · ${inHs.account} already in HubSpot</div></div></div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="api/export/companies.csv">companies.csv</a><a class="btn" href="api/export/contacts.csv">contacts.csv</a></div>
-        <p class="lead" style="margin-top:10px">The same data as HubSpot import files, linked by Company domain name. Leads on the do-not-contact list (${S.suppressed.size}) are never exported or pushed.</p>
-        ${noDomain ? `<div class="note">${noDomain} approved compan${noDomain === 1 ? 'y has' : 'ies have'} no domain yet, so ${noDomain === 1 ? 'it is' : 'they are'} matched by our own id instead. Enrichment would fill this in.</div>` : ''}
-      </div>
-    </div>
     <div class="panel">
-      <h3>How records map, and why there are no duplicates</h3>
-      <p class="lead">Each company and contact carries our own stable id (<b>GM account id</b>, <b>GM lead id</b>). A push looks for the record we pushed before, then for that id, then (for companies) for the domain, and only creates a record if none exists. Pushing twice updates; it never duplicates. Contacts are linked to their company.</p>
-      <table class="t"><thead><tr><th>Cockpit</th><th>HubSpot</th></tr></thead><tbody>
-        <tr><td>Company name, domain, country</td><td>Name, Company domain name, Country/Region</td></tr>
-        <tr><td>Fit score, reasons, segment, events</td><td>GM fit score, GM fit reasons, GM segment, GM source events (created on first push)</td></tr>
-        <tr><td>Person: name, title, company</td><td>First name, Last name, Job title, Company name; lifecycle stage Lead</td></tr>
-        <tr><td>Event, session, source page</td><td>GM source event, GM session at event, GM source URL</td></tr>
-        <tr><td>Email</td><td>Left empty on purpose: comes from an enrichment provider with a legal basis</td></tr>
-      </tbody></table>
-      <p class="lead" style="margin:12px 0 0">Next: sync back from HubSpot (meetings, deal stages), to see which events and kinds of people turn into pilots.</p>
+      <h3>HubSpot records</h3>
+      <dl class="kv"><dt>In HubSpot</dt><dd>${n('account')} companies · ${n('contact')} contacts</dd>
+      <dt>Last push</dt><dd>${st.last_sync ? `${esc(st.last_sync.created_at.replace('T', ' ').slice(0, 16))} UTC · ${esc(st.last_sync.message)}` : 'None yet'}</dd></dl>
+      <button class="btn" id="hsRefresh" style="margin-top:12px">Check connection</button>
     </div>`;
   $('hsRefresh').onclick = () => { toast('Checking…'); refreshHubspot(); };
-  $('pushBtn').onclick = pushHubspot;
-}
-
-async function pushHubspot() {
-  $('pushBtn').disabled = true; $('pushBtn').textContent = 'Pushing…';
-  let res, out;
-  try { res = await fetch('api/hubspot/push', { method: 'POST' }); out = await res.json(); }
-  catch { out = { detail: 'The push took too long to answer. It may still be running: check again in a minute.' }; }
-  S.pushResult = res?.ok
-    ? `<div class="note">${esc(out.message)}${out.errors?.length ? '<br>' + out.errors.map(esc).join('<br>') : ''}</div>`
-    : `<div class="err">${esc(out.detail || 'Push failed')}</div>`;
-  if (res?.ok) toast(out.message);
-  await load();
 }
 
 // ---------- criteria: the main levers, then every other setting folded away ----------
@@ -1600,24 +1547,6 @@ function openFeedback() {
 $('fbBtn').onclick = e => { e.stopPropagation(); picking ? (stopPick(), picked = null, openFeedback()) : startPick(); };
 $('hsPill').onclick = () => showView('settings');
 
-// ---------- about ----------
-async function renderAbout() {
-  const g = await (await fetch('api/guide')).json().catch(() => ({ text: '' }));
-  $('about').innerHTML = `
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px"><a class="btn primary" href="writeup" target="_blank" rel="noopener">Read the case study write-up ↗</a><button class="btn" id="askGuide">Ask the copilot instead</button></div>
-    <div class="flow">
-      <div>Event pages<small>speakers, agendas, exhibitors</small></div><span>→</span>
-      <div>Saved copies<small>every lead traceable</small></div><span>→</span>
-      <div>Extraction + check<small>name, title, company, talk</small></div><span>→</span>
-      <div>Company profile<small>segment, industry, size</small></div><span>→</span>
-      <div>Score + lane<small>Criteria</small></div><span>→</span>
-      <div>Review<small>approve / reject + reason</small></div><span>→</span>
-      <div>HubSpot<small>companies + contacts</small></div>
-    </div>
-    <div class="pb"><div class="md">${md(g.text)}</div></div>`;
-  $('askGuide').onclick = () => $('cpBtn').click();
-}
-
 // ---------- settings ----------
 async function renderSettings() {
   const st = await (await fetch('api/settings')).json().catch(() => null);
@@ -1640,6 +1569,7 @@ async function renderSettings() {
       ${conn('hubspot', 'HubSpot', 'A private app token lets the cockpit create and update companies and contacts. In HubSpot: Settings → Integrations → Private apps (or Development → Legacy apps) → create an app with read and write access to contacts and companies and their properties, then copy its token.', 'pat-…')}
       ${conn('openrouter', 'OpenRouter (copilot)', 'The copilot talks to AI models through OpenRouter, so the model can be changed below without touching code. Create a key at openrouter.ai → Keys, ideally with a monthly credit limit.', 'sk-or-…')}
     </div>
+    <div id="exportView"></div>
     <div class="panel"><h3>Copilot model</h3><p class="lead">Applies to everyone. Prices are per million tokens in / out. Only models that can use tools are listed, since the copilot looks things up.</p>
       <input type="search" id="modelFilter" placeholder="Filter models, e.g. kimi, claude, gemini" ${owner ? '' : 'disabled'} style="width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink);margin-bottom:8px">
       <select id="setModel" size="10" ${owner ? '' : 'disabled'} style="width:100%;font:inherit;padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)"><option>Loading…</option></select>
@@ -1647,7 +1577,6 @@ async function renderSettings() {
       <div style="display:flex;align-items:center;gap:10px;margin-top:12px"><b style="font-size:13px">Thinking effort</b>
         <select id="setEffort" ${owner ? '' : 'disabled'} style="font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)">${['low', 'medium', 'high'].map(e => `<option ${e === st.copilot_effort ? 'selected' : ''}>${e}</option>`).join('')}</select>
         <span style="color:var(--muted);font-size:12.5px">Higher is a little smarter but much slower and costlier. Medium suits the copilot.</span></div></div>
-    <div id="exportView"></div>
     <div class="panel"><h3>You</h3><p class="lead">Your name is saved with your decisions and notes.</p><button class="btn" id="setWho">Reviewer: ${esc(S.reviewer || 'not set')}</button> <a class="btn" href="logout">Sign out (to use another code)</a></div>`;
   renderExport();
   const root = $('settingsView');
@@ -1767,7 +1696,7 @@ $('cpClose').onclick = () => $('cp').classList.remove('open');
 $('cpClear').onclick = () => { S.cp = []; store.set('cp', '[]'); renderCp(); };
 
 // ---------- wiring ----------
-const OLD_VIEWS = { queue: 'events', accounts: 'events', hubspot: 'settings', insights: 'events' };
+const OLD_VIEWS = { queue: 'events', accounts: 'events', hubspot: 'settings', insights: 'events', about: 'events' };
 function showView(name, push = true) {
   S.view = OLD_VIEWS[name] || name;
   if (!$(`v-${S.view}`)) S.view = 'events';

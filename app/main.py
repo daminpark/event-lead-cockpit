@@ -516,24 +516,6 @@ def csv_response(filename, header, rows):
                              headers={"Content-Disposition": f'attachment; filename="{filename}"'})
 
 
-# HubSpot import: two files linked by "Company domain name". The gm_* columns map to the
-# custom properties the API push creates (GM fit score, GM fit reasons, ...).
-@app.get("/api/export/companies.csv")
-def export_companies():
-    with db() as con:
-        events, accounts, _, _ = approved(con)
-    header = ["Company name", "Company domain name", "Country/Region", "GM account id", "GM segment",
-              "GM fit score", "GM fit reasons", "GM source events", "Industry (estimated)", "Employee band (estimated)", "ERP (public)"]
-    rows = []
-    for a in sorted(accounts, key=lambda a: -a["score"]):
-        p = a.get("profile") or {}
-        props = hubspot.company_props(a, events)
-        rows.append([a["name"], p.get("domain") or "", p.get("hq_country") or "", a["id"], p.get("segment") or "",
-                     a["score"], props["gm_fit_reasons"], props["gm_source_events"], p.get("industry") or "",
-                     p.get("employees_band") or "", p.get("erp") or ""])
-    return csv_response("hubspot-companies.csv", header, rows)
-
-
 @app.get("/api/export/contacts.csv")
 def export_contacts(event: str | None = None):
     with db() as con:
@@ -709,14 +691,6 @@ def error_resolved(error_id: int):
         con.execute("UPDATE errors SET resolved_at = ? WHERE id = ?", (pipeline.now(), error_id))
         con.commit()
     return {"ok": True}
-
-
-# ---------- guide ----------
-
-@app.get("/api/guide")
-def guide():
-    with open(os.path.join(ROOT, "docs", "guide.md"), encoding="utf-8") as f:
-        return {"text": f.read()}
 
 
 

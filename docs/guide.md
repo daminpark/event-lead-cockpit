@@ -49,7 +49,9 @@ Click the **Feedback** button, then click the part of the page your note is abou
 On any person's card, **Do not contact** keeps that person out of exports and HubSpot, across every event they appear at.
 
 ## HubSpot
-The light in the header shows whether the connection is healthy. Each push creates or updates companies and contacts, linked, and never duplicates: every record carries the cockpit's own id. Emails are left empty on purpose; they should come from an enrichment provider with a proper legal basis.
+The light in the header shows whether the connection is healthy; clicking it opens Settings, which shows how many records are in HubSpot and the last push. Each push creates or updates companies and contacts, linked, and never duplicates: every record carries the cockpit's own id (GM account id, GM lead id). A push looks for the record sent before, then for that id, then (for companies) for the domain, and creates a record only if none exists.
+
+What goes across: for a company, its name, domain, country, fit score and reasons, segment and events; for a person, first and last name, job title, company, lifecycle stage Lead, the event, their session and the source page. The GM properties are created in HubSpot on the first push. Emails are left empty on purpose; they should come from an enrichment provider with a proper legal basis.
 
 ## Settings (owner)
 Paste the HubSpot service key and the OpenRouter key, and choose the copilot's model and thinking effort. Keys are stored on the server and never shown again in full.
