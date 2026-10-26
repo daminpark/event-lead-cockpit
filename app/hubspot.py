@@ -158,7 +158,7 @@ def contact_props(contact, account, events):
     evs = [events[e] for e in contact.get("approved_events") or [contact["event_id"]] if e in events]
     props = {
         "firstname": contact["first_name"], "lastname": contact["last_name"], "jobtitle": contact.get("title") or "",
-        "company": (account or {}).get("name") or contact.get("company") or "", "gm_lead_id": contact["person_key"],
+        "company": contact.get("company") or (account or {}).get("name") or "", "gm_lead_id": contact["person_key"],
         "gm_fit_score": contact["score"], "gm_fit_reasons": reasons_text(contact["reasons"]),
         "gm_source_event": " | ".join(source_event(contact, e) for e in evs), "gm_source_url": contact.get("source_url") or "",
         "gm_session": contact.get("session") or "",
@@ -212,6 +212,8 @@ def push(con, approved_accounts, approved_contacts, accounts_by_id, events, sync
             summary["contacts_created" if new else "contacts_updated"] += 1
             if company_id:
                 hs.associate(hid, company_id)
+                if new:  # the company they went with (our account id, in the hubspot_id column), for Remove and later pushes
+                    save("contact_account", c["person_key"], acct["id"])
         except HubSpotError as e:
             summary["errors"].append(f"{c['name']}: {e}")
     summary["errors"] = summary["errors"][:20]
@@ -252,35 +254,41 @@ def dumps(v):
     return json.dumps(v, ensure_ascii=False)
 
 
-def remove_person(con, person_key, account_id):
-    """Take one person (all their event listings) out of HubSpot. Their company goes too only if the cockpit
-    created it and nobody else the cockpit sent works there."""
+def remove_person(con, person_key):
+    """Take one person (all their event listings) out of HubSpot. The company they went with goes too only if the
+    cockpit created it and nobody else the cockpit sent works there. For people sent before that company was
+    recorded, every company among their listings is checked the same way."""
     hs = Client()
     known = {(r["object_type"], r["object_id"]): r["hubspot_id"] for r in con.execute("SELECT * FROM hubspot_sync")}
     out = {}
     hid = known.get(("contact", person_key))
     if hid:
         out["contact"] = hs.archive("contacts", hid, "gm_lead_id", person_key)
-    con.execute("DELETE FROM hubspot_sync WHERE object_type = 'contact' AND object_id = ?", (person_key,))
-    listings = [r["id"] for r in con.execute("SELECT id FROM contacts WHERE json_extract(data, '$.person_key') = ?", (person_key,))]
-    con.executemany("DELETE FROM hubspot_sync WHERE object_type = 'listing' AND object_id = ?", [(i,) for i in listings])
+    con.execute("DELETE FROM hubspot_sync WHERE object_type IN ('contact', 'contact_account') AND object_id = ?", (person_key,))
+    listings = con.execute("SELECT id, account_id FROM contacts WHERE json_extract(data, '$.person_key') = ?", (person_key,)).fetchall()
+    con.executemany("DELETE FROM hubspot_sync WHERE object_type = 'listing' AND object_id = ?", [(r["id"],) for r in listings])
     con.commit()  # the person is out on both sides before the company step starts
-    company = known.get(("account", account_id)) if account_id else None
-    if company:
+    sent_with = known.get(("contact_account", person_key))
+    for account_id in [sent_with] if sent_with else sorted({r["account_id"] for r in listings if r["account_id"]}):
+        company = known.get(("account", account_id))
+        if not company:
+            continue
         others = con.execute(
             "SELECT 1 FROM hubspot_sync s JOIN contacts c ON s.object_type = 'contact' AND s.object_id = json_extract(c.data, '$.person_key') "
-            "WHERE c.account_id = ? LIMIT 1", (account_id,)).fetchone()
+            "WHERE c.account_id = ? UNION SELECT 1 FROM hubspot_sync WHERE object_type = 'contact_account' AND hubspot_id = ?",
+            (account_id, account_id)).fetchone()
         shared = sum(1 for (kind, _), h in known.items() if kind == "account" and h == company) > 1
+        key = f"company {account_id}"
         if others or shared:
-            out["company"] = "kept (others from it are in HubSpot)"
+            out[key] = "kept (others from it are in HubSpot)"
         elif known.get(("account_created", account_id)) != company:
-            out["company"] = "kept (it was in HubSpot before the cockpit)"
+            out[key] = "kept (it was in HubSpot before the cockpit)"
             con.execute("DELETE FROM hubspot_sync WHERE object_type = 'account' AND object_id = ?", (account_id,))
         else:
             try:
-                out["company"] = hs.archive("companies", company, "gm_account_id", account_id)
+                out[key] = hs.archive("companies", company, "gm_account_id", account_id)
                 con.execute("DELETE FROM hubspot_sync WHERE object_type IN ('account', 'account_created') AND object_id = ?", (account_id,))
             except (HubSpotError, httpx.HTTPError) as e:
-                out["company"] = f"kept: {str(e)[:120]}"
+                out[key] = f"kept: {str(e)[:120]}"
         con.commit()
     return out
