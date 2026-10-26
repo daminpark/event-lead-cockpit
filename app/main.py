@@ -105,6 +105,12 @@ def writeup():
     return FileResponse(os.path.join(STATIC, "writeup.html"), headers={"Cache-Control": "no-cache"})
 
 
+@app.get("/writeup.pdf")
+def writeup_pdf():
+    return FileResponse(os.path.join(STATIC, "writeup.pdf"), media_type="application/pdf",
+                        filename="Pierre_Park_GeneralMind_case_study.pdf", content_disposition_type="inline")
+
+
 @app.get("/healthz")
 def healthz():
     return {"ok": True, "version": VERSION}
