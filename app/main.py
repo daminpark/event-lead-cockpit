@@ -358,9 +358,10 @@ def preview(p: Preview):
     errors = validate_scoring(cfg)
     if errors:
         raise HTTPException(400, "; ".join(errors[:8]))
-    _, contacts, accounts, _ = pipeline.compute(cfg, dt.date.today())
+    events, contacts, accounts, _ = pipeline.compute(cfg, dt.date.today())
     return {"contacts": {c["id"]: [c["score"], c["lane"]] for c in contacts},
-            "accounts": {a["id"]: [a["score"], a["lane"]] for a in accounts}}
+            "accounts": {a["id"]: [a["score"], a["lane"]] for a in accounts},
+            "events": {i: [e["score"], e["lane"]] for i, e in events.items()}}
 
 
 # ---------- feedback ----------

@@ -227,6 +227,8 @@ dialog input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid 
 .evtable .sorth { border: 0; background: none; padding: 0; text-align: left; font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; cursor: pointer; white-space: nowrap; }
 .evtable .sorth:hover, .evtable .sorth.on { color: var(--ink); }
 .plan { font-size: 14px; line-height: 1.8; }
+.evgo { display: flex; gap: 4px; }
+.evgo .btn { padding: 3px 8px; font-size: 12px; }
 .whenbar { display: inline-flex; gap: 4px; background: var(--line-2); border-radius: 10px; padding: 3px; margin-bottom: 10px; }
 .whenbar button { border: 0; background: none; padding: 6px 16px; border-radius: 8px; font-weight: 600; color: var(--muted); }
 .whenbar button.on { background: var(--panel); color: var(--ink); box-shadow: var(--shadow); }
@@ -287,8 +289,10 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
 .crit { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; align-items: start; }
 .crit .side { position: sticky; top: 76px; }
 .ed h4 { margin: 14px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--faint); }
-.ed .lever { display: grid; grid-template-columns: minmax(150px, 220px) 1fr 44px; gap: 12px; align-items: center; padding: 6px 0; border-bottom: 1px dashed var(--line-2); }
+.ed .lever { display: grid; grid-template-columns: minmax(180px, 280px) 1fr 52px; gap: 12px; align-items: center; padding: 6px 0; border-bottom: 1px dashed var(--line-2); }
 .ed .lever label { font-size: 13px; }
+.ed .lever label small { display: block; color: var(--faint); font-size: 11.5px; margin-top: 1px; }
+.ed .lever output small { display: block; color: var(--faint); font-weight: 400; font-size: 11px; }
 .ed .lever output { font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
 .ed .lever.changed label::after { content: " •"; color: var(--accent); font-weight: 700; }
 .ed .kw { grid-column: 1 / -1; display: none; }
@@ -378,7 +382,6 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
     <button data-view="people">People</button>
     <button data-view="criteria">Criteria</button>
     <button data-view="playbooks">Playbooks</button>
-    <button data-view="insights">Insights</button>
     <button data-view="feedback">Feedback</button>
     <button data-view="settings">Settings</button>
     <button data-view="about">How it works</button>
@@ -439,7 +442,6 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
   <section class="view" id="v-feedback"><div id="feedbackView"></div></section>
   <section class="view" id="v-criteria"><div id="criteria"></div></section>
   <section class="view" id="v-playbooks"><div id="playbooks"></div></section>
-  <section class="view" id="v-insights"><div id="insights"></div><div id="learning"></div></section>
   <section class="view" id="v-settings"><div id="settingsView"></div></section>
   <section class="view" id="v-about"><div class="panel prose" id="about"></div></section>
 </main>
@@ -575,7 +577,7 @@ function fillFilters() {
   $('fFunction').value = keep;
 }
 
-function renderAll() { if (S.view === 'people') renderPeople(); else renderEvents(); renderCriteria(); renderPlaybooks(); renderInsights(); renderExport(); if (S.view === 'settings') renderSettings(); renderAbout(); }
+function renderAll() { if (S.view === 'people') renderPeople(); else renderEvents(); renderCriteria(); renderPlaybooks(); renderExport(); if (S.view === 'settings') renderSettings(); renderAbout(); }
 const isSuppressed = c => S.suppressed.has(c.person_key) || S.suppressed.has(c.id) || (c.account_id && S.suppressed.has(S.accounts[c.account_id]?.profile?.domain));
 const hsKey = c => key('contact', c.person_key);
 
@@ -621,9 +623,12 @@ function eventStatusLabel(e) {
 }
 // The meeting plan: time is the limit, not the number of good names.
 function planFor(e) {
-  const p = e.plan || { days: 1, team_default: 1, meetings_per_person_per_day: 8, acceptance_rate: 0.25 };
-  const team = e.team || p.team_default, meetings = team * p.days * p.meetings_per_person_per_day;
-  return { ...p, team, meetings, invites: Math.ceil(meetings / Math.max(p.acceptance_rate, 0.01)) };
+  const p = e.plan || { days: 1, team_default: 1, meetings_per_person_per_day: 8, acceptance_rate: 0.25, ranked: [] };
+  const team = e.team || p.team_default, perPerson = p.days * p.meetings_per_person_per_day, meetings = team * perPerson;
+  const avg = xs => xs.length ? Math.round(xs.reduce((a, b) => a + b, 0) / xs.length) : 0;
+  const ranked = p.ranked || [], best = ranked.slice(0, meetings), next = ranked.slice(meetings, meetings + perPerson);
+  return { ...p, team, perPerson, meetings, invites: Math.ceil(meetings / Math.max(p.acceptance_rate, 0.01)),
+           bestAvg: avg(best), bestCount: best.length, nextAvg: avg(next), nextCount: next.length };
 }
 const travelText = t => !t ? '—' : t.mode === 'local' ? 'In Berlin' : `${t.hours} h ${t.mode}`;
 const EVENT_COLS = [
@@ -631,7 +636,7 @@ const EVENT_COLS = [
   ['name', 'Event', e => e.name.toLowerCase()],
   ['date', 'Date', e => e.start],
   ['travel', 'Travel', e => e.travel?.hours ?? 99],
-  ['strong', 'Strong fit', e => e.counts.people ? e.counts.strong : e.counts.strong_companies],
+  ['quality', 'Best N', e => planFor(e).bestAvg],
   ['meetings', 'Meetings', e => planFor(e).meetings],
   ['approved', 'Approved', e => { const n = statusCounts([e.id]); return n.approved + n.hubspot; }],
   ['status', 'Status', e => ({ going: 0, todo: 1, notgoing: 2, past: 3 })[eventStatus(e)]],
@@ -652,7 +657,7 @@ function renderEventsList() {
   $('eventsList').innerHTML = `
     <div class="panel step">
       <div><div class="stepno">Step 1</div><h3>Choose the events worth going to</h3>
-        <p class="lead" style="margin:0">Each event is scored on how many strong-fit people its lists name, how much of the list is worth a look, whether GeneralMind already has a stand, timing, travel, and whether this year's list is out. <b>Meetings</b> is what the people we'd send can realistically fit in (about ${S.data.events[0]?.plan?.meetings_per_person_per_day || 8} a day each). Click a column to sort; open an event to see why, then mark it Going or Not going.</p></div>
+        <p class="lead" style="margin:0">Time limits how many people we can meet, so each event is judged on the <b>best people we could actually meet there</b> (<b>Best N</b>: their average fit, where N is the meetings possible), plus GeneralMind's stand, timing, travel and whether this year's list is out. Mark events ✓ Going or ✕ Not going; open one to see why it scored as it did and who to meet.</p></div>
     </div>
     <div class="whenbar">${[['upcoming', 'Upcoming'], ['past', 'Past']].map(([k, l]) => `<button class="${when === k ? 'on' : ''}" data-when="${k}">${l} <span class="num">${S.data.events.filter(e => (k === 'past') === !!e.past).length}</span></button>`).join('')}</div>
     <div class="stabs" style="align-items:center">${EVENT_TABS[when].map(([k, l]) => `<button class="stab ${filter === k ? 'on' : ''}" data-evf="${k}">${l} <span class="num">${counts[k] || 0}</span></button>`).join('')}
@@ -664,10 +669,11 @@ function renderEventsList() {
         <div style="min-width:0"><div class="t1" title="${esc(e.name)}">${esc(e.name)}${e.generalmind_present ? ' <span class="badge">stand</span>' : ''}</div><div class="t2">${esc(e.theme || '')} · ${esc(e.format || '')}</div></div>
         <div class="t2"><b style="color:var(--ink)">${fmtDay(e.start)}</b>${e.end && e.end !== e.start ? `–${fmtDay(e.end)}` : ''}<br>${until(e.start)}</div>
         <div class="t2" title="Approximate door to door from Berlin"><b style="color:var(--ink)">${esc(e.city)}</b><br>${travelText(e.travel)}</div>
-        <div class="t2">${e.not_sourced ? 'not sourced' : e.counts.people ? `<b style="color:var(--ink)">${e.counts.strong}</b> of ${e.counts.people}` : `<b style="color:var(--ink)">${e.counts.strong_companies}</b> exhibitors`}</div>
+        <div class="t2" title="Average fit of the best ${pl.meetings} ${pl.unit === 'exhibitors' ? 'exhibitors' : 'people'} we could meet"><b style="color:var(--ink)">${pl.bestAvg}</b> avg<br>best ${pl.meetings}${pl.unit === 'exhibitors' ? ' exh.' : ''}</div>
         <div class="t2" title="${pl.team} ${pl.team === 1 ? 'person' : 'people'} × ${pl.days} days × ${pl.meetings_per_person_per_day} a day; invite about ${pl.invites}"><b style="color:var(--ink)">${pl.meetings}</b><br>invite ~${pl.invites}</div>
         <div class="t2">${appr ? `<b style="color:var(--fast)">${appr}</b>` : '0'}<br>of ~${pl.invites}</div>
-        <div><span class="chip lane lane-${st === 'going' ? 'fast_track' : st === 'todo' ? 'review' : 'filtered'}">${eventStatusLabel(e)}</span></div>
+        <div class="evgo">${e.past ? `<span class="chip lane lane-filtered">${eventStatusLabel(e)}</span>`
+          : `<button class="btn ok ${st === 'going' ? 'on' : ''}" data-go="approve" title="Going">${st === 'going' ? '✓ Going' : '✓'}</button><button class="btn no ${st === 'notgoing' ? 'on' : ''}" data-go="reject" title="Not going">${st === 'notgoing' ? '✕ Not going' : '✕'}</button>`}</div>
         <div class="t2">${fmtDay(e.added_at)}<br><small>${esc((e.found_by || '').replace(/ \(.*\)$/, ''))}</small></div>
       </div>`;
     }).join('') : `<div class="empty">${when === 'past' && !inWhen.length ? "No past events yet. Events move here once they've happened, showing whether we went. Once HubSpot syncs outcomes back, this is where to see what each event produced." : 'No events here.'}</div>`}</div>
@@ -681,7 +687,12 @@ function renderEventsList() {
     S.evSort = cur.key === k ? { key: k, dir: -cur.dir } : { key: k, dir: ['name', 'date', 'travel', 'status'].includes(k) ? 1 : -1 };
     renderEventsList();
   });
-  $('eventsList').querySelectorAll('[data-ev]').forEach(r => r.onclick = () => openEvent(r.dataset.ev));
+  $('eventsList').querySelectorAll('[data-ev]').forEach(r => r.onclick = ev => {
+    const go = ev.target.closest('[data-go]')?.dataset.go;
+    if (!go) return openEvent(r.dataset.ev);
+    const cur = decisionOf('event', r.dataset.ev)?.decision;
+    decide('event', r.dataset.ev, cur === go ? 'clear' : go);
+  });
 }
 
 // ---------- events: one event ----------
@@ -745,18 +756,19 @@ function renderEventPage() {
 }
 
 function planBlock(e, n) {
-  const pl = planFor(e), appr = n.approved + n.hubspot, strong = e.counts.people ? e.counts.strong : 0;
+  const pl = planFor(e), appr = n.approved + n.hubspot, strongFrom = S.data.meta.lanes.fast_track, unit = pl.unit === 'exhibitors' ? 'exhibitors' : 'people';
   const pct = Math.min(100, Math.round(100 * appr / pl.invites));
-  const note = e.not_sourced ? 'People not sourced yet, so the plan has no names to fill it.'
-    : !e.counts.people ? 'No named people yet: the meetings would have to come from exhibitors, once the right person at each is found.'
-    : strong >= pl.invites ? `There are more strong-fit people (${strong}) than you'd invite: approve the best ${pl.invites} and stop.`
-    : `There are ${strong} strong-fit people, fewer than the ~${pl.invites} invites needed: look at the "possible" ones too, or plan fewer meetings.`;
+  const fill = pl.bestCount < pl.meetings ? ` Only ${pl.bestCount} ${unit} for ${pl.meetings} meetings, so some slots stay empty.` : '';
+  const more = !pl.nextCount ? `Nobody left for another person: ${pl.team === 1 ? 'one person is enough' : `${pl.team} is already more than the list fills`}.`
+    : pl.nextAvg >= strongFrom ? `Another person would add ${pl.nextCount} meetings with ${unit} averaging ${pl.nextAvg}: <b>worth it</b>.`
+    : `Another person would add meetings with ${unit} averaging only ${pl.nextAvg}: <b>probably not worth it</b>.`;
   return `<div class="panel"><h3>Meeting plan</h3>
     <div class="plan">We'd send <select data-team>${[1, 2, 3, 4].map(k => `<option value="${k}" ${k === pl.team ? 'selected' : ''}>${k} ${k === 1 ? 'person' : 'people'}</option>`).join('')}</select>
       × <b>${pl.days}</b> day${pl.days > 1 ? 's' : ''} × <b>${pl.meetings_per_person_per_day}</b> meetings a day = <b>${pl.meetings} meetings</b>.
-      About ${Math.round(100 * pl.acceptance_rate)}% of invites are accepted, so invite about <b>${pl.invites}</b>.</div>
-    <div style="display:flex;align-items:center;gap:10px;margin-top:10px"><div class="meter" style="flex:1;height:10px"><span style="width:${pct}%"></span></div><span class="num" style="font-size:13px"><b>${appr}</b> approved of ~${pl.invites}</span></div>
-    <div class="note">${note}${e.generalmind_present ? ' GeneralMind has a stand here, so the plan starts with two people: one at the stand, one moving between sessions, both taking meetings.' : ''}</div></div>`;
+      The best ${pl.meetings} ${unit} here average a fit of <b>${pl.bestAvg}</b>.${fill}</div>
+    <div class="note">${more}${e.generalmind_present ? ' GeneralMind has a stand here: two people means one at the stand and one moving between sessions, both taking meetings.' : ''}</div>
+    ${e.counts.people ? `<div style="font-size:13.5px;margin-top:10px">About ${Math.round(100 * pl.acceptance_rate)}% accept, so invite the best <b>~${pl.invites}</b>, best first, and let the replies do the narrowing.</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:8px"><div class="meter" style="flex:1;height:10px"><span style="width:${pct}%"></span></div><span class="num" style="font-size:13px"><b>${appr}</b> approved of ~${pl.invites}</span></div>` : ''}</div>`;
 }
 
 function renderEvents() {
@@ -888,7 +900,7 @@ function renderPeople() {
 }
 
 // ---------- shareable links ----------
-const VIEWS = ['events', 'people', 'criteria', 'playbooks', 'insights', 'feedback', 'settings', 'about'];
+const VIEWS = ['events', 'people', 'criteria', 'playbooks', 'feedback', 'settings', 'about'];
 // #/events                                 the list of events
 // #/event/<id>[/<status>[/<person>]]       one event and its people
 // #/people/<going|all>/<status>[/<person>] people across events
@@ -1051,7 +1063,7 @@ async function decide(type, id, decision, reason = null, fromUndo = false) {
     if (S.view === 'events') renderEventPage();
     renderPeople();
   }
-  renderInsights(); renderExport();
+  renderExport();
 }
 
 async function undo() {
@@ -1100,61 +1112,6 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'Escape') { rejectOpenFor = null; renderPeople(); }
 });
 function scrollSel() { document.querySelector('.view.on .row.sel')?.scrollIntoView({ block: 'nearest' }); }
-
-// ---------- learning ----------
-function renderLearning() {
-  const dec = S.contacts.map(c => ({ c, d: decisionOf('contact', c.id) })).filter(x => x.d);
-  const fastSeen = dec.filter(x => x.d.suggested_lane === 'fast_track'), filtSeen = dec.filter(x => x.d.suggested_lane === 'filtered');
-  const agreeN = fastSeen.filter(x => x.d.decision === 'approve').length + filtSeen.filter(x => x.d.decision === 'reject').length;
-  const agreeD = fastSeen.length + filtSeen.length;
-  const bands = [[85, 101], [70, 85], [60, 70], [45, 60], [0, 45]];
-  const bandRows = bands.map(([lo, hi]) => {
-    const inBand = dec.filter(x => x.d.score >= lo && x.d.score < hi), ok = inBand.filter(x => x.d.decision === 'approve').length;
-    const pct = inBand.length ? Math.round(100 * ok / inBand.length) : null;
-    return `<tr><td>${lo}–${Math.min(hi - 1, 100)}</td><td>${inBand.length}</td><td>${pct === null ? '—' : pct + '%'}</td><td><div class="meter"><span style="width:${pct || 0}%"></span></div></td></tr>`;
-  }).join('');
-  const reasons = {};
-  dec.filter(x => x.d.decision === 'reject').forEach(x => reasons[x.d.reason || 'No reason'] = (reasons[x.d.reason || 'No reason'] || 0) + 1);
-  const factors = {};
-  dec.forEach(({ c, d }) => c.tags.filter(t => /^(function|seniority|industry|size|segment):/.test(t)).forEach(t => {
-    factors[t] = factors[t] || { n: 0, ok: 0 }; factors[t].n++; if (d.decision === 'approve') factors[t].ok++;
-  }));
-  const factorRows = Object.entries(factors).filter(([, v]) => v.n >= 3).sort((a, b) => b[1].n - a[1].n).slice(0, 14).map(([t, v]) => {
-    const pct = Math.round(100 * v.ok / v.n), [kind, val] = t.split(':');
-    const hint = pct <= 25 ? 'Reviewers mostly reject: lower its weight' : pct >= 85 ? 'Reviewers mostly approve: candidate for more weight' : '';
-    return `<tr><td>${esc(kind)}</td><td>${esc(FUNCTION_LABELS[val] && kind === 'function' ? FUNCTION_LABELS[val] : val)}</td><td>${v.n}</td><td>${pct}%</td><td style="color:var(--muted)">${hint}</td></tr>`;
-  }).join('');
-  $('learning').innerHTML = `
-    <div class="panel">
-      <h3>Is the scoring ready to run on its own?</h3>
-      <p class="lead">Same idea as Autopilot: start with a person reviewing everything, measure how often the score's suggestion matches the reviewer, and only let a score band skip review once agreement is consistently high. Each decision is stored with the lane the scoring suggested at the time.</p>
-      <div class="grid2">
-        <div><div class="big num">${agreeD ? Math.round(100 * agreeN / agreeD) + '%' : '—'}</div><div style="color:var(--muted)">agreement on clear-cut leads (fast track approved, filtered rejected), from ${agreeD} decisions · ${dec.length} contacts reviewed in total</div></div>
-        <div id="sim"></div>
-      </div>
-    </div>
-    <div class="grid2">
-      <div class="panel"><h3>Approval rate by score band</h3><p class="lead">If the score is well calibrated, approval rises with the score.</p>
-        <table class="t"><thead><tr><th>Score</th><th>Reviewed</th><th>Approved</th><th></th></tr></thead><tbody>${bandRows}</tbody></table></div>
-      <div class="panel"><h3>Why leads were rejected</h3><p class="lead">The reasons point at which rule to change.</p>
-        ${Object.keys(reasons).length ? `<table class="t"><tbody>${Object.entries(reasons).sort((a, b) => b[1] - a[1]).map(([r, n]) => `<tr><td>${esc(r)}</td><td>${n}</td></tr>`).join('')}</tbody></table>` : '<div class="note">No rejections yet.</div>'}</div>
-    </div>
-    <div class="panel"><h3>What reviewers are teaching the scoring</h3><p class="lead">Approval rate per scoring factor (factors with at least 3 decisions). This is the input for re-weighting scoring.toml; in a fuller version the weights would be refitted from these decisions on a schedule and checked against past reviews before going live.</p>
-      ${factorRows ? `<table class="t"><thead><tr><th>Factor</th><th>Value</th><th>Reviewed</th><th>Approved</th><th></th></tr></thead><tbody>${factorRows}</tbody></table>` : '<div class="note">Review a few more contacts to see this.</div>'}</div>`;
-  renderSim();
-}
-
-function renderSim(th = +(store.get('simTh') || S.data.meta.lanes.fast_track), textOnly = false) {
-  const buyers = S.contacts.filter(c => ['fast_track', 'review', 'filtered'].includes(c.lane));
-  const over = buyers.filter(c => c.score >= th && c.confidence !== 'low');
-  const reviewed = over.map(c => decisionOf('contact', c.id)).filter(Boolean), ok = reviewed.filter(d => d.decision === 'approve').length;
-  const text = `At ${th}, <b style="color:var(--ink)">${over.length}</b> of ${buyers.length} buyer contacts would go straight to HubSpot. ${reviewed.length ? `Of those you've reviewed, you approved <b style="color:var(--ink)">${Math.round(100 * ok / reviewed.length)}%</b> (${ok}/${reviewed.length}).` : 'Review some of them to see how often you would have agreed.'}`;
-  if (textOnly) { $('simVal').textContent = th; $('simText').innerHTML = text; return; }
-  $('sim').innerHTML = `<div style="display:flex;justify-content:space-between"><b>Skip-review threshold</b><b class="num" id="simVal">${th}</b></div>
-    <input type="range" min="40" max="95" step="1" value="${th}" id="simRange">
-    <div style="color:var(--muted);font-size:13px" id="simText">${text}</div>`;
-  $('simRange').oninput = e => { store.set('simTh', e.target.value); renderSim(+e.target.value, true); };
-}
 
 // ---------- HubSpot and export ----------
 async function refreshHubspot() {
@@ -1207,7 +1164,7 @@ function renderExport() {
         <tr><td>Event, session, source page</td><td>GM source event, GM session at event, GM source URL</td></tr>
         <tr><td>Email</td><td>Left empty on purpose: comes from an enrichment provider with a legal basis</td></tr>
       </tbody></table>
-      <p class="lead" style="margin:12px 0 0">Next: sync back from HubSpot (meetings, deal stages) so Insights can show which sources and segments turn into pilots.</p>
+      <p class="lead" style="margin:12px 0 0">Next: sync back from HubSpot (meetings, deal stages), to see which events and kinds of people turn into pilots.</p>
     </div>`;
   $('hsRefresh').onclick = () => { toast('Checking…'); refreshHubspot(); };
   $('pushBtn').onclick = pushHubspot;
@@ -1225,188 +1182,112 @@ async function pushHubspot() {
   await load();
 }
 
-// ---------- criteria ----------
-const CRIT_LABELS = {
-  lanes: 'Lanes: where a lead lands', role: 'Role: what the person does', functions: 'Function (best match counts)',
-  seniority: 'Seniority', interest: 'Talks about the problem', company: 'Company: who they work for', size_points: 'Company size',
-  event: 'Event: how and when they appear', account: 'Accounts (companies)', fast_track: 'Fast track from', review: 'Review from',
-  buyer_points: 'Operating company (buyer)', core_industry_points: 'Core industry', other_industry_points: 'Other industry',
-  core_industries: 'Core industries (matched in the industry label)', dach_points: 'Based in DACH', erp_points: 'ERP publicly known',
-  speaker_points: 'Speaker / keynote / panelist', moderator_points: 'Moderator / chair', soon_days: '"Soon" means within (days)',
-  soon_points: 'Event soon', later_days: '"Later" means within (days)', later_points: 'Event later', far_points: 'Event further out',
-  generalmind_present_points: 'GeneralMind has a stand there', company_multiplier: 'Company fit multiplier', per_event_points: 'Per target event',
-  max_event_points: 'Event points cap', named_contact_points: 'Has a named contact', target_contact_points: 'Has a contact in a target role',
-  target_contact_role_min: 'Target role means role fit of at least', other_points: 'Any other title',
-  event_choice: 'Events: which to attend (step 1)', per_strong_lead_points: 'Per strong-fit person or exhibitor', max_strong_lead_points: 'Cap for strong-fit people',
-  worth_a_look_share_points: 'Share of the list worth a look', in_window_points: 'Good timing (time to book meetings)', outside_window_points: 'Too soon or too far ahead',
-  plan_min_days: 'Good timing starts (days ahead)', plan_max_days: 'Good timing ends (days ahead)', berlin_points: 'In Berlin', dach_trip_points: 'Elsewhere in DACH',
-  abroad_points: 'Abroad', current_list_points: "This year's list is out", recommend: 'Recommended from', consider: 'Worth considering from',
-  meetings_per_person_per_day: 'Meetings per person per day', acceptance_rate_percent: 'Invites accepted (%)', team_size: 'People we send', team_size_with_stand: 'People we send when we have a stand',
-};
-const ORDER = ['event_choice', 'lanes', 'role', 'company', 'event', 'account'];
-const range = k => /days/.test(k) ? [0, 365, 1] : /multiplier/.test(k) ? [0, 3, 0.1] : /^(fast_track|review|target_contact_role_min|recommend|consider)$/.test(k) ? [0, 100, 1] : [0, 40, 1];
+// ---------- criteria: the main levers, nothing else ----------
+// Everything else (keywords, size bands, account weights) stays in scoring.toml, where the assistant can still change it.
+const LEVERS = [
+  ['Events: which to go to', [
+    ['event_choice.best_people_points', 'Quality of the best people we could meet', 'Average fit of the best N people, where N is the meetings possible. The main driver.', 0, 80],
+    ['event_choice.generalmind_present_points', 'GeneralMind has a stand', '', 0, 30],
+    ['event_choice.in_window_points', 'Good timing', 'Far enough ahead to book meetings, close enough to plan.', 0, 30],
+    ['event_choice.berlin_points', 'In Berlin', 'No travel.', 0, 20],
+    ['event_choice.dach_trip_points', 'Elsewhere in Germany, Austria or Switzerland', '', 0, 20],
+    ['event_choice.current_list_points', "This year's list is out", "Otherwise the names are last year's.", 0, 20],
+  ]],
+  ['Meeting plan', [
+    ['event_choice.meetings_per_person_per_day', 'Meetings per person per day', '', 1, 20],
+    ['event_choice.acceptance_rate_percent', 'Invites accepted (%)', 'Decides how many people to invite and approve.', 5, 80],
+  ]],
+  ['People: who is a strong fit', [
+    ['lanes.fast_track', 'Strong fit from', 'Fit score at which someone is suggested.', 40, 95],
+    ['lanes.review', 'Possible from', 'Below this, "low fit".', 20, 80],
+    ['role.functions.order_to_cash.points', 'Order management / customer service', 'Points for the role.', 0, 40],
+    ['role.functions.finance_ap.points', 'Finance / accounts payable / shared services', '', 0, 40],
+    ['role.functions.procurement.points', 'Procurement', '', 0, 40],
+    ['role.functions.supply_chain.points', 'Supply chain / logistics', '', 0, 40],
+    ['role.seniority.c_level.points', 'C-level / board', 'Points for seniority.', 0, 30],
+    ['role.seniority.head.points', 'Head / director / VP', '', 0, 30],
+    ['company.core_industry_points', 'Core industry', 'Manufacturing, wholesale, retail, consumer goods, logistics…', 0, 20],
+    ['company.dach_points', 'Company based in DACH', '', 0, 20],
+    ['event.speaker_points', 'Speaking at the event', 'A talk to start the conversation with.', 0, 20],
+  ]],
+];
 const getPath = (o, p) => p.split('.').reduce((x, k) => x?.[k], o);
 const setPath = (o, p, v) => { const ks = p.split('.'), last = ks.pop(); ks.reduce((x, k) => x[k], o)[last] = v; };
 const activeVersion = kind => S.config[kind].find(v => v.active);
 
-function flatDiff(a, b, p = '', out = []) {
-  if (Array.isArray(a) || Array.isArray(b)) { if (JSON.stringify(a) !== JSON.stringify(b)) out.push([p, Array.isArray(a) ? `${a.length} words` : a, Array.isArray(b) ? `${b.length} words${b.length === a?.length ? ' (edited)' : ''}` : b]); return out; }
-  if (a && typeof a === 'object') { Object.keys(b || {}).forEach(k => flatDiff(a[k], b[k], p ? `${p}.${k}` : k, out)); return out; }
-  if (a !== b) out.push([p, a, b]);
-  return out;
-}
-
-function maxes(cfg) {
-  const m = o => Math.max(...Object.values(o).map(v => typeof v === 'object' ? v.points : v).filter(Number.isFinite));
-  const r = cfg.role, c = cfg.company, e = cfg.event;
-  return {
-    role: m(r.functions) + Math.max(r.seniority.c_level.points, r.seniority.head.points, r.seniority.manager.points, r.seniority.other_points) + r.interest.points,
-    company: c.buyer_points + Math.max(c.core_industry_points, c.other_industry_points) + m(c.size_points) + c.dach_points + c.erp_points,
-    event: Math.max(e.speaker_points, e.moderator_points) + Math.max(e.soon_points, e.later_points, e.far_points) + e.generalmind_present_points,
-  };
-}
-
-function lever(path, val, label, activeVal) {
-  const k = path.split('.').pop(), [lo, hi, step] = range(k);
-  return `<div class="lever ${val !== activeVal ? 'changed' : ''}"><label>${esc(label)}</label>
-    <input type="range" min="${lo}" max="${hi}" step="${step}" value="${val}" data-path="${esc(path)}"><output>${val}</output></div>`;
-}
-
-function edGroup(obj, act, path) {
-  let html = '';
-  for (const [k, v] of Object.entries(obj)) {
-    const p = path ? `${path}.${k}` : k, a = getPath(act, p);
-    if (k === 'label' || k === 'keywords') continue;
-    if (v && typeof v === 'object' && !Array.isArray(v) && 'points' in v) {
-      const kw = v.keywords ? `<button class="kwbtn" data-kw="${esc(p)}">${v.keywords.length} keywords</button>` : '';
-      html += `<div class="lever ${v.points !== a?.points ? 'changed' : ''}"><label>${esc(v.label || CRIT_LABELS[k] || k)}${kw}</label>
-        <input type="range" min="0" max="40" value="${v.points}" data-path="${esc(p)}.points"><output>${v.points}</output>
-        ${v.keywords ? `<div class="kw" id="kw-${esc(p)}"><textarea rows="3" data-list="${esc(p)}.keywords" title="Comma-separated. Wrap in \\b for whole words, e.g. \\bcpo\\b">${esc(v.keywords.join(', '))}</textarea></div>` : ''}</div>`;
-    } else if (v && typeof v === 'object' && !Array.isArray(v)) {
-      html += `<h4>${esc(CRIT_LABELS[k] || k.replace(/_/g, ' '))}</h4>` + edGroup(v, act, p);
-    } else if (Array.isArray(v)) {
-      html += `<div class="lever"><label>${esc(CRIT_LABELS[k] || k)}</label><div style="grid-column:2/4"><textarea rows="2" data-list="${esc(p)}">${esc(v.join(', '))}</textarea></div></div>`;
-    } else if (typeof v === 'number') {
-      html += lever(p, v, CRIT_LABELS[k] || (path.endsWith('size_points') ? `${k} employees` : k.replace(/_/g, ' ')), a);
-    }
-  }
-  return html;
-}
-
 function renderCriteria() {
   if (!S.config) return;
-  const act = activeVersion('scoring');
+  const act = activeVersion('scoring'), actCfg = JSON.parse(act.body);
   if (!S.draft) { S.draft = JSON.parse(act.body); S.draftBase = act.version; }
-  const actCfg = JSON.parse(act.body);
+  const changed = LEVERS.flatMap(([, ls]) => ls).filter(([p]) => getPath(S.draft, p) !== getPath(actCfg, p));
   $('criteria').innerHTML = `
+    <div class="panel"><h3>Criteria</h3><p class="lead" style="margin:0">The few settings that decide which events come first and who counts as a strong fit. Move a slider and the preview shows what would change; nothing changes until you save. Using scoring v${act.version}.</p></div>
     <div class="crit">
-      <div>
-        <div class="panel">
-          <h3>How a contact's score adds up</h3>
-          <p class="lead">Every lead's fit score is the sum of these parts, capped at 100. Move a slider and the preview on the right shows how the ranking would change, before anything is saved. Click "keywords" to see and edit how a criterion is matched.</p>
-          <div id="capBar"></div>
-          <div style="color:var(--muted);font-size:12.5px">Editing version ${S.draftBase} · active is v${act.version}.</div>
-        </div>
-        ${ORDER.map(sec => `<div class="panel ed"><h3>${esc(CRIT_LABELS[sec])}</h3>${edGroup({ [sec]: S.draft[sec] }[sec], actCfg, sec)}</div>`).join('')}
-      </div>
+      <div>${LEVERS.map(([title, ls]) => `<div class="panel ed"><h3>${esc(title)}</h3>${ls.map(([p, label, help, lo, hi]) => {
+        const v = getPath(S.draft, p) ?? 0, was = getPath(actCfg, p);
+        return `<div class="lever ${v !== was ? 'changed' : ''}"><label>${esc(label)}${help ? `<small>${esc(help)}</small>` : ''}</label>
+          <input type="range" min="${lo}" max="${hi}" step="1" value="${v}" data-path="${p}"><output>${v}${v !== was ? `<small>was ${was}</small>` : ''}</output></div>`;
+      }).join('')}</div>`).join('')}</div>
       <div class="side">
-        <div class="panel" id="preview"><h3>Preview</h3><div class="note">Change something to see its effect.</div></div>
-        <div class="panel">
-          <h3>Save</h3>
-          <div id="diff"></div>
-          <input id="verNote" placeholder="What changed and why (required)" style="width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)">
+        <div class="panel" id="preview"><h3>What would change</h3><div class="note">${changed.length ? 'Working it out…' : 'Move a slider to see its effect.'}</div></div>
+        <div class="panel"><h3>Save</h3>
+          <input id="verNote" placeholder="What changed and why" style="width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)">
           <div id="saveErr"></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn primary" id="saveAct">Save and activate</button><button class="btn" id="saveOnly">Save as draft version</button><button class="btn" id="resetDraft">Reset</button></div>
-        </div>
-        <div class="panel versions"><h3>Versions</h3>
-          <table class="t"><tbody>${S.config.scoring.map(v => `<tr><td><b>v${v.version}</b> ${v.active ? '<span class="tag-active">active</span>' : ''}<br><small style="color:var(--muted)">${esc(v.note || '')}<br>${esc(v.author || v.source)} · ${esc(v.created_at.slice(0, 16).replace('T', ' '))}</small></td>
-            <td style="text-align:right;white-space:nowrap"><button class="btn" data-load="${v.id}">Edit</button> ${v.active ? '' : `<button class="btn" data-activate="${v.id}">Activate</button>`}</td></tr>`).join('')}</tbody></table>
-          <p class="lead" style="margin:10px 0 0">Activating a version rescores every lead. Reviewer decisions are kept, and each records the version that suggested it, so versions can be compared.</p>
+          <div style="display:flex;gap:8px;margin-top:10px"><button class="btn primary" id="saveAct" ${changed.length ? '' : 'disabled'}>Save and use</button><button class="btn" id="resetDraft" ${changed.length ? '' : 'disabled'}>Discard</button></div>
+          <details style="margin-top:14px"><summary style="cursor:pointer;color:var(--muted);font-size:13px">Earlier versions (${S.config.scoring.length})</summary>
+            <ul class="logl" style="margin-top:6px">${S.config.scoring.map(v => `<li style="justify-content:space-between"><span><b>v${v.version}</b> ${esc(v.note || '')} <small style="color:var(--muted)">${esc(v.created_at.slice(0, 10))}</small></span>${v.active ? '<span class="tag-active">in use</span>' : `<button class="btn" data-activate="${v.id}" style="padding:1px 8px;font-size:12px">Use</button>`}</li>`).join('')}</ul></details>
         </div>
       </div>
     </div>`;
   const root = $('criteria');
   root.querySelectorAll('input[type=range]').forEach(inp => inp.oninput = () => {
-    const v = +inp.value; setPath(S.draft, inp.dataset.path, v); inp.nextElementSibling.textContent = v;
-    inp.closest('.lever').classList.toggle('changed', v !== getPath(actCfg, inp.dataset.path));
-    schedulePreview(); renderDiff(actCfg); renderCap();
+    const v = +inp.value, was = getPath(actCfg, inp.dataset.path);
+    setPath(S.draft, inp.dataset.path, v);
+    inp.nextElementSibling.innerHTML = `${v}${v !== was ? `<small>was ${was}</small>` : ''}`;
+    inp.closest('.lever').classList.toggle('changed', v !== was);
+    const any = LEVERS.flatMap(([, ls]) => ls).some(([p]) => getPath(S.draft, p) !== getPath(actCfg, p));
+    $('saveAct').disabled = $('resetDraft').disabled = !any;
+    schedulePreview();
   });
-  root.querySelectorAll('textarea[data-list]').forEach(t => t.onchange = () => {
-    setPath(S.draft, t.dataset.list, t.value.split(',').map(s => s.trim()).filter(Boolean)); schedulePreview(); renderDiff(actCfg);
-  });
-  root.querySelectorAll('[data-kw]').forEach(b => b.onclick = () => document.getElementById(`kw-${b.dataset.kw}`).classList.toggle('on'));
-  root.querySelectorAll('[data-load]').forEach(b => b.onclick = () => { const v = S.config.scoring.find(x => x.id === +b.dataset.load); S.draft = JSON.parse(v.body); S.draftBase = v.version; renderCriteria(); schedulePreview(); });
   root.querySelectorAll('[data-activate]').forEach(b => b.onclick = () => activateVersion(+b.dataset.activate));
-  $('resetDraft').onclick = () => { S.draft = null; renderCriteria(); };
+  $('resetDraft').onclick = () => { S.draft = null; S.preview = null; renderCriteria(); };
   $('saveAct').onclick = () => saveScoring(true);
-  $('saveOnly').onclick = () => saveScoring(false);
-  renderDiff(actCfg); renderCap();
-  if (S.preview) renderPreview();
-}
-
-function renderCap() {
-  const mx = maxes(S.draft), total = mx.role + mx.company + mx.event;
-  $('capBar').innerHTML = `<div class="cap"><span style="flex:${mx.role};background:var(--accent)">Role up to ${mx.role}</span><span style="flex:${mx.company};background:var(--partner)">Company up to ${mx.company}</span><span style="flex:${mx.event};background:var(--review)">Event up to ${mx.event}</span></div>
-    <div style="color:var(--muted);font-size:12.5px">Maximum possible: ${total}${total > 100 ? ' (scores are capped at 100)' : ''}</div>`;
-}
-
-function renderDiff(actCfg) {
-  const d = flatDiff(actCfg, S.draft);
-  $('diff').innerHTML = d.length ? `<div class="diff">${d.map(([p, a, b]) => `${esc(p)}: ${esc(a)} → <b>${esc(b)}</b>`).join('<br>')}</div>` : '<div class="note">No changes from the active version.</div>';
+  if (changed.length) schedulePreview();
 }
 
 let previewTimer;
-function schedulePreview() { clearTimeout(previewTimer); previewTimer = setTimeout(runPreview, 350); }
+function schedulePreview() { clearTimeout(previewTimer); previewTimer = setTimeout(runPreview, 300); }
 async function runPreview() {
   const res = await fetch('api/scoring/preview', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ body: JSON.stringify(S.draft) }) });
   const out = await res.json();
-  if (!res.ok) { $('preview').innerHTML = `<h3>Preview</h3><div class="err">${esc(out.detail)}</div>`; return; }
-  S.preview = out; renderPreview();
-}
-
-function agreement(lanesOf) {
-  let agree = 0, n = 0;
-  S.contacts.forEach(c => {
-    const d = decisionOf('contact', c.id), lane = lanesOf(c);
-    if (!d || !lane) return;
-    if (lane === 'fast_track') { n++; if (d.decision === 'approve') agree++; }
-    else if (['filtered', 'competitor'].includes(lane)) { n++; if (d.decision === 'reject') agree++; }
-  });
-  return n ? `${Math.round(100 * agree / n)}% of ${n}` : '—';
-}
-
-function renderPreview() {
-  const P = S.preview.contacts, lanes = Object.keys(LANES);
-  const now = {}, draft = {};
-  S.contacts.forEach(c => { now[c.lane] = (now[c.lane] || 0) + 1; const p = P[c.id]; if (p) draft[p[1]] = (draft[p[1]] || 0) + 1; });
-  const moved = S.contacts.filter(c => P[c.id] && P[c.id][1] !== c.lane);
-  const into = moved.filter(c => P[c.id][1] === 'fast_track').sort((a, b) => P[b.id][0] - P[a.id][0]);
-  const out = moved.filter(c => c.lane === 'fast_track').sort((a, b) => b.score - a.score);
-  const person = c => `<li><span>${esc(c.name)} <small style="color:var(--muted)">${esc(S.accounts[c.account_id]?.name || c.company || '')}</small></span><span>${c.score}→${P[c.id][0]}</span></li>`;
-  $('preview').innerHTML = `<h3>Preview: contacts per lane</h3>
-    <table class="t"><thead><tr><th>Lane</th><th>Active</th><th>Draft</th><th></th></tr></thead><tbody>${lanes.map(l => { const dlt = (draft[l] || 0) - (now[l] || 0); return `<tr><td><span class="chip lane lane-${l}">${LANES[l].label}</span></td><td>${now[l] || 0}</td><td>${draft[l] || 0}</td><td class="delta ${dlt > 0 ? 'up' : dlt < 0 ? 'down' : ''}">${dlt ? (dlt > 0 ? '+' : '') + dlt : ''}</td></tr>`; }).join('')}</tbody></table>
-    <h4 style="margin:14px 0 4px;font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em">Replay against past decisions</h4>
-    <div style="font-size:13px">Agreement on clear-cut leads: active <b>${agreement(c => c.lane)}</b> · draft <b>${agreement(c => P[c.id]?.[1])}</b></div>
-    ${into.length ? `<h4 style="margin:14px 0 4px;font-size:12px;color:var(--fast)">Into fast track (${into.length})</h4><ul class="reasons">${into.slice(0, 6).map(person).join('')}</ul>` : ''}
-    ${out.length ? `<h4 style="margin:14px 0 4px;font-size:12px;color:var(--competitor)">Out of fast track (${out.length})</h4><ul class="reasons">${out.slice(0, 6).map(person).join('')}</ul>` : ''}`;
+  if (!$('preview')) return;
+  if (!res.ok) { $('preview').innerHTML = `<h3>What would change</h3><div class="err">${esc(out.detail)}</div>`; return; }
+  const P = out.contacts, E = out.events, now = {}, draft = {};
+  S.contacts.forEach(c => { if (OTHER_LANES.has(c.lane)) return; now[c.lane] = (now[c.lane] || 0) + 1; const p = P[c.id]; if (p && !OTHER_LANES.has(p[1])) draft[p[1]] = (draft[p[1]] || 0) + 1; });
+  const evs = [...S.data.events].filter(e => !e.past).sort((a, b) => (E[b.id]?.[0] ?? 0) - (E[a.id]?.[0] ?? 0));
+  const delta = (a, b) => b === a ? '' : `<span class="delta ${b > a ? 'up' : 'down'}">${b > a ? '+' : ''}${b - a}</span>`;
+  $('preview').innerHTML = `<h3>What would change</h3>
+    <table class="t"><tbody>${['fast_track', 'review', 'filtered'].map(l => `<tr><td>${SUGGEST[l]}</td><td class="num">${now[l] || 0} → <b>${draft[l] || 0}</b></td><td>${delta(now[l] || 0, draft[l] || 0)}</td></tr>`).join('')}</tbody></table>
+    <h4 style="margin:14px 0 4px;font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em">Events, new order</h4>
+    <table class="t"><tbody>${evs.map(e => `<tr><td>${esc(e.short)}</td><td class="num">${e.score} → <b>${E[e.id]?.[0] ?? '—'}</b></td><td>${delta(e.score, E[e.id]?.[0] ?? e.score)}</td></tr>`).join('')}</tbody></table>`;
 }
 
 async function saveScoring(activate) {
   const note = $('verNote').value.trim();
-  if (!note) { $('saveErr').innerHTML = '<div class="err">Add a short note so the history makes sense later.</div>'; return; }
+  if (!note) { $('saveErr').innerHTML = '<div class="err">Add a short note so the history makes sense later.</div>'; $('verNote').focus(); return; }
   const res = await fetch('api/config', { method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ kind: 'scoring', body: JSON.stringify(S.draft), note, author: S.reviewer || null, activate }) });
   const out = await res.json();
   if (!res.ok) { $('saveErr').innerHTML = `<div class="err">${esc(out.detail)}</div>`; return; }
-  toast(activate ? `Saved and activated: every lead rescored` : `Saved as v${out.version}`);
+  toast('Saved: everything is rescored');
   S.draft = null; S.preview = null; await load();
 }
 
 async function activateVersion(id) {
   const res = await fetch(`api/config/${id}/activate`, { method: 'POST' });
   const out = await res.json();
-  if (!res.ok) return toast(out.detail || 'Could not activate');
-  toast(`${out.kind === 'scoring' ? 'Scoring' : 'Playbook'} v${out.version} is now active`);
+  if (!res.ok) return toast(out.detail || 'Could not switch');
+  toast(`${out.kind === 'scoring' ? 'Scoring' : 'Playbook'} v${out.version} is now in use`);
   S.draft = null; S.preview = null; await load();
 }
 
@@ -1574,50 +1455,6 @@ async function savePlaybook(kind, activate) {
   st.undo = []; st.compareId = null; st.restored = false;
   toast(activate ? `Saved and active` : `Saved as v${out.version} (not active yet)`);
   renderPlaybooks();
-}
-
-// ---------- insights ----------
-function renderInsights() {
-  const C = S.contacts, dec = C.filter(c => decisionOf('contact', c.id)), ok = dec.filter(c => decisionOf('contact', c.id).decision === 'approve');
-  const inHs = S.data.hubspot.filter(h => h.object_type === 'contact').length;
-  const buyers = C.filter(c => ['fast_track', 'review'].includes(c.lane));
-  const tiles = [['Events', S.data.events.length], ['Named contacts', C.length], ['Companies', S.data.accounts.length], ['Reviewed', dec.length], ['Approved', ok.length], ['In HubSpot', inHs]];
-  const steps = [['Sourced', C.length], ['Worth a look (fast track + review)', buyers.length], ['Reviewed', dec.length], ['Approved', ok.length], ['In HubSpot', inHs]];
-  const later = ['Contacted', 'Replied', 'Meeting held', 'Pilot started'];
-  const max = Math.max(1, C.length);
-  const byEvent = S.data.events.map(e => { const cs = C.filter(c => c.event_id === e.id); return { e, n: cs.length, fast: cs.filter(c => c.lane === 'fast_track').length, rev: cs.filter(c => c.lane === 'review').length, ok: cs.filter(c => decisionOf('contact', c.id)?.decision === 'approve').length, avg: cs.length ? Math.round(cs.reduce((s, c) => s + c.score, 0) / cs.length) : 0 }; });
-  const groups = {};
-  C.forEach(c => { const ind = S.accounts[c.account_id]?.profile?.industry || 'Unknown'; const g = groups[ind] = groups[ind] || { n: 0, fast: 0, ok: 0, score: 0 }; g.n++; g.score += c.score; if (c.lane === 'fast_track') g.fast++; if (decisionOf('contact', c.id)?.decision === 'approve') g.ok++; });
-  const days = {};
-  S.history.forEach(d => { const k = d.decided_at.slice(0, 10); days[k] = (days[k] || 0) + 1; });
-  const dayKeys = Object.keys(days).sort().slice(-14), dmax = Math.max(1, ...Object.values(days));
-  $('insights').innerHTML = `
-    <div class="tiles">${tiles.map(([k, v]) => `<div class="tile"><div class="v">${v}</div><div class="k">${k}</div></div>`).join('')}</div>
-    <div class="grid2">
-      <div class="panel"><h3>Funnel</h3><p class="lead">From event page to HubSpot. The grey steps fill in once outreach runs and HubSpot syncs outcomes back; until then they're empty rather than guessed.</p>
-        <div class="funnel">${steps.map(([k, v]) => `<div class="f"><span>${k}</span><div class="b" style="width:${Math.max(0.5, 100 * v / max)}%"></div><b class="num">${v}</b></div>`).join('')}${later.map(k => `<div class="f later"><span>${k}</span><div class="b" style="width:0.5%"></div><span>—</span></div>`).join('')}</div></div>
-      <div class="panel"><h3>Review activity</h3><p class="lead">Decisions per day (last 14 days with activity). Every decision is kept with who made it and what the scoring suggested.</p>
-        ${dayKeys.length ? `<div class="spark">${dayKeys.map(k => `<span title="${k}: ${days[k]}" style="height:${100 * days[k] / dmax}%"></span>`).join('')}</div><div style="display:flex;justify-content:space-between;color:var(--faint);font-size:11px;margin-top:4px"><span>${dayKeys[0]}</span><span>${dayKeys[dayKeys.length - 1]}</span></div>` : '<div class="note">No decisions yet.</div>'}
-        <h4 style="margin:16px 0 6px;font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em">Change log</h4>
-        <ul class="logl">${S.data.log.slice(0, 8).map(l => `<li><time>${esc(l.created_at.slice(5, 16).replace('T', ' '))}</time><span>${esc(l.message)}</span></li>`).join('') || '<li>Nothing yet</li>'}</ul></div>
-    </div>
-    <div class="grid2">
-      <div class="panel"><h3>Where to spend the effort: by event</h3><p class="lead">Fast-track contacts per event. With outcomes synced back, this becomes meetings and pilots per event.</p>
-        <table class="t"><thead><tr><th>Event</th><th>Contacts</th><th>Fast</th><th>Review</th><th>Approved</th><th>Avg</th></tr></thead><tbody>${byEvent.sort((a, b) => b.fast - a.fast).map(r => `<tr><td>${esc(r.e.short)} <small style="color:var(--muted)">${until(r.e.start)}</small></td><td>${r.n}</td><td><b>${r.fast}</b></td><td>${r.rev}</td><td>${r.ok}</td><td>${r.avg}</td></tr>`).join('')}</tbody></table></div>
-      <div class="panel"><h3>By industry</h3><p class="lead">Which segments the events give us the most good contacts in.</p>
-        <table class="t"><thead><tr><th>Industry</th><th>Contacts</th><th>Fast</th><th>Approved</th><th>Avg</th></tr></thead><tbody>${Object.entries(groups).sort((a, b) => b[1].fast - a[1].fast || b[1].n - a[1].n).slice(0, 12).map(([k, g]) => `<tr><td>${esc(k)}</td><td>${g.n}</td><td><b>${g.fast}</b></td><td>${g.ok}</td><td>${Math.round(g.score / g.n)}</td></tr>`).join('')}</tbody></table></div>
-    </div>`;
-  $('insights').insertAdjacentHTML('beforeend', `<div class="panel" id="versionsCompared"><h3>Scoring versions compared</h3><div class="note">Loading…</div></div>`);
-  renderVersionsCompared();
-  renderLearning();
-}
-
-async function renderVersionsCompared() {
-  const rows = await (await fetch('api/scoring/compare')).json().catch(() => []);
-  if (!$('versionsCompared')) return;
-  $('versionsCompared').innerHTML = `<h3>Scoring versions compared</h3><p class="lead">Every version replayed against every reviewer decision so far: the regression test for settings. "Agreement" counts clear-cut calls (fast track approved, filtered or competitor rejected). Once HubSpot syncs outcomes back, the same table compares meetings and pilots per version.</p>
-    <table class="t"><thead><tr><th>Version</th><th>Fast track</th><th>Replay agreement</th><th>Decided while live</th></tr></thead><tbody>${rows.map(r => `<tr><td><b>v${r.version}</b> ${r.active ? '<span class="tag-active">active</span>' : ''}<br><small style="color:var(--muted)">${esc(r.note || '')} · ${esc(r.author || r.source)}</small></td>
-      ${r.error ? `<td colspan="3" style="color:var(--muted)">${esc(r.error)}</td>` : `<td>${r.fast_track}</td><td>${r.replay_agreement === null ? '—' : `<b>${r.replay_agreement}%</b> <small style="color:var(--muted)">of ${r.replay_n}</small>`}</td><td>${r.decided_while_active} <small style="color:var(--muted)">(${r.approved_while_active} approved)</small></td>`}</tr>`).join('')}</tbody></table>`;
 }
 
 // ---------- feedback tab: notes to manage, and errors ----------
@@ -1885,7 +1722,7 @@ $('cpClose').onclick = () => $('cp').classList.remove('open');
 $('cpClear').onclick = () => { S.cp = []; store.set('cp', '[]'); renderCp(); };
 
 // ---------- wiring ----------
-const OLD_VIEWS = { queue: 'events', accounts: 'events', hubspot: 'settings' };
+const OLD_VIEWS = { queue: 'events', accounts: 'events', hubspot: 'settings', insights: 'events' };
 function showView(name, push = true) {
   S.view = OLD_VIEWS[name] || name;
   if (!$(`v-${S.view}`)) S.view = 'events';

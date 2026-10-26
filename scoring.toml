@@ -93,9 +93,9 @@ target_contact_role_min = 30
 
 # --- Events: which to attend (step 1, before choosing people) ---
 [event_choice]
-per_strong_lead_points = 2     # each strong-fit person (or exhibiting company with no named contact yet)
-max_strong_lead_points = 40
-worth_a_look_share_points = 20 # share of the people listed who are worth a look
+best_people_points = 60        # quality of the best people we could meet: average fit of the best N, where N is
+                               # the meetings possible (empty slots count as zero); exhibitor-only events use companies
+exhibitor_only_share = 70      # % of that credit for events whose lists name companies but no people yet
 generalmind_present_points = 15
 in_window_points = 15          # far enough ahead to book meetings, not so far that plans are vague
 outside_window_points = 5

@@ -4,8 +4,8 @@
 It finds the people and companies worth meeting at upcoming events, explains why each one matters, and lets you approve the good ones and send them to HubSpot. The next step with a lead is usually meeting them face to face at the event.
 
 ## The everyday flow
-1. **Events: choose where to go.** The list shows every event with its score, date, travel time from Berlin, strong-fit people, how many meetings it can realistically give us, how many people are approved, its status (to decide, going, not going, or happened, with whether we went) and when it was found. Click a column to sort.
-2. **Open an event.** See a short **AI summary** (why go, who to meet, the main caveat), **why it scored as it did** (each part of the score with its points), the **meeting plan** (people we'd send × days × meetings a day, and so how many to invite and approve), and where its names come from. Mark it **Going** or **Not going**.
+1. **Events: choose where to go.** Time limits how many people we can meet, so each event is judged on the **best people we could actually meet there**: the average fit of the best N, where N is the meetings possible (people sent × days × meetings a day). Then GeneralMind's stand, timing, travel and whether this year's list is out. The list is split into **Upcoming** and **Past**; columns sort with a click; ✓ and ✕ on each row mark it Going or Not going.
+2. **Open an event.** See a short **AI summary** (why go, who to meet, the main caveat), **why it scored as it did** (each part of the score with its points), the **meeting plan** (people we'd send × days × meetings a day, the quality of the best people for those meetings, whether another person would be worth it, and how many to invite), and where its names come from. Mark it **Going** or **Not going**.
 3. **Choose who to meet.** Below the event are its people, best fit first, each with a five-second brief. **Approve** (A) or **Reject** (R, then a reason 1–6); **U** undoes. Nothing is ever approved automatically.
 4. **Send to HubSpot.** In **Approved**, tick the people (or Select all) and click **Send to HubSpot**; **Download CSV** gives the same list as a file. Sent people move to **In HubSpot**, with a link to their record. The owner can **Remove from HubSpot** if someone was sent by mistake (HubSpot keeps it in its recycle bin for 90 days).
 
@@ -22,13 +22,13 @@ The score suggests, it never decides:
 **Partners** (SAP partners, integrators, consultancies: a referral and co-selling channel), **competitors** (order, invoice and procurement automation vendors: market intel) and **existing customers** (for their account owner) are kept out of review by default. Tick "Partners, competitors & customers" to see them.
 
 ## Scores
-Each contact gets 0–100 points: **role** (what they do and how senior), **company** (operating company, industry, size, DACH, ERP), and **event** (speaking or moderating, how soon, whether GeneralMind has a stand). Every point shows up as a reason. Company details are estimates until an enrichment provider confirms them. **Data confidence** drops when a list is from last year's edition, the company profile is uncertain, or the name wasn't found on the saved source page.
+Each person gets 0–100 points: **role** (what they do and how senior), **company** (operating company, industry, size, DACH, ERP), and **event** (speaking or moderating, how soon, whether GeneralMind has a stand). Every point shows up as a reason. Company details are estimates until an enrichment provider confirms them. **Data confidence** drops when a list is from last year's edition, the company profile is uncertain, or the name wasn't found on the saved source page.
 
 ## Companies
 Each person's card shows their company: type (potential buyer, partner, competitor), industry, size, ERP where public, which events it exhibits at, and who else from it is on the lists. Approving a person brings their company along to HubSpot, linked.
 
-## Changing how leads are scored (Criteria)
-Every weight and keyword is a slider or a list. As you change something, the preview shows how many leads would move between lanes, who would enter or leave fast track, and how well the change agrees with past decisions. Nothing changes until you **Save and activate**. Every save is a numbered version with a note; any older version can be activated again. Settings that would break the scoring are refused.
+## Changing how events and people are scored (Criteria)
+One page with the main levers: how much the quality of the best people counts for an event, the stand, timing, travel, the meeting assumptions, the strong-fit and possible thresholds, and how much each role, seniority and company trait counts. Move a slider and the preview shows how many people would change suggestion and the new order of events. Nothing changes until you save with a note; earlier versions can be switched back to. The finer settings (keywords, size bands) live in the settings file, and the assistant can change them for you.
 
 ## Changing how leads are found (Playbooks)
 The plain-language instructions the AI steps follow when finding events, sourcing people from event pages and profiling companies. Open a playbook to edit it:
@@ -41,9 +41,6 @@ Nothing changes until you save with a short note, as a version or straight into 
 
 ## The copilot
 A help assistant. Ask it about what's in the cockpit ("who should we meet first at BME?", "why is this person scored 95?", "how many people are approved at the events we're going to?") or how the cockpit works. It answers from the cockpit's data and links you straight to the right page. It can also propose a small scoring change (saved as a version you check and activate) and write down feedback. Choosing events, approving people and sending to HubSpot stay with you. The owner chooses the model and its thinking effort in Settings.
-
-## Insights
-The funnel from sourced to HubSpot, decisions over time, the change log, which events and industries give the best leads, and how each scoring version compares on past decisions.
 
 ## Feedback and errors
 Click the **Feedback** button, then click the part of the page your note is about (or press Esc for a general note). The note is saved with what you were looking at and your last few actions, so it can be reproduced. The **Feedback** tab lists every note: edit it, set its status (open, planned, done, won't do), write down what was done, or add a note directly. Errors in the page or on the server are recorded the same way and listed there too.

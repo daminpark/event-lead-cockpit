@@ -524,16 +524,22 @@ def score_events(events, contacts, account_rows, today, cfg):
         companies = [a for a in account_rows if e["id"] in a["events"] and a["id"] not in named]
         strong_people = sum(c["lane"] == "fast_track" for c in people)
         strong_companies = sum(a["lane"] == "fast_track" for a in companies)
-        strong = strong_people + strong_companies
-        reasons = []
-        pts = min(ec["max_strong_lead_points"], ec["per_strong_lead_points"] * strong)
-        label = f"{strong_people} strong-fit people" + (f" and {strong_companies} strong-fit exhibitors" if strong_companies else "")
-        reasons.append({"label": label, "points": pts})
-        listed = len(people) or len(companies)
         worth = (sum(c["lane"] in ("fast_track", "review") for c in people) if people
                  else sum(a["lane"] in ("fast_track", "review") for a in companies))
-        share = worth / listed if listed else 0
-        reasons.append({"label": f"{round(100 * share)}% of the list worth a look", "points": round(ec["worth_a_look_share_points"] * share)})
+        # Time, not names, is the limit: judge the event on the best people we could actually meet.
+        length = (dt.date.fromisoformat(e.get("end") or e["start"]) - dt.date.fromisoformat(e["start"])).days + 1
+        team = ec.get("team_size_with_stand", 2) if e.get("generalmind_present") else ec.get("team_size", 1)
+        slots = team * length * ec.get("meetings_per_person_per_day", 8)
+        buyers = sorted((c["score"] for c in people if c["lane"] in ("fast_track", "review", "filtered")), reverse=True)
+        pool, unit = buyers, "people"
+        if not buyers:  # trade fairs whose lists only name exhibitors: the companies are the prospects
+            pool, unit = sorted((a["score"] for a in companies if a["lane"] in ("fast_track", "review", "filtered")), reverse=True), "exhibitors"
+        best = pool[:slots]
+        quality = sum(best) / slots if slots else 0  # empty slots count as zero
+        share = 1 if unit == "people" else ec.get("exhibitor_only_share", 70) / 100
+        reasons = [{"label": f"Best {slots} {unit} average fit {round(sum(best) / len(best)) if best else 0}"
+                             + (f" (only {len(best)} for {slots} meetings)" if len(best) < slots else ""),
+                    "points": round(ec.get("best_people_points", 60) * quality / 100 * share)}]
         if e.get("generalmind_present"):
             reasons.append({"label": "GeneralMind already has a stand", "points": ec["generalmind_present_points"]})
         days = (dt.date.fromisoformat(e["start"]) - today).days
@@ -560,11 +566,10 @@ def score_events(events, contacts, account_rows, today, cfg):
         e["past"] = dt.date.fromisoformat(e.get("end") or e["start"]) < today
         e["lane"] = ("past" if e["past"] else "recommended" if e["score"] >= ec["recommend"]
                      else "consider" if e["score"] >= ec["consider"] else "skip")
-        # meeting plan: time, not names, is the limit (people sent can be changed per event in the cockpit)
-        days = (dt.date.fromisoformat(e.get("end") or e["start"]) - dt.date.fromisoformat(e["start"])).days + 1
-        team = ec.get("team_size_with_stand", 2) if e.get("generalmind_present") else ec.get("team_size", 1)
-        e["plan"] = {"days": days, "team_default": team, "meetings_per_person_per_day": ec.get("meetings_per_person_per_day", 8),
-                     "acceptance_rate": ec.get("acceptance_rate_percent", 25) / 100}
+        # meeting plan (people sent can be changed per event in the cockpit)
+        e["plan"] = {"days": length, "team_default": team, "meetings_per_person_per_day": ec.get("meetings_per_person_per_day", 8),
+                     "acceptance_rate": ec.get("acceptance_rate_percent", 25) / 100, "unit": unit,
+                     "ranked": pool[:200]}  # best fit scores first: lets the page work out best-N for any team size
         e["counts"] = {"people": len(people), "strong": strong_people, "worth": worth if people else 0,
                        "companies_without_contact": len(companies), "strong_companies": strong_companies,
                        "worth_companies": 0 if people else worth}
