@@ -30,4 +30,15 @@ for r in rows:
     if r["target"]:
         t = json.loads(r["target"])
         print(f"  target: {t.get('selector')}  text: {(t.get('text') or '')[:150]!r}  row: {t.get('row')}")
+    if r["context"]:
+        c = json.loads(r["context"])
+        st = c.get("state", {})
+        print(f"  state:  view={st.get('view')} contact={st.get('contact')} scoring=v{st.get('scoring_version')} build={st.get('app_version')} {st.get('viewport')}")
+        for t in c.get("trail", [])[-8:]:
+            print(f"    {t['t']} {t['type']}: {t['detail']}")
+errors = con.execute("SELECT id, source, message, path, created_at FROM errors WHERE resolved_at IS NULL ORDER BY id").fetchall()
+if errors:
+    print(f"\n{len(errors)} open errors (details under Insights > Errors)")
+    for e in errors:
+        print(f"  [{e['id']}] {e['created_at']} {e['source']} {e['path'] or ''}: {e['message'][:160]}")
 PY

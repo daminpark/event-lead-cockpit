@@ -35,7 +35,8 @@ class HubSpotError(Exception):
 
 
 def token():
-    return os.environ.get("HUBSPOT_TOKEN", "").strip()
+    from app import secrets_store
+    return secrets_store.get("hubspot")
 
 
 class Client:
@@ -177,6 +178,10 @@ def push(con, approved_accounts, approved_contacts, accounts_by_id, events, sync
 
 
 _status_cache = {"at": 0, "value": None}
+
+
+def reset_status():
+    _status_cache.update(at=0, value=None)
 
 
 def status():

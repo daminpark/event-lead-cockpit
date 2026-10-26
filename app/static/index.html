@@ -289,6 +289,7 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
     <button data-view="playbooks">Playbooks</button>
     <button data-view="insights">Insights</button>
     <button data-view="hubspot">HubSpot</button>
+    <button data-view="settings">Settings</button>
     <button data-view="about">How it works</button>
   </nav>
   <div class="who">
@@ -346,6 +347,7 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
   <section class="view" id="v-playbooks"><div id="playbooks"></div></section>
   <section class="view" id="v-insights"><div id="insights"></div><div id="learning"></div></section>
   <section class="view" id="v-hubspot"><div id="exportView"></div></section>
+  <section class="view" id="v-settings"><div id="settingsView"></div></section>
   <section class="view" id="v-about"><div class="panel prose" id="about"></div></section>
 </main>
 
@@ -389,6 +391,50 @@ const S = {
 };
 
 const $ = id => document.getElementById(id);
+
+// ---------- what happened before a note or an error ----------
+const TRAIL = [];
+function track(type, detail) {
+  TRAIL.push({ t: new Date().toISOString().slice(11, 19), type, detail: String(detail ?? '').slice(0, 160) });
+  if (TRAIL.length > 40) TRAIL.shift();
+}
+function describeEl(el) {
+  const label = (el.dataset.view && `tab ${el.dataset.view}`) || (el.dataset.lane && `lane ${el.dataset.lane}`) || (el.dataset.act && `${el.dataset.act}`) || (el.innerText || el.value || el.title || '').trim().replace(/\s+/g, ' ').slice(0, 60);
+  const row = el.closest('[data-id]')?.dataset.id;
+  return `${el.tagName.toLowerCase()} "${label}"${row ? ` on ${row}` : ''}`;
+}
+function appState() {
+  const v = id => document.getElementById(id)?.value || '';
+  return { view: S.view, url: location.pathname, filters: { q: v('q'), event: v('fEvent'), fn: v('fFunction'), sort: v('fSort'), decided: !!document.getElementById('fDecided')?.checked },
+    lanes: [...(S.lanes || [])], contact: S.sel, account: S.aSel, scoring_version: S.data?.meta?.scoring_version, app_version: S.data?.meta?.app_version,
+    role: S.data?.meta?.role, reviewer: S.reviewer, viewport: `${innerWidth}x${innerHeight}`, ua: navigator.userAgent.slice(0, 120) };
+}
+const context = () => ({ trail: TRAIL.slice(-25), state: appState() });
+const nativeFetch = window.fetch.bind(window);
+const reported = new Set();
+function reportError(message, detail) {
+  if (!message || reported.has(message) || reported.size > 20) return;
+  reported.add(message);
+  track('error', message);
+  nativeFetch('api/errors', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: String(message).slice(0, 1000), detail: detail ? String(detail).slice(0, 8000) : null, context: context(), author: S.reviewer || null }) }).catch(() => {});
+}
+window.addEventListener('error', e => reportError(e.message, e.error?.stack));
+window.addEventListener('unhandledrejection', e => reportError(String(e.reason?.message || e.reason), e.reason?.stack));
+window.fetch = async (url, opts = {}) => {
+  const method = (opts.method || 'GET').toUpperCase();
+  try {
+    const res = await nativeFetch(url, opts);
+    if (method !== 'GET' || !res.ok) track('api', `${method} ${url} → ${res.status}`);
+    if (res.status >= 500) reportError(`${method} ${url} returned ${res.status}`);
+    return res;
+  } catch (err) { reportError(`${method} ${url} failed: ${err.message}`, err.stack); throw err; }
+};
+document.addEventListener('click', e => { const el = e.target.closest('button, a, .row, .stat, input[type=checkbox]'); if (el) track('click', describeEl(el)); }, true);
+document.addEventListener('change', e => {
+  const t = e.target; if (!t.matches('select, input, textarea')) return;
+  track('change', `${t.id || t.name || t.dataset.path || t.dataset.list || t.tagName.toLowerCase()} = ${t.type === 'password' ? '(hidden)' : String(t.value).slice(0, 60)}`);
+}, true);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const safeUrl = u => /^https?:\/\//i.test(u || '') ? u : null;
 const store = { get(k) { try { return localStorage.getItem(k) } catch { return null } }, set(k, v) { try { localStorage.setItem(k, v) } catch {} } };
@@ -730,6 +776,7 @@ document.addEventListener('keydown', e => {
   const type = S.view === 'queue' ? 'contact' : S.view === 'accounts' ? 'account' : null;
   if (!type) return;
   const id = type === 'contact' ? S.sel : S.aSel, k = e.key.toLowerCase();
+  if ('jkaruo123456'.includes(k) || e.key.startsWith('Arrow')) track('key', `${e.key} on ${id}`);
   const rerender = type === 'contact' ? renderQueue : renderAccounts, move = type === 'contact' ? moveSel : moveSelA;
   if (k === 'j' || e.key === 'ArrowDown') { move(1); rerender(); scrollSel(); e.preventDefault(); }
   else if (k === 'k' || e.key === 'ArrowUp') { move(-1); rerender(); scrollSel(); e.preventDefault(); }
@@ -1144,8 +1191,8 @@ function renderInsights() {
       <div class="panel"><h3>By industry</h3><p class="lead">Which segments the events give us the most good contacts in.</p>
         <table class="t"><thead><tr><th>Industry</th><th>Contacts</th><th>Fast</th><th>Approved</th><th>Avg</th></tr></thead><tbody>${Object.entries(groups).sort((a, b) => b[1].fast - a[1].fast || b[1].n - a[1].n).slice(0, 12).map(([k, g]) => `<tr><td>${esc(k)}</td><td>${g.n}</td><td><b>${g.fast}</b></td><td>${g.ok}</td><td>${Math.round(g.score / g.n)}</td></tr>`).join('')}</tbody></table></div>
     </div>`;
-  $('insights').insertAdjacentHTML('beforeend', `<div class="grid2"><div class="panel" id="versionsCompared"><h3>Scoring versions compared</h3><div class="note">Loading…</div></div><div class="panel" id="fbInbox"><h3>Feedback inbox</h3><div class="note">Loading…</div></div></div>`);
-  renderVersionsCompared(); renderFeedbackInbox();
+  $('insights').insertAdjacentHTML('beforeend', `<div class="grid2"><div class="panel" id="versionsCompared"><h3>Scoring versions compared</h3><div class="note">Loading…</div></div><div class="panel" id="fbInbox"><h3>Feedback inbox</h3><div class="note">Loading…</div></div></div><div class="panel" id="errorsPanel"><h3>Errors</h3><div class="note">Loading…</div></div>`);
+  renderVersionsCompared(); renderFeedbackInbox(); renderErrors();
   renderLearning();
 }
 
@@ -1162,7 +1209,7 @@ async function renderFeedbackInbox() {
   if (!$('fbInbox')) return;
   $('fbInbox').innerHTML = `<h3>Feedback inbox</h3><p class="lead">Notes left with the Feedback button or the copilot. Each one shows what happened to it, so the person who wrote it can see it was acted on.</p>
     ${notes.length ? `<ul class="logl">${notes.slice(0, 30).map(n => { const t = n.target ? JSON.parse(n.target) : null; return `<li style="display:block"><div style="display:flex;justify-content:space-between;gap:8px"><b>#${n.id} ${esc(n.author || 'Someone')}</b><time>${esc(n.created_at.slice(5, 16).replace('T', ' '))}</time></div>
-      <div>${esc(n.comment)}</div>${t?.text ? `<small style="color:var(--muted)">About: ${esc(t.text.slice(0, 90))}</small>` : ''}
+      <div>${esc(n.comment)}</div>${t?.text ? `<small style="color:var(--muted)">About: ${esc(t.text.slice(0, 90))}</small>` : ''}${contextBlock(n.context)}
       <div style="margin-top:4px">${n.handled_at ? `<span class="chip lane lane-fast_track">Handled</span> <small>${esc(n.handled_note || '')}</small>` : `<span class="chip lane lane-review">Open</span> <button class="btn" data-handle="${n.id}" style="padding:1px 8px;font-size:12px">Mark handled</button>`}</div></li>`; }).join('')}</ul>` : '<div class="note">No feedback yet.</div>'}`;
   $('fbInbox').querySelectorAll('[data-handle]').forEach(b => b.onclick = async () => {
     const note = prompt('What was done? (e.g. "Fixed in a1b2c3d: wider name column")');
@@ -1203,7 +1250,7 @@ function openFeedback() {
   dlg.onclose = async () => {
     const text = $('fbText').value.trim();
     if (dlg.returnValue !== 'ok' || !text) return;
-    const res = await fetch('api/feedback', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ comment: text, target: picked, view: S.view, author: S.reviewer || null }) });
+    const res = await fetch('api/feedback', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ comment: text, target: picked, view: S.view, author: S.reviewer || null, context: context() }) });
     toast(res.ok ? 'Thanks, noted' : 'Could not save the note');
   };
   dlg.showModal(); $('fbText').focus();
@@ -1212,47 +1259,88 @@ $('fbBtn').onclick = e => { e.stopPropagation(); picking ? (stopPick(), picked =
 $('hsPill').onclick = () => document.querySelector('#tabs [data-view="hubspot"]').click();
 
 // ---------- about ----------
-function renderAbout() {
-  const n = S.contacts.length, a = S.data.accounts.length;
+async function renderAbout() {
+  const g = await (await fetch('api/guide')).json().catch(() => ({ text: '' }));
   $('about').innerHTML = `
-    <p><a class="btn primary" href="writeup" target="_blank" rel="noopener">Read the full write-up ↗</a></p>
-    <h2>What this is</h2>
-    <p>A working first version of an event-led lead engine for GeneralMind. It takes 10 upcoming events where your buyers go, pulls the people and companies listed on their public pages, scores each one with visible reasons, and puts them in front of a person to approve or reject. Approved leads export in HubSpot's import format.</p>
-    <p>It works the same way as Autopilot: a score with a threshold, a cockpit for the uncertain cases, and a record of every human decision so the scoring can learn and, step by step, earn the right to skip review.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px"><a class="btn primary" href="writeup" target="_blank" rel="noopener">Read the case study write-up ↗</a><button class="btn" id="askGuide">Ask the copilot instead</button></div>
     <div class="flow">
       <div>Event pages<small>speakers, agendas, exhibitors</small></div><span>→</span>
       <div>Saved copies<small>every lead traceable</small></div><span>→</span>
-      <div>Extraction<small>name, title, company, talk</small></div><span>→</span>
-      <div>Check<small>each lead found on its page</small></div><span>→</span>
+      <div>Extraction + check<small>name, title, company, talk</small></div><span>→</span>
       <div>Company profile<small>segment, industry, size</small></div><span>→</span>
-      <div>Score + lane<small>scoring.toml</small></div><span>→</span>
-      <div>Cockpit<small>approve / reject + reason</small></div><span>→</span>
-      <div>HubSpot<small>CSV now, API next</small></div>
+      <div>Score + lane<small>Criteria</small></div><span>→</span>
+      <div>Review<small>approve / reject + reason</small></div><span>→</span>
+      <div>HubSpot<small>companies + contacts</small></div>
     </div>
-    <h2>In numbers</h2>
-    <p>${S.data.events.length} events · ${n} named contacts · ${a} companies. Every contact links to the page it came from, and the saved copy of that page was checked for the name.</p>
-    <h2>Lanes</h2>
-    <ul>
-      <li><b>Fast track</b>: strong role and company fit, and the data looks solid. Suggested approve.</li>
-      <li><b>Review</b>: plausible but uncertain. A person decides.</li>
-      <li><b>Filtered</b>: low fit, vendors, associations, universities. Still visible, so a reviewer can rescue one.</li>
-      <li><b>Partners</b>: SAP partners, integrators and consultancies. A different motion (referrals and co-selling), so kept apart.</li>
-      <li><b>Competitors</b>: other order, invoice and procurement automation vendors. Not leads, but useful market intel.</li>
-      <li><b>Customers</b>: existing GeneralMind customers. Routed to the account owner rather than prospected.</li>
-    </ul>
-    <h2>Flexible, but hard to break</h2>
-    <ul>
-      <li><b>Criteria</b>: every weight and keyword behind the score is visible and adjustable. A slider shows the effect on the ranking before anything is saved, including how the change would have agreed with past reviewer decisions. Saving creates a numbered version; any version can be reactivated. Invalid settings are refused.</li>
-      <li><b>Playbooks</b>: the plain-language instructions the AI steps follow when finding events, sourcing leads and profiling companies. Versioned the same way.</li>
-      <li><b>Copilot</b>: answers questions about the data and proposes changes, but only as new inactive versions. A person previews and activates them. The model is chosen in the panel (via OpenRouter).</li>
-      <li><b>Code</b> changes go through git: feedback left with the Feedback button is picked up, fixed, committed, and the server deploys the new commit by itself, with a health check that keeps the old version running if the new one fails.</li>
-    </ul>
-    <h2>HubSpot</h2>
-    <p>Approved leads are pushed through HubSpot's API: companies and contacts, linked, each carrying our own id so a second push updates rather than duplicates. A light in the header shows whether the connection is healthy. The do-not-contact list is never pushed or exported.</p>
-    <h2>What v1 leaves out on purpose</h2>
-    <p>No emails or phone numbers (public pages don't carry them, and they should come from an enrichment provider with a proper legal basis). No LinkedIn scraping, and sites that block automated access are respected (transport logistic's exhibitor directory does, so it isn't used). Company details are AI estimates and labelled as such. No login: anyone with the link can review, so the copilot has an hourly cap.</p>`;
+    <div class="pb"><div class="md">${md(g.text)}</div></div>`;
+  $('askGuide').onclick = () => $('cpBtn').click();
 }
 
+// ---------- settings ----------
+async function renderSettings() {
+  const st = await (await fetch('api/settings')).json().catch(() => null);
+  if (!st) return;
+  const owner = st.role === 'owner';
+  const conn = (name, title, help, placeholder) => {
+    const c = st[name], ok = name === 'hubspot' ? S.hsStatus?.ok : c.set;
+    return `<div class="panel">
+      <h3><i class="dot ${c.set ? (ok ? 'ok' : 'bad') : ''}"></i>&nbsp; ${title}</h3>
+      <p class="lead">${help}</p>
+      <dl class="kv"><dt>Status</dt><dd>${c.set ? `Key saved ${c.hint ? `(ends ${esc(c.hint)})` : ''}, ${c.source === 'cockpit' ? 'set here' : 'set on the server'}${name === 'hubspot' && S.hsStatus ? ` · ${S.hsStatus.ok ? 'connection healthy' : esc(S.hsStatus.message || 'not connected')}` : ''}` : 'Not set'}</dd></dl>
+      ${owner ? `<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><input type="password" autocomplete="off" data-secret="${name}" placeholder="${placeholder}" style="flex:1;min-width:220px;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)">
+        <button class="btn primary" data-save-secret="${name}">Save</button>${c.source === 'cockpit' ? `<button class="btn" data-remove-secret="${name}">Remove</button>` : ''}</div><div class="err" id="err-${name}"></div>`
+      : '<div class="note">Only the owner can change keys.</div>'}
+    </div>`;
+  };
+  $('settingsView').innerHTML = `
+    <div class="panel"><h3>Settings</h3><p class="lead">You're signed in as <b>${owner ? 'owner' : 'team member'}</b>. ${owner ? 'You can manage the connections below. Keys are stored on the server and never shown again in full.' : 'The owner manages connections and the copilot model; everything else in the cockpit is yours to use.'}</p></div>
+    <div class="grid2">
+      ${conn('hubspot', 'HubSpot', 'A private app token lets the cockpit create and update companies and contacts. In HubSpot: Settings → Integrations → Private apps (or Development → Legacy apps) → create an app with read and write access to contacts and companies and their properties, then copy its token.', 'pat-…')}
+      ${conn('openrouter', 'OpenRouter (copilot)', 'The copilot talks to AI models through OpenRouter, so the model can be changed below without touching code. Create a key at openrouter.ai → Keys, ideally with a monthly credit limit.', 'sk-or-…')}
+    </div>
+    <div class="panel"><h3>Copilot model</h3><p class="lead">Applies to everyone. Prices are per million tokens in / out.</p><select id="setModel" ${owner ? '' : 'disabled'} style="width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink)"><option>Loading…</option></select></div>
+    <div class="panel"><h3>You</h3><p class="lead">Your name is saved with your decisions and notes.</p><button class="btn" id="setWho">Reviewer: ${esc(S.reviewer || 'not set')}</button></div>`;
+  const root = $('settingsView');
+  root.querySelectorAll('[data-save-secret]').forEach(b => b.onclick = () => saveSecret(b.dataset.saveSecret, root.querySelector(`[data-secret="${b.dataset.saveSecret}"]`).value));
+  root.querySelectorAll('[data-remove-secret]').forEach(b => b.onclick = () => { if (confirm('Remove this key?')) saveSecret(b.dataset.removeSecret, ''); });
+  $('setWho').onclick = async () => { store.set('reviewerAsked', ''); await askReviewer(); renderSettings(); };
+  try {
+    const m = await (await fetch('api/copilot/models')).json();
+    const sel = $('setModel');
+    if (!m.configured) { sel.innerHTML = '<option>Add an OpenRouter key first</option>'; sel.disabled = true; return; }
+    sel.innerHTML = m.models.map(x => `<option value="${esc(x.id)}" ${x.id === m.current ? 'selected' : ''}>${esc(x.name)} · ${esc(x.price)}</option>`).join('');
+    sel.onchange = async () => { const r = await fetch('api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: 'copilot_model', value: sel.value }) }); toast(r.ok ? 'Model saved for everyone' : 'Only the owner can change the model'); };
+  } catch { $('setModel').innerHTML = '<option>Models unavailable</option>'; }
+}
+
+async function saveSecret(name, value) {
+  const res = await fetch('api/settings/secret', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, value }) });
+  const out = await res.json().catch(() => ({}));
+  if (!res.ok) { $(`err-${name}`).textContent = out.detail || 'Could not save'; return; }
+  toast(value ? 'Saved' : 'Removed');
+  await refreshHubspot(); renderSettings();
+}
+
+// ---------- errors and context ----------
+function contextBlock(raw) {
+  if (!raw) return '';
+  let c; try { c = typeof raw === 'string' ? JSON.parse(raw) : raw; } catch { return ''; }
+  const st = c.state || {};
+  return `<details style="margin-top:4px"><summary style="cursor:pointer;color:var(--muted);font-size:12px">What was happening</summary>
+    <div class="diff" style="max-height:220px">${(c.trail || []).map(t => `${esc(t.t)} ${esc(t.type)}: ${esc(t.detail)}`).join('<br>') || 'No actions recorded'}
+    <br><br>view ${esc(st.view)} · contact ${esc(st.contact || '—')} · scoring v${esc(st.scoring_version)} · build ${esc(st.app_version)} · ${esc(st.viewport)} · ${esc(st.role || '')}</div></details>`;
+}
+
+async function renderErrors() {
+  const rows = await (await fetch('api/errors')).json().catch(() => []);
+  if (!$('errorsPanel')) return;
+  const open = rows.filter(r => !r.resolved_at);
+  $('errorsPanel').innerHTML = `<h3>Errors <span class="chip ${open.length ? 'warn' : ''}">${open.length} open</span></h3><p class="lead">Anything that went wrong in the page or on the server, with the last actions and the app's state at that moment, so it can be reproduced.</p>
+    ${rows.length ? `<ul class="logl">${rows.slice(0, 20).map(r => `<li style="display:block"><div style="display:flex;justify-content:space-between;gap:8px"><b>#${r.id} ${esc(r.source)}${r.path ? ' · ' + esc(r.path) : ''}</b><time>${esc(r.created_at.slice(5, 16).replace('T', ' '))}</time></div>
+      <div>${esc(r.message)}</div>${r.detail ? `<details><summary style="cursor:pointer;color:var(--muted);font-size:12px">Stack</summary><div class="diff">${esc(r.detail).replace(/\n/g, '<br>')}</div></details>` : ''}${contextBlock(r.context)}
+      <div style="margin-top:4px">${r.resolved_at ? '<span class="chip lane lane-fast_track">Resolved</span>' : `<button class="btn" data-resolve="${r.id}" style="padding:1px 8px;font-size:12px">Mark resolved</button>`}</div></li>`).join('')}</ul>` : '<div class="note">No errors recorded.</div>'}`;
+  $('errorsPanel').querySelectorAll('[data-resolve]').forEach(b => b.onclick = async () => { await fetch(`api/errors/${b.dataset.resolve}/resolved`, { method: 'POST' }); renderErrors(); });
+}
 
 // ---------- copilot ----------
 const CP_SUGGEST = ['Who are the 10 people GeneralMind should book meetings with at BME?', 'Why is the selected lead scored the way it is?',
@@ -1277,10 +1365,12 @@ async function loadModels() {
   try {
     const out = await (await fetch('api/copilot/models')).json();
     const sel = $('cpModel');
-    if (!out.configured) { sel.innerHTML = '<option>No OpenRouter key yet</option>'; sel.disabled = true; return; }
+    if (!out.configured) { sel.innerHTML = '<option>No OpenRouter key yet (Settings)</option>'; sel.disabled = true; return; }
     const list = out.models.length ? out.models : [{ id: out.current, name: out.current, price: '' }];
     sel.innerHTML = list.map(m => `<option value="${esc(m.id)}" ${m.id === out.current ? 'selected' : ''}>${esc(m.name)}${m.price ? ' · ' + esc(m.price) : ''}</option>`).join('');
-    sel.onchange = async () => { await fetch('api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: 'copilot_model', value: sel.value }) }); toast('Model saved for everyone'); };
+    sel.disabled = S.data?.meta?.role !== 'owner';
+    sel.title = sel.disabled ? 'The owner chooses the model in Settings' : 'Model (via OpenRouter)';
+    sel.onchange = async () => { const r = await fetch('api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: 'copilot_model', value: sel.value }) }); toast(r.ok ? 'Model saved for everyone' : 'Only the owner can change the model'); };
   } catch { $('cpModel').innerHTML = '<option>Models unavailable</option>'; }
 }
 $('cpForm').onsubmit = async e => {
@@ -1305,6 +1395,7 @@ $('cpClear').onclick = () => { S.cp = []; store.set('cp', '[]'); renderCp(); };
 // ---------- wiring ----------
 $('tabs').querySelectorAll('button').forEach(b => b.onclick = () => {
   S.view = b.dataset.view;
+  if (S.view === 'settings') renderSettings();
   $('tabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === `v-${S.view}`));
   store.set('view', S.view);

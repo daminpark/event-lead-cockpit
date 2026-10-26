@@ -65,7 +65,7 @@ deploy_key() {
 secrets() {
   say "secrets"
   # Only these keys leave the Mac, and they are never printed.
-  grep -E '^(HUBSPOT_TOKEN|OPENROUTER_API_KEY|COCKPIT_CODE)=' deploy/local.env \
+  grep -E '^(HUBSPOT_TOKEN|OPENROUTER_API_KEY|COCKPIT_CODE|COCKPIT_OWNER_CODE)=' deploy/local.env \
     | ssh "$HOST" "pct exec $CT -- sh -c 'umask 077; cat > /etc/default/gm-cockpit'"
   in_ct "systemctl restart gm-cockpit.service 2>/dev/null || true; echo saved"
 }

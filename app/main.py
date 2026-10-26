@@ -8,14 +8,15 @@ import json
 import os
 import re
 import threading
+import traceback
 from contextlib import closing
 from typing import Literal
 
-from fastapi import FastAPI, Form, HTTPException, Request
+from fastapi import Depends, FastAPI, Form, HTTPException, Request
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
-from app import copilot, hubspot
+from app import copilot, hubspot, secrets_store
 from pipeline import build as pipeline
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,7 +28,8 @@ write_lock = threading.Lock()  # one writer at a time for rebuilds and pushes
 
 # The leads are real people, and the page can push to HubSpot and spend on the copilot,
 # so everything sits behind a shared access code (sent with the link).
-CODE = os.environ.get("COCKPIT_CODE", "").strip()
+CODE = os.environ.get("COCKPIT_CODE", "").strip()              # shared with the team
+OWNER_CODE = os.environ.get("COCKPIT_OWNER_CODE", "").strip()  # also manages keys and the copilot model
 OPEN = os.environ.get("COCKPIT_ALLOW_OPEN") == "1"  # local development only
 if not CODE and not OPEN:
     raise RuntimeError("Set COCKPIT_CODE (or COCKPIT_ALLOW_OPEN=1 for local development)")
@@ -47,16 +49,35 @@ button{width:100%;font:inherit;font-weight:600;padding:10px;border:0;border-radi
 ERROR<input name="code" type="password" autocomplete="current-password" autofocus placeholder="Access code"><button>Open</button></form></body></html>"""
 
 
-def code_ok(value):
-    if not CODE:
-        return OPEN
-    return value is not None and hmac.compare_digest(value.encode(), CODE.encode())
+def role_for(value):
+    same = lambda a, b: bool(a and b) and hmac.compare_digest(a.encode(), b.encode())
+    if same(value, OWNER_CODE):
+        return "owner"
+    if same(value, CODE):
+        return "team"
+    return "owner" if OPEN and not CODE else None
+
+
+def record_error(source, message, detail=None, context=None, path=None, author=None):
+    try:
+        with db() as con:
+            con.execute("INSERT INTO errors (source, message, detail, context, path, author, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                        (source, message[:1000], (detail or "")[:8000] or None,
+                         json.dumps(context, ensure_ascii=False)[:20000] if context else None, path, author, pipeline.now()))
+            con.commit()
+    except Exception:
+        pass  # never let error logging take the request down with it
 
 
 @app.middleware("http")
 async def require_code(request: Request, call_next):
-    if request.url.path in OPEN_PATHS or code_ok(request.cookies.get("gm_code")):
-        resp = await call_next(request)
+    request.state.role = role_for(request.cookies.get("gm_code"))
+    if request.url.path in OPEN_PATHS or request.state.role:
+        try:
+            resp = await call_next(request)
+        except Exception as e:  # recorded with its path, so it shows up under Insights > Errors
+            record_error("server", f"{type(e).__name__}: {e}", traceback.format_exc(), path=f"{request.method} {request.url.path}")
+            resp = JSONResponse({"detail": "Something went wrong on the server. It has been recorded."}, status_code=500)
     elif request.url.path.startswith("/api/"):
         resp = JSONResponse({"detail": "Access code needed"}, status_code=401)
     else:
@@ -68,7 +89,7 @@ async def require_code(request: Request, call_next):
 
 @app.post("/login")
 def login(code: str = Form(max_length=200)):
-    if not code_ok(code.strip()):
+    if not role_for(code.strip()):
         threading.Event().wait(1.5)  # slow down guessing
         return HTMLResponse(LOGIN_PAGE.replace("ERROR", '<div class="err">That code didn\'t work.</div>'), status_code=401)
     resp = RedirectResponse("./", status_code=303)
@@ -78,6 +99,11 @@ def login(code: str = Form(max_length=200)):
 
 def db():
     return closing(pipeline.connect(pipeline.DB))
+
+
+def owner_only(request: Request):
+    if request.state.role != "owner":
+        raise HTTPException(403, "Only the owner can change this")
 
 
 def log(con, kind, message, data=None):
@@ -130,7 +156,7 @@ def rebuild_if_stale(con):
 
 
 @app.get("/api/data")
-def data():
+def data(request: Request):
     with db() as con:
         rebuild_if_stale(con)
         rows = lambda sql: [json.loads(r["data"]) for r in con.execute(sql)]
@@ -139,7 +165,7 @@ def data():
             "contacts": rows("SELECT data FROM contacts"),
             "accounts": rows("SELECT data FROM accounts"),
             "appearances": rows("SELECT data FROM appearances"),
-            "meta": {r["key"]: json.loads(r["value"]) for r in con.execute("SELECT key, value FROM meta")} | {"app_version": VERSION},
+            "meta": {r["key"]: json.loads(r["value"]) for r in con.execute("SELECT key, value FROM meta")} | {"app_version": VERSION, "role": request.state.role},
             "decisions": [dict(r) for r in con.execute("SELECT * FROM decisions ORDER BY id")],
             "suppression": [dict(r) for r in con.execute("SELECT * FROM suppression")],
             "hubspot": [dict(r) for r in con.execute("SELECT * FROM hubspot_sync")],
@@ -332,14 +358,16 @@ class Feedback(BaseModel):
     target: dict | None = None
     view: str | None = Field(default=None, max_length=60)
     author: str | None = Field(default=None, max_length=60)
+    context: dict | None = None  # recent actions and app state when the note was written
 
 
 @app.post("/api/feedback")
 def feedback(f: Feedback):
     target = json.dumps(f.target, ensure_ascii=False)[:4000] if f.target else None
     with db() as con:
-        cur = con.execute("INSERT INTO feedback (comment, target, view, author, created_at) VALUES (?, ?, ?, ?, ?)",
-                          (f.comment, target, f.view, f.author, pipeline.now()))
+        context = json.dumps(f.context, ensure_ascii=False)[:20000] if f.context else None
+        cur = con.execute("INSERT INTO feedback (comment, target, view, author, created_at, context) VALUES (?, ?, ?, ?, ?, ?)",
+                          (f.comment, target, f.view, f.author, pipeline.now(), context))
         log(con, "feedback", f"{f.author or 'Someone'} left feedback on {f.view or 'the page'}")
         con.commit()
     return {"id": cur.lastrowid}
@@ -534,7 +562,7 @@ class Setting(BaseModel):
     value: str = Field(max_length=200)
 
 
-@app.post("/api/settings")
+@app.post("/api/settings", dependencies=[Depends(owner_only)])
 def save_setting(s: Setting):
     with db() as con:
         con.execute("INSERT OR REPLACE INTO settings VALUES (?, ?)", (s.key, s.value))
@@ -568,3 +596,74 @@ def copilot_chat(c: Chat):
             log(con, "copilot", a["text"])
         con.commit()
     return out
+
+
+# ---------- settings: keys and connections ----------
+
+@app.get("/api/settings")
+def settings(request: Request):
+    with db() as con:
+        model = copilot.setting(con, "copilot_model")
+    return {"role": request.state.role, "hubspot": secrets_store.status("hubspot"),
+            "openrouter": secrets_store.status("openrouter"), "copilot_model": model}
+
+
+class Secret(BaseModel):
+    name: Literal["hubspot", "openrouter"]
+    value: str = Field(default="", max_length=400)
+
+
+@app.post("/api/settings/secret", dependencies=[Depends(owner_only)])
+def save_secret(sec: Secret):
+    error = secrets_store.put(sec.name, sec.value)
+    if error:
+        raise HTTPException(400, error)
+    hubspot.reset_status()
+    with db() as con:
+        log(con, "config", f"{'Saved' if sec.value.strip() else 'Removed'} the {'HubSpot token' if sec.name == 'hubspot' else 'OpenRouter key'}")
+        con.commit()
+    return secrets_store.status(sec.name)
+
+
+# ---------- errors ----------
+
+CLIENT_ERRORS = {"window": 3600, "max": 300, "at": []}
+
+
+class ClientError(BaseModel):
+    message: str = Field(max_length=1000)
+    detail: str | None = Field(default=None, max_length=8000)
+    context: dict | None = None
+    author: str | None = Field(default=None, max_length=60)
+
+
+@app.post("/api/errors")
+def client_error(e: ClientError):
+    now = dt.datetime.now().timestamp()
+    CLIENT_ERRORS["at"] = [t for t in CLIENT_ERRORS["at"] if now - t < CLIENT_ERRORS["window"]]
+    if len(CLIENT_ERRORS["at"]) < CLIENT_ERRORS["max"]:
+        CLIENT_ERRORS["at"].append(now)
+        record_error("client", e.message, e.detail, e.context, path=(e.context or {}).get("state", {}).get("view"), author=e.author)
+    return {"ok": True}
+
+
+@app.get("/api/errors")
+def errors_list():
+    with db() as con:
+        return [dict(r) for r in con.execute("SELECT * FROM errors ORDER BY id DESC LIMIT 50")]
+
+
+@app.post("/api/errors/{error_id}/resolved")
+def error_resolved(error_id: int):
+    with db() as con:
+        con.execute("UPDATE errors SET resolved_at = ? WHERE id = ?", (pipeline.now(), error_id))
+        con.commit()
+    return {"ok": True}
+
+
+# ---------- guide ----------
+
+@app.get("/api/guide")
+def guide():
+    with open(os.path.join(ROOT, "docs", "guide.md"), encoding="utf-8") as f:
+        return {"text": f.read()}

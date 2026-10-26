@@ -263,6 +263,18 @@ CREATE TABLE IF NOT EXISTS hubspot_sync (
   PRIMARY KEY (object_type, object_id)
 );
 CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+-- Errors from the browser and the server, with what the person was doing at the time.
+CREATE TABLE IF NOT EXISTS errors (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  source TEXT NOT NULL,               -- client | server
+  message TEXT NOT NULL,
+  detail TEXT,                        -- stack trace
+  context TEXT,                       -- JSON: recent actions and app state
+  path TEXT,
+  author TEXT,
+  created_at TEXT NOT NULL,
+  resolved_at TEXT
+);
 CREATE TABLE IF NOT EXISTS copilot_log (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   author TEXT,
@@ -307,6 +319,8 @@ def connect(path=DB):
     con.executescript(SCHEMA)
     if "scoring_version" not in {r["name"] for r in con.execute("PRAGMA table_info(decisions)")}:
         con.execute("ALTER TABLE decisions ADD COLUMN scoring_version INTEGER")
+    if "context" not in {r["name"] for r in con.execute("PRAGMA table_info(feedback)")}:
+        con.execute("ALTER TABLE feedback ADD COLUMN context TEXT")  # recent actions and app state
     return con
 
 

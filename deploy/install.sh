@@ -11,7 +11,7 @@ mkdir -p "$DATA" && chown gmcockpit:gmcockpit "$DATA" && chmod 750 "$DATA"
 
 # 1. code and dependencies, prepared next to the running version
 rm -rf "$APP.new" && mkdir -p "$APP.new"
-cp -R "$SRC/app" "$SRC/pipeline" "$SRC/data" "$SRC/playbooks" "$SRC/scoring.toml" "$SRC/pyproject.toml" "$APP.new/"
+cp -R "$SRC/app" "$SRC/pipeline" "$SRC/data" "$SRC/playbooks" "$SRC/docs" "$SRC/scoring.toml" "$SRC/pyproject.toml" "$APP.new/"
 echo "$SHA" > "$APP.new/VERSION"
 chmod -R a+rX,go-w "$APP.new"
 [ -d /opt/gm-cockpit-venv ] || python3 -m venv /opt/gm-cockpit-venv

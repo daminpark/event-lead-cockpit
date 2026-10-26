@@ -84,7 +84,8 @@ TOOLS = [
 
 
 def key():
-    return os.environ.get("OPENROUTER_API_KEY", "").strip()
+    from app import secrets_store
+    return secrets_store.get("openrouter")
 
 
 _models = {"at": 0, "list": []}
@@ -264,7 +265,9 @@ def chat(con, messages, context, latest_decisions, validate_scoring, author=None
 
     model = setting(con, "copilot_model") or default_model()
     tools = Tools(con, latest_decisions, validate_scoring, author)
-    convo = [{"role": "system", "content": SYSTEM + f"\n\nToday is {dt.date.today().isoformat()}. The person is looking at: {json.dumps(context)[:600]}"}]
+    with open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "docs", "guide.md"), encoding="utf-8") as f:
+        guide = f.read()  # the same guide the page shows, so "how do I…" answers match the app
+    convo = [{"role": "system", "content": SYSTEM + f"\n\n# The cockpit's guide\n{guide}\n\nToday is {dt.date.today().isoformat()}. The person is looking at: {json.dumps(context)[:600]}"}]
     convo += [{"role": m["role"], "content": m["content"]} for m in messages[-20:] if m.get("role") in ("user", "assistant")]
     with httpx.Client(timeout=httpx.Timeout(90.0)) as http:
         for _ in range(MAX_ROUNDS):
