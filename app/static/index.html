@@ -384,7 +384,6 @@ dialog textarea, .ed textarea, .pb textarea { width: 100%; font: 13px/1.5 Inter,
   <nav id="tabs">
     <button data-view="events" class="on">Events</button>
     <button data-view="people">People</button>
-    <button data-view="criteria">Criteria</button>
     <button data-view="playbooks">Playbooks</button>
     <button data-view="feedback">Feedback</button>
     <button data-view="settings">Settings</button>
@@ -676,7 +675,7 @@ function renderEventsList() {
         <div class="t2">${fmtDay(e.added_at)}<br><small>${esc((e.found_by || '').replace(/ \(.*\)$/, ''))}</small></div>
       </div>`;
     }).join('') : `<div class="empty">${when === 'past' && !inWhen.length ? "No past events yet. Events move here once they've happened, showing whether we went. Once HubSpot syncs outcomes back, this is where to see what each event produced." : 'No events here.'}</div>`}</div>
-    <div style="color:var(--faint);font-size:11.5px;margin-top:8px">Travel is approximate door to door from Berlin. Meetings: people we'd send × days × meetings a day each; "invite" assumes about ${Math.round(100 * (S.data.events[0]?.plan?.acceptance_rate || 0.25))}% accept. These assumptions are in <a href="#/criteria">Criteria</a> (Meeting plan).</div>`;
+    <div style="color:var(--faint);font-size:11.5px;margin-top:8px">Travel is approximate door to door from Berlin. Meetings: people we'd send × days × meetings a day each; "invite" assumes about ${Math.round(100 * (S.data.events[0]?.plan?.acceptance_rate || 0.25))}% accept. These assumptions are in <a href="#/playbooks/scoring">Scoring</a> (Meeting plan).</div>`;
   $('eventsList').querySelectorAll('[data-evf]').forEach(b => b.onclick = () => { S.evFilter = b.dataset.evf; renderEventsList(); });
   $('eventsList').querySelectorAll('[data-when]').forEach(b => b.onclick = () => { S.evWhen = b.dataset.when; S.evFilter = 'all'; renderEventsList(); });
   $('eventsList').querySelectorAll('[data-sort]').forEach(b => b.onclick = e => {
@@ -720,7 +719,7 @@ function renderEventPage() {
       </div>
       <div class="panel"><h3>Why it scored ${e.score} <span class="chip lane lane-${(EVENT_LANES[e.lane] || ['', 'filtered'])[1]}">${(EVENT_LANES[e.lane] || ['Unscored'])[0]}</span></h3>
         <div class="breakdown">${e.reasons.map(r => `<div class="bk"><span>${esc(r.label)}</span><div class="bkbar"><span style="width:${Math.round(100 * r.points / maxPts)}%"></span></div><b class="num">${r.points ? '+' + r.points : '0'}</b></div>`).join('')}</div>
-        <div style="color:var(--faint);font-size:11.5px;margin-top:8px">${e.score} of 100. The weights are in <a href="#/criteria">Criteria</a> (Events: which to go to).</div>
+        <div style="color:var(--faint);font-size:11.5px;margin-top:8px">${e.score} of 100. The weights are in <a href="#/playbooks/scoring">Scoring</a> (Events: which to go to).</div>
       </div>
     </div>
     ${e.access === 'invitation' ? `<div class="note" style="margin:0 0 16px"><b>Invitation only:</b> attending needs an invitation from the organiser (or a sponsor or partner slot). Ask early, before planning meetings.</div>` : e.access === 'partners' ? `<div class="note" style="margin:0 0 16px"><b>Vendors only as partners:</b> companies selling to the attendees can't buy a delegate ticket; they attend as a paying commercial partner.</div>` : ''}
@@ -766,7 +765,7 @@ function planBlock(e, n) {
       × <b>${pl.days}</b> day${pl.days > 1 ? 's' : ''} × <b>${pl.meetings_per_person_per_day}</b> meetings a day = <b>${pl.meetings} meetings</b>.
       The best ${pl.meetings} ${unit} here average a fit of <b>${pl.bestAvg}</b>.${fill}</div>
     <div class="note">${more}${e.generalmind_present ? ' GeneralMind is a partner here, so the default is two people.' : ''}</div>
-    ${e.counts.people ? `<div style="font-size:13.5px;margin-top:10px">About ${Math.round(100 * pl.acceptance_rate)}% accept (set in <a href="#/criteria">Criteria</a>), so invite the best <b>~${pl.invites}</b>, best first, and let the replies do the narrowing.</div>
+    ${e.counts.people ? `<div style="font-size:13.5px;margin-top:10px">About ${Math.round(100 * pl.acceptance_rate)}% accept (set in <a href="#/playbooks/scoring">Scoring</a>), so invite the best <b>~${pl.invites}</b>, best first, and let the replies do the narrowing.</div>
     <div style="display:flex;align-items:center;gap:10px;margin-top:8px"><div class="meter" style="flex:1;height:10px"><span style="width:${pct}%"></span></div><span class="num" style="font-size:13px"><b>${appr}</b> approved of ~${pl.invites}</span></div>` : ''}</div>`;
 }
 
@@ -908,6 +907,7 @@ function hashFor(view = S.view) {
   if (view === 'events') return S.eventId ? `#/event/${encodeURIComponent(S.eventId)}` + tail() : '#/events';
   if (view === 'people') { const scope = S.data ? currentScope() : (S.peopleScope ?? 'going'); return `#/people/${scope === '' ? 'all' : encodeURIComponent(scope)}` + tail(); }
   if (view === 'playbooks') return S.pbKind ? `#/playbooks/${S.pbKind}` : '#/playbooks';
+  if (view === 'criteria') return '#/playbooks/scoring';
   return `#/${view}`;
 }
 function personHash(c) { return `#/event/${encodeURIComponent(c.event_id)}/${statusOf(c)}/${encodeURIComponent(c.id)}`; }
@@ -924,6 +924,7 @@ function applyHash() {
   if (view === 'event') { S.eventId = a || null; S.status = status(b); S.sel = c || null; return 'events'; }
   if (view === 'events') { S.eventId = null; return 'events'; }
   if (view === 'people') { S.peopleScope = a === 'all' ? '' : 'going'; S.status = status(b); S.sel = c || null; return 'people'; }
+  if (view === 'playbooks' && a === 'scoring') return 'criteria';
   if (view === 'playbooks') { S.pbKind = a || null; return 'playbooks'; }
   return VIEWS.includes(view) ? view : null;
 }
@@ -1139,7 +1140,7 @@ function renderExport() {
   };
 }
 
-// ---------- criteria: the main levers, then every other setting folded away ----------
+// ---------- scoring (the last playbook step): the main levers, then every other setting folded away ----------
 const LEVERS = [
   ['Events: which to go to', [
     ['event_choice.best_people_points', 'Quality of the best people we could meet', 'Average fit of the best N people, where N is the meetings possible. The main driver.', 0, 80],
@@ -1215,7 +1216,8 @@ function renderCriteria() {
   if (!S.draft) { S.draft = JSON.parse(act.body); S.draftBase = act.version; }
   const changed = JSON.stringify(S.draft) !== JSON.stringify(actCfg) ? [1] : [];
   $('criteria').innerHTML = `
-    <div class="panel"><h3>Criteria</h3><p class="lead" style="margin:0">The few settings that decide which events come first and who counts as a strong fit. Move a slider and the preview shows what would change; nothing changes until you save. Using scoring v${act.version}.</p></div>
+    <div style="margin-bottom:10px"><a href="#/playbooks" data-back>← All playbooks</a></div>
+    <div class="panel"><div class="stepno">Playbook · step 4 of 4</div><h3>Scoring</h3><p class="lead" style="margin:0">The last step: how much each fact the other playbooks collect is worth. These settings decide which events come first and who counts as a strong fit. Move a slider and the preview shows what would change; nothing changes until you save. Using scoring v${act.version}.</p></div>
     <div class="crit">
       <div>${LEVERS.map(([title, ls]) => `<div class="panel ed"><h3>${esc(title)}</h3>${ls.map(([p, label, help, lo, hi]) => {
         const v = getPath(S.draft, p) ?? 0, was = getPath(actCfg, p);
@@ -1237,6 +1239,7 @@ function renderCriteria() {
       </div>
     </div>`;
   const root = $('criteria');
+  root.querySelector('[data-back]').onclick = e => { e.preventDefault(); S.pbKind = null; showView('playbooks'); };
   root.querySelectorAll('input[type=range]').forEach(inp => inp.oninput = () => {
     const v = +inp.value, was = getPath(actCfg, inp.dataset.path);
     setPath(S.draft, inp.dataset.path, v);
@@ -1369,13 +1372,18 @@ function renderPlaybooks() {
   if (!S.config) return;
   if (S.pbKind && !PLAYBOOKS.some(([k]) => k === S.pbKind)) S.pbKind = null;
   if (!S.pbKind) {
-    $('playbooks').innerHTML = `<div class="panel"><h3>Playbooks: the instructions the engine follows</h3><p class="lead">The AI steps that find events, source people from event pages and profile companies follow these instructions, written in plain language. Open one to edit it, compare versions, or talk it through with the model, which can also make the edits for you. Nothing changes until you save.</p></div>
+    $('playbooks').innerHTML = `<div class="panel"><h3>Playbooks: the instructions the engine follows</h3><p class="lead">The AI steps that find events, source people from event pages and profile companies follow these instructions, written in plain language; the last step, Scoring, decides how much each thing they collect is worth. Open one to edit it, compare versions, or talk it through with the model, which can also make the edits for you. Nothing changes until you save.</p></div>
       <div class="list">${PLAYBOOKS.map(([k, title, sub]) => {
         const vs = S.config[`playbook:${k}`], act = vs.find(v => v.active), st = S.pbs?.[k], unsaved = (st?.draft ?? store.get(`pbdraft:${k}`)) && (st?.draft ?? store.get(`pbdraft:${k}`)) !== act.body;
-        return `<div class="evtable pbrow" data-pb="${k}" style="grid-template-columns:minmax(0,1fr) auto 24px"><div><div class="t1">${esc(title)}</div><div class="t2">${esc(sub)}</div></div>
+        return `<div class="evtable pbrow" data-pb="${k}" style="grid-template-columns:minmax(0,1fr) auto 24px"><div><div class="t1">${PLAYBOOKS.findIndex(([x]) => x === k) + 1}. ${esc(title)}</div><div class="t2">${esc(sub)}</div></div>
           <div class="t2" style="text-align:right">active v${act.version} · ${esc(act.note || '')}<br><small>${vs.length} version${vs.length > 1 ? 's' : ''}${unsaved ? ' · <b style="color:var(--review)">unsaved draft</b>' : ''}</small></div><div class="acts"><span style="color:var(--faint)">›</span></div></div>`;
-      }).join('')}</div>`;
+      }).join('')}${(() => {
+        const sv = activeVersion('scoring'), unsaved = S.draft && JSON.stringify(S.draft) !== JSON.stringify(JSON.parse(sv.body));
+        return `<div class="evtable pbrow" data-scoring style="grid-template-columns:minmax(0,1fr) auto 24px"><div><div class="t1">${PLAYBOOKS.length + 1}. Scoring</div><div class="t2">How much each collected fact is worth: the weights behind every event and person score.</div></div>
+          <div class="t2" style="text-align:right">active v${sv.version} · ${esc(sv.note || '')}<br><small>${S.config.scoring.length} version${S.config.scoring.length > 1 ? 's' : ''}${unsaved ? ' · <b style="color:var(--review)">unsaved changes</b>' : ''}</small></div><div class="acts"><span style="color:var(--faint)">›</span></div></div>`;
+      })()}</div>`;
     $('playbooks').querySelectorAll('[data-pb]').forEach(r => r.onclick = () => { S.pbKind = r.dataset.pb; showView('playbooks'); window.scrollTo(0, 0); });
+    $('playbooks').querySelector('[data-scoring]').onclick = () => { showView('criteria'); window.scrollTo(0, 0); };
     if (S.view === 'playbooks') syncHash();
     return;
   }
@@ -1686,7 +1694,7 @@ function renderCp(pending = false) {
   });
   box.querySelectorAll('[data-review-v]').forEach(b => b.onclick = () => {
     const kind = b.dataset.reviewV;
-    if (kind === 'scoring') { const v = S.config.scoring.find(x => x.id === +b.previousElementSibling.dataset.activateV); if (v) { S.draft = JSON.parse(v.body); S.draftBase = v.version; } document.querySelector('#tabs [data-view="criteria"]').click(); renderCriteria(); schedulePreview(); }
+    if (kind === 'scoring') { const v = S.config.scoring.find(x => x.id === +b.previousElementSibling.dataset.activateV); if (v) { S.draft = JSON.parse(v.body); S.draftBase = v.version; } showView('criteria'); renderCriteria(); schedulePreview(); }
     else { S.pbKind = kind.split(':')[1]; const st = pbState(S.pbKind); st.compareId = +b.previousElementSibling.dataset.activateV; st.tab = 'changes'; showView('playbooks'); }
   });
   box.scrollTop = box.scrollHeight;
@@ -1728,7 +1736,7 @@ function showView(name, push = true) {
   S.view = OLD_VIEWS[name] || name;
   if (!$(`v-${S.view}`)) S.view = 'events';
   syncHash(push);
-  $('tabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.view === S.view));
+  $('tabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.view === (S.view === 'criteria' ? 'playbooks' : S.view)));
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === `v-${S.view}`));
   if (S.view === 'settings') renderSettings();
   if (S.view === 'events') renderEvents();

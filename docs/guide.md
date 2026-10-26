@@ -27,17 +27,18 @@ Each person gets 0–100 points: **role** (what they do and how senior), **compa
 ## Companies
 Each person's card shows their company: type (potential buyer, partner, competitor), industry, size, ERP where public, which events it exhibits at, and who else from it is on the lists. Approving a person brings their company along to HubSpot, linked.
 
-## Changing how events and people are scored (Criteria)
-One page with the main levers: how much the quality of the best people counts for an event, GeneralMind being a partner there, timing, travel, the meeting assumptions, the strong-fit and possible thresholds, and how much each role, seniority and company trait counts. Move a slider and the preview shows how many people would change suggestion and the new order of events. Nothing changes until you save with a note; earlier versions can be switched back to. Every other setting (the keyword lists, size bands, company points, lane rules) is under **All other settings**, folded away below the levers, and saved the same way. Every setting there is used by the scoring; there are no hidden ones.
+## Playbooks: how leads are found and scored
+Four steps, in order. The first three are the plain-language instructions the AI follows: **finding events**, **sourcing people** from event pages and **profiling companies**. The fourth, **Scoring**, decides how much each thing they collect is worth.
 
-## Changing how leads are found (Playbooks)
-The plain-language instructions the AI steps follow when finding events, sourcing people from event pages and profiling companies. Open a playbook to edit it:
+Open one of the first three to edit it:
 - **Edit**: the text itself.
-- **Changes**: exactly what differs from the active version (or any older one), line by line: added in green, removed in red.
+- **Changes**: the active version (or any older one) on the left and your draft on the right, side by side; changed lines are highlighted.
 - **History**: every version, to compare, load into the editor, or activate.
 - **Discuss with the model** (on the right): ask about the playbook, or ask for a change. When it edits, the draft updates and Changes shows what it did; **Undo** takes it back.
 
 Nothing changes until you save with a short note, as a version or straight into use. Changes apply the next time sourcing runs.
+
+**Scoring** shows the main levers: how much the quality of the best people counts for an event, GeneralMind being a partner there, timing, travel, the meeting assumptions, the strong-fit and possible thresholds, and how much each role, seniority and company trait counts. Move a slider and the preview shows how many people would change suggestion and the new order of events. Nothing changes until you save with a note; earlier versions can be switched back to. Every other setting (the keyword lists, size bands, company points, lane rules) is under **All other settings**, folded away below the levers. Every setting there is used by the scoring; there are no hidden ones. Scoring can only weigh what the playbooks collect: if a playbook starts collecting something new, it needs a weight here before it counts.
 
 ## The copilot
 A help assistant. Ask it about what's in the cockpit ("who should we meet first at BME?", "why is this person scored 95?", "how many people are approved at the events we're going to?") or how the cockpit works. It answers from the cockpit's data and links you straight to the right page. It can also propose a small scoring change (saved as a version you check and activate) and write down feedback. Choosing events, approving people and sending to HubSpot stay with you. The owner chooses the model and its thinking effort in Settings.

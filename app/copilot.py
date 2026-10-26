@@ -1,7 +1,7 @@
 """The copilot: a chat that can look things up in the cockpit and propose changes.
 
 It never changes what's live. Scoring and playbook changes are saved as new, inactive versions
-that a person previews and activates in the Criteria or Playbooks tab.
+that a person previews and activates under Playbooks (Scoring is the last step there).
 """
 
 import datetime as dt
@@ -205,7 +205,7 @@ class Tools:
 
     def get_scoring(self):
         row = self.con.execute("SELECT version, body FROM config_versions WHERE kind = 'scoring' AND active = 1").fetchone()
-        return {"version": row["version"], "settings": json.loads(row["body"]), "link": "#/criteria"}
+        return {"version": row["version"], "settings": json.loads(row["body"]), "link": "#/playbooks/scoring"}
 
     def propose_scoring_change(self, changes, note):
         cfg = self.get_scoring()["settings"]
@@ -231,7 +231,7 @@ class Tools:
         version = self.con.execute("SELECT version FROM config_versions WHERE id = ?", (vid,)).fetchone()["version"]
         self.con.commit()
         self.actions.append({"text": f"Saved scoring v{version} (not active): {note}", "version_id": vid, "kind": "scoring", "version": version})
-        return {"saved_version": version, "active": False, "people_per_suggestion_now": now_lanes, "with_this_change": new_lanes, "link": "#/criteria"}
+        return {"saved_version": version, "active": False, "people_per_suggestion_now": now_lanes, "with_this_change": new_lanes, "link": "#/playbooks/scoring"}
 
     def add_feedback_note(self, comment):
         self.con.execute("INSERT INTO feedback (comment, view, author, created_at) VALUES (?, 'assistant', ?, ?)",

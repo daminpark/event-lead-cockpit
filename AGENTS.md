@@ -4,7 +4,7 @@ Notes for whoever (person or model) makes the next change. The user guide is `do
 
 ## Layout
 - `pipeline/build.py`: extracted event data and company profiles → scored events, people and companies in SQLite. Re-runnable; decisions and settings versions are kept.
-- `scoring.toml`: every weight, keyword and threshold. Each one is used by the scoring and editable in Criteria (main levers, then "All other settings"). A setting the page can't change shouldn't exist.
+- `scoring.toml`: every weight, keyword and threshold. Each one is used by the scoring and editable in Playbooks → Scoring (main levers, then "All other settings"). A setting the page can't change shouldn't exist.
 - `playbooks/`: the instructions the sourcing agents follow, versioned in the cockpit.
 - `app/main.py` (API), `app/hubspot.py`, `app/copilot.py`, `app/summaries.py`; `app/static/index.html` is the whole interface.
 
