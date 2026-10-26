@@ -615,7 +615,8 @@ def settings(request: Request):
         model = copilot.setting(con, "copilot_model")
         effort = copilot.setting(con, "copilot_effort") or "medium"
     return {"role": request.state.role, "hubspot": secrets_store.status("hubspot"),
-            "openrouter": secrets_store.status("openrouter"), "copilot_model": model, "copilot_effort": effort}
+            "openrouter": secrets_store.status("openrouter") | {"health": secrets_store.health("openrouter")},
+            "copilot_model": model, "copilot_effort": effort}
 
 
 class Secret(BaseModel):
